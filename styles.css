@@ -762,3 +762,16 @@ footer{
     font-size:42px;
   }
 }
+@media(max-width:560px){
+
+  .hero-content{
+    position:relative !important;
+    top:auto !important;
+    left:auto !important;
+    right:auto !important;
+    transform:translateY(-150px) !important;
+    padding:0 14px 40px !important;
+    margin:0 auto !important;
+  }
+
+}
