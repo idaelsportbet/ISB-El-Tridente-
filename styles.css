@@ -178,7 +178,7 @@ input{
   min-height:900px;
   position:relative;
   background-image:url('hero.jpeg');
-  background-size:cover;
+  background-size:contain;
   background-position:center top;
   background-repeat:no-repeat;
   display:flex;
@@ -663,7 +663,7 @@ footer{
   .hero{
     min-height:980px;
     background-image:url('hero.jpeg') !important;
-    background-size:cover !important;
+    background-size:contain !important;
     background-repeat:no-repeat !important;
     background-position:center top !important;
   }
