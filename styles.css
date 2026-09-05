@@ -1167,3 +1167,49 @@ footer{
   stroke:#FFD700 !important;
   fill:none !important;
 }
+/* ===== RESULTADOS COMPACTO + SIN ESPACIOS ===== */
+@media (max-width:700px){
+
+  #resultados{
+    padding:22px 16px !important;
+    min-height:0 !important;
+    height:auto !important;
+    gap:0 !important;
+  }
+
+  #resultados > div:first-child{
+    display:none !important;
+  }
+
+  #resultados .result-card{
+    width:100% !important;
+    margin:0 !important;
+    padding:22px 20px !important;
+    min-height:0 !important;
+    border-radius:16px !important;
+  }
+
+  #resultados .result-card .eyebrow{
+    font-size:11px !important;
+    letter-spacing:2px !important;
+    margin:0 0 8px !important;
+  }
+
+  #resultados .result-card h3{
+    font-size:23px !important;
+    line-height:1.08 !important;
+    margin:0 0 10px !important;
+  }
+
+  #resultados .result-card p{
+    font-size:13px !important;
+    line-height:1.45 !important;
+    margin:0 !important;
+  }
+
+  #soporte{
+    margin-top:0 !important;
+    padding-top:28px !important;
+    min-height:0 !important;
+  }
+}
