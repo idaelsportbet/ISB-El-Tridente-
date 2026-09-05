@@ -26,3 +26,9 @@ document.querySelectorAll('[data-form]').forEach(form => {
     alert(type === 'login' ? 'Demo lista. El próximo paso es conectar el inicio de sesión real con Supabase.' : 'Demo lista. El próximo paso es conectar el registro real con Supabase.');
   });
 });
+document.querySelectorAll('.modal .close').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const modal = btn.closest('dialog');
+    if (modal) modal.close();
+  });
+});
