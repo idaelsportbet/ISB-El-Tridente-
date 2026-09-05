@@ -875,3 +875,60 @@ footer{
   }
 
 }
+/* ===== CÓMO FUNCIONA - COMPACTO MÓVIL ===== */
+@media (max-width: 700px){
+
+  #como{
+    padding:32px 16px !important;
+  }
+
+  #como .section-heading{
+    margin-bottom:20px !important;
+  }
+
+  #como .section-heading span{
+    font-size:11px !important;
+    letter-spacing:3px !important;
+  }
+
+  #como .section-heading h3{
+    font-size:32px !important;
+    margin:7px 0 0 !important;
+  }
+
+  #como .steps{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:8px !important;
+  }
+
+  #como .steps article{
+    width:100% !important;
+    min-height:0 !important;
+    padding:12px 15px !important;
+    border:1px solid rgba(255,215,0,.35) !important;
+    border-radius:10px !important;
+    background:#0b0b0b !important;
+  }
+
+  #como .steps article b{
+    display:inline-block !important;
+    font-size:14px !important;
+    color:#FFD700 !important;
+    margin:0 8px 3px 0 !important;
+  }
+
+  #como .steps article h4{
+    display:inline !important;
+    font-size:16px !important;
+    line-height:1.2 !important;
+    margin:0 !important;
+  }
+
+  #como .steps article p{
+    font-size:12px !important;
+    line-height:1.4 !important;
+    margin:5px 0 0 !important;
+    color:#bdbdbd !important;
+  }
+}
