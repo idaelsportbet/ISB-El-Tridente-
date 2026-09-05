@@ -1,1 +1,167 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paquetes | ISB El Tridente</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
 
+<body class="packages-page">
+
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="trident">♆</span>
+      <span>
+        <b>ISB</b>
+        <small>EL TRIDENTE</small>
+      </span>
+    </a>
+
+    <button id="logoutBtn" class="btn btn-ghost">Cerrar sesión</button>
+  </header>
+
+  <main class="packages-main">
+
+    <section class="packages-hero">
+      <p class="eyebrow">PORTAL PRIVADO</p>
+      <h1>ELIGE TU PAQUETE</h1>
+      <p class="packages-intro">
+        Accede al paquete que mejor se adapte a ti.
+        Los precios y opciones están disponibles únicamente para usuarios registrados.
+      </p>
+    </section>
+
+    <section class="packages-grid">
+
+      <article class="package-card featured">
+        <span class="package-badge">MÁS COMPLETO</span>
+        <h2>PREMIUM</h2>
+        <p class="package-description">
+          Acceso a selecciones Premium, análisis y contenido exclusivo.
+        </p>
+
+        <div class="package-options">
+          <div>
+            <span>Diario</span>
+            <strong>$70</strong>
+          </div>
+
+          <div>
+            <span>Semanal</span>
+            <strong>$399</strong>
+          </div>
+        </div>
+
+        <p class="package-note">
+          El paquete diario incluye política de reembolso según las condiciones vigentes.
+        </p>
+
+        <button class="btn btn-gold btn-wide">Seleccionar Premium</button>
+      </article>
+
+
+      <article class="package-card">
+        <h2>EXCLUSIVA</h2>
+        <p class="package-description">
+          Selecciones exclusivas y contenido especial disponible dentro de tu portal.
+        </p>
+
+        <div class="package-options">
+          <div>
+            <span>Diario</span>
+            <strong>$50</strong>
+          </div>
+
+          <div>
+            <span>Semanal</span>
+            <strong>$299</strong>
+          </div>
+        </div>
+
+        <p class="package-note">
+          El paquete diario incluye política de reembolso según las condiciones vigentes.
+        </p>
+
+        <button class="btn btn-gold btn-wide">Seleccionar Exclusiva</button>
+      </article>
+
+
+      <article class="package-card">
+        <h2>PACK MENSUAL</h2>
+        <p class="package-description">
+          Una opción mensual con acceso continuo a contenido seleccionado.
+        </p>
+
+        <div class="package-options single">
+          <div>
+            <span>Mensual</span>
+            <strong>$150</strong>
+          </div>
+        </div>
+
+        <p class="package-note">
+          Incluye entre 3 y 5 picks según disponibilidad y análisis.
+        </p>
+
+        <button class="btn btn-gold btn-wide">Seleccionar Mensual</button>
+      </article>
+
+
+      <article class="package-card">
+        <h2>ECONÓMICA</h2>
+        <p class="package-description">
+          Una opción accesible para formar parte de la comunidad ISB.
+        </p>
+
+        <div class="package-options single">
+          <div>
+            <span>Mensual</span>
+            <strong>$19.99</strong>
+          </div>
+        </div>
+
+        <p class="package-note">
+          Acceso mensual según las condiciones de esta membresía.
+        </p>
+
+        <button class="btn btn-gold btn-wide">Seleccionar Económica</button>
+      </article>
+
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    const SUPABASE_URL = 'https://nfvkmxnprchvkufwvhpr.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1';
+
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+    async function protegerPagina() {
+      const { data } = await supabaseClient.auth.getSession();
+
+      if (!data.session) {
+        window.location.href = 'index.html';
+      }
+    }
+
+    protegerPagina();
+
+    document.getElementById('logoutBtn')
+      .addEventListener('click', async () => {
+        await supabaseClient.auth.signOut();
+        window.location.href = 'index.html';
+      });
+  </script>
+
+</body>
+</html>
