@@ -108,10 +108,8 @@ loginForm?.addEventListener('submit', async (e) => {
     return;
   }
 
-  login?.close();
-
-  alert('Inicio de sesión correcto.');
-});
+ login?.close();
+window.location.href = 'paquetes.html';
 document.querySelectorAll('.modal .close').forEach(btn => {
   btn.addEventListener('click', () => {
     const modal = btn.closest('dialog');
