@@ -82,9 +82,35 @@ registerForm?.addEventListener('submit', async (e) => {
   login?.showModal();
 });
 
-loginForm?.addEventListener('submit', (e) => {
+loginForm?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  alert('El registro ya está conectado. Ahora conectaremos el inicio de sesión.');
+
+  const email = loginForm.elements['email'].value.trim();
+  const password = loginForm.elements['password'].value;
+
+  const submitButton =
+    loginForm.querySelector('button[type="submit"]');
+
+  submitButton.disabled = true;
+  submitButton.textContent = 'Entrando...';
+
+  const { data, error } =
+    await supabaseClient.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+  submitButton.disabled = false;
+  submitButton.textContent = 'Entrar';
+
+  if (error) {
+    alert('Correo o contraseña incorrectos.');
+    return;
+  }
+
+  login?.close();
+
+  alert('Inicio de sesión correcto.');
 });
 document.querySelectorAll('.modal .close').forEach(btn => {
   btn.addEventListener('click', () => {
