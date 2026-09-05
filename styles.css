@@ -802,3 +802,26 @@ footer{
   }
 
 }
+@media(max-width:560px){
+
+  .sports-strip{
+    display:grid !important;
+    grid-template-columns:repeat(3,1fr) !important;
+    gap:10px !important;
+    padding:58px 12px 24px !important;
+  }
+
+  .sports-strip div{
+    min-height:105px !important;
+    padding:14px 6px !important;
+    font-size:30px !important;
+    border-radius:14px !important;
+  }
+
+  .sports-strip span{
+    font-size:11px !important;
+    margin-top:7px !important;
+    letter-spacing:.8px !important;
+  }
+
+}
