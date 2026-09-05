@@ -209,8 +209,24 @@
      <button type="button" class="close" aria-label="Cerrar">×</button>
       <p class="eyebrow">PORTAL PRIVADO</p>
       <h2>Iniciar sesión</h2>
-      <label>Correo electrónico<input type="email" required placeholder="tu@correo.com"></label>
-      <label>Contraseña<input type="password" required minlength="6" placeholder="••••••••"></label>
+   <label>
+  Correo electrónico
+  <input
+    type="email"
+    name="email"
+    required
+    placeholder="tu@correo.com">
+</label>
+
+<label>
+  Contraseña
+  <input
+    type="password"
+    name="password"
+    required
+    minlength="6"
+    placeholder="••••••••">
+</label>
       <button class="btn btn-gold btn-wide" type="submit">Entrar</button>
       <p class="form-note">Demo visual. La autenticación real se conectará a Supabase.</p>
     </form>
