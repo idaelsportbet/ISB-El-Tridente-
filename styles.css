@@ -139,9 +139,11 @@ footer{padding:34px max(22px,calc((100vw - var(--max))/2)) 52px;border-top:1px s
     font-size:11px;
   }
 
-  .sports-strip{
-    padding:24px 12px;
-  }
+.sports-strip{
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  padding:58px 14px 34px;
+}
 
   .steps{
     grid-template-columns:1fr;
