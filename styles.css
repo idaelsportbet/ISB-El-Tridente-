@@ -84,16 +84,21 @@ footer{padding:34px max(22px,calc((100vw - var(--max))/2)) 52px;border-top:1px s
     top:68px;
   }
 
-  .hero{
-    min-height:820px;
-    background-position:center 14%;
-  }
+.hero{
+  min-height:900px;
+  position:relative;
+  background-image:url('hero.jpeg') !important;
+  background-size:cover !important;
+  background-repeat:no-repeat !important;
+  background-position:center top !important;
+}
 
   .hero-content{
-    width:calc(100% - 30px);
-    padding:500px 0 44px;
-    text-align:center;
-  }
+  width:calc(100% - 30px);
+  margin:0 auto;
+  padding:500px 0 55px;
+  text-align:center;
+}
 
   .hero-copy{
     max-width:520px;
