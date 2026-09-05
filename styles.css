@@ -205,7 +205,7 @@ input{
   z-index:2;
   width:min(var(--max),calc(100% - 44px));
   margin:0 auto;
-  padding:400px 0 48px;
+  padding:300px 0 48px;
 }
 
 .hero-copy{
