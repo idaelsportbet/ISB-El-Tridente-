@@ -175,7 +175,7 @@ input{
 ========================= */
 
 .hero{
-  min-height:900px;
+  min-height:980px;
   position:relative;
   background-image:url('hero.jpeg');
   background-size:contain;
@@ -680,12 +680,17 @@ footer{
       );
   }
 
-  .hero-content{
-    width:calc(100% - 28px);
-    margin:0 auto;
-    padding:410px 0 60px;
-    text-align:center;
-  }
+.hero-content{
+  position:absolute !important;
+  z-index:2;
+  top:590px !important;
+  left:14px;
+  right:14px;
+  width:auto;
+  margin:0;
+  padding:0;
+  text-align:center;
+}
 
   .hero-copy{
     max-width:520px;
