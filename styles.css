@@ -1130,3 +1130,40 @@ footer{
     border-radius:50% !important;
   }
 }
+/* ===== ICONOS SOPORTE - CORRECCIÓN FINAL ===== */
+
+#soporte .contact-icon svg{
+  display:block !important;
+  width:32px !important;
+  height:32px !important;
+  overflow:visible !important;
+}
+
+/* WhatsApp */
+#soporte .contact-card:nth-child(1) .contact-icon svg path{
+  fill:#FFD700 !important;
+  stroke:none !important;
+}
+
+/* Instagram */
+#soporte .contact-card:nth-child(2) .contact-icon svg{
+  fill:none !important;
+  stroke:#FFD700 !important;
+}
+
+#soporte .contact-card:nth-child(2) .contact-icon svg rect,
+#soporte .contact-card:nth-child(2) .contact-icon svg circle{
+  stroke:#FFD700 !important;
+}
+
+#soporte .contact-card:nth-child(2) .contact-icon svg circle:last-child{
+  fill:#FFD700 !important;
+  stroke:none !important;
+}
+
+/* Correo */
+#soporte .contact-card:nth-child(3) .contact-icon svg rect,
+#soporte .contact-card:nth-child(3) .contact-icon svg path{
+  stroke:#FFD700 !important;
+  fill:none !important;
+}
