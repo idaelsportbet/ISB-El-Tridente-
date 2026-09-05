@@ -217,17 +217,110 @@
   </dialog>
 
   <dialog id="registerModal" class="modal">
-    <form method="dialog" class="modal-card" data-form="register">
-      <button class="close" aria-label="Cerrar">×</button>
-      <p class="eyebrow">NUEVA CUENTA</p>
-      <h2>Registrarse</h2>
-      <label>Nombre<input type="text" required placeholder="Tu nombre"></label>
-      <label>Correo electrónico<input type="email" required placeholder="tu@correo.com"></label>
-      <label>Contraseña<input type="password" required minlength="6" placeholder="Mínimo 6 caracteres"></label>
-      <button class="btn btn-gold btn-wide" type="submit">Crear cuenta</button>
-      <p class="form-note">Demo visual. El registro real se conectará a Supabase.</p>
-    </form>
-  </dialog>
+  <form method="dialog" class="modal-card" data-form="register">
+
+    <button class="close" aria-label="Cerrar">×</button>
+
+    <p class="eyebrow">NUEVA CUENTA</p>
+    <h2>Registrarse</h2>
+
+    <label>
+      Nombre y apellidos
+      <input
+        type="text"
+        name="full_name"
+        required
+        placeholder="Tu nombre completo">
+    </label>
+
+    <label>
+      Fecha de nacimiento
+      <input
+        type="date"
+        name="birth_date"
+        required>
+    </label>
+
+    <label>
+      Teléfono
+      <input
+        type="tel"
+        name="phone"
+        required
+        placeholder="+1 000 000 0000">
+    </label>
+
+    <label>
+      Correo electrónico
+      <input
+        type="email"
+        name="email"
+        required
+        placeholder="tu@correo.com">
+    </label>
+
+    <label>
+      Estado / ubicación
+      <input
+        type="text"
+        name="location"
+        required
+        placeholder="Ej. Texas">
+    </label>
+
+    <label>
+      Nombre de usuario
+      <input
+        type="text"
+        name="username"
+        required
+        placeholder="Crea tu usuario">
+    </label>
+
+    <label>
+      Contraseña
+      <input
+        type="password"
+        name="password"
+        required
+        minlength="6"
+        placeholder="Mínimo 6 caracteres">
+    </label>
+
+    <label>
+      Confirmar contraseña
+      <input
+        type="password"
+        name="confirm_password"
+        required
+        minlength="6"
+        placeholder="Repite tu contraseña">
+    </label>
+
+    <label class="terms-check">
+      <input type="checkbox" name="terms" required>
+      <span>
+        Acepto los Términos y Condiciones y la Política de Privacidad.
+      </span>
+    </label>
+
+    <p class="privacy-note">
+      Tus datos personales son privados y no serán visibles para otros usuarios.
+    </p>
+
+    <button class="btn btn-gold btn-wide" type="submit">
+      Crear mi cuenta
+    </button>
+
+    <p class="login-switch">
+      ¿Ya tienes una cuenta?
+      <button type="button" class="link-button" data-open="login">
+        Iniciar sesión
+      </button>
+    </p>
+
+  </form>
+</dialog>
 
   <script src="script.js"></script>
 </body>
