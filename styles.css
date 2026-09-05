@@ -775,3 +775,30 @@ footer{
   }
 
 }
+@media(max-width:560px){
+
+  .sports-strip{
+    display:grid !important;
+    grid-template-columns:repeat(3,1fr) !important;
+    gap:12px !important;
+    padding:18px 14px 28px !important;
+  }
+
+  .sport{
+    min-width:0 !important;
+    padding:18px 6px !important;
+    text-align:center !important;
+  }
+
+  .sport .icon,
+  .sport-icon{
+    font-size:34px !important;
+    margin-bottom:8px !important;
+  }
+
+  .sport b,
+  .sport-name{
+    font-size:14px !important;
+  }
+
+}
