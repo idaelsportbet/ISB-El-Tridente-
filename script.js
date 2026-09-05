@@ -19,12 +19,72 @@ document.querySelectorAll('.modal').forEach(dialog => {
   });
 });
 
-document.querySelectorAll('[data-form]').forEach(form => {
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const type = form.dataset.form;
-    alert(type === 'login' ? 'Demo lista. El próximo paso es conectar el inicio de sesión real con Supabase.' : 'Demo lista. El próximo paso es conectar el registro real con Supabase.');
+const SUPABASE_URL = 'https://nfvkmxnprchvkufwvhpr.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1';
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const registerForm = document.querySelector('[data-form="register"]');
+const loginForm = document.querySelector('[data-form="login"]');
+
+registerForm?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const fullName = registerForm.elements['full_name'].value.trim();
+  const phone = registerForm.elements['phone'].value.trim();
+  const email = registerForm.elements['email'].value.trim();
+  const username = registerForm.elements['username'].value.trim();
+  const password = registerForm.elements['password'].value;
+  const confirmPassword =
+    registerForm.elements['confirm_password'].value;
+
+  if (password !== confirmPassword) {
+    alert('Las contraseñas no coinciden.');
+    return;
+  }
+
+  const submitButton =
+    registerForm.querySelector('button[type="submit"]');
+
+  submitButton.disabled = true;
+  submitButton.textContent = 'Creando cuenta...';
+
+  const { data, error } = await supabaseClient.auth.signUp({
+    email: email,
+    password: password,
+    options: {
+      data: {
+        full_name: fullName,
+        phone: phone,
+        username: username
+      }
+    }
   });
+
+  submitButton.disabled = false;
+  submitButton.textContent = 'Crear mi cuenta';
+
+  if (error) {
+    alert('No se pudo crear la cuenta: ' + error.message);
+    return;
+  }
+
+  alert(
+    'Cuenta creada correctamente. Revisa tu correo electrónico para confirmar tu cuenta.'
+  );
+
+  registerForm.reset();
+  register?.close();
+
+  login?.showModal();
+});
+
+loginForm?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  alert('El registro ya está conectado. Ahora conectaremos el inicio de sesión.');
 });
 document.querySelectorAll('.modal .close').forEach(btn => {
   btn.addEventListener('click', () => {
