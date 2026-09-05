@@ -1213,3 +1213,87 @@ footer{
     min-height:0 !important;
   }
 }
+/* ===== REGISTRO COMPACTO MÓVIL ===== */
+@media (max-width:700px){
+
+  #registerModal{
+    padding:12px !important;
+  }
+
+  #registerModal .modal-card{
+    width:100% !important;
+    max-width:430px !important;
+    max-height:88dvh !important;
+    overflow-y:auto !important;
+    padding:22px 18px !important;
+    border-radius:18px !important;
+    margin:auto !important;
+  }
+
+  #registerModal .eyebrow{
+    font-size:11px !important;
+    margin:0 0 5px !important;
+  }
+
+  #registerModal h2{
+    font-size:32px !important;
+    margin:0 0 18px !important;
+  }
+
+  #registerModal label{
+    font-size:14px !important;
+    margin-bottom:11px !important;
+  }
+
+  #registerModal input:not([type="checkbox"]){
+    height:50px !important;
+    padding:0 14px !important;
+    margin-top:6px !important;
+    font-size:15px !important;
+    border-radius:11px !important;
+  }
+
+  #registerModal .terms-check{
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:flex-start !important;
+    gap:9px !important;
+    margin-top:8px !important;
+  }
+
+  #registerModal .terms-check input{
+    width:18px !important;
+    height:18px !important;
+    flex:0 0 18px !important;
+    margin:2px 0 0 !important;
+  }
+
+  #registerModal .terms-check span,
+  #registerModal .privacy-note{
+    font-size:12px !important;
+    line-height:1.4 !important;
+  }
+
+  #registerModal .privacy-note{
+    color:#aaa !important;
+    margin:10px 0 !important;
+  }
+
+  #registerModal .btn-wide{
+    min-height:50px !important;
+    margin-top:6px !important;
+  }
+
+  #registerModal .login-switch{
+    font-size:13px !important;
+    text-align:center !important;
+    margin:12px 0 0 !important;
+  }
+
+  #registerModal .close{
+    position:sticky !important;
+    top:0 !important;
+    float:right !important;
+    z-index:5 !important;
+  }
+}
