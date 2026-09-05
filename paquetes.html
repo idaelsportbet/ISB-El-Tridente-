@@ -1,166 +1,814 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#050505" />
+
   <title>Paquetes | ISB El Tridente</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    :root {
+      --bg:#050505;
+      --panel:#0d0d0d;
+      --panel2:#111;
+      --gold:#f6c65b;
+      --gold2:#a97820;
+      --text:#fff;
+      --muted:#b8b8b8;
+      --line:rgba(246,198,91,.22);
+    }
+
+    * {
+      box-sizing:border-box;
+    }
+
+    html {
+      scroll-behavior:smooth;
+    }
+
+    body {
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:Montserrat,system-ui,sans-serif;
+    }
+
+    button {
+      font:inherit;
+    }
+
+    .topbar {
+      position:sticky;
+      top:0;
+      z-index:50;
+      min-height:76px;
+      padding:12px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+
+      background:rgba(4,4,4,.94);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--line);
+    }
+
+    .brand {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:white;
+    }
+
+    .trident {
+      font-size:31px;
+      color:var(--gold);
+    }
+
+    .brand b {
+      display:block;
+      color:var(--gold);
+      font-family:'Playfair Display',serif;
+      font-size:28px;
+      line-height:.9;
+    }
+
+    .brand small {
+      display:block;
+      margin-top:7px;
+      font-size:9px;
+      letter-spacing:4px;
+      font-weight:800;
+    }
+
+    .logout {
+      border:1px solid rgba(246,198,91,.55);
+      background:#0b0b0b;
+      color:white;
+      padding:12px 17px;
+      border-radius:13px;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .hero {
+      position:relative;
+      overflow:hidden;
+      min-height:520px;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(0,0,0,.96) 0%,
+          rgba(0,0,0,.87) 38%,
+          rgba(0,0,0,.57) 67%,
+          rgba(0,0,0,.74) 100%
+        ),
+        url('portal.jpeg') center 28% / cover no-repeat;
+    }
+
+    .hero::after {
+      content:"";
+      position:absolute;
+      inset:0;
+
+      background:
+        radial-gradient(
+          circle at 72% 25%,
+          rgba(246,198,91,.14),
+          transparent 34%
+        ),
+        linear-gradient(
+          180deg,
+          transparent 55%,
+          #050505 100%
+        );
+    }
+
+    .hero-inner {
+      position:relative;
+      z-index:2;
+      width:min(1180px,calc(100% - 34px));
+      margin:auto;
+      padding:70px 0 85px;
+    }
+
+    .eyebrow {
+      margin:0 0 14px;
+      color:var(--gold);
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:4px;
+    }
+
+    .hero h1 {
+      margin:0;
+      max-width:690px;
+      font-family:'Playfair Display',serif;
+      font-size:clamp(44px,8vw,82px);
+      line-height:.92;
+      letter-spacing:-2px;
+    }
+
+    .hero h1 span {
+      color:var(--gold);
+    }
+
+    .hero-text {
+      max-width:650px;
+      margin:24px 0 0;
+      color:#d0d0d0;
+      font-size:17px;
+      line-height:1.7;
+    }
+
+    .benefits {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+      margin-top:34px;
+      max-width:760px;
+    }
+
+    .benefit {
+      padding:15px;
+      border:1px solid rgba(246,198,91,.2);
+      background:rgba(7,7,7,.78);
+      border-radius:16px;
+      backdrop-filter:blur(8px);
+    }
+
+    .benefit strong {
+      display:block;
+      color:var(--gold);
+      margin-bottom:5px;
+      font-size:13px;
+    }
+
+    .benefit span {
+      color:#bbb;
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    .main {
+      width:min(1180px,calc(100% - 28px));
+      margin:auto;
+      padding:20px 0 85px;
+    }
+
+    .section-title {
+      margin-bottom:30px;
+      text-align:center;
+    }
+
+    .section-title h2 {
+      margin:0;
+      font-family:'Playfair Display',serif;
+      font-size:clamp(34px,7vw,58px);
+    }
+
+    .section-title p {
+      max-width:620px;
+      margin:14px auto 0;
+      color:var(--muted);
+      line-height:1.7;
+    }
+
+    .packages {
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:22px;
+    }
+
+    .card {
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-height:455px;
+      padding:27px;
+
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(246,198,91,.08),
+          transparent 35%
+        ),
+        linear-gradient(180deg,#111,#090909);
+
+      border:1px solid #252525;
+      border-radius:24px;
+      box-shadow:0 24px 65px rgba(0,0,0,.4);
+    }
+
+    .card.featured {
+      border-color:rgba(246,198,91,.75);
+      box-shadow:
+        0 0 0 1px rgba(246,198,91,.08),
+        0 30px 85px rgba(0,0,0,.55);
+    }
+
+    .tag {
+      align-self:flex-start;
+      margin-bottom:18px;
+      padding:7px 10px;
+      border:1px solid rgba(246,198,91,.5);
+      background:rgba(246,198,91,.08);
+      border-radius:999px;
+
+      color:var(--gold);
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:2px;
+    }
+
+    .card h3 {
+      margin:0;
+      font-size:28px;
+      line-height:1.1;
+    }
+
+    .card .type {
+      margin-top:7px;
+      color:var(--gold);
+      font-size:13px;
+      font-weight:900;
+      letter-spacing:2px;
+    }
+
+    .price {
+      margin:22px 0 5px;
+      color:var(--gold);
+      font-size:42px;
+      font-weight:900;
+    }
+
+    .period {
+      color:#8f8f8f;
+      font-size:13px;
+    }
+
+    .description {
+      margin:22px 0 18px;
+      color:#ccc;
+      font-size:14px;
+      line-height:1.65;
+    }
+
+    .features {
+      margin:0 0 25px;
+      padding:0;
+      list-style:none;
+    }
+
+    .features li {
+      position:relative;
+      margin:11px 0;
+      padding-left:25px;
+      color:#bfbfbf;
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .features li::before {
+      content:"✓";
+      position:absolute;
+      left:0;
+      color:var(--gold);
+      font-weight:900;
+    }
+
+    .refund {
+      margin-top:auto;
+      margin-bottom:18px;
+      padding:12px 13px;
+
+      border:1px solid rgba(246,198,91,.22);
+      border-radius:13px;
+      background:rgba(246,198,91,.05);
+
+      color:#bcbcbc;
+      font-size:12px;
+      line-height:1.55;
+    }
+
+    .select-btn {
+      width:100%;
+      border:1px solid #f6c65b;
+      border-radius:15px;
+
+      background:
+        linear-gradient(
+          110deg,
+          #967018 0%,
+          #e2ae3c 32%,
+          #fff0a1 50%,
+          #e1ad3d 68%,
+          #977018 100%
+        );
+
+      color:#050505;
+      padding:16px;
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .trust {
+      margin-top:55px;
+      padding:28px;
+      border:1px solid #1e1e1e;
+      border-radius:22px;
+      background:#090909;
+
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:22px;
+    }
+
+    .trust article {
+      text-align:center;
+    }
+
+    .trust b {
+      display:block;
+      margin-bottom:7px;
+      color:var(--gold);
+      font-size:17px;
+    }
+
+    .trust p {
+      margin:0;
+      color:#9d9d9d;
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    footer {
+      padding:40px 20px 60px;
+      text-align:center;
+      border-top:1px solid #181818;
+      color:#8e8e8e;
+      font-size:12px;
+    }
+
+    footer strong {
+      display:block;
+      margin-bottom:10px;
+      color:var(--gold);
+      font-size:17px;
+    }
+
+    @media (max-width:760px) {
+
+      .hero {
+        min-height:600px;
+        background-position:63% 25%;
+      }
+
+      .hero-inner {
+        padding-top:55px;
+      }
+
+      .benefits {
+        grid-template-columns:1fr;
+        max-width:310px;
+      }
+
+      .packages {
+        grid-template-columns:1fr;
+        gap:18px;
+      }
+
+      .card {
+        min-height:auto;
+        padding:23px 19px;
+      }
+
+      .price {
+        font-size:38px;
+      }
+
+      .trust {
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
 </head>
 
-<body class="packages-page">
+<body>
 
   <header class="topbar">
-    <a class="brand" href="index.html">
+
+    <a href="index.html" class="brand">
       <span class="trident">♆</span>
+
       <span>
         <b>ISB</b>
         <small>EL TRIDENTE</small>
       </span>
     </a>
 
-    <button id="logoutBtn" class="btn btn-ghost">Cerrar sesión</button>
+    <button id="logoutBtn" class="logout">
+      Cerrar sesión
+    </button>
+
   </header>
 
-  <main class="packages-main">
+  <section class="hero">
 
-    <section class="packages-hero">
-      <p class="eyebrow">PORTAL PRIVADO</p>
-      <h1>ELIGE TU PAQUETE</h1>
-      <p class="packages-intro">
-        Accede al paquete que mejor se adapte a ti.
-        Los precios y opciones están disponibles únicamente para usuarios registrados.
+    <div class="hero-inner">
+
+      <p class="eyebrow">PORTAL PRIVADO · ISB</p>
+
+      <h1>
+        ELIGE TU<br>
+        <span>PAQUETE.</span>
+      </h1>
+
+      <p class="hero-text">
+        Selecciona la membresía que mejor se adapte a ti.
+        Cada paquete tiene su propio acceso y duración.
       </p>
+
+      <div class="benefits">
+
+        <div class="benefit">
+          <strong>🔒 ACCESO PRIVADO</strong>
+          <span>Contenido disponible únicamente para miembros.</span>
+        </div>
+
+        <div class="benefit">
+          <strong>⚡ ACTIVACIÓN RÁPIDA</strong>
+          <span>Gestiona todo directamente desde tu portal.</span>
+        </div>
+
+        <div class="benefit">
+          <strong>🔱 ISB EL TRIDENTE</strong>
+          <span>Análisis, disciplina y estrategia.</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <main class="main">
+
+    <div class="section-title">
+
+      <p class="eyebrow">MEMBRESÍAS DISPONIBLES</p>
+
+      <h2>Selecciona tu acceso</h2>
+
+      <p>
+        Cada modalidad aparece individualmente para que sepas
+        exactamente qué estás seleccionando.
+      </p>
+
+    </div>
+
+    <section class="packages">
+
+      <!-- PREMIUM DIARIO -->
+
+      <article class="card featured">
+
+        <span class="tag">MÁS POPULAR</span>
+
+        <h3>PREMIUM</h3>
+
+        <div class="type">DIARIO</div>
+
+        <div class="price">$70</div>
+
+        <div class="period">Acceso diario</div>
+
+        <p class="description">
+          Acceso a la selección Premium del día y contenido correspondiente.
+        </p>
+
+        <ul class="features">
+          <li>Pick Premium</li>
+          <li>Análisis deportivo</li>
+          <li>Acceso privado</li>
+          <li>Disponible dentro de tu portal</li>
+        </ul>
+
+        <div class="refund">
+          Este paquete diario incluye política de reembolso según las condiciones vigentes de ISB.
+        </div>
+
+        <button class="select-btn">
+          SELECCIONAR PREMIUM DIARIO
+        </button>
+
+      </article>
+
+
+      <!-- PREMIUM SEMANAL -->
+
+      <article class="card">
+
+        <h3>PREMIUM</h3>
+
+        <div class="type">SEMANAL</div>
+
+        <div class="price">$399</div>
+
+        <div class="period">7 días de acceso</div>
+
+        <p class="description">
+          Acceso Premium durante toda la semana.
+        </p>
+
+        <ul class="features">
+          <li>Contenido Premium durante 7 días</li>
+          <li>Análisis deportivo</li>
+          <li>Acceso privado</li>
+          <li>Seguimiento desde tu portal</li>
+        </ul>
+
+        <div class="refund">
+          Membresía semanal. No corresponde al sistema de reembolso de los paquetes diarios.
+        </div>
+
+        <button class="select-btn">
+          SELECCIONAR PREMIUM SEMANAL
+        </button>
+
+      </article>
+
+
+      <!-- EXCLUSIVA DIARIA -->
+
+      <article class="card">
+
+        <h3>EXCLUSIVA</h3>
+
+        <div class="type">DIARIA</div>
+
+        <div class="price">$50</div>
+
+        <div class="period">Acceso diario</div>
+
+        <p class="description">
+          Selección exclusiva del día disponible únicamente para miembros de este paquete.
+        </p>
+
+        <ul class="features">
+          <li>Pick Exclusivo</li>
+          <li>Análisis seleccionado</li>
+          <li>Acceso privado</li>
+          <li>Contenido exclusivo</li>
+        </ul>
+
+        <div class="refund">
+          Este paquete diario incluye política de reembolso según las condiciones vigentes de ISB.
+        </div>
+
+        <button class="select-btn">
+          SELECCIONAR EXCLUSIVA DIARIA
+        </button>
+
+      </article>
+
+
+      <!-- EXCLUSIVA SEMANAL -->
+
+      <article class="card">
+
+        <h3>EXCLUSIVA</h3>
+
+        <div class="type">SEMANAL</div>
+
+        <div class="price">$299</div>
+
+        <div class="period">7 días de acceso</div>
+
+        <p class="description">
+          Acceso al contenido Exclusivo durante siete días.
+        </p>
+
+        <ul class="features">
+          <li>Contenido Exclusivo semanal</li>
+          <li>Análisis deportivo</li>
+          <li>Acceso privado</li>
+          <li>Portal personal</li>
+        </ul>
+
+        <div class="refund">
+          Membresía semanal. No corresponde al sistema de reembolso de los paquetes diarios.
+        </div>
+
+        <button class="select-btn">
+          SELECCIONAR EXCLUSIVA SEMANAL
+        </button>
+
+      </article>
+
+
+      <!-- PACK MENSUAL -->
+
+      <article class="card">
+
+        <h3>PACK MENSUAL</h3>
+
+        <div class="type">MENSUAL</div>
+
+        <div class="price">$150</div>
+
+        <div class="period">Acceso mensual</div>
+
+        <p class="description">
+          Opción mensual con contenido seleccionado durante el período activo.
+        </p>
+
+        <ul class="features">
+          <li>3–5 picks según disponibilidad</li>
+          <li>Contenido seleccionado</li>
+          <li>Acceso durante el mes</li>
+          <li>Portal privado</li>
+        </ul>
+
+        <div class="refund">
+          El contenido puede variar según la programación deportiva y los análisis disponibles.
+        </div>
+
+        <button class="select-btn">
+          SELECCIONAR PACK MENSUAL
+        </button>
+
+      </article>
+
+
+      <!-- ECONOMICA -->
+
+      <article class="card">
+
+        <h3>ECONÓMICA</h3>
+
+        <div class="type">MENSUAL</div>
+
+        <div class="price">$19.99</div>
+
+        <div class="period">Acceso mensual</div>
+
+        <p class="description">
+          La opción más accesible para formar parte de la comunidad ISB.
+        </p>
+
+        <ul class="features">
+          <li>Acceso mensual</li>
+          <li>Contenido correspondiente al plan</li>
+          <li>Portal privado</li>
+          <li>Soporte ISB</li>
+        </ul>
+
+        <div class="refund">
+          Membresía mensual sujeta a las condiciones de este paquete.
+        </div>
+
+        <button class="select-btn">
+          SELECCIONAR ECONÓMICA
+        </button>
+
+      </article>
+
     </section>
 
-    <section class="packages-grid">
 
-      <article class="package-card featured">
-        <span class="package-badge">MÁS COMPLETO</span>
-        <h2>PREMIUM</h2>
-        <p class="package-description">
-          Acceso a selecciones Premium, análisis y contenido exclusivo.
-        </p>
+    <section class="trust">
 
-        <div class="package-options">
-          <div>
-            <span>Diario</span>
-            <strong>$70</strong>
-          </div>
-
-          <div>
-            <span>Semanal</span>
-            <strong>$399</strong>
-          </div>
-        </div>
-
-        <p class="package-note">
-          El paquete diario incluye política de reembolso según las condiciones vigentes.
-        </p>
-
-        <button class="btn btn-gold btn-wide">Seleccionar Premium</button>
+      <article>
+        <b>🔒 ACCESO SEGURO</b>
+        <p>Tu cuenta y tu contenido permanecen dentro de tu portal privado.</p>
       </article>
 
-
-      <article class="package-card">
-        <h2>EXCLUSIVA</h2>
-        <p class="package-description">
-          Selecciones exclusivas y contenido especial disponible dentro de tu portal.
-        </p>
-
-        <div class="package-options">
-          <div>
-            <span>Diario</span>
-            <strong>$50</strong>
-          </div>
-
-          <div>
-            <span>Semanal</span>
-            <strong>$299</strong>
-          </div>
-        </div>
-
-        <p class="package-note">
-          El paquete diario incluye política de reembolso según las condiciones vigentes.
-        </p>
-
-        <button class="btn btn-gold btn-wide">Seleccionar Exclusiva</button>
+      <article>
+        <b>💬 SOPORTE DIRECTO</b>
+        <p>Atención a través de los canales oficiales de ISB.</p>
       </article>
 
-
-      <article class="package-card">
-        <h2>PACK MENSUAL</h2>
-        <p class="package-description">
-          Una opción mensual con acceso continuo a contenido seleccionado.
-        </p>
-
-        <div class="package-options single">
-          <div>
-            <span>Mensual</span>
-            <strong>$150</strong>
-          </div>
-        </div>
-
-        <p class="package-note">
-          Incluye entre 3 y 5 picks según disponibilidad y análisis.
-        </p>
-
-        <button class="btn btn-gold btn-wide">Seleccionar Mensual</button>
-      </article>
-
-
-      <article class="package-card">
-        <h2>ECONÓMICA</h2>
-        <p class="package-description">
-          Una opción accesible para formar parte de la comunidad ISB.
-        </p>
-
-        <div class="package-options single">
-          <div>
-            <span>Mensual</span>
-            <strong>$19.99</strong>
-          </div>
-        </div>
-
-        <p class="package-note">
-          Acceso mensual según las condiciones de esta membresía.
-        </p>
-
-        <button class="btn btn-gold btn-wide">Seleccionar Económica</button>
+      <article>
+        <b>🔱 EL TRIDENTE</b>
+        <p>Disciplina, estrategia y análisis deportivo.</p>
       </article>
 
     </section>
 
   </main>
 
+
+  <footer>
+
+    <strong>ISB | EL TRIDENTE 🔱</strong>
+
+    <p>
+      © 2026 ISB | El Tridente. Todos los derechos reservados.
+    </p>
+
+    <p>
+      Las apuestas implican riesgo. Solo para adultos donde sea legal.
+    </p>
+
+  </footer>
+
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
-    const SUPABASE_URL = 'https://nfvkmxnprchvkufwvhpr.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1';
 
-    const supabaseClient = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
+    const SUPABASE_URL =
+      'https://nfvkmxnprchvkufwvhpr.supabase.co';
+
+    const SUPABASE_KEY =
+      'sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1';
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
 
     async function protegerPagina() {
-      const { data } = await supabaseClient.auth.getSession();
+
+      const { data } =
+        await supabaseClient.auth.getSession();
 
       if (!data.session) {
+
         window.location.href = 'index.html';
+
       }
+
     }
 
     protegerPagina();
 
-    document.getElementById('logoutBtn')
-      .addEventListener('click', async () => {
-        await supabaseClient.auth.signOut();
-        window.location.href = 'index.html';
-      });
+
+    document
+      .getElementById('logoutBtn')
+      .addEventListener(
+        'click',
+        async () => {
+
+          await supabaseClient.auth.signOut();
+
+          window.location.href = 'index.html';
+
+        }
+      );
+
   </script>
 
 </body>
