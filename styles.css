@@ -1055,3 +1055,78 @@ footer{
     font-size:27px;
   }
 }
+/* ===== SOPORTE COMPACTO FINAL ===== */
+@media (max-width:700px){
+
+  #soporte .support-actions{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:9px !important;
+    margin-top:22px !important;
+  }
+
+  #soporte .contact-card{
+    width:100% !important;
+    min-height:82px !important;
+    padding:10px 13px !important;
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    text-align:left !important;
+    gap:12px !important;
+    border:1px solid rgba(255,215,0,.45) !important;
+    border-radius:14px !important;
+  }
+
+  #soporte .contact-icon{
+    width:54px !important;
+    height:54px !important;
+    flex:0 0 54px !important;
+    margin:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    font-size:26px !important;
+    color:#FFD700 !important;
+    border:1px solid rgba(255,215,0,.55) !important;
+    border-radius:12px !important;
+  }
+
+  #soporte .contact-card > span:nth-child(2){
+    flex:1 !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    gap:4px !important;
+  }
+
+  #soporte .contact-card strong{
+    font-size:17px !important;
+    color:#FFD700 !important;
+    line-height:1.1 !important;
+  }
+
+  #soporte .contact-card small{
+    font-size:13px !important;
+    line-height:1.2 !important;
+    color:#ddd !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:6px !important;
+  }
+
+  #soporte .contact-arrow{
+    margin-left:auto !important;
+    font-size:28px !important;
+    color:#FFD700 !important;
+  }
+
+  #soporte .verified{
+    width:18px !important;
+    height:18px !important;
+    min-width:18px !important;
+    background:#1d9bf0 !important;
+    color:#fff !important;
+    border-radius:50% !important;
+  }
+}
