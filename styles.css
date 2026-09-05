@@ -859,19 +859,19 @@ footer{
 }
 @media(max-width:560px){
 
-  /* Quita el espacio sobrante debajo de la portada */
   .hero{
-    min-height:0 !important;
-    height:auto !important;
+    min-height:900px !important;
+    height:900px !important;
   }
 
   .hero-content{
-    padding-bottom:20px !important;
+    transform:translateY(-150px) !important;
+    padding-bottom:0 !important;
   }
 
-  /* Sube Cobertura Deportiva */
   .sports-strip{
-    margin-top:0 !important;
+    margin-top:-115px !important;
+    padding-top:62px !important;
   }
 
 }
