@@ -109,7 +109,9 @@ loginForm?.addEventListener('submit', async (e) => {
   }
 
  login?.close();
-window.location.href = 'paquetes.html';
+window.location.href = '/paquetes.html';
+});
+
 document.querySelectorAll('.modal .close').forEach(btn => {
   btn.addEventListener('click', () => {
     const modal = btn.closest('dialog');
