@@ -1,560 +1,798 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#050505">
-  <title>Paquetes | ISB El Tridente</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --bg:#050505;
-      --panel:#0b0b0b;
-      --gold:#f6c65b;
-      --gold2:#a9791f;
-      --text:#fff;
-      --muted:#b8b8b8;
-      --line:rgba(246,198,91,.50);
-    }
-
-    *{box-sizing:border-box}
-
-    body{
-      margin:0;
-      background:#050505;
-      color:#fff;
-      font-family:Montserrat,system-ui,sans-serif;
-    }
-
-    button{font:inherit}
-
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:50;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      min-height:72px;
-      padding:10px 16px;
-      background:rgba(4,4,4,.97);
-      border-bottom:1px solid rgba(246,198,91,.25);
-      backdrop-filter:blur(14px);
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      color:#fff;
-      text-decoration:none;
-    }
-
-    .brand-icon{
-      color:var(--gold);
-      font-size:28px;
-      line-height:1;
-    }
-
-    .brand b{
-      display:block;
-      color:var(--gold);
-      font-family:'Playfair Display',serif;
-      font-size:24px;
-      line-height:.9;
-    }
-
-    .brand small{
-      display:block;
-      margin-top:5px;
-      font-size:8px;
-      letter-spacing:3px;
-      font-weight:800;
-    }
-
-    .logout{
-      border:1px solid var(--gold2);
-      background:#090909;
-      color:#fff;
-      padding:11px 14px;
-      border-radius:12px;
-      font-weight:800;
-    }
-
-    .hero{
-      position:relative;
-      overflow:hidden;
-      min-height:470px;
-      background:
-        linear-gradient(
-          90deg,
-          rgba(0,0,0,.97) 0%,
-          rgba(0,0,0,.88) 36%,
-          rgba(0,0,0,.48) 70%,
-          rgba(0,0,0,.65) 100%
-        ),
-        url('portal.jpeg') 66% 24% / cover no-repeat;
-      border-bottom:1px solid rgba(246,198,91,.15);
-    }
-
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 72% 30%,rgba(246,198,91,.12),transparent 36%),
-        linear-gradient(180deg,transparent 62%,#050505 100%);
-      pointer-events:none;
-    }
-
-    .hero-inner{
-      position:relative;
-      z-index:2;
-      width:min(1180px,calc(100% - 32px));
-      margin:auto;
-      padding:52px 0 55px;
-    }
-
-    .eyebrow{
-      margin:0 0 10px;
-      color:var(--gold);
-      font-size:11px;
-      letter-spacing:4px;
-      font-weight:900;
-    }
-
-    .hero h1{
-      margin:0;
-      max-width:550px;
-      font-size:clamp(42px,8vw,74px);
-      line-height:.92;
-      letter-spacing:-2px;
-      font-weight:900;
-    }
-
-    .hero h1 span{color:var(--gold)}
-
-    .quote{
-      margin:16px 0 0;
-      color:#fff;
-      font-size:15px;
-      line-height:1.35;
-      font-weight:600;
-    }
-
-    .hero-text{
-      max-width:520px;
-      margin:18px 0 0;
-      color:#d3d3d3;
-      font-size:15px;
-      line-height:1.65;
-    }
-
-    .benefits{
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:10px;
-      max-width:760px;
-      margin-top:28px;
-    }
-
-    .benefit{
-      display:flex;
-      align-items:center;
-      gap:9px;
-      padding:10px;
-      background:rgba(7,7,7,.60);
-      border:1px solid rgba(246,198,91,.10);
-      border-radius:12px;
-    }
-
-    .benefit-icon{
-      color:var(--gold);
-      font-size:22px;
-      min-width:25px;
-    }
-
-    .benefit span{
-      font-size:10px;
-      line-height:1.35;
-      font-weight:800;
-      color:#e7e7e7;
-    }
-
-    .main{
-      width:min(1180px,calc(100% - 24px));
-      margin:auto;
-      padding:18px 0 60px;
-    }
-
-    .packages{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:14px;
-    }
-
-    .card{
-      position:relative;
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-      min-height:350px;
-      padding:18px 16px 14px;
-      background:
-        radial-gradient(circle at top right,rgba(246,198,91,.07),transparent 35%),
-        linear-gradient(180deg,#0c0c0c,#070707);
-      border:1px solid rgba(246,198,91,.65);
-      border-radius:18px;
-      box-shadow:0 18px 45px rgba(0,0,0,.45);
-    }
-
-    .card::after{
-      content:"";
-      position:absolute;
-      right:-22px;
-      top:50px;
-      width:130px;
-      height:130px;
-      opacity:.10;
-      border-radius:50%;
-      background:radial-gradient(circle,var(--gold),transparent 70%);
-      pointer-events:none;
-    }
-
-    .package-icon{
-      color:var(--gold);
-      font-size:44px;
-      line-height:1;
-      margin-bottom:8px;
-    }
-
-    .card h2{
-      margin:0;
-      font-size:22px;
-      line-height:1;
-      font-weight:900;
-    }
-
-    .type{
-      margin-top:6px;
-      color:#e4e4e4;
-      font-size:13px;
-      font-weight:800;
-      letter-spacing:1px;
-    }
-
-    .price{
-      margin:16px 0 12px;
-      color:var(--gold);
-      font-size:38px;
-      line-height:1;
-      font-weight:900;
-    }
-
-    .features{
-      list-style:none;
-      margin:0 0 16px;
-      padding:0;
-    }
-
-    .features li{
-      position:relative;
-      margin:8px 0;
-      padding-left:22px;
-      color:#d0d0d0;
-      font-size:12px;
-      line-height:1.35;
-    }
-
-    .features li::before{
-      content:"✓";
-      position:absolute;
-      left:0;
-      top:0;
-      color:var(--gold);
-      font-weight:900;
-    }
-
-    .select-btn{
-      width:100%;
-      margin-top:auto;
-      border:1px solid #f6c65b;
-      border-radius:12px;
-      padding:13px 10px;
-      background:
-        linear-gradient(
-          110deg,
-          #9a7119 0%,
-          #e7b647 32%,
-          #fff1a3 50%,
-          #e7b647 68%,
-          #9a7119 100%
-        );
-      color:#050505;
-      font-size:13px;
-      font-weight:900;
-      cursor:pointer;
-    }
-
-    .mini-label{
-      margin-top:9px;
-      text-align:center;
-      color:#9f9f9f;
-      font-size:8px;
-      letter-spacing:1.7px;
-      font-weight:800;
-    }
-
-    .trust{
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:16px;
-      margin-top:32px;
-      padding:24px 0;
-      border-top:1px solid rgba(246,198,91,.25);
-      border-bottom:1px solid rgba(246,198,91,.25);
-    }
-
-    .trust article{
-      text-align:center;
-    }
-
-    .trust-icon{
-      display:block;
-      color:var(--gold);
-      font-size:25px;
-      margin-bottom:7px;
-    }
-
-    .trust b{
-      display:block;
-      font-size:11px;
-      margin-bottom:5px;
-    }
-
-    .trust p{
-      margin:0;
-      color:#9f9f9f;
-      font-size:9px;
-      line-height:1.45;
-    }
-
-    footer{
-      padding:26px 18px 40px;
-      text-align:center;
-      color:#8f8f8f;
-      font-size:10px;
-    }
-
-    footer strong{
-      display:block;
-      color:var(--gold);
-      font-size:14px;
-      margin-bottom:9px;
-    }
-
-    .motto{
-      margin:16px auto 0;
-      color:#d0d0d0;
-      letter-spacing:3px;
-      line-height:1.6;
-      font-size:9px;
-    }
-
-    @media(max-width:760px){
-
-      .topbar{
-        min-height:67px;
-        padding:9px 12px;
-      }
-
-      .brand b{font-size:21px}
-      .brand small{font-size:7px}
-      .brand-icon{font-size:25px}
-
-      .logout{
-        padding:10px 11px;
-        font-size:12px;
-      }
-
-      .hero{
-        min-height:450px;
-        background-position:68% 22%;
-      }
-
-      .hero-inner{
-        padding:44px 0 45px;
-      }
-
-      .hero h1{
-        max-width:310px;
-        font-size:46px;
-      }
-
-      .hero-text{
-        max-width:320px;
-        font-size:13px;
-      }
-
-      .benefits{
-        grid-template-columns:repeat(2,1fr);
-        max-width:340px;
-      }
-
-      .benefit{
-        padding:8px;
-      }
-
-      .benefit span{
-        font-size:8px;
-      }
-
-      .packages{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-        gap:10px;
-      }
-
-      .card{
-        min-height:330px;
-        padding:15px 12px 12px;
-        border-radius:15px;
-      }
-
-      .package-icon{
-        font-size:34px;
-      }
-
-      .card h2{
-        font-size:17px;
-      }
-
-      .type{
-        font-size:11px;
-      }
-
-      .price{
-        font-size:30px;
-      }
-
-      .features li{
-        margin:7px 0;
-        padding-left:18px;
-        font-size:9.7px;
-      }
-
-      .select-btn{
-        padding:11px 7px;
-        font-size:10px;
-      }
-
-      .mini-label{
-        font-size:6.8px;
-      }
-
-      .trust{
-        grid-template-columns:repeat(2,1fr);
-      }
-    }
-
-    @media(max-width:390px){
-
-      .main{
-        width:calc(100% - 16px);
-      }
-
-      .packages{
-        gap:8px;
-      }
-
-      .card{
-        padding:14px 10px 11px;
-      }
-
-      .card h2{
-        font-size:15px;
-      }
-
-      .price{
-        font-size:27px;
-      }
-
-      .features li{
-        font-size:9px;
-      }
-
-      .select-btn{
-        font-size:9px;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>Paquetes | ISB El Tridente</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#050505;
+  --gold:#f4bd43;
+  --gold2:#8c6419;
+  --white:#fff;
+  --muted:#c7c7c7;
+  --card:#090909;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  background:#050505;
+  color:#fff;
+  font-family:Montserrat,Arial,sans-serif;
+}
+
+button,a{
+  font:inherit;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  gap:22px;
+  height:78px;
+  padding:0 22px;
+  background:rgba(3,3,3,.96);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(244,189,67,.28);
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:max-content;
+}
+
+.logo-mark{
+  color:var(--gold);
+  font-size:33px;
+  line-height:1;
+}
+
+.logo b{
+  display:block;
+  color:var(--gold);
+  font-family:"Playfair Display",serif;
+  font-size:26px;
+  line-height:.9;
+}
+
+.logo small{
+  display:block;
+  margin-top:7px;
+  letter-spacing:3px;
+  font-size:8px;
+  font-weight:800;
+}
+
+.nav{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:22px;
+  flex:1;
+}
+
+.nav a{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  font-size:9px;
+  color:#ddd;
+  white-space:nowrap;
+}
+
+.nav svg{
+  width:22px;
+  height:22px;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:1.8;
+}
+
+.nav a.active{
+  color:var(--gold);
+}
+
+.logout{
+  min-width:max-content;
+  border:1px solid var(--gold2);
+  border-radius:12px;
+  background:#080808;
+  color:#fff;
+  padding:13px 18px;
+  font-weight:800;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+  position:relative;
+  min-height:510px;
+  overflow:hidden;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.98) 0%,
+      rgba(0,0,0,.88) 37%,
+      rgba(0,0,0,.45) 67%,
+      rgba(0,0,0,.55) 100%
+    ),
+    url("portal.jpeg") 67% 26% / cover no-repeat;
+}
+
+.hero:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 73% 25%,rgba(244,189,67,.12),transparent 34%),
+    linear-gradient(180deg,transparent 62%,#050505 100%);
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  width:min(1180px,calc(100% - 42px));
+  margin:auto;
+  padding:52px 0 34px;
+}
+
+.eyebrow{
+  margin:0 0 8px;
+  color:var(--gold);
+  font-size:12px;
+  letter-spacing:4px;
+  font-weight:900;
+}
+
+.hero h1{
+  margin:0;
+  font-size:clamp(44px,7vw,76px);
+  line-height:.9;
+  font-weight:900;
+  max-width:540px;
+}
+
+.hero h1 span{
+  color:var(--gold);
+}
+
+.hero-quote{
+  margin:16px 0;
+  font-size:15px;
+  font-weight:700;
+  line-height:1.35;
+}
+
+.hero-desc{
+  max-width:480px;
+  color:#ddd;
+  line-height:1.65;
+  font-size:14px;
+}
+
+.hero-sign{
+  position:absolute;
+  top:155px;
+  right:25px;
+  color:var(--gold);
+  font-family:"Playfair Display",serif;
+  font-style:italic;
+  font-size:19px;
+  transform:rotate(-5deg);
+  text-align:center;
+}
+
+/* =========================
+   BENEFITS
+========================= */
+
+.benefits{
+  position:relative;
+  z-index:3;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  max-width:760px;
+  gap:12px;
+  margin-top:28px;
+}
+
+.benefit{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.benefit svg{
+  width:30px;
+  height:30px;
+  stroke:var(--gold);
+  fill:none;
+  stroke-width:2;
+  flex:0 0 auto;
+}
+
+.benefit b{
+  display:block;
+  font-size:9px;
+  line-height:1.35;
+}
+
+/* =========================
+   PACKAGES
+========================= */
+
+.packages-wrap{
+  width:min(1180px,calc(100% - 32px));
+  margin:0 auto;
+  padding:14px 0 38px;
+}
+
+.packages{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+
+.card{
+  position:relative;
+  overflow:hidden;
+  min-height:300px;
+  display:grid;
+  grid-template-columns:105px 1fr;
+  grid-template-rows:auto 1fr auto;
+  column-gap:14px;
+  padding:18px;
+  border:1px solid rgba(244,189,67,.75);
+  border-radius:17px;
+  background:
+    radial-gradient(circle at 95% 25%,rgba(244,189,67,.08),transparent 30%),
+    linear-gradient(145deg,#0c0c0c,#050505);
+  box-shadow:0 15px 45px rgba(0,0,0,.45);
+}
+
+.icon-side{
+  grid-row:1 / 4;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.package-icon{
+  width:66px;
+  height:66px;
+  margin-bottom:7px;
+}
+
+.package-icon svg{
+  width:100%;
+  height:100%;
+  stroke:var(--gold);
+  fill:none;
+  stroke-width:2.1;
+}
+
+.package-icon.fill svg{
+  fill:var(--gold);
+  stroke:var(--gold);
+}
+
+.price{
+  color:var(--gold);
+  font-size:38px;
+  line-height:1;
+  font-weight:900;
+  margin-top:7px;
+}
+
+.card-main h2{
+  margin:0;
+  font-size:22px;
+  font-weight:900;
+  line-height:1;
+}
+
+.card-main .type{
+  margin-top:5px;
+  font-size:16px;
+  font-weight:700;
+  color:#ddd;
+}
+
+.features{
+  list-style:none;
+  margin:15px 0 0;
+  padding:0;
+}
+
+.features li{
+  position:relative;
+  padding-left:23px;
+  margin:8px 0;
+  color:#ddd;
+  font-size:11px;
+  line-height:1.35;
+}
+
+.features li:before{
+  content:"✓";
+  position:absolute;
+  left:0;
+  top:0;
+  width:16px;
+  height:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:var(--gold);
+  color:#080808;
+  font-size:10px;
+  font-weight:900;
+}
+
+.select{
+  grid-column:2;
+  width:100%;
+  margin-top:12px;
+  padding:13px 10px;
+  border:1px solid #ffd86e;
+  border-radius:11px;
+  background:
+    linear-gradient(
+      110deg,
+      #9b711a,
+      #e6af3e 32%,
+      #ffe998 50%,
+      #e6af3e 68%,
+      #9b711a
+    );
+  color:#050505;
+  font-weight:900;
+}
+
+.label{
+  grid-column:2;
+  margin-top:8px;
+  text-align:center;
+  font-size:7px;
+  letter-spacing:2px;
+  color:#aaa;
+  font-weight:800;
+}
+
+/* SPORT BACKGROUNDS */
+
+.card:after{
+  position:absolute;
+  right:-10px;
+  bottom:0;
+  font-size:120px;
+  opacity:.07;
+  filter:grayscale(1);
+  pointer-events:none;
+}
+
+.pd:after{content:"⚽";}
+.ps:after{content:"📅";}
+.ed:after{content:"⚾";}
+.es:after{content:"🏀";}
+.pm:after{content:"🥊";}
+.ec:after{content:"🏟️";}
+
+/* =========================
+   TRUST
+========================= */
+
+.trust{
+  width:min(1180px,calc(100% - 32px));
+  margin:8px auto 0;
+  padding:22px 0;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+  border-top:1px solid rgba(244,189,67,.35);
+  border-bottom:1px solid rgba(244,189,67,.35);
+}
+
+.trust article{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.trust svg{
+  width:34px;
+  height:34px;
+  flex:0 0 auto;
+  stroke:var(--gold);
+  fill:none;
+  stroke-width:2;
+}
+
+.trust b{
+  display:block;
+  font-size:9px;
+}
+
+.trust p{
+  margin:4px 0 0;
+  font-size:8px;
+  color:#aaa;
+  line-height:1.4;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+  width:min(1180px,calc(100% - 32px));
+  margin:auto;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  align-items:center;
+  gap:20px;
+  padding:28px 0 42px;
+}
+
+.footer-brand strong{
+  display:block;
+  color:var(--gold);
+  font-size:12px;
+}
+
+.footer-brand small{
+  color:#999;
+}
+
+.motto{
+  text-align:center;
+  color:#ddd;
+  font-size:9px;
+  letter-spacing:3px;
+  line-height:1.7;
+}
+
+.social{
+  text-align:right;
+  font-size:21px;
+  letter-spacing:8px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:760px){
+
+  .header{
+    height:72px;
+    padding:0 12px;
+  }
+
+  .logo b{
+    font-size:22px;
+  }
+
+  .logo-mark{
+    font-size:27px;
+  }
+
+  .nav{
+    position:absolute;
+    left:0;
+    right:0;
+    top:72px;
+    z-index:5;
+    overflow-x:auto;
+    justify-content:flex-start;
+    gap:22px;
+    padding:9px 14px;
+    background:#060606;
+    border-bottom:1px solid rgba(244,189,67,.2);
+  }
+
+  .nav a{
+    min-width:55px;
+  }
+
+  .logout{
+    font-size:11px;
+    padding:11px 12px;
+  }
+
+  .hero{
+    min-height:490px;
+    margin-top:54px;
+    background-position:67% 20%;
+  }
+
+  .hero-content{
+    width:calc(100% - 26px);
+    padding-top:38px;
+  }
+
+  .hero h1{
+    font-size:45px;
+    max-width:280px;
+  }
+
+  .hero-desc{
+    max-width:275px;
+    font-size:11px;
+  }
+
+  .hero-quote{
+    font-size:12px;
+  }
+
+  .hero-sign{
+    display:none;
+  }
+
+  .benefits{
+    grid-template-columns:repeat(2,1fr);
+    max-width:315px;
+  }
+
+  .benefit svg{
+    width:25px;
+    height:25px;
+  }
+
+  .benefit b{
+    font-size:7px;
+  }
+
+  .packages-wrap{
+    width:calc(100% - 18px);
+  }
+
+  .packages{
+    gap:9px;
+  }
+
+  .card{
+    min-height:315px;
+    display:flex;
+    flex-direction:column;
+    padding:13px 11px 11px;
+    border-radius:14px;
+  }
+
+  .icon-side{
+    display:block;
+  }
+
+  .package-icon{
+    width:40px;
+    height:40px;
+  }
+
+  .price{
+    font-size:30px;
+    margin:7px 0 12px;
+  }
+
+  .card-main h2{
+    font-size:16px;
+  }
+
+  .card-main .type{
+    font-size:11px;
+  }
+
+  .features{
+    margin-top:11px;
+  }
+
+  .features li{
+    padding-left:18px;
+    margin:6px 0;
+    font-size:8.6px;
+  }
+
+  .features li:before{
+    width:13px;
+    height:13px;
+    font-size:8px;
+  }
+
+  .select{
+    grid-column:auto;
+    margin-top:auto;
+    padding:10px 5px;
+    font-size:9px;
+  }
+
+  .label{
+    grid-column:auto;
+    font-size:5.8px;
+    margin-top:6px;
+  }
+
+  .card:after{
+    font-size:75px;
+  }
+
+  .trust{
+    grid-template-columns:repeat(2,1fr);
+    width:calc(100% - 22px);
+  }
+
+  footer{
+    width:calc(100% - 22px);
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+
+  .social{
+    text-align:center;
+  }
+}
+</style>
 </head>
 
 <body>
 
-<header class="topbar">
-  <a href="index.html" class="brand">
-    <span class="brand-icon">♆</span>
+<header class="header">
+
+  <a class="logo" href="index.html">
+    <span class="logo-mark">♆</span>
     <span>
       <b>ISB</b>
       <small>EL TRIDENTE</small>
     </span>
   </a>
 
-  <button id="logoutBtn" class="logout">Cerrar sesión</button>
+  <nav class="nav">
+
+    <a href="index.html">
+      <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9H6v-9"/><path d="M9 20v-6h6v6"/></svg>
+      Inicio
+    </a>
+
+    <a class="active" href="#">
+      <svg viewBox="0 0 24 24"><path d="M4 8l3 3 5-7 5 7 3-3-2 11H6L4 8z"/></svg>
+      Paquetes
+    </a>
+
+    <a href="#">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg>
+      Mi Cuenta
+    </a>
+
+    <a href="#soporte">
+      <svg viewBox="0 0 24 24"><path d="M4 13v-2a8 8 0 0116 0v2"/><path d="M4 13H2v5h4v-5H4zM20 13h2v5h-4v-5h2z"/></svg>
+      Soporte
+    </a>
+
+    <a href="#">
+      <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
+      Cómo Funciona
+    </a>
+
+    <a href="#">
+      <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6"/></svg>
+      Contacto
+    </a>
+
+  </nav>
+
+  <button id="logoutBtn" class="logout">↪ Cerrar sesión</button>
+
 </header>
 
+
 <section class="hero">
-  <div class="hero-inner">
+
+  <div class="hero-content">
+
     <p class="eyebrow">PORTAL PRIVADO</p>
 
-    <h1>ELIGE TU<br><span>PAQUETE</span></h1>
+    <h1>
+      ELIGE TU<br>
+      <span>PAQUETE</span>
+    </h1>
 
-    <p class="quote">“DISCIPLINA HOY,<br>RESULTADOS SIEMPRE.”</p>
+    <p class="hero-quote">
+      “DISCIPLINA HOY,<br>
+      RESULTADOS SIEMPRE.”
+    </p>
 
-    <p class="hero-text">
-      Accede al paquete que mejor se adapte a ti.
-      Contenido, análisis y picks de alto nivel.
-      Forma parte de la familia ISB.
+    <p class="hero-desc">
+      Accede al paquete que mejor se adapte a ti.<br>
+      Contenido, análisis y picks de alto nivel.<br>
+      Forma parte de la familia <b>ISB.</b>
     </p>
 
     <div class="benefits">
+
       <div class="benefit">
-        <span class="benefit-icon">▥</span>
-        <span>ANÁLISIS<br>PROFESIONAL</span>
+        <svg viewBox="0 0 24 24"><path d="M4 20V12M10 20V7M16 20V3M22 20H2"/></svg>
+        <b>ANÁLISIS<br>PROFESIONAL</b>
       </div>
 
       <div class="benefit">
-        <span class="benefit-icon">🛡</span>
-        <span>INFORMACIÓN<br>CONFIABLE</span>
+        <svg viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3 9-8 11-5-2-8-6-8-11V5l8-3z"/></svg>
+        <b>INFORMACIÓN<br>CONFIABLE</b>
       </div>
 
       <div class="benefit">
-        <span class="benefit-icon">👥</span>
-        <span>COMUNIDAD<br>PRIVADA</span>
+        <svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 20c0-4 2-7 6-7M22 20c0-4-2-7-6-7M8 20c0-4 1-7 4-7s4 3 4 7"/></svg>
+        <b>COMUNIDAD<br>PRIVADA</b>
       </div>
 
       <div class="benefit">
-        <span class="benefit-icon">∞</span>
-        <span>CRECEMOS<br>JUNTOS</span>
+        <svg viewBox="0 0 24 24"><path d="M7 8c-3 0-5 2-5 4s2 4 5 4c5 0 5-8 10-8 3 0 5 2 5 4s-2 4-5 4c-5 0-5-8-10-8z"/></svg>
+        <b>CRECEMOS<br>JUNTOS</b>
       </div>
+
     </div>
+
   </div>
+
+  <div class="hero-sign">
+    “Más que picks,<br>una familia”
+  </div>
+
 </section>
 
-<main class="main">
 
-  <section class="packages">
+<main class="packages-wrap">
 
-    <article class="card">
-      <div class="package-icon">♛</div>
+<section class="packages">
+
+  <!-- PREMIUM DIARIO -->
+  <article class="card pd">
+
+    <div class="icon-side">
+
+      <div class="package-icon">
+        <svg viewBox="0 0 64 64">
+          <path d="M10 25l8 7 7-18 8 17 8-17 6 18 8-7-4 23H14z"/>
+          <path d="M16 53h35"/>
+        </svg>
+      </div>
+
+      <div class="price">$70</div>
+
+    </div>
+
+    <div class="card-main">
       <h2>PREMIUM</h2>
       <div class="type">DIARIO</div>
-      <div class="price">$70</div>
 
       <ul class="features">
         <li>1 selección Premium del día</li>
@@ -563,16 +801,33 @@
         <li>Acceso al portal privado</li>
         <li>Soporte directo</li>
       </ul>
+    </div>
 
-      <button class="select-btn">Seleccionar</button>
-      <div class="mini-label">EL MÁS COMPLETO</div>
-    </article>
+    <button class="select">Seleccionar ›</button>
+    <div class="label">EL MÁS COMPLETO</div>
 
-    <article class="card">
-      <div class="package-icon">♛</div>
+  </article>
+
+
+  <!-- PREMIUM SEMANAL -->
+  <article class="card ps">
+
+    <div class="icon-side">
+
+      <div class="package-icon">
+        <svg viewBox="0 0 64 64">
+          <path d="M10 25l8 7 7-18 8 17 8-17 6 18 8-7-4 23H14z"/>
+          <path d="M16 53h35"/>
+        </svg>
+      </div>
+
+      <div class="price">$399</div>
+
+    </div>
+
+    <div class="card-main">
       <h2>PREMIUM</h2>
       <div class="type">SEMANAL</div>
-      <div class="price">$399</div>
 
       <ul class="features">
         <li>1 selección Premium diaria (7 días)</li>
@@ -581,16 +836,33 @@
         <li>Soporte directo</li>
         <li>Sin reembolso</li>
       </ul>
+    </div>
 
-      <button class="select-btn">Seleccionar</button>
-      <div class="mini-label">DISCIPLINA SEMANAL</div>
-    </article>
+    <button class="select">Seleccionar ›</button>
+    <div class="label">DISCIPLINA SEMANAL</div>
 
-    <article class="card">
-      <div class="package-icon">◇</div>
+  </article>
+
+
+  <!-- EXCLUSIVA DIARIA -->
+  <article class="card ed">
+
+    <div class="icon-side">
+
+      <div class="package-icon">
+        <svg viewBox="0 0 64 64">
+          <path d="M32 5L55 24 32 58 9 24z"/>
+          <path d="M9 24h46M20 24l12 34 12-34M20 24l12-19 12 19"/>
+        </svg>
+      </div>
+
+      <div class="price">$50</div>
+
+    </div>
+
+    <div class="card-main">
       <h2>EXCLUSIVA</h2>
       <div class="type">DIARIA</div>
-      <div class="price">$50</div>
 
       <ul class="features">
         <li>1 selección Exclusiva del día</li>
@@ -599,16 +871,33 @@
         <li>Acceso al portal privado</li>
         <li>Soporte directo</li>
       </ul>
+    </div>
 
-      <button class="select-btn">Seleccionar</button>
-      <div class="mini-label">INFORMACIÓN QUE MARCA LA DIFERENCIA</div>
-    </article>
+    <button class="select">Seleccionar ›</button>
+    <div class="label">INFORMACIÓN QUE MARCA LA DIFERENCIA</div>
 
-    <article class="card">
-      <div class="package-icon">◇</div>
+  </article>
+
+
+  <!-- EXCLUSIVA SEMANAL -->
+  <article class="card es">
+
+    <div class="icon-side">
+
+      <div class="package-icon">
+        <svg viewBox="0 0 64 64">
+          <path d="M32 5L55 24 32 58 9 24z"/>
+          <path d="M9 24h46M20 24l12 34 12-34M20 24l12-19 12 19"/>
+        </svg>
+      </div>
+
+      <div class="price">$299</div>
+
+    </div>
+
+    <div class="card-main">
       <h2>EXCLUSIVA</h2>
       <div class="type">SEMANAL</div>
-      <div class="price">$299</div>
 
       <ul class="features">
         <li>1 selección Exclusiva diaria (7 días)</li>
@@ -617,15 +906,33 @@
         <li>Soporte directo</li>
         <li>Sin reembolso</li>
       </ul>
+    </div>
 
-      <button class="select-btn">Seleccionar</button>
-      <div class="mini-label">UN NIVEL MÁS ALTO</div>
-    </article>
+    <button class="select">Seleccionar ›</button>
+    <div class="label">UN NIVEL MÁS ALTO</div>
 
-    <article class="card">
-      <div class="package-icon">▥</div>
-      <h2>PACK MENSUAL</h2>
+  </article>
+
+
+  <!-- PACK MENSUAL -->
+  <article class="card pm">
+
+    <div class="icon-side">
+
+      <div class="package-icon fill">
+        <svg viewBox="0 0 64 64">
+          <rect x="7" y="38" width="10" height="18"/>
+          <rect x="23" y="27" width="10" height="29"/>
+          <rect x="39" y="13" width="10" height="43"/>
+        </svg>
+      </div>
+
       <div class="price">$150</div>
+
+    </div>
+
+    <div class="card-main">
+      <h2>PACK MENSUAL</h2>
 
       <ul class="features">
         <li>Entre 3 y 5 picks al mes</li>
@@ -634,15 +941,35 @@
         <li>Acceso al portal privado</li>
         <li>Sin reembolso</li>
       </ul>
+    </div>
 
-      <button class="select-btn">Seleccionar</button>
-      <div class="mini-label">MÁS OPORTUNIDADES</div>
-    </article>
+    <button class="select">Seleccionar ›</button>
+    <div class="label">MÁS OPORTUNIDADES</div>
 
-    <article class="card">
-      <div class="package-icon">👥</div>
-      <h2>ECONÓMICA</h2>
+  </article>
+
+
+  <!-- ECONÓMICA -->
+  <article class="card ec">
+
+    <div class="icon-side">
+
+      <div class="package-icon fill">
+        <svg viewBox="0 0 64 64">
+          <circle cx="32" cy="18" r="10"/>
+          <circle cx="15" cy="24" r="7"/>
+          <circle cx="49" cy="24" r="7"/>
+          <path d="M14 55c0-14 7-22 18-22s18 8 18 22z"/>
+          <path d="M3 55c0-10 4-17 12-20M61 55c0-10-4-17-12-20"/>
+        </svg>
+      </div>
+
       <div class="price">$19.99</div>
+
+    </div>
+
+    <div class="card-main">
+      <h2>ECONÓMICA</h2>
 
       <ul class="features">
         <li>Acceso mensual</li>
@@ -651,80 +978,111 @@
         <li>Acceso al portal privado</li>
         <li>Sin reembolso</li>
       </ul>
+    </div>
 
-      <button class="select-btn">Seleccionar</button>
-      <div class="mini-label">PARA LOS QUE SIEMPRE ESTÁN</div>
-    </article>
+    <button class="select">Seleccionar ›</button>
+    <div class="label">PARA LOS QUE SIEMPRE ESTÁN</div>
 
-  </section>
+  </article>
 
-  <section class="trust">
-
-    <article>
-      <span class="trust-icon">🔒</span>
-      <b>PAGO SEGURO</b>
-      <p>Tus datos están protegidos.</p>
-    </article>
-
-    <article>
-      <span class="trust-icon">💳</span>
-      <b>MÚLTIPLES MÉTODOS</b>
-      <p>Tarjeta, PayPal, Cash App y más.</p>
-    </article>
-
-    <article>
-      <span class="trust-icon">☎</span>
-      <b>SOPORTE DIRECTO</b>
-      <p>WhatsApp disponible siempre.</p>
-    </article>
-
-    <article>
-      <span class="trust-icon">🛡</span>
-      <b>TU CONFIANZA</b>
-      <p>Es nuestra prioridad.</p>
-    </article>
-
-  </section>
+</section>
 
 </main>
 
+
+<section id="soporte" class="trust">
+
+  <article>
+    <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+    <div>
+      <b>PAGO SEGURO</b>
+      <p>Tus datos están protegidos.</p>
+    </div>
+  </article>
+
+  <article>
+    <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 9h20"/></svg>
+    <div>
+      <b>MÚLTIPLES MÉTODOS</b>
+      <p>Tarjeta, PayPal, Cash App y más.</p>
+    </div>
+  </article>
+
+  <article>
+    <svg viewBox="0 0 24 24"><path d="M4 4l4 4-2 3c3 5 5 7 10 10l3-2 4 4"/></svg>
+    <div>
+      <b>SOPORTE DIRECTO</b>
+      <p>WhatsApp disponible siempre.</p>
+    </div>
+  </article>
+
+  <article>
+    <svg viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3 9-8 11-5-2-8-6-8-11V5z"/></svg>
+    <div>
+      <b>TU CONFIANZA</b>
+      <p>Es nuestra prioridad.</p>
+    </div>
+  </article>
+
+</section>
+
+
 <footer>
-  <strong>ISB | EL TRIDENTE</strong>
-  <div>© 2026 Todos los derechos reservados.</div>
+
+  <div class="footer-brand">
+    <strong>ISB | EL TRIDENTE</strong>
+    <small>Todos los derechos reservados.</small>
+  </div>
 
   <div class="motto">
     “APUESTAS CON ESTRATEGIA,<br>
     GANANCIAS CON DISCIPLINA”
   </div>
+
+  <div class="social">
+    ◎ ♪ ▶ ◉ ♆
+  </div>
+
 </footer>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-  const SUPABASE_URL = 'https://nfvkmxnprchvkufwvhpr.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1';
+const SUPABASE_URL =
+'https://nfvkmxnprchvkufwvhpr.supabase.co';
 
-  const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+const SUPABASE_KEY =
+'sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1';
 
-  async function protegerPagina() {
-    const { data } = await supabaseClient.auth.getSession();
+const supabaseClient =
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
-    if (!data.session) {
-      window.location.href = 'index.html';
-    }
+async function protegerPagina(){
+
+  const {data} =
+  await supabaseClient.auth.getSession();
+
+  if(!data.session){
+    window.location.href='index.html';
   }
 
-  protegerPagina();
+}
 
-  document
-    .getElementById('logoutBtn')
-    .addEventListener('click', async () => {
-      await supabaseClient.auth.signOut();
-      window.location.href = 'index.html';
-    });
+protegerPagina();
+
+document
+.getElementById('logoutBtn')
+.addEventListener('click',async()=>{
+
+  await supabaseClient.auth.signOut();
+
+  window.location.href='index.html';
+
+});
 </script>
 
 </body>
