@@ -7,16 +7,15 @@
 
   <style>
     :root{
-      --bg:#040404;
-      --panel:#0a0a0a;
-      --panel2:#0f0f0f;
-      --gold:#f7c64d;
-      --gold2:#c9911c;
-      --gold3:#8f6718;
-      --text:#ffffff;
-      --muted:#c7c7c7;
-      --green:#00b85a;
-      --line:#47320f;
+      --bg:#030303;
+      --panel:#090909;
+      --panel2:#0d0d0d;
+      --gold:#f6c34f;
+      --gold2:#b98521;
+      --gold3:#6e5017;
+      --text:#fff;
+      --muted:#c9c9c9;
+      --green:#00aa56;
       --max:1180px;
     }
 
@@ -30,9 +29,7 @@
 
     body{
       margin:0;
-      background:
-        radial-gradient(circle at 50% -10%, rgba(143,103,24,.05), transparent 32%),
-        #040404;
+      background:#030303;
       color:var(--text);
       font-family:Arial,Helvetica,sans-serif;
       overflow-x:hidden;
@@ -47,69 +44,77 @@
       font:inherit;
     }
 
-    .header{
+    /* =========================
+       BARRA SUPERIOR
+    ========================= */
+
+    .topbar{
       position:sticky;
       top:0;
       z-index:100;
-      background:rgba(3,3,3,.97);
-      backdrop-filter:blur(12px);
-      border-bottom:1px solid #241a0b;
+      background:rgba(2,2,2,.98);
+      border-bottom:1px solid #2a1e0c;
+      backdrop-filter:blur(10px);
+      overflow-x:auto;
+      scrollbar-width:none;
     }
 
-    .header-inner{
-      width:min(var(--max),calc(100% - 26px));
-      min-height:78px;
-      margin:auto;
+    .topbar::-webkit-scrollbar{
+      display:none;
+    }
+
+    .topbar-inner{
+      min-width:max-content;
+      height:72px;
+      padding:0 18px;
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:18px;
+      gap:26px;
+      white-space:nowrap;
     }
 
     .brand{
       display:flex;
       align-items:center;
-      gap:9px;
-      min-width:max-content;
+      gap:8px;
+      flex:0 0 auto;
     }
 
     .brand-icon{
       color:var(--gold);
-      font-size:32px;
+      font-size:28px;
       line-height:1;
-      filter:drop-shadow(0 0 7px rgba(247,198,77,.22));
+      filter:drop-shadow(0 0 5px rgba(246,195,79,.25));
     }
 
-    .brand-copy strong{
+    .brand-text strong{
       display:block;
-      font-family:Georgia,serif;
       color:var(--gold);
-      font-size:25px;
+      font-family:Georgia,serif;
+      font-size:22px;
       line-height:1;
     }
 
-    .brand-copy span{
+    .brand-text span{
       display:block;
-      margin-top:4px;
-      font-size:9px;
-      letter-spacing:3.6px;
+      font-size:7px;
+      letter-spacing:2.5px;
+      margin-top:3px;
       font-weight:800;
     }
 
     .nav{
-      flex:1;
       display:flex;
-      justify-content:center;
       align-items:center;
-      gap:25px;
-      white-space:nowrap;
+      gap:24px;
+      flex:0 0 auto;
     }
 
     .nav a{
       position:relative;
-      padding:30px 0 25px;
-      color:#f2f2f2;
+      padding:28px 0 22px;
       font-size:13px;
+      color:#eee;
     }
 
     .nav a.active{
@@ -124,25 +129,30 @@
       bottom:0;
       height:2px;
       background:var(--gold);
-      box-shadow:0 0 8px rgba(247,198,77,.35);
     }
 
     .logout{
+      margin-left:4px;
       border:1px solid var(--gold2);
-      border-radius:18px;
-      background:#070707;
+      background:#050505;
       color:#fff;
-      padding:12px 18px;
+      border-radius:16px;
+      padding:10px 15px;
       font-weight:800;
+      font-size:13px;
+      flex:0 0 auto;
       cursor:pointer;
-      white-space:nowrap;
     }
+
+    /* =========================
+       HERO
+    ========================= */
 
     .hero{
       position:relative;
-      min-height:430px;
+      min-height:400px;
       overflow:hidden;
-      border-bottom:1px solid #2c210d;
+      border-bottom:1px solid #2b200e;
       background:#050505;
     }
 
@@ -152,14 +162,15 @@
       background:
         linear-gradient(
           90deg,
-          rgba(0,0,0,.99) 0%,
-          rgba(0,0,0,.97) 24%,
-          rgba(0,0,0,.86) 44%,
-          rgba(0,0,0,.52) 67%,
-          rgba(0,0,0,.42) 100%
+          rgba(0,0,0,.995) 0%,
+          rgba(0,0,0,.98) 24%,
+          rgba(0,0,0,.88) 42%,
+          rgba(0,0,0,.58) 61%,
+          rgba(0,0,0,.30) 82%,
+          rgba(0,0,0,.20) 100%
         ),
-        url("35F2F7B6-7B66-470B-82DE-4420BA7A57B5.jpeg") 82% 35% / cover no-repeat;
-      filter:brightness(.72) contrast(1.05);
+        url("35F2F7B6-7B66-470B-82DE-4420BA7A57B5.jpeg") 88% 42% / cover no-repeat;
+      filter:brightness(.80) contrast(1.04);
       transform:scale(1.01);
     }
 
@@ -168,191 +179,187 @@
       position:absolute;
       inset:0;
       background:
-        radial-gradient(circle at 76% 28%, rgba(247,198,77,.08), transparent 22%),
-        linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.22) 60%,rgba(0,0,0,.72));
+        radial-gradient(circle at 80% 35%,rgba(246,195,79,.10),transparent 24%),
+        linear-gradient(180deg,transparent 62%,rgba(0,0,0,.74) 100%);
     }
 
     .hero-inner{
       position:relative;
       z-index:2;
-      width:min(var(--max),calc(100% - 28px));
-      min-height:430px;
+      width:min(var(--max),calc(100% - 26px));
       margin:auto;
+      min-height:400px;
       display:flex;
       align-items:center;
-      padding:36px 0 30px;
+      padding:26px 0 24px;
     }
 
     .hero-copy{
-      width:min(570px,58%);
+      width:min(540px,58%);
     }
 
     .hero-logo{
       display:flex;
       align-items:center;
-      gap:12px;
-      margin-bottom:14px;
+      gap:9px;
+      margin-bottom:10px;
     }
 
     .hero-logo-icon{
       color:var(--gold);
-      font-size:54px;
-      line-height:1;
-      filter:drop-shadow(0 0 10px rgba(247,198,77,.25));
+      font-size:44px;
     }
 
     .hero-logo-text strong{
       display:block;
       color:var(--gold);
       font-family:Georgia,serif;
-      font-size:48px;
+      font-size:40px;
       line-height:.9;
     }
 
     .hero-logo-text span{
       display:block;
-      color:#f7d67c;
+      color:#f3d27b;
       font-family:Georgia,serif;
-      font-size:24px;
-      letter-spacing:3px;
-      margin-top:3px;
+      font-size:18px;
+      letter-spacing:2.5px;
+      margin-top:4px;
     }
 
     .hero-mini{
-      margin:10px 0 8px;
-      color:#e3e3e3;
-      font-size:12px;
-      letter-spacing:3px;
+      color:#dedede;
+      font-size:10px;
+      letter-spacing:2.5px;
       font-weight:700;
+      margin:8px 0;
     }
 
     .hero h1{
       margin:0;
       text-transform:uppercase;
-      font-size:58px;
+      font-size:52px;
       line-height:.94;
-      letter-spacing:-2px;
       font-weight:900;
+      letter-spacing:-1.5px;
     }
 
     .hero h1 span{
       color:var(--gold);
     }
 
-    .hero-line{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      margin-top:13px;
+    .hero-sub{
+      margin-top:11px;
+      font-size:13px;
       color:#eaeaea;
-      font-size:14px;
-      font-weight:700;
       text-transform:uppercase;
+      font-weight:700;
+      line-height:1.35;
     }
 
-    .hero-line::before,
-    .hero-line::after{
-      content:"";
-      height:1px;
-      background:var(--gold);
-      width:38px;
-      opacity:.85;
-    }
-
-    .hero-line strong{
+    .hero-sub strong{
       color:var(--gold);
     }
 
-    .hero-benefits{
+    .benefits{
       display:flex;
-      gap:24px;
-      margin-top:22px;
+      gap:20px;
       flex-wrap:wrap;
+      margin-top:20px;
     }
 
     .benefit{
       display:flex;
       align-items:center;
-      gap:8px;
-      min-width:135px;
+      gap:7px;
+      min-width:125px;
     }
 
     .benefit-icon{
       color:var(--gold);
-      font-size:25px;
-      width:30px;
+      font-size:23px;
+      width:28px;
       text-align:center;
     }
 
     .benefit-text{
-      font-size:10px;
+      font-size:9px;
       line-height:1.2;
       font-weight:900;
       text-transform:uppercase;
     }
 
+    /* =========================
+       PAQUETES
+    ========================= */
+
     .packages-section{
-      position:relative;
-      padding:18px 0 30px;
+      padding:12px 0 26px;
       background:
-        radial-gradient(circle at 50% 0%,rgba(247,198,77,.025),transparent 28%),
-        #040404;
+        radial-gradient(circle at 50% 0%,rgba(246,195,79,.025),transparent 24%),
+        #030303;
     }
 
     .packages{
-      width:min(var(--max),calc(100% - 24px));
+      width:min(var(--max),calc(100% - 20px));
       margin:auto;
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:14px;
+      gap:10px;
     }
 
     .package-card{
       position:relative;
       overflow:hidden;
-      min-height:255px;
+      min-height:230px;
       border:1px solid var(--gold2);
-      border-radius:14px;
+      border-radius:13px;
       background:
-        linear-gradient(145deg,#090909 0%,#0e0e0e 58%,#070707 100%);
-      box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,.012),
-        0 0 14px rgba(247,198,77,.03);
-      padding:20px 20px 18px;
+        linear-gradient(145deg,#080808 0%,#0b0b0b 56%,#060606 100%);
+      padding:16px 16px 14px;
       display:grid;
-      grid-template-columns:1fr 145px;
-      gap:10px;
+      grid-template-columns:1fr 124px;
+      gap:8px;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.01),
+        0 0 10px rgba(246,195,79,.025);
     }
 
+    /* humo verde suave */
     .package-card::before{
       content:"";
       position:absolute;
-      inset:-20%;
+      right:-5%;
+      top:8%;
+      width:58%;
+      height:84%;
       pointer-events:none;
       background:
-        radial-gradient(circle at 78% 38%,rgba(0,184,90,.085),transparent 15%),
-        radial-gradient(circle at 64% 52%,rgba(0,184,90,.06),transparent 17%),
-        radial-gradient(circle at 86% 68%,rgba(0,184,90,.04),transparent 16%);
+        radial-gradient(ellipse at 55% 25%,rgba(0,170,86,.09),transparent 30%),
+        radial-gradient(ellipse at 70% 55%,rgba(0,170,86,.07),transparent 35%),
+        radial-gradient(ellipse at 45% 78%,rgba(0,170,86,.045),transparent 30%);
       filter:blur(18px);
       opacity:.72;
+      transform:rotate(-8deg);
     }
 
     .package-card::after{
       content:"";
       position:absolute;
-      right:7%;
-      top:24%;
-      width:44%;
-      height:48%;
+      right:10%;
+      top:20%;
+      width:40%;
+      height:55%;
       pointer-events:none;
       background:
-        radial-gradient(ellipse at center,
-          rgba(0,184,90,.06) 0%,
-          rgba(0,184,90,.035) 22%,
-          rgba(0,184,90,0) 70%);
-      filter:blur(9px);
-      transform:rotate(-12deg);
-      opacity:.7;
+        radial-gradient(
+          ellipse at center,
+          rgba(0,170,86,.045) 0%,
+          rgba(0,170,86,.02) 35%,
+          transparent 72%
+        );
+      filter:blur(10px);
+      opacity:.8;
     }
 
     .package-left,
@@ -364,55 +371,54 @@
 
     .package-icon{
       color:var(--gold);
-      font-size:40px;
+      font-size:34px;
       line-height:1;
-      margin-bottom:7px;
-      text-shadow:0 0 10px rgba(247,198,77,.13);
+      margin-bottom:6px;
+      text-shadow:0 0 8px rgba(246,195,79,.12);
     }
 
     .package-title{
       margin:0;
       text-transform:uppercase;
-      font-size:28px;
+      font-size:24px;
       line-height:1;
       font-weight:900;
-      letter-spacing:-.5px;
     }
 
     .package-subtitle{
-      margin-top:7px;
+      margin-top:5px;
       text-transform:uppercase;
-      color:#ededed;
-      font-size:16px;
+      color:#eee;
+      font-size:13px;
     }
 
     .features{
       list-style:none;
+      margin:14px 0 0;
       padding:0;
-      margin:20px 0 0;
       display:grid;
-      gap:8px;
-      color:#ededed;
-      font-size:15px;
+      gap:6px;
+      font-size:11.5px;
       line-height:1.25;
+      color:#f0f0f0;
     }
 
     .features li{
       display:flex;
-      gap:8px;
+      gap:7px;
       align-items:flex-start;
     }
 
     .check{
-      width:17px;
-      height:17px;
-      min-width:17px;
+      width:15px;
+      height:15px;
+      min-width:15px;
       border:1px solid var(--gold);
       border-radius:50%;
       display:grid;
       place-items:center;
       color:var(--gold);
-      font-size:9px;
+      font-size:8px;
       font-weight:900;
       margin-top:1px;
     }
@@ -431,81 +437,85 @@
 
     .price{
       color:var(--gold);
-      font-size:45px;
+      font-size:38px;
       line-height:1;
       font-weight:900;
       text-align:right;
       letter-spacing:-1px;
-      text-shadow:0 0 12px rgba(247,198,77,.08);
     }
 
     .period{
-      margin-top:6px;
       color:var(--gold);
-      font-size:16px;
-      font-weight:800;
+      font-size:11px;
+      font-weight:900;
       text-transform:uppercase;
       text-align:right;
+      margin-top:4px;
     }
 
     .select-btn{
       width:100%;
-      margin-top:19px;
+      margin-top:13px;
       border:0;
-      border-radius:9px;
-      padding:13px 10px;
-      background:linear-gradient(90deg,#d9a021 0%,#ffd361 49%,#d49a1d 100%);
+      border-radius:8px;
+      padding:11px 7px;
       color:#090909;
+      font-size:12px;
       font-weight:900;
+      background:linear-gradient(
+        90deg,
+        #d79c20 0%,
+        #ffd45f 50%,
+        #d79c20 100%
+      );
       cursor:pointer;
-      font-size:15px;
-      box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);
     }
 
+    /* =========================
+       INFO INFERIOR
+    ========================= */
+
     .trust-strip{
-      width:min(var(--max),calc(100% - 24px));
-      margin:24px auto 0;
-      padding:18px 0;
-      border-top:1px solid #30240f;
-      border-bottom:1px solid #30240f;
+      width:min(var(--max),calc(100% - 20px));
+      margin:20px auto 0;
+      padding:17px 0;
+      border-top:1px solid #2f230f;
+      border-bottom:1px solid #2f230f;
       display:grid;
-      grid-template-columns:1fr 1.6fr 1fr;
-      gap:18px;
+      grid-template-columns:1fr 1.4fr 1fr;
+      gap:16px;
       align-items:center;
     }
 
     .trust-block{
       display:flex;
+      gap:10px;
       align-items:center;
-      gap:11px;
     }
 
     .trust-icon{
       color:var(--gold);
-      font-size:28px;
-      width:34px;
+      font-size:25px;
+      width:30px;
       text-align:center;
     }
 
     .trust-copy strong{
       display:block;
-      font-size:11px;
+      font-size:10px;
       text-transform:uppercase;
     }
 
     .trust-copy span{
       display:block;
       margin-top:3px;
-      font-size:11px;
-      color:#c5c5c5;
+      font-size:10px;
+      color:#bfbfbf;
     }
 
-    .payment-wrap{
+    .payments-title{
       text-align:center;
-    }
-
-    .payment-title{
-      font-size:11px;
+      font-size:10px;
       text-transform:uppercase;
       margin-bottom:7px;
     }
@@ -513,283 +523,134 @@
     .payments{
       display:flex;
       justify-content:center;
-      gap:8px;
+      gap:7px;
       flex-wrap:wrap;
     }
 
     .payment-pill{
-      min-width:48px;
-      padding:8px 10px;
-      border-radius:7px;
-      background:#101010;
-      border:1px solid #232323;
-      font-size:12px;
+      padding:7px 9px;
+      min-width:44px;
+      text-align:center;
+      border-radius:6px;
+      background:#111;
+      border:1px solid #242424;
+      font-size:10px;
       font-weight:900;
     }
 
-    .whatsapp-btn{
+    .wa-btn{
       display:inline-flex;
       align-items:center;
-      gap:8px;
-      padding:11px 16px;
+      gap:6px;
+      margin-top:6px;
+      padding:9px 13px;
       border:1px solid var(--gold2);
-      border-radius:15px;
+      border-radius:13px;
+      font-size:11px;
       font-weight:800;
-      white-space:nowrap;
     }
 
+    /* =========================
+       FOOTER
+    ========================= */
+
     .footer{
-      width:min(var(--max),calc(100% - 24px));
+      width:min(var(--max),calc(100% - 20px));
       margin:auto;
-      padding:23px 0 30px;
+      padding:20px 0 28px;
       display:grid;
       grid-template-columns:1fr 1.2fr 1fr;
-      gap:20px;
+      gap:18px;
       align-items:center;
     }
 
     .footer-brand strong{
-      color:var(--gold);
       display:block;
+      color:var(--gold);
       font-family:Georgia,serif;
-      font-size:23px;
+      font-size:21px;
     }
 
     .footer-brand span{
       display:block;
-      color:#d4b35d;
-      font-size:11px;
+      color:#d5b35c;
+      font-size:9px;
       letter-spacing:2px;
-      margin-top:2px;
+      margin-top:3px;
     }
 
-    .footer-motto{
+    .motto{
       text-align:center;
-      color:#e5e5e5;
-      font-size:13px;
-      line-height:1.5;
-      letter-spacing:2.5px;
+      color:#e6e6e6;
+      font-size:11px;
+      line-height:1.45;
+      letter-spacing:2px;
       text-transform:uppercase;
     }
 
-    .footer-motto strong{
+    .motto strong{
       color:var(--gold);
     }
 
     .social{
       display:flex;
       justify-content:flex-end;
-      align-items:center;
-      gap:13px;
-      font-size:23px;
+      gap:12px;
+      font-size:21px;
     }
 
-    @media(max-width:860px){
-      .header-inner{
-        width:100%;
-        padding:0 13px;
-        min-height:78px;
-        flex-wrap:wrap;
-        gap:0;
+    /* =========================
+       IPHONE / MOBILE
+    ========================= */
+
+    @media(max-width:700px){
+
+      .topbar-inner{
+        height:64px;
+        gap:18px;
+        padding:0 11px;
       }
 
-      .brand{
-        width:50%;
+      .brand-icon{
+        font-size:23px;
       }
 
-      .logout{
-        margin-left:auto;
-        font-size:13px;
-        padding:11px 14px;
-      }
-
-      .nav{
-        order:3;
-        width:100%;
-        overflow-x:auto;
-        justify-content:flex-start;
-        gap:27px;
-        border-top:1px solid #20170a;
-        scrollbar-width:none;
-      }
-
-      .nav::-webkit-scrollbar{
-        display:none;
-      }
-
-      .nav a{
-        flex:0 0 auto;
-        padding:16px 0 14px;
-        font-size:12px;
-      }
-
-      .hero{
-        min-height:420px;
-      }
-
-      .hero-inner{
-        min-height:420px;
-        padding-top:31px;
-      }
-
-      .hero-bg{
-        background:
-          linear-gradient(
-            90deg,
-            rgba(0,0,0,.995) 0%,
-            rgba(0,0,0,.97) 28%,
-            rgba(0,0,0,.82) 51%,
-            rgba(0,0,0,.43) 72%,
-            rgba(0,0,0,.38) 100%
-          ),
-          url("35F2F7B6-7B66-470B-82DE-4420BA7A57B5.jpeg") 86% 34% / cover no-repeat;
-        filter:brightness(.67) contrast(1.05);
-      }
-
-      .hero-copy{
-        width:56%;
-      }
-
-      .hero-logo-icon{
-        font-size:40px;
-      }
-
-      .hero-logo-text strong{
-        font-size:36px;
-      }
-
-      .hero-logo-text span{
+      .brand-text strong{
         font-size:18px;
       }
 
-      .hero h1{
-        font-size:45px;
+      .brand-text span{
+        font-size:6px;
+        letter-spacing:1.8px;
       }
 
-      .hero-mini{
-        font-size:9px;
-        letter-spacing:2px;
+      .nav{
+        gap:18px;
       }
 
-      .hero-line{
+      .nav a{
+        padding:24px 0 20px;
         font-size:11px;
       }
 
-      .hero-benefits{
-        gap:11px;
-      }
-
-      .benefit{
-        min-width:115px;
-      }
-
-      .benefit-text{
-        font-size:9px;
-      }
-
-      .benefit-icon{
-        font-size:22px;
-      }
-
-      .packages{
-        gap:9px;
-      }
-
-      .package-card{
-        min-height:238px;
-        border-radius:12px;
-        padding:16px 14px 14px;
-        grid-template-columns:1fr 118px;
-      }
-
-      .package-icon{
-        font-size:32px;
-      }
-
-      .package-title{
-        font-size:22px;
-      }
-
-      .package-subtitle{
-        font-size:13px;
-      }
-
-      .features{
-        font-size:11.5px;
-        gap:6px;
-        margin-top:14px;
-      }
-
-      .check{
-        width:15px;
-        height:15px;
-        min-width:15px;
-        font-size:8px;
-      }
-
-      .price{
-        font-size:36px;
-      }
-
-      .period{
+      .logout{
+        padding:9px 11px;
         font-size:11px;
-      }
-
-      .select-btn{
-        margin-top:13px;
-        padding:11px 6px;
-        font-size:12px;
-      }
-
-      .trust-strip{
-        grid-template-columns:1fr;
-        gap:14px;
-      }
-
-      .payment-wrap{
-        text-align:left;
-      }
-
-      .payments{
-        justify-content:flex-start;
-      }
-
-      .footer{
-        grid-template-columns:1fr;
-        text-align:center;
-      }
-
-      .social{
-        justify-content:center;
-      }
-    }
-
-    @media(max-width:560px){
-      .brand-icon{
-        font-size:25px;
-      }
-
-      .brand-copy strong{
-        font-size:21px;
-      }
-
-      .brand-copy span{
-        font-size:7.5px;
-        letter-spacing:2.7px;
+        border-radius:13px;
       }
 
       .hero{
-        min-height:390px;
+        min-height:355px;
       }
 
       .hero-inner{
-        width:calc(100% - 20px);
-        min-height:390px;
-        padding:25px 0 22px;
+        width:calc(100% - 18px);
+        min-height:355px;
+        padding:20px 0;
       }
 
       .hero-copy{
-        width:55%;
+        width:54%;
       }
 
       .hero-bg{
@@ -797,18 +658,15 @@
           linear-gradient(
             90deg,
             rgba(0,0,0,.995) 0%,
-            rgba(0,0,0,.97) 27%,
-            rgba(0,0,0,.83) 48%,
-            rgba(0,0,0,.37) 73%,
-            rgba(0,0,0,.33) 100%
+            rgba(0,0,0,.98) 22%,
+            rgba(0,0,0,.86) 42%,
+            rgba(0,0,0,.48) 61%,
+            rgba(0,0,0,.22) 80%,
+            rgba(0,0,0,.15) 100%
           ),
-          url("35F2F7B6-7B66-470B-82DE-4420BA7A57B5.jpeg") 88% 34% / cover no-repeat;
-        filter:brightness(.66) contrast(1.05);
-      }
+          url("35F2F7B6-7B66-470B-82DE-4420BA7A57B5.jpeg") 91% 42% / cover no-repeat;
 
-      .hero-logo{
-        gap:7px;
-        margin-bottom:8px;
+        filter:brightness(.82) contrast(1.04);
       }
 
       .hero-logo-icon{
@@ -820,488 +678,93 @@
       }
 
       .hero-logo-text span{
-        font-size:12px;
+        font-size:11px;
         letter-spacing:1.5px;
       }
 
       .hero-mini{
         font-size:7px;
-        letter-spacing:1.4px;
-        margin-top:4px;
+        letter-spacing:1.3px;
       }
 
       .hero h1{
-        font-size:35px;
-        line-height:.95;
+        font-size:34px;
       }
 
-      .hero-line{
+      .hero-sub{
         font-size:8.5px;
-        gap:5px;
-        margin-top:8px;
       }
 
-      .hero-line::before,
-      .hero-line::after{
-        width:15px;
-      }
-
-      .hero-benefits{
-        margin-top:14px;
-        gap:7px;
-        display:grid;
-        grid-template-columns:1fr 1fr;
+      .benefits{
+        gap:8px;
+        margin-top:13px;
       }
 
       .benefit{
-        min-width:0;
-        gap:5px;
-      }
-
-      .benefit:nth-child(3){
-        grid-column:1 / 3;
+        min-width:100px;
       }
 
       .benefit-icon{
-        width:22px;
-        font-size:18px;
+        width:20px;
+        font-size:17px;
       }
 
       .benefit-text{
-        font-size:7.6px;
-      }
-
-      .packages-section{
-        padding-top:9px;
+        font-size:7px;
       }
 
       .packages{
-        width:calc(100% - 14px);
+        width:calc(100% - 12px);
         gap:7px;
       }
 
       .package-card{
-        min-height:220px;
-        border-radius:11px;
-        padding:12px 10px 11px;
-        grid-template-columns:1fr 92px;
-        gap:5px;
+        min-height:200px;
+        border-radius:10px;
+        padding:11px 9px 10px;
+        grid-template-columns:1fr 82px;
+        gap:4px;
       }
 
       .package-icon{
-        font-size:26px;
-        margin-bottom:5px;
+        font-size:24px;
       }
 
       .package-title{
-        font-size:18px;
+        font-size:17px;
       }
 
       .package-subtitle{
-        font-size:10.5px;
-        margin-top:4px;
+        font-size:9px;
       }
 
       .features{
-        font-size:9.2px;
-        margin-top:10px;
-        gap:5px;
+        font-size:8.3px;
+        gap:4px;
+        margin-top:9px;
       }
 
       .check{
-        width:13px;
-        height:13px;
-        min-width:13px;
-        font-size:7px;
+        width:12px;
+        height:12px;
+        min-width:12px;
+        font-size:6px;
       }
 
       .price{
-        font-size:30px;
+        font-size:27px;
       }
 
       .period{
-        font-size:9px;
-        margin-top:3px;
+        font-size:8px;
       }
 
       .select-btn{
-        font-size:10px;
-        padding:9px 4px;
-        margin-top:10px;
-        border-radius:7px;
+        font-size:9px;
+        padding:8px 4px;
+        margin-top:9px;
+        border-radius:6px;
       }
 
       .trust-strip{
-        width:calc(100% - 14px);
-      }
-
-      .footer{
-        width:calc(100% - 14px);
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-  <header class="header">
-    <div class="header-inner">
-
-      <div class="brand">
-        <div class="brand-icon">🔱</div>
-        <div class="brand-copy">
-          <strong>ISB</strong>
-          <span>EL TRIDENTE</span>
-        </div>
-      </div>
-
-      <nav class="nav">
-        <a href="index.html">Inicio</a>
-        <a class="active" href="paquetes.html">Paquetes</a>
-        <a href="#">Mi Cuenta</a>
-        <a href="https://wa.me/12254329795">Soporte</a>
-        <a href="index.html#como-funciona">Cómo Funciona</a>
-        <a href="index.html#contacto">Contacto</a>
-      </nav>
-
-      <button id="logoutBtn" class="logout">↪ Cerrar sesión</button>
-
-    </div>
-  </header>
-
-
-  <section class="hero">
-
-    <div class="hero-bg"></div>
-
-    <div class="hero-inner">
-
-      <div class="hero-copy">
-
-        <div class="hero-logo">
-          <div class="hero-logo-icon">🔱</div>
-
-          <div class="hero-logo-text">
-            <strong>ISB</strong>
-            <span>EL TRIDENTE</span>
-          </div>
-        </div>
-
-        <div class="hero-mini">
-          DISCIPLINA &nbsp; | &nbsp; ANÁLISIS &nbsp; | &nbsp; RESULTADOS
-        </div>
-
-        <h1>
-          ELIGE TU <span>PAQUETE</span>
-        </h1>
-
-        <div class="hero-line">
-          DIFERENTES PLANES,
-          <strong>EL MISMO OBJETIVO</strong>
-        </div>
-
-        <div class="hero-benefits">
-
-          <div class="benefit">
-            <div class="benefit-icon">🛡</div>
-            <div class="benefit-text">JUGADAS<br>DE ALTO VALOR</div>
-          </div>
-
-          <div class="benefit">
-            <div class="benefit-icon">▥</div>
-            <div class="benefit-text">ANÁLISIS<br>PROFESIONAL</div>
-          </div>
-
-          <div class="benefit">
-            <div class="benefit-icon">👥</div>
-            <div class="benefit-text">RESULTADOS<br>COMPROBADOS</div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-
-  <section class="packages-section">
-
-    <div class="packages">
-
-      <article class="package-card">
-
-        <div class="package-left">
-
-          <div class="package-icon">♛</div>
-          <h2 class="package-title">Premium</h2>
-          <div class="package-subtitle">Diario</div>
-
-          <ul class="features">
-            <li><span class="check">✓</span><span>1 selección Premium del día</span></li>
-            <li><span class="check">✓</span><span>Análisis detallado</span></li>
-            <li><span class="check">✓</span><span class="highlight">Reembolso si se pierde</span></li>
-            <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
-            <li><span class="check">✓</span><span>Soporte directo</span></li>
-          </ul>
-
-        </div>
-
-        <div class="package-right">
-          <div class="price">$70</div>
-          <div class="period">/ Día</div>
-          <button class="select-btn">Seleccionar →</button>
-        </div>
-
-      </article>
-
-
-      <article class="package-card">
-
-        <div class="package-left">
-
-          <div class="package-icon">♛</div>
-          <h2 class="package-title">Premium</h2>
-          <div class="package-subtitle">Semanal</div>
-
-          <ul class="features">
-            <li><span class="check">✓</span><span>7 selecciones (1 diaria)</span></li>
-            <li><span class="check">✓</span><span>Análisis detallado</span></li>
-            <li><span class="check">✓</span><span>Mayor rentabilidad</span></li>
-            <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
-            <li><span class="check">✓</span><span>Soporte directo</span></li>
-          </ul>
-
-        </div>
-
-        <div class="package-right">
-          <div class="price">$399</div>
-          <div class="period">/ Semana</div>
-          <button class="select-btn">Seleccionar →</button>
-        </div>
-
-      </article>
-
-
-      <article class="package-card">
-
-        <div class="package-left">
-
-          <div class="package-icon">◇</div>
-          <h2 class="package-title">Exclusiva</h2>
-          <div class="package-subtitle">Diaria</div>
-
-          <ul class="features">
-            <li><span class="check">✓</span><span>1 selección Exclusiva del día</span></li>
-            <li><span class="check">✓</span><span>Análisis y estadísticas</span></li>
-            <li><span class="check">✓</span><span class="highlight">Reembolso si se pierde</span></li>
-            <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
-            <li><span class="check">✓</span><span>Soporte directo</span></li>
-          </ul>
-
-        </div>
-
-        <div class="package-right">
-          <div class="price">$50</div>
-          <div class="period">/ Día</div>
-          <button class="select-btn">Seleccionar →</button>
-        </div>
-
-      </article>
-
-
-      <article class="package-card">
-
-        <div class="package-left">
-
-          <div class="package-icon">◇</div>
-          <h2 class="package-title">Exclusiva</h2>
-          <div class="package-subtitle">Semanal</div>
-
-          <ul class="features">
-            <li><span class="check">✓</span><span>7 selecciones Exclusivas</span></li>
-            <li><span class="check">✓</span><span>Análisis y estadísticas</span></li>
-            <li><span class="check">✓</span><span>Mayor rentabilidad</span></li>
-            <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
-            <li><span class="check">✓</span><span>Soporte directo</span></li>
-          </ul>
-
-        </div>
-
-        <div class="package-right">
-          <div class="price">$299</div>
-          <div class="period">/ Semana</div>
-          <button class="select-btn">Seleccionar →</button>
-        </div>
-
-      </article>
-
-
-      <article class="package-card">
-
-        <div class="package-left">
-
-          <div class="package-icon">▣</div>
-          <h2 class="package-title">Pack Mensual</h2>
-          <div class="package-subtitle">Mensual</div>
-
-          <ul class="features">
-            <li><span class="check">✓</span><span>3 - 5 picks por semana</span></li>
-            <li><span class="check">✓</span><span>Selecciones variadas</span></li>
-            <li><span class="check">✓</span><span>Análisis completo</span></li>
-            <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
-            <li><span class="check">✓</span><span>Soporte directo</span></li>
-          </ul>
-
-        </div>
-
-        <div class="package-right">
-          <div class="price">$150</div>
-          <div class="period">/ Mes</div>
-          <button class="select-btn">Seleccionar →</button>
-        </div>
-
-      </article>
-
-
-      <article class="package-card">
-
-        <div class="package-left">
-
-          <div class="package-icon">▥</div>
-          <h2 class="package-title">Económica</h2>
-          <div class="package-subtitle">Mensual</div>
-
-          <ul class="features">
-            <li><span class="check">✓</span><span>Acceso mensual</span></li>
-            <li><span class="check">✓</span><span>Jugadas seleccionadas</span></li>
-            <li><span class="check">✓</span><span>Contenido adicional</span></li>
-            <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
-            <li><span class="check">✓</span><span>Sin reembolso</span></li>
-          </ul>
-
-        </div>
-
-        <div class="package-right">
-          <div class="price">$19.99</div>
-          <div class="period">/ Mes</div>
-          <button class="select-btn">Seleccionar →</button>
-        </div>
-
-      </article>
-
-    </div>
-
-
-    <div class="trust-strip">
-
-      <div class="trust-block">
-
-        <div class="trust-icon">🔒</div>
-
-        <div class="trust-copy">
-          <strong>Pago seguro y protegido</strong>
-          <span>Tus datos están protegidos.</span>
-        </div>
-
-      </div>
-
-
-      <div class="payment-wrap">
-
-        <div class="payment-title">
-          Métodos de pago
-        </div>
-
-        <div class="payments">
-          <div class="payment-pill">VISA</div>
-          <div class="payment-pill">MC</div>
-          <div class="payment-pill">PayPal</div>
-          <div class="payment-pill">Cash App</div>
-          <div class="payment-pill">CARD</div>
-        </div>
-
-      </div>
-
-
-      <div class="trust-block">
-
-        <div class="trust-icon">🎧</div>
-
-        <div class="trust-copy">
-          <strong>Soporte 24/7 vía WhatsApp</strong>
-
-          <a
-            class="whatsapp-btn"
-            href="https://wa.me/12254329795"
-          >
-            WhatsApp
-          </a>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <footer class="footer">
-
-    <div class="footer-brand">
-      <strong>ISB</strong>
-      <span>EL TRIDENTE</span>
-    </div>
-
-    <div class="footer-motto">
-      “MÁS QUE PICKS,<br>
-      <strong>UNA FAMILIA</strong>”
-    </div>
-
-    <div class="social">
-      <a href="https://www.instagram.com/idael_sportbet_oficial/">◎</a>
-      <span>♪</span>
-      <span>▶</span>
-      <a href="https://wa.me/12254329795">◉</a>
-    </div>
-
-  </footer>
-
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <script>
-    const SUPABASE_URL =
-      'https://nfvkmxnprchvkufwvhpr.supabase.co';
-
-    const SUPABASE_KEY =
-      'sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1';
-
-    const supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-      );
-
-    async function protegerPagina(){
-      const { data } =
-        await supabaseClient.auth.getSession();
-
-      if(!data.session){
-        window.location.href = 'index.html';
-      }
-    }
-
-    protegerPagina();
-
-    document
-      .getElementById('logoutBtn')
-      .addEventListener('click',async()=>{
-        await supabaseClient.auth.signOut();
-        window.location.href='index.html';
-      });
-  </script>
-
-</body>
-</html>
+       
