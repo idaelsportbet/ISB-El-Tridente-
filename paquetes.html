@@ -1533,6 +1533,240 @@ button{
     margin-top:0 !important;
   }
 }
+  <!-- ===== MENÚ SOPORTE / CONTACTO ===== -->
+
+<div id="contactModal" class="contact-modal">
+
+  <div class="contact-box">
+
+    <button class="contact-close" onclick="cerrarContacto()">
+      ×
+    </button>
+
+    <div class="contact-trident">🔱</div>
+
+    <h2>¿CÓMO DESEAS CONTACTARNOS?</h2>
+
+    <p>
+      Elige la opción que prefieras y te atenderemos directamente.
+    </p>
+
+    <a
+      class="contact-option"
+      href="https://wa.me/12254329795"
+      target="_blank"
+    >
+      <span>💬</span>
+      <div>
+        <strong>WhatsApp</strong>
+        <small>+1 (225) 432-9795</small>
+      </div>
+      <b>›</b>
+    </a>
+
+    <a
+      class="contact-option"
+      href="https://www.instagram.com/idael_sportbet_oficial/"
+      target="_blank"
+    >
+      <span>◎</span>
+      <div>
+        <strong>Instagram</strong>
+        <small>@idael_sportbet_oficial</small>
+      </div>
+      <b>›</b>
+    </a>
+
+    <a
+      class="contact-option"
+      href="mailto:idaelvargasbusiness@gmail.com"
+    >
+      <span>✉️</span>
+      <div>
+        <strong>Correo electrónico</strong>
+        <small>idaelvargasbusiness@gmail.com</small>
+      </div>
+      <b>›</b>
+    </a>
+
+  </div>
+
+</div>
+
+
+<style>
+
+.contact-modal{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  padding:20px;
+
+  background:rgba(0,0,0,.82);
+  backdrop-filter:blur(7px);
+}
+
+.contact-modal.active{
+  display:flex;
+}
+
+.contact-box{
+  position:relative;
+
+  width:100%;
+  max-width:390px;
+
+  padding:24px 16px 18px;
+
+  border:1px solid #f6bd35;
+  border-radius:15px;
+
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(0,230,122,.08),
+      transparent 35%
+    ),
+    #080808;
+
+  box-shadow:
+    0 0 30px rgba(246,189,53,.12);
+
+  text-align:center;
+}
+
+.contact-close{
+  position:absolute;
+  top:8px;
+  right:12px;
+
+  border:0;
+  background:none;
+
+  color:#f6bd35;
+
+  font-size:27px;
+  cursor:pointer;
+}
+
+.contact-trident{
+  color:#f6bd35;
+  font-size:32px;
+  margin-bottom:5px;
+}
+
+.contact-box h2{
+  margin:0;
+
+  color:#f6bd35;
+
+  font-size:17px;
+  font-weight:900;
+}
+
+.contact-box > p{
+  margin:8px 0 17px;
+
+  color:#aaa;
+
+  font-size:10px;
+  line-height:1.4;
+}
+
+.contact-option{
+  width:100%;
+
+  margin-top:8px;
+  padding:11px 12px;
+
+  display:grid;
+  grid-template-columns:30px 1fr 15px;
+  align-items:center;
+  gap:8px;
+
+  border:1px solid rgba(246,189,53,.45);
+  border-radius:9px;
+
+  background:#0c0c0c;
+
+  color:white;
+
+  text-decoration:none;
+  text-align:left;
+}
+
+.contact-option > span{
+  color:#f6bd35;
+  font-size:20px;
+  text-align:center;
+}
+
+.contact-option strong{
+  display:block;
+
+  color:#fff;
+
+  font-size:11px;
+}
+
+.contact-option small{
+  display:block;
+
+  margin-top:2px;
+
+  color:#888;
+
+  font-size:8px;
+}
+
+.contact-option b{
+  color:#00e67a;
+  font-size:20px;
+}
+
+</style>
+
+
+<script>
+
+function abrirContacto(event){
+
+  event.preventDefault();
+
+  document
+    .getElementById("contactModal")
+    .classList.add("active");
+
+}
+
+
+function cerrarContacto(){
+
+  document
+    .getElementById("contactModal")
+    .classList.remove("active");
+
+}
+
+
+/* Cerrar tocando fuera del cuadro */
+
+document
+  .getElementById("contactModal")
+  .addEventListener("click", function(event){
+
+    if(event.target === this){
+      cerrarContacto();
+    }
+
+  });
+
+</script>
 </style>
 </head>
 
@@ -2819,7 +3053,7 @@ MÁS QUE PICKS, UNA FAMILIA
 
 
 <div class="social-item">
-🎵 Idael_SportBet_Oficial
+ Idael_SportBet_Oficial
 </div>
 
 
