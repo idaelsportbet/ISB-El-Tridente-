@@ -3173,7 +3173,198 @@ document
 protegerPagina();
 
 </script>
+<!-- ===== VENTANA DE COMPRA ISB ===== -->
 
+<div id="compraModal" class="compra-modal">
+  <div class="compra-box">
+
+    <button type="button" class="compra-close" onclick="cerrarCompra()">×</button>
+
+    <div class="compra-logo">🔱</div>
+
+    <div class="compra-label">PAQUETE SELECCIONADO</div>
+
+    <h2 id="compraNombre">Premium Diario</h2>
+
+    <div class="compra-precio">
+      <span id="compraPrecio">$70</span>
+      <small>/ <span id="compraPeriodo">DÍA</span></small>
+    </div>
+
+    <div class="compra-line"></div>
+
+    <p class="compra-texto">
+      Confirma tu paquete para continuar al pago seguro.
+    </p>
+
+    <button type="button" class="continuar-pago" onclick="continuarPago()">
+      CONTINUAR AL PAGO
+    </button>
+
+    <div class="compra-seguro">
+      🔒 PAGO SEGURO Y PROTEGIDO
+    </div>
+
+  </div>
+</div>
+
+
+<style>
+.compra-modal{
+  position:fixed;
+  inset:0;
+  z-index:999999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.88);
+  backdrop-filter:blur(8px);
+}
+
+.compra-modal.active{
+  display:flex;
+}
+
+.compra-box{
+  position:relative;
+  width:100%;
+  max-width:380px;
+  padding:25px 18px 20px;
+  text-align:center;
+  border:1px solid #f6bd35;
+  border-radius:15px;
+  background:
+    radial-gradient(circle at 80% 20%,
+    rgba(0,230,122,.10),
+    transparent 35%),
+    #080808;
+  box-shadow:0 0 35px rgba(246,189,53,.15);
+}
+
+.compra-close{
+  position:absolute;
+  top:8px;
+  right:12px;
+  border:0;
+  background:none;
+  color:#f6bd35;
+  font-size:28px;
+  cursor:pointer;
+}
+
+.compra-logo{
+  font-size:35px;
+  margin-bottom:6px;
+}
+
+.compra-label{
+  color:#aaa;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:1.5px;
+}
+
+.compra-box h2{
+  margin:7px 0 5px;
+  color:#fff;
+  font-size:22px;
+  text-transform:uppercase;
+}
+
+.compra-precio{
+  margin:8px 0;
+  color:#f6bd35;
+  font-weight:900;
+}
+
+.compra-precio > span{
+  font-size:38px;
+}
+
+.compra-precio small{
+  color:#00e67a;
+  font-size:12px;
+}
+
+.compra-line{
+  height:1px;
+  margin:15px 0;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    #f6bd35,
+    transparent
+  );
+}
+
+.compra-texto{
+  margin:0 0 16px;
+  color:#aaa;
+  font-size:11px;
+  line-height:1.5;
+}
+
+.continuar-pago{
+  width:100%;
+  min-height:47px;
+  border:1px solid #00ff88;
+  border-radius:9px;
+  background:linear-gradient(180deg,#00b960,#007c41);
+  color:#fff;
+  font-size:12px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.compra-seguro{
+  margin-top:12px;
+  color:#777;
+  font-size:8px;
+  letter-spacing:.5px;
+}
+</style>
+
+
+<script>
+let paqueteSeleccionado = {
+  nombre:"",
+  precio:"",
+  periodo:""
+};
+
+function abrirCompra(nombre, precio, periodo){
+
+  paqueteSeleccionado.nombre = nombre;
+  paqueteSeleccionado.precio = precio;
+  paqueteSeleccionado.periodo = periodo;
+
+  document.getElementById("compraNombre").textContent = nombre;
+  document.getElementById("compraPrecio").textContent = precio;
+  document.getElementById("compraPeriodo").textContent = periodo;
+
+  document.getElementById("compraModal").classList.add("active");
+}
+
+function cerrarCompra(){
+  document.getElementById("compraModal").classList.remove("active");
+}
+
+function continuarPago(){
+  alert(
+    "Próximo paso: pago de " +
+    paqueteSeleccionado.nombre +
+    " por " +
+    paqueteSeleccionado.precio
+  );
+}
+
+document.getElementById("compraModal").addEventListener("click", function(e){
+  if(e.target === this){
+    cerrarCompra();
+  }
+});
+</script>
 
 </body>
 </html>
