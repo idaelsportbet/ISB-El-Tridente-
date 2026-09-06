@@ -1370,6 +1370,87 @@ button{
     margin-top:2px;
   }
 }
+  /* ===== LIMPIAR PARTE INFERIOR ===== */
+
+/* Quitar "¿Por qué elegir ISB?" completo */
+.lower-content > .section-block:first-child{
+  display:none;
+}
+
+/* Quitar banner "Resultados hablan por sí solos" */
+.results-banner{
+  display:none;
+}
+
+/* Reducir espacios entre secciones */
+.section-block{
+  margin:15px auto;
+}
+
+.section-title{
+  margin-bottom:10px;
+  font-size:15px;
+}
+
+/* Cómo funciona más compacto */
+.steps{
+  gap:6px;
+}
+
+.step{
+  min-height:68px;
+  padding:7px 8px;
+}
+
+.step-number{
+  width:22px;
+  height:22px;
+  font-size:10px;
+}
+
+.step-icon{
+  font-size:13px;
+  margin-top:2px;
+}
+
+.step strong{
+  font-size:7.5px;
+  margin-top:3px;
+}
+
+.step p{
+  font-size:6px;
+  line-height:1.15;
+  margin-top:2px;
+}
+
+/* Preguntas más compactas */
+.faq-grid{
+  gap:6px;
+}
+
+.faq summary{
+  padding:9px 10px;
+  font-size:8px;
+}
+
+/* Menos espacio antes de pagos */
+.payment-area{
+  margin-top:8px;
+  padding-top:13px;
+}
+
+@media(max-width:700px){
+
+  .lower-content{
+    padding-top:2px;
+  }
+
+  .section-block{
+    margin:13px auto;
+  }
+
+}
 </style>
 </head>
 
