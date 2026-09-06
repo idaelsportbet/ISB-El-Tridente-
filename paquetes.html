@@ -1,1105 +1,1095 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#050505">
-<title>Paquetes | ISB El Tridente</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
-
-<style>
-:root{
-  --bg:#050505;
-  --gold:#f4bd43;
-  --gold2:#8c6419;
-  --white:#fff;
-  --muted:#c7c7c7;
-  --card:#090909;
-}
-
-*{
-  box-sizing:border-box;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  margin:0;
-  color:#fff;
-  font-family:Montserrat,Arial,sans-serif;
-
-  background:
-    linear-gradient(
-      rgba(0,0,0,.72),
-      rgba(0,0,0,.88)
-    ),
-    url("fondo-paquetes.jpg") center top / cover no-repeat fixed;
-
-  background-color:#050505;
-}
-
-  background:
-    linear-gradient(
-      rgba(0,0,0,.72),
-      rgba(0,0,0,.88)
-    ),
-    url("fondo-paquetes.jpg") center top / cover no-repeat fixed;
-
-  background-color:#050505;
-}
-button,a{
-  font:inherit;
-}
-
-a{
-  color:inherit;
-  text-decoration:none;
-}
-
-/* =========================
-   HEADER
-========================= */
-
-.header{
-  position:sticky;
-  top:0;
-  z-index:100;
-  display:flex;
-  align-items:center;
-  gap:22px;
-  height:78px;
-  padding:0 22px;
-  background:rgba(3,3,3,.96);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid rgba(244,189,67,.28);
-}
-
-.logo{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  min-width:max-content;
-}
-
-.logo-mark{
-  color:var(--gold);
-  font-size:33px;
-  line-height:1;
-}
-
-.logo b{
-  display:block;
-  color:var(--gold);
-  font-family:"Playfair Display",serif;
-  font-size:26px;
-  line-height:.9;
-}
-
-.logo small{
-  display:block;
-  margin-top:7px;
-  letter-spacing:3px;
-  font-size:8px;
-  font-weight:800;
-}
-
-.nav{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:22px;
-  flex:1;
-}
-
-.nav a{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:4px;
-  font-size:9px;
-  color:#ddd;
-  white-space:nowrap;
-}
-
-.nav svg{
-  width:22px;
-  height:22px;
-  stroke:currentColor;
-  fill:none;
-  stroke-width:1.8;
-}
-
-.nav a.active{
-  color:var(--gold);
-}
-
-.logout{
-  min-width:max-content;
-  border:1px solid var(--gold2);
-  border-radius:12px;
-  background:#080808;
-  color:#fff;
-  padding:13px 18px;
-  font-weight:800;
-}
-
-/* =========================
-   HERO
-========================= */
-
-.hero{
-  position:relative;
-  min-height:510px;
-  overflow:hidden;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(0,0,0,.98) 0%,
-      rgba(0,0,0,.88) 37%,
-      rgba(0,0,0,.45) 67%,
-      rgba(0,0,0,.55) 100%
-    ),
-    url("35F2F7B6-7B66-470B-82DE-4420BA7A57B5.jpeg") 67% 26% / cover no-repeat;
-
-.hero:after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(circle at 73% 25%,rgba(244,189,67,.12),transparent 34%),
-    linear-gradient(180deg,transparent 62%,#050505 100%);
-}
-
-.hero-content{
-  position:relative;
-  z-index:2;
-  width:min(1180px,calc(100% - 42px));
-  margin:auto;
-  padding:52px 0 34px;
-}
-
-.eyebrow{
-  margin:0 0 8px;
-  color:var(--gold);
-  font-size:12px;
-  letter-spacing:4px;
-  font-weight:900;
-}
-
-.hero h1{
-  margin:0;
-  font-size:clamp(44px,7vw,76px);
-  line-height:.9;
-  font-weight:900;
-  max-width:540px;
-}
-
-.hero h1 span{
-  color:var(--gold);
-}
-
-.hero-quote{
-  margin:16px 0;
-  font-size:15px;
-  font-weight:700;
-  line-height:1.35;
-}
-
-.hero-desc{
-  max-width:480px;
-  color:#ddd;
-  line-height:1.65;
-  font-size:14px;
-}
-
-.hero-sign{
-  position:absolute;
-  top:155px;
-  right:25px;
-  color:var(--gold);
-  font-family:"Playfair Display",serif;
-  font-style:italic;
-  font-size:19px;
-  transform:rotate(-5deg);
-  text-align:center;
-}
-
-/* =========================
-   BENEFITS
-========================= */
-
-.benefits{
-  position:relative;
-  z-index:3;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  max-width:760px;
-  gap:12px;
-  margin-top:28px;
-}
-
-.benefit{
-  display:flex;
-  align-items:center;
-  gap:9px;
-}
-
-.benefit svg{
-  width:30px;
-  height:30px;
-  stroke:var(--gold);
-  fill:none;
-  stroke-width:2;
-  flex:0 0 auto;
-}
-
-.benefit b{
-  display:block;
-  font-size:9px;
-  line-height:1.35;
-}
-
-/* =========================
-   PACKAGES
-========================= */
-
-.packages-wrap{background:transparent;
-  width:min(1180px,calc(100% - 32px));
-  margin:0 auto;
-  padding:14px 0 38px;
-}
-
-.packages{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:14px;
-}
-
-.card{
-  position:relative;
-  overflow:hidden;
-  min-height:300px;
-  display:grid;
-  grid-template-columns:105px 1fr;
-  grid-template-rows:auto 1fr auto;
-  column-gap:14px;
-  padding:18px;
-  border:1px solid rgba(244,189,67,.75);
-  border-radius:17px;
-  background:
-    radial-gradient(circle at 95% 25%,rgba(244,189,67,.08),transparent 30%),
-    linear-gradient(145deg,#0c0c0c,#050505);
-  box-shadow:0 15px 45px rgba(0,0,0,.45);
-}
-
-.icon-side{
-  grid-row:1 / 4;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
-
-.package-icon{
-  width:66px;
-  height:66px;
-  margin-bottom:7px;
-}
-
-.package-icon svg{
-  width:100%;
-  height:100%;
-  stroke:var(--gold);
-  fill:none;
-  stroke-width:2.1;
-}
-
-.package-icon.fill svg{
-  fill:var(--gold);
-  stroke:var(--gold);
-}
-
-.price{
-  color:var(--gold);
-  font-size:38px;
-  line-height:1;
-  font-weight:900;
-  margin-top:7px;
-}
-
-.card-main h2{
-  margin:0;
-  font-size:22px;
-  font-weight:900;
-  line-height:1;
-}
-
-.card-main .type{
-  margin-top:5px;
-  font-size:16px;
-  font-weight:700;
-  color:#ddd;
-}
-
-.features{
-  list-style:none;
-  margin:15px 0 0;
-  padding:0;
-}
-
-.features li{
-  position:relative;
-  padding-left:23px;
-  margin:8px 0;
-  color:#ddd;
-  font-size:11px;
-  line-height:1.35;
-}
-
-.features li:before{
-  content:"✓";
-  position:absolute;
-  left:0;
-  top:0;
-  width:16px;
-  height:16px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:50%;
-  background:var(--gold);
-  color:#080808;
-  font-size:10px;
-  font-weight:900;
-}
-
-.select{
-  grid-column:2;
-  width:100%;
-  margin-top:12px;
-  padding:13px 10px;
-  border:1px solid #ffd86e;
-  border-radius:11px;
-  background:
-    linear-gradient(
-      110deg,
-      #9b711a,
-      #e6af3e 32%,
-      #ffe998 50%,
-      #e6af3e 68%,
-      #9b711a
-    );
-  color:#050505;
-  font-weight:900;
-}
-
-.label{
-  grid-column:2;
-  margin-top:8px;
-  text-align:center;
-  font-size:7px;
-  letter-spacing:2px;
-  color:#aaa;
-  font-weight:800;
-}
-
-/* SPORT BACKGROUNDS */
-
-.card:after{
-  position:absolute;
-  right:-10px;
-  bottom:0;
-  font-size:120px;
-  opacity:.07;
-  filter:grayscale(1);
-  pointer-events:none;
-}
-
-.pd:after{content:"⚽";}
-.ps:after{content:"📅";}
-.ed:after{content:"⚾";}
-.es:after{content:"🏀";}
-.pm:after{content:"🥊";}
-.ec:after{content:"🏟️";}
-
-/* =========================
-   TRUST
-========================= */
-
-.trust{
-  width:min(1180px,calc(100% - 32px));
-  margin:8px auto 0;
-  padding:22px 0;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:18px;
-  border-top:1px solid rgba(244,189,67,.35);
-  border-bottom:1px solid rgba(244,189,67,.35);
-}
-
-.trust article{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.trust svg{
-  width:34px;
-  height:34px;
-  flex:0 0 auto;
-  stroke:var(--gold);
-  fill:none;
-  stroke-width:2;
-}
-
-.trust b{
-  display:block;
-  font-size:9px;
-}
-
-.trust p{
-  margin:4px 0 0;
-  font-size:8px;
-  color:#aaa;
-  line-height:1.4;
-}
-
-/* =========================
-   FOOTER
-========================= */
-
-footer{
-  width:min(1180px,calc(100% - 32px));
-  margin:auto;
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  align-items:center;
-  gap:20px;
-  padding:28px 0 42px;
-}
-
-.footer-brand strong{
-  display:block;
-  color:var(--gold);
-  font-size:12px;
-}
-
-.footer-brand small{
-  color:#999;
-}
-
-.motto{
-  text-align:center;
-  color:#ddd;
-  font-size:9px;
-  letter-spacing:3px;
-  line-height:1.7;
-}
-
-.social{
-  text-align:right;
-  font-size:21px;
-  letter-spacing:8px;
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width:760px){
-
-  .header{
-    height:72px;
-    padding:0 12px;
-  }
-
-  .logo b{
-    font-size:22px;
-  }
-
-  .logo-mark{
-    font-size:27px;
-  }
-
-  .nav{
-    position:absolute;
-    left:0;
-    right:0;
-    top:72px;
-    z-index:5;
-    overflow-x:auto;
-    justify-content:flex-start;
-    gap:22px;
-    padding:9px 14px;
-    background:#060606;
-    border-bottom:1px solid rgba(244,189,67,.2);
-  }
-
-  .nav a{
-    min-width:55px;
-  }
-
-  .logout{
-    font-size:11px;
-    padding:11px 12px;
-  }
-
-  .hero{
-    min-height:490px;
-    margin-top:54px;
-    background-position:67% 20%;
-  }
-
-  .hero-content{
-    width:calc(100% - 26px);
-    padding-top:38px;
-  }
-
-  .hero h1{
-    font-size:45px;
-    max-width:280px;
-  }
-
-  .hero-desc{
-    max-width:275px;
-    font-size:11px;
-  }
-
-  .hero-quote{
-    font-size:12px;
-  }
-
-  .hero-sign{
-    display:none;
-  }
-
-  .benefits{
-    grid-template-columns:repeat(2,1fr);
-    max-width:315px;
-  }
-
-  .benefit svg{
-    width:25px;
-    height:25px;
-  }
-
-  .benefit b{
-    font-size:7px;
-  }
-
-  .packages-wrap{
-    width:calc(100% - 18px);
-  }
-
-  .packages{
-    gap:9px;
-  }
-
-  .card{
-    min-height:315px;
-    display:flex;
-    flex-direction:column;
-    padding:13px 11px 11px;
-    border-radius:14px;
-  }
-
-  .icon-side{
-    display:block;
-  }
-
-  .package-icon{
-    width:40px;
-    height:40px;
-  }
-
-  .price{
-    font-size:30px;
-    margin:7px 0 12px;
-  }
-
-  .card-main h2{
-    font-size:16px;
-  }
-
-  .card-main .type{
-    font-size:11px;
-  }
-
-  .features{
-    margin-top:11px;
-  }
-
-  .features li{
-    padding-left:18px;
-    margin:6px 0;
-    font-size:8.6px;
-  }
-
-  .features li:before{
-    width:13px;
-    height:13px;
-    font-size:8px;
-  }
-
-  .select{
-    grid-column:auto;
-    margin-top:auto;
-    padding:10px 5px;
-    font-size:9px;
-  }
-
-  .label{
-    grid-column:auto;
-    font-size:5.8px;
-    margin-top:6px;
-  }
-
-  .card:after{
-    font-size:75px;
-  }
-
-  .trust{
-    grid-template-columns:repeat(2,1fr);
-    width:calc(100% - 22px);
-  }
-
-  footer{
-    width:calc(100% - 22px);
-    grid-template-columns:1fr;
-    text-align:center;
-  }
-
-  .social{
-    text-align:center;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ISB | El Tridente - Paquetes</title>
+
+  <style>
+    :root{
+      --bg:#050505;
+      --panel:#0b0b0b;
+      --panel2:#111;
+      --gold:#f6c65b;
+      --gold2:#c9952a;
+      --line:#5a4317;
+      --text:#ffffff;
+      --muted:#bdbdbd;
+      --green:#25d366;
+      --max:1180px;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:Arial,Helvetica,sans-serif;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    button{
+      font:inherit;
+    }
+
+    .header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:rgba(4,4,4,.96);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid #2a2111;
+    }
+
+    .header-inner{
+      width:min(var(--max),calc(100% - 28px));
+      margin:auto;
+      min-height:84px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:max-content;
+    }
+
+    .brand-mark{
+      color:var(--gold);
+      font-size:33px;
+      line-height:1;
+    }
+
+    .brand-text strong{
+      display:block;
+      color:var(--gold);
+      font-size:26px;
+      font-family:Georgia,serif;
+      letter-spacing:.5px;
+    }
+
+    .brand-text span{
+      display:block;
+      font-size:11px;
+      letter-spacing:4px;
+      margin-top:1px;
+      font-weight:700;
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:26px;
+      flex:1;
+      font-size:14px;
+    }
+
+    .nav a{
+      position:relative;
+      padding:31px 0 26px;
+      white-space:nowrap;
+      color:#eee;
+    }
+
+    .nav a.active{
+      color:var(--gold);
+    }
+
+    .nav a.active::after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      height:2px;
+      background:var(--gold);
+    }
+
+    .logout{
+      border:1px solid var(--gold2);
+      background:#080808;
+      color:#fff;
+      border-radius:18px;
+      padding:13px 18px;
+      font-weight:700;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      border-bottom:1px solid #31240f;
+      background:#050505;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(0,0,0,.98) 0%,
+          rgba(0,0,0,.94) 28%,
+          rgba(0,0,0,.77) 48%,
+          rgba(0,0,0,.46) 68%,
+          rgba(0,0,0,.52) 100%
+        ),
+        url("35F2F7B6-7B66-470B-82DE-4420BA7A57B5.jpeg") 78% 38% / cover no-repeat;
+      filter:brightness(.72);
+      transform:scale(1.01);
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 75% 35%,rgba(246,198,91,.11),transparent 27%),
+        linear-gradient(180deg,transparent 65%,rgba(0,0,0,.78) 100%);
+      pointer-events:none;
+    }
+
+    .hero-content{
+      position:relative;
+      z-index:2;
+      width:min(var(--max),calc(100% - 34px));
+      margin:auto;
+      min-height:500px;
+      display:flex;
+      align-items:center;
+      padding:54px 0 38px;
+    }
+
+    .hero-copy{
+      width:min(590px,58%);
+    }
+
+    .eyebrow{
+      color:var(--gold);
+      font-weight:800;
+      letter-spacing:5px;
+      font-size:15px;
+      margin-bottom:11px;
+    }
+
+    .hero h1{
+      margin:0;
+      font-size:66px;
+      line-height:.92;
+      font-weight:900;
+      letter-spacing:-2px;
+      text-transform:uppercase;
+    }
+
+    .hero h1 span{
+      color:var(--gold);
+      display:block;
+    }
+
+    .hero-kicker{
+      margin-top:26px;
+      font-size:21px;
+      font-weight:800;
+      line-height:1.35;
+    }
+
+    .hero-desc{
+      margin-top:24px;
+      color:#e0e0e0;
+      font-size:18px;
+      line-height:1.55;
+      max-width:560px;
+    }
+
+    .hero-benefits{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:22px;
+      margin-top:31px;
+    }
+
+    .hero-benefit{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:12px;
+      font-weight:800;
+      line-height:1.15;
+    }
+
+    .hero-benefit-icon{
+      color:var(--gold);
+      font-size:28px;
+      width:35px;
+      flex:0 0 35px;
+      text-align:center;
+    }
+
+    .packages-section{
+      position:relative;
+      background:
+        linear-gradient(rgba(0,0,0,.93),rgba(0,0,0,.97));
+      padding:18px 0 34px;
+    }
+
+    .packages{
+      width:min(var(--max),calc(100% - 28px));
+      margin:auto;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+    }
+
+    .package-card{
+      position:relative;
+      overflow:hidden;
+      min-height:290px;
+      background:
+        linear-gradient(145deg,#0b0b0b 0%,#101010 62%,#070707 100%);
+      border:1px solid var(--gold2);
+      border-radius:18px;
+      padding:24px 25px 18px;
+      display:grid;
+      grid-template-columns:1fr 155px;
+      gap:12px;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.015),
+        0 0 18px rgba(201,149,42,.05);
+    }
+
+    .package-card::before{
+      content:"🔱";
+      position:absolute;
+      right:20px;
+      top:41px;
+      font-size:118px;
+      line-height:1;
+      color:rgba(246,198,91,.055);
+      transform:rotate(-4deg);
+      pointer-events:none;
+      filter:grayscale(1);
+    }
+
+    .package-left,
+    .package-right{
+      position:relative;
+      z-index:2;
+    }
+
+    .package-icon{
+      color:var(--gold);
+      font-size:45px;
+      margin-bottom:9px;
+      line-height:1;
+    }
+
+    .package-title{
+      margin:0;
+      font-size:29px;
+      line-height:1;
+      font-weight:900;
+      text-transform:uppercase;
+    }
+
+    .package-subtitle{
+      margin-top:8px;
+      font-size:18px;
+      font-weight:500;
+      text-transform:uppercase;
+      color:#e9e9e9;
+    }
+
+    .features{
+      margin:23px 0 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:10px;
+      color:#ededed;
+      font-size:16px;
+      line-height:1.3;
+    }
+
+    .features li{
+      display:flex;
+      gap:9px;
+      align-items:flex-start;
+    }
+
+    .check{
+      width:19px;
+      height:19px;
+      border:1px solid var(--gold);
+      color:var(--gold);
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      flex:0 0 19px;
+      font-size:11px;
+      font-weight:900;
+      margin-top:1px;
+    }
+
+    .highlight{
+      color:var(--gold);
+      font-weight:800;
+    }
+
+    .package-right{
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      align-items:flex-end;
+      min-width:0;
+    }
+
+    .price{
+      color:var(--gold);
+      font-size:47px;
+      font-weight:900;
+      line-height:1;
+      letter-spacing:-1.5px;
+      text-align:right;
+      text-shadow:0 0 12px rgba(246,198,91,.1);
+    }
+
+    .period{
+      color:var(--gold);
+      margin-top:8px;
+      font-size:18px;
+      text-transform:uppercase;
+      font-weight:800;
+      text-align:right;
+    }
+
+    .select-btn{
+      margin-top:25px;
+      width:100%;
+      border:0;
+      border-radius:11px;
+      padding:15px 11px;
+      cursor:pointer;
+      font-weight:900;
+      font-size:16px;
+      color:#080808;
+      background:linear-gradient(90deg,#d99f24,#ffd45e,#d79d22);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.28);
+    }
+
+    .card-label{
+      position:absolute;
+      left:24px;
+      bottom:13px;
+      font-size:10px;
+      color:#d8d8d8;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      font-weight:800;
+    }
+
+    .trust{
+      width:min(var(--max),calc(100% - 28px));
+      margin:26px auto 0;
+      border-top:1px solid #3b2d15;
+      border-bottom:1px solid #3b2d15;
+      padding:22px 4px;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:14px;
+    }
+
+    .trust-item{
+      display:flex;
+      gap:11px;
+      align-items:center;
+      min-width:0;
+    }
+
+    .trust-icon{
+      color:var(--gold);
+      font-size:28px;
+      width:34px;
+      flex:0 0 34px;
+      text-align:center;
+    }
+
+    .trust-item strong{
+      display:block;
+      font-size:11px;
+      text-transform:uppercase;
+    }
+
+    .trust-item span{
+      display:block;
+      color:#bfbfbf;
+      font-size:11px;
+      margin-top:5px;
+      line-height:1.3;
+    }
+
+    .footer{
+      width:min(var(--max),calc(100% - 28px));
+      margin:auto;
+      padding:26px 0 35px;
+      display:grid;
+      grid-template-columns:1fr 1.4fr 1fr;
+      align-items:center;
+      gap:20px;
+    }
+
+    .footer-brand{
+      color:var(--gold);
+      font-family:Georgia,serif;
+      font-size:20px;
+      font-weight:800;
+    }
+
+    .footer small{
+      color:#bbb;
+      display:block;
+      margin-top:6px;
+    }
+
+    .motto{
+      text-align:center;
+      color:#d7d7d7;
+      letter-spacing:4px;
+      line-height:1.6;
+      font-size:12px;
+    }
+
+    .social{
+      display:flex;
+      justify-content:flex-end;
+      gap:15px;
+      font-size:25px;
+    }
+
+    @media(max-width:820px){
+      .header-inner{
+        width:100%;
+        padding:0 14px;
+        min-height:84px;
+        flex-wrap:wrap;
+        gap:0;
+      }
+
+      .brand{
+        width:50%;
+      }
+
+      .logout{
+        margin-left:auto;
+        padding:12px 15px;
+        font-size:14px;
+      }
+
+      .nav{
+        order:3;
+        width:100%;
+        overflow-x:auto;
+        justify-content:flex-start;
+        gap:28px;
+        border-top:1px solid #251d10;
+        scrollbar-width:none;
+      }
+
+      .nav::-webkit-scrollbar{
+        display:none;
+      }
+
+      .nav a{
+        padding:18px 0 16px;
+        font-size:13px;
+        flex:0 0 auto;
+      }
+
+      .hero-content{
+        min-height:460px;
+        align-items:flex-start;
+        padding-top:40px;
+      }
+
+      .hero::before{
+        background:
+          linear-gradient(
+            90deg,
+            rgba(0,0,0,.98) 0%,
+            rgba(0,0,0,.93) 33%,
+            rgba(0,0,0,.74) 56%,
+            rgba(0,0,0,.46) 78%,
+            rgba(0,0,0,.57) 100%
+          ),
+          url("35F2F7B6-7B66-470B-82DE-4420BA7A57B5.jpeg") 78% 38% / cover no-repeat;
+        filter:brightness(.66);
+      }
+
+      .hero-copy{
+        width:60%;
+      }
+
+      .eyebrow{
+        font-size:11px;
+        letter-spacing:3px;
+      }
+
+      .hero h1{
+        font-size:50px;
+      }
+
+      .hero-kicker{
+        font-size:16px;
+        margin-top:18px;
+      }
+
+      .hero-desc{
+        font-size:14px;
+        margin-top:16px;
+      }
+
+      .hero-benefits{
+        grid-template-columns:1fr;
+        gap:8px;
+        margin-top:21px;
+      }
+
+      .hero-benefit{
+        font-size:10px;
+      }
+
+      .hero-benefit-icon{
+        font-size:22px;
+      }
+
+      .packages{
+        gap:12px;
+      }
+
+      .package-card{
+        min-height:328px;
+        padding:18px 15px 16px;
+        grid-template-columns:1fr;
+        display:flex;
+        flex-direction:column;
+      }
+
+      .package-card::before{
+        right:-2px;
+        top:84px;
+        font-size:90px;
+      }
+
+      .package-icon{
+        font-size:34px;
+        margin-bottom:7px;
+      }
+
+      .package-title{
+        font-size:23px;
+      }
+
+      .package-subtitle{
+        font-size:14px;
+        margin-top:5px;
+      }
+
+      .features{
+        font-size:12px;
+        gap:7px;
+        margin-top:15px;
+      }
+
+      .check{
+        width:16px;
+        height:16px;
+        flex-basis:16px;
+        font-size:9px;
+      }
+
+      .package-right{
+        margin-top:auto;
+        width:100%;
+        align-items:flex-start;
+      }
+
+      .price{
+        font-size:38px;
+        text-align:left;
+        margin-top:15px;
+      }
+
+      .period{
+        font-size:13px;
+        text-align:left;
+        margin-top:4px;
+      }
+
+      .select-btn{
+        margin-top:13px;
+        padding:12px 8px;
+        font-size:13px;
+      }
+
+      .card-label{
+        position:static;
+        margin-top:10px;
+        font-size:8px;
+        letter-spacing:1.5px;
+      }
+
+      .trust{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+
+      .footer{
+        grid-template-columns:1fr;
+        text-align:center;
+      }
+
+      .social{
+        justify-content:center;
+      }
+    }
+
+    @media(max-width:520px){
+      .brand-mark{
+        font-size:25px;
+      }
+
+      .brand-text strong{
+        font-size:21px;
+      }
+
+      .brand-text span{
+        font-size:8px;
+        letter-spacing:3px;
+      }
+
+      .logout{
+        font-size:13px;
+        padding:11px 13px;
+      }
+
+      .hero-content{
+        width:calc(100% - 26px);
+        min-height:430px;
+        padding-top:34px;
+      }
+
+      .hero-copy{
+        width:58%;
+      }
+
+      .hero h1{
+        font-size:42px;
+        line-height:.94;
+      }
+
+      .hero-kicker{
+        font-size:14px;
+      }
+
+      .hero-desc{
+        font-size:12px;
+        line-height:1.45;
+      }
+
+      .packages{
+        width:calc(100% - 18px);
+        gap:8px;
+      }
+
+      .package-card{
+        border-radius:14px;
+        min-height:344px;
+        padding:14px 12px 13px;
+      }
+
+      .package-icon{
+        font-size:30px;
+      }
+
+      .package-title{
+        font-size:20px;
+      }
+
+      .package-subtitle{
+        font-size:12px;
+      }
+
+      .features{
+        font-size:10.5px;
+        gap:6px;
+      }
+
+      .price{
+        font-size:34px;
+      }
+
+      .period{
+        font-size:11px;
+      }
+
+      .select-btn{
+        padding:11px 6px;
+        font-size:12px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header class="header">
+  <header class="header">
+    <div class="header-inner">
 
-  <a class="logo" href="index.html">
-    <span class="logo-mark">♆</span>
-    <span>
-      <b>ISB</b>
-      <small>EL TRIDENTE</small>
-    </span>
-  </a>
-
-  <nav class="nav">
-
-    <a href="index.html">
-      <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9H6v-9"/><path d="M9 20v-6h6v6"/></svg>
-      Inicio
-    </a>
-
-    <a class="active" href="#">
-      <svg viewBox="0 0 24 24"><path d="M4 8l3 3 5-7 5 7 3-3-2 11H6L4 8z"/></svg>
-      Paquetes
-    </a>
-
-    <a href="#">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg>
-      Mi Cuenta
-    </a>
-
-    <a href="#soporte">
-      <svg viewBox="0 0 24 24"><path d="M4 13v-2a8 8 0 0116 0v2"/><path d="M4 13H2v5h4v-5H4zM20 13h2v5h-4v-5h2z"/></svg>
-      Soporte
-    </a>
-
-    <a href="#">
-      <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
-      Cómo Funciona
-    </a>
-
-    <a href="#">
-      <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6"/></svg>
-      Contacto
-    </a>
-
-  </nav>
-
-  <button id="logoutBtn" class="logout">↪ Cerrar sesión</button>
-
-</header>
-
-
-<section class="hero">
-
-  <div class="hero-content">
-
-    <p class="eyebrow">PORTAL PRIVADO</p>
-
-    <h1>
-      ELIGE TU<br>
-      <span>PAQUETE</span>
-    </h1>
-
-    <p class="hero-quote">
-      “DISCIPLINA HOY,<br>
-      RESULTADOS SIEMPRE.”
-    </p>
-
-    <p class="hero-desc">
-      Accede al paquete que mejor se adapte a ti.<br>
-      Contenido, análisis y picks de alto nivel.<br>
-      Forma parte de la familia <b>ISB.</b>
-    </p>
-
-    <div class="benefits">
-
-      <div class="benefit">
-        <svg viewBox="0 0 24 24"><path d="M4 20V12M10 20V7M16 20V3M22 20H2"/></svg>
-        <b>ANÁLISIS<br>PROFESIONAL</b>
+      <div class="brand">
+        <div class="brand-mark">🔱</div>
+        <div class="brand-text">
+          <strong>ISB</strong>
+          <span>EL TRIDENTE</span>
+        </div>
       </div>
 
-      <div class="benefit">
-        <svg viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3 9-8 11-5-2-8-6-8-11V5l8-3z"/></svg>
-        <b>INFORMACIÓN<br>CONFIABLE</b>
-      </div>
+      <nav class="nav">
+        <a href="index.html">Inicio</a>
+        <a href="paquetes.html" class="active">Paquetes</a>
+        <a href="#">Mi Cuenta</a>
+        <a href="https://wa.me/12254329795">Soporte</a>
+        <a href="index.html#como-funciona">Cómo Funciona</a>
+        <a href="index.html#contacto">Contacto</a>
+      </nav>
 
-      <div class="benefit">
-        <svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 20c0-4 2-7 6-7M22 20c0-4-2-7-6-7M8 20c0-4 1-7 4-7s4 3 4 7"/></svg>
-        <b>COMUNIDAD<br>PRIVADA</b>
-      </div>
+      <button class="logout" id="logoutBtn">↪ Cerrar sesión</button>
 
-      <div class="benefit">
-        <svg viewBox="0 0 24 24"><path d="M7 8c-3 0-5 2-5 4s2 4 5 4c5 0 5-8 10-8 3 0 5 2 5 4s-2 4-5 4c-5 0-5-8-10-8z"/></svg>
-        <b>CRECEMOS<br>JUNTOS</b>
+    </div>
+  </header>
+
+
+  <section class="hero">
+    <div class="hero-content">
+
+      <div class="hero-copy">
+
+        <div class="eyebrow">PORTAL PRIVADO</div>
+
+        <h1>
+          ELIGE TU
+          <span>PAQUETE</span>
+        </h1>
+
+        <div class="hero-kicker">
+          “DISCIPLINA HOY,<br>
+          RESULTADOS SIEMPRE.”
+        </div>
+
+        <div class="hero-desc">
+          Accede al paquete que mejor se adapte a ti.
+          Contenido, análisis y picks de alto nivel.
+          Forma parte de la familia <strong>ISB</strong>.
+        </div>
+
+        <div class="hero-benefits">
+
+          <div class="hero-benefit">
+            <div class="hero-benefit-icon">▥</div>
+            <div>ANÁLISIS<br>PROFESIONAL</div>
+          </div>
+
+          <div class="hero-benefit">
+            <div class="hero-benefit-icon">🛡</div>
+            <div>INFORMACIÓN<br>CONFIABLE</div>
+          </div>
+
+          <div class="hero-benefit">
+            <div class="hero-benefit-icon">👥</div>
+            <div>COMUNIDAD<br>PRIVADA</div>
+          </div>
+
+        </div>
+
       </div>
 
     </div>
-
-  </div>
-
-  <div class="hero-sign">
-    “Más que picks,<br>una familia”
-  </div>
-
-</section>
+  </section>
 
 
-<main class="packages-wrap">
+  <section class="packages-section">
 
-<section class="packages">
+    <div class="packages">
 
-  <!-- PREMIUM DIARIO -->
-  <article class="card pd">
+      <article class="package-card">
+        <div class="package-left">
 
-    <div class="icon-side">
+          <div class="package-icon">♛</div>
+          <h2 class="package-title">Premium</h2>
+          <div class="package-subtitle">Diario</div>
 
-      <div class="package-icon">
-        <svg viewBox="0 0 64 64">
-          <path d="M10 25l8 7 7-18 8 17 8-17 6 18 8-7-4 23H14z"/>
-          <path d="M16 53h35"/>
-        </svg>
+          <ul class="features">
+            <li><span class="check">✓</span><span>1 selección Premium del día</span></li>
+            <li><span class="check">✓</span><span>Análisis detallado</span></li>
+            <li><span class="check">✓</span><span class="highlight">Incluye política de reembolso</span></li>
+            <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
+            <li><span class="check">✓</span><span>Soporte directo</span></li>
+          </ul>
+
+        </div>
+
+        <div class="package-right">
+          <div class="price">$70</div>
+          <div class="period">/ Día</div>
+          <button class="select-btn">Seleccionar →</button>
+        </div>
+
+        <div class="card-label">El más completo</div>
+      </article>
+
+
+      <article class="package-card">
+        <div class="package-left">
+
+          <div class="package-icon">♛</div>
+          <h2 class="package-title">Premium</h2>
+          <div class="package-subtitle">Semanal</div>
+
+          <ul class="features">
+            <li><span class="check">✓</span><span>1 selección Premium diaria (7 días)</span></li>
+            <li><span class="check">✓</span><span>Análisis detallado</span></li>
+            <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
+            <li><span class="check">✓</span><span>Soporte directo</span></li>
+            <li><span class="check">✓</span><span>Sin reembolso</span></li>
+          </ul>
+
+        </div>
+
+        <div class="package-right">
+          <div class="price">$399</div>
+          <div class="period">/ Semana</div>
+          <button class="select-btn">Seleccionar →</button>
+        </div>
+
+        <div class="card-label">Disciplina semanal</div>
+      </article>
+
+
+      <article class="package-card">
+        <div class="package-left">
+
+          <div class="package-icon">◇</div>
+          <h2 class="package-title">Exclusiva</h2>
+          <div class="package-subtitle">Diaria</div>
+
+          <ul class="features">
+            <li><span class="check">✓</span><span>1 selección Exclusiva del día</span></li>
+            <li><span class="check">✓</span><span>Análisis y estadísticas</span></li>
+            <li><span class="check">✓</span><span class="highlight">Incluye política de reembolso</span></li>
+            <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
+            <li><span class="check">✓</span><span>Soporte directo</span></li>
+          </ul>
+
+        </div>
+
+        <div class="package-right">
+          <div class="price">$50</div>
+          <div class="period">/ Día</div>
+          <button class="select-btn">Seleccionar →</button>
+        </div>
+
+        <div class="card-label">Información que marca la diferencia</div>
+      </article>
+
+
+      <article class="package-card">
+        <div class="package-left">
+
+          <div class="package-icon">◇</div>
+          <h2 class="package-title">Exclusiva</h2>
+          <div class="package-subtitle">Semanal</div>
+
+          <ul class="features">
+            <li><span class="check">✓</span><span>1 selección Exclusiva diaria (7 días)</span></li>
+            <li><span class="check">✓</span><span>Análisis y estadísticas</span></li>
+            <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
+            <li><span class="check">✓</span><span>Soporte directo</span></li>
+            <li><span class="check">✓</span><span>Sin reembolso</span></li>
+          </ul>
+
+        </div>
+
+        <div class="package-right">
+          <div class="price">$299</div>
+          <div class="period">/ Semana</div>
+          <button class="select-btn">Seleccionar →</button>
+        </div>
+
+        <div class="card-label">Un nivel más alto</div>
+      </article>
+
+
+      <article class="package-card">
+        <div class="package-left">
+
+          <div class="package-icon">▥</div>
+          <h2 class="package-title">Pack Mensual</h2>
+          <div class="package-subtitle">Mensual</div>
+
+          <ul class="features">
+            <li><span class="check">✓</span><span>Entre 3 y 5 picks al mes</span></li>
+            <li><span class="check">✓</span><span>Selecciones variadas</span></li>
+            <li><span class="check">✓</span><span>Análisis básico y estadísticas</span></li>
+            <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
+            <li><span class="check">✓</span><span>Sin reembolso</span></li>
+          </ul>
+
+        </div>
+
+        <div class="package-right">
+          <div class="price">$150</div>
+          <div class="period">/ Mes</div>
+          <button class="select-btn">Seleccionar →</button>
+        </div>
+
+        <div class="card-label">Más oportunidades</div>
+      </article>
+
+
+      <article class="package-card">
+        <div class="package-left">
+
+          <div class="package-icon">👥</div>
+          <h2 class="package-title">Económica</h2>
+          <div class="package-subtitle">Mensual</div>
+
+          <ul class="features">
+            <li><span class="check">✓</span><span>Acceso mensual</span></li>
+            <li><span class="check">✓</span><span>Selecciones especiales</span></li>
+            <li><span class="check">✓</span><span>Contenido adicional</span></li>
+            <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
+            <li><span class="check">✓</span><span>Sin reembolso</span></li>
+          </ul>
+
+        </div>
+
+        <div class="package-right">
+          <div class="price">$19.99</div>
+          <div class="period">/ Mes</div>
+          <button class="select-btn">Seleccionar →</button>
+        </div>
+
+        <div class="card-label">Para los que siempre están</div>
+      </article>
+
+    </div>
+
+
+    <div class="trust">
+
+      <div class="trust-item">
+        <div class="trust-icon">🔒</div>
+        <div>
+          <strong>Pago seguro</strong>
+          <span>Tus datos están protegidos.</span>
+        </div>
       </div>
 
-      <div class="price">$70</div>
-
-    </div>
-
-    <div class="card-main">
-      <h2>PREMIUM</h2>
-      <div class="type">DIARIO</div>
-
-      <ul class="features">
-        <li>1 selección Premium del día</li>
-        <li>Análisis detallado</li>
-        <li>Incluye política de reembolso</li>
-        <li>Acceso al portal privado</li>
-        <li>Soporte directo</li>
-      </ul>
-    </div>
-
-    <button class="select">Seleccionar ›</button>
-    <div class="label">EL MÁS COMPLETO</div>
-
-  </article>
-
-
-  <!-- PREMIUM SEMANAL -->
-  <article class="card ps">
-
-    <div class="icon-side">
-
-      <div class="package-icon">
-        <svg viewBox="0 0 64 64">
-          <path d="M10 25l8 7 7-18 8 17 8-17 6 18 8-7-4 23H14z"/>
-          <path d="M16 53h35"/>
-        </svg>
+      <div class="trust-item">
+        <div class="trust-icon">💳</div>
+        <div>
+          <strong>Múltiples métodos</strong>
+          <span>Tarjeta, PayPal, Cash App y más.</span>
+        </div>
       </div>
 
-      <div class="price">$399</div>
-
-    </div>
-
-    <div class="card-main">
-      <h2>PREMIUM</h2>
-      <div class="type">SEMANAL</div>
-
-      <ul class="features">
-        <li>1 selección Premium diaria (7 días)</li>
-        <li>Análisis detallado</li>
-        <li>Acceso al portal privado</li>
-        <li>Soporte directo</li>
-        <li>Sin reembolso</li>
-      </ul>
-    </div>
-
-    <button class="select">Seleccionar ›</button>
-    <div class="label">DISCIPLINA SEMANAL</div>
-
-  </article>
-
-
-  <!-- EXCLUSIVA DIARIA -->
-  <article class="card ed">
-
-    <div class="icon-side">
-
-      <div class="package-icon">
-        <svg viewBox="0 0 64 64">
-          <path d="M32 5L55 24 32 58 9 24z"/>
-          <path d="M9 24h46M20 24l12 34 12-34M20 24l12-19 12 19"/>
-        </svg>
+      <div class="trust-item">
+        <div class="trust-icon">☎</div>
+        <div>
+          <strong>Soporte directo</strong>
+          <span>WhatsApp disponible.</span>
+        </div>
       </div>
 
-      <div class="price">$50</div>
-
-    </div>
-
-    <div class="card-main">
-      <h2>EXCLUSIVA</h2>
-      <div class="type">DIARIA</div>
-
-      <ul class="features">
-        <li>1 selección Exclusiva del día</li>
-        <li>Análisis y estadísticas</li>
-        <li>Incluye política de reembolso</li>
-        <li>Acceso al portal privado</li>
-        <li>Soporte directo</li>
-      </ul>
-    </div>
-
-    <button class="select">Seleccionar ›</button>
-    <div class="label">INFORMACIÓN QUE MARCA LA DIFERENCIA</div>
-
-  </article>
-
-
-  <!-- EXCLUSIVA SEMANAL -->
-  <article class="card es">
-
-    <div class="icon-side">
-
-      <div class="package-icon">
-        <svg viewBox="0 0 64 64">
-          <path d="M32 5L55 24 32 58 9 24z"/>
-          <path d="M9 24h46M20 24l12 34 12-34M20 24l12-19 12 19"/>
-        </svg>
+      <div class="trust-item">
+        <div class="trust-icon">🛡</div>
+        <div>
+          <strong>Tu confianza</strong>
+          <span>Es nuestra prioridad.</span>
+        </div>
       </div>
 
-      <div class="price">$299</div>
-
     </div>
 
-    <div class="card-main">
-      <h2>EXCLUSIVA</h2>
-      <div class="type">SEMANAL</div>
-
-      <ul class="features">
-        <li>1 selección Exclusiva diaria (7 días)</li>
-        <li>Análisis y estadísticas</li>
-        <li>Acceso al portal privado</li>
-        <li>Soporte directo</li>
-        <li>Sin reembolso</li>
-      </ul>
-    </div>
-
-    <button class="select">Seleccionar ›</button>
-    <div class="label">UN NIVEL MÁS ALTO</div>
-
-  </article>
+  </section>
 
 
-  <!-- PACK MENSUAL -->
-  <article class="card pm">
+  <footer class="footer">
 
-    <div class="icon-side">
-
-      <div class="package-icon fill">
-        <svg viewBox="0 0 64 64">
-          <rect x="7" y="38" width="10" height="18"/>
-          <rect x="23" y="27" width="10" height="29"/>
-          <rect x="39" y="13" width="10" height="43"/>
-        </svg>
-      </div>
-
-      <div class="price">$150</div>
-
-    </div>
-
-    <div class="card-main">
-      <h2>PACK MENSUAL</h2>
-
-      <ul class="features">
-        <li>Entre 3 y 5 picks al mes</li>
-        <li>Selecciones variadas</li>
-        <li>Análisis básico y estadísticas</li>
-        <li>Acceso al portal privado</li>
-        <li>Sin reembolso</li>
-      </ul>
-    </div>
-
-    <button class="select">Seleccionar ›</button>
-    <div class="label">MÁS OPORTUNIDADES</div>
-
-  </article>
-
-
-  <!-- ECONÓMICA -->
-  <article class="card ec">
-
-    <div class="icon-side">
-
-      <div class="package-icon fill">
-        <svg viewBox="0 0 64 64">
-          <circle cx="32" cy="18" r="10"/>
-          <circle cx="15" cy="24" r="7"/>
-          <circle cx="49" cy="24" r="7"/>
-          <path d="M14 55c0-14 7-22 18-22s18 8 18 22z"/>
-          <path d="M3 55c0-10 4-17 12-20M61 55c0-10-4-17-12-20"/>
-        </svg>
-      </div>
-
-      <div class="price">$19.99</div>
-
-    </div>
-
-    <div class="card-main">
-      <h2>ECONÓMICA</h2>
-
-      <ul class="features">
-        <li>Acceso mensual</li>
-        <li>Selecciones especiales</li>
-        <li>Contenido adicional</li>
-        <li>Acceso al portal privado</li>
-        <li>Sin reembolso</li>
-      </ul>
-    </div>
-
-    <button class="select">Seleccionar ›</button>
-    <div class="label">PARA LOS QUE SIEMPRE ESTÁN</div>
-
-  </article>
-
-</section>
-
-</main>
-
-
-<section id="soporte" class="trust">
-
-  <article>
-    <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
     <div>
-      <b>PAGO SEGURO</b>
-      <p>Tus datos están protegidos.</p>
+      <div class="footer-brand">ISB | EL TRIDENTE</div>
+      <small>Todos los derechos reservados.</small>
     </div>
-  </article>
 
-  <article>
-    <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 9h20"/></svg>
-    <div>
-      <b>MÚLTIPLES MÉTODOS</b>
-      <p>Tarjeta, PayPal, Cash App y más.</p>
+    <div class="motto">
+      APUESTAS CON ESTRATEGIA,<br>
+      GANANCIAS CON DISCIPLINA
     </div>
-  </article>
 
-  <article>
-    <svg viewBox="0 0 24 24"><path d="M4 4l4 4-2 3c3 5 5 7 10 10l3-2 4 4"/></svg>
-    <div>
-      <b>SOPORTE DIRECTO</b>
-      <p>WhatsApp disponible siempre.</p>
+    <div class="social">
+      <a href="https://www.instagram.com/idael_sportbet_oficial/">◎</a>
+      <a href="#">♪</a>
+      <a href="#">▶</a>
+      <a href="https://wa.me/12254329795">◉</a>
+      <span>🔱</span>
     </div>
-  </article>
 
-  <article>
-    <svg viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3 9-8 11-5-2-8-6-8-11V5z"/></svg>
-    <div>
-      <b>TU CONFIANZA</b>
-      <p>Es nuestra prioridad.</p>
-    </div>
-  </article>
-
-</section>
+  </footer>
 
 
-<footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <div class="footer-brand">
-    <strong>ISB | EL TRIDENTE</strong>
-    <small>Todos los derechos reservados.</small>
-  </div>
+  <script>
+    const SUPABASE_URL = 'https://nfvkmxnprchvkufwvhpr.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1';
 
-  <div class="motto">
-    “APUESTAS CON ESTRATEGIA,<br>
-    GANANCIAS CON DISCIPLINA”
-  </div>
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
 
-  <div class="social">
-    ◎ ♪ ▶ ◉ ♆
-  </div>
+    async function protegerPagina(){
+      const { data } = await supabaseClient.auth.getSession();
 
-</footer>
+      if(!data.session){
+        window.location.href = 'index.html';
+      }
+    }
 
+    protegerPagina();
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-const SUPABASE_URL =
-'https://nfvkmxnprchvkufwvhpr.supabase.co';
-
-const SUPABASE_KEY =
-'sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1';
-
-const supabaseClient =
-window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
-
-async function protegerPagina(){
-
-  const {data} =
-  await supabaseClient.auth.getSession();
-
-  if(!data.session){
-    window.location.href='index.html';
-  }
-
-}
-
-protegerPagina();
-
-document
-.getElementById('logoutBtn')
-.addEventListener('click',async()=>{
-
-  await supabaseClient.auth.signOut();
-
-  window.location.href='index.html';
-
-});
-</script>
+    document
+      .getElementById('logoutBtn')
+      .addEventListener('click', async () => {
+        await supabaseClient.auth.signOut();
+        window.location.href = 'index.html';
+      });
+  </script>
 
 </body>
 </html>
