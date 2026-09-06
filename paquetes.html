@@ -1451,6 +1451,52 @@ button{
   }
 
 }
+  /* ===== CÓMO FUNCIONA EN UN SOLO CUADRO ===== */
+
+/* Oculta los 4 cuadros actuales */
+.steps{
+  display:block;
+}
+
+.step{
+  display:none;
+}
+
+/* Crea visualmente un solo cuadro */
+.steps::after{
+  content:"ELIGE TU PAQUETE  →  REALIZA TU COMPRA  →  RECIBE TU ACCESO  →  CONSULTA TUS PICKS\A\A Selecciona el paquete que prefieras, completa tu compra y, una vez activado tu acceso, podrás entrar a tu portal privado para consultar las selecciones correspondientes a tu plan.";
+  white-space:pre-wrap;
+  display:block;
+
+  padding:14px 16px;
+
+  border:1px solid #f6bd35;
+  border-radius:9px;
+
+  background:
+    radial-gradient(
+      circle at 85% 50%,
+      rgba(0,230,122,.07),
+      transparent 35%
+    ),
+    #080808;
+
+  color:#d8d8d8;
+
+  font-size:9px;
+  line-height:1.5;
+
+  text-align:center;
+}
+
+@media(max-width:700px){
+
+  .steps::after{
+    padding:12px 10px;
+    font-size:7.5px;
+    line-height:1.45;
+  }
+}
 </style>
 </head>
 
