@@ -800,6 +800,187 @@ button{
   .trust-strip{
     grid-template-columns:1fr 1.3fr 1fr;
   }
+}/* ==============================
+   AJUSTES FINALES IPHONE
+================================ */
+
+@media(max-width:700px){
+
+  /* Barra superior más compacta */
+  .topbar{
+    height:58px;
+  }
+
+  .topbar-inner{
+    height:58px;
+    padding:0 7px;
+    gap:11px;
+  }
+
+  .brand{
+    gap:4px;
+  }
+
+  .brand-trident{
+    font-size:19px;
+  }
+
+  .brand-name strong{
+    font-size:15px;
+  }
+
+  .brand-name small{
+    font-size:4.8px;
+    letter-spacing:1px;
+  }
+
+  .nav{
+    gap:12px;
+  }
+
+  .nav a{
+    height:58px;
+    font-size:9px;
+  }
+
+  .logout{
+    padding:7px 8px;
+    font-size:8.2px;
+    border-radius:12px;
+  }
+
+
+  /* Hero un poco más pequeño */
+  .hero{
+    height:305px;
+  }
+
+  .hero-inner{
+    padding:17px 9px;
+  }
+
+  .hero-copy{
+    width:52%;
+  }
+
+  /* Foto más visible */
+  .hero-photo{
+    filter:brightness(.86) contrast(1.04);
+    object-position:46% 40%;
+  }
+
+  .hero-photo-wrap{
+    left:41%;
+  }
+
+  .hero-photo-wrap::after{
+    background:
+      linear-gradient(
+        90deg,
+        #030303 0%,
+        rgba(3,3,3,.92) 11%,
+        rgba(3,3,3,.58) 31%,
+        rgba(3,3,3,.20) 60%,
+        rgba(3,3,3,.06) 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(0,0,0,.02) 55%,
+        rgba(0,0,0,.42) 100%
+      );
+  }
+
+  .hero::before{
+    background:
+      linear-gradient(
+        90deg,
+        #030303 0%,
+        #030303 28%,
+        rgba(3,3,3,.88) 38%,
+        rgba(3,3,3,.22) 65%,
+        rgba(3,3,3,.03) 100%
+      );
+  }
+
+  /* Hero texto ligeramente más compacto */
+  .hero-trident{
+    font-size:28px;
+  }
+
+  .hero-isb{
+    font-size:26px;
+  }
+
+  .hero-el{
+    font-size:9px;
+  }
+
+  .hero-mini{
+    font-size:6.2px;
+    margin-bottom:6px;
+  }
+
+  .hero h1{
+    font-size:29px;
+  }
+
+  .hero-sub{
+    font-size:7.4px;
+    margin-top:7px;
+  }
+
+  .benefits{
+    margin-top:11px;
+    gap:7px;
+  }
+
+  .benefit svg{
+    width:14px;
+    height:14px;
+    min-width:14px;
+  }
+
+  .benefit-text{
+    font-size:5.3px;
+  }
+
+
+  /* Tarjetas un poco más compactas */
+  .package-card{
+    height:205px;
+    padding:9px 8px;
+  }
+
+  .card-title{
+    font-size:13px;
+  }
+
+  .card-type{
+    font-size:6.7px;
+  }
+
+  .features{
+    font-size:6.8px;
+    gap:3.5px;
+  }
+
+  .card-content{
+    grid-template-columns:minmax(0,1fr) 64px;
+  }
+
+  .price{
+    font-size:21px;
+  }
+
+  .period{
+    font-size:6px;
+  }
+
+  .select-btn{
+    width:70px;
+    padding:6.5px 3px;
+    font-size:7px;
+  }
 }
 </style>
 </head>
