@@ -7,15 +7,16 @@
 
   <style>
     :root{
-      --bg:#050505;
-      --panel:#0b0b0b;
-      --panel2:#111;
-      --gold:#f6c65b;
-      --gold2:#c9952a;
-      --line:#5a4317;
+      --bg:#040404;
+      --panel:#0a0a0a;
+      --panel2:#0f0f0f;
+      --gold:#f7c64d;
+      --gold2:#c9911c;
+      --gold3:#8f6718;
       --text:#ffffff;
-      --muted:#bdbdbd;
-      --green:#25d366;
+      --muted:#c7c7c7;
+      --green:#00b85a;
+      --line:#47320f;
       --max:1180px;
     }
 
@@ -29,9 +30,12 @@
 
     body{
       margin:0;
-      background:var(--bg);
+      background:
+        radial-gradient(circle at 50% -10%, rgba(143,103,24,.05), transparent 32%),
+        #040404;
       color:var(--text);
       font-family:Arial,Helvetica,sans-serif;
+      overflow-x:hidden;
     }
 
     a{
@@ -46,16 +50,16 @@
     .header{
       position:sticky;
       top:0;
-      z-index:50;
-      background:rgba(4,4,4,.96);
-      backdrop-filter:blur(10px);
-      border-bottom:1px solid #2a2111;
+      z-index:100;
+      background:rgba(3,3,3,.97);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid #241a0b;
     }
 
     .header-inner{
-      width:min(var(--max),calc(100% - 28px));
+      width:min(var(--max),calc(100% - 26px));
+      min-height:78px;
       margin:auto;
-      min-height:84px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -65,46 +69,47 @@
     .brand{
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:9px;
       min-width:max-content;
     }
 
-    .brand-mark{
+    .brand-icon{
       color:var(--gold);
-      font-size:33px;
+      font-size:32px;
+      line-height:1;
+      filter:drop-shadow(0 0 7px rgba(247,198,77,.22));
+    }
+
+    .brand-copy strong{
+      display:block;
+      font-family:Georgia,serif;
+      color:var(--gold);
+      font-size:25px;
       line-height:1;
     }
 
-    .brand-text strong{
+    .brand-copy span{
       display:block;
-      color:var(--gold);
-      font-size:26px;
-      font-family:Georgia,serif;
-      letter-spacing:.5px;
-    }
-
-    .brand-text span{
-      display:block;
-      font-size:11px;
-      letter-spacing:4px;
-      margin-top:1px;
-      font-weight:700;
+      margin-top:4px;
+      font-size:9px;
+      letter-spacing:3.6px;
+      font-weight:800;
     }
 
     .nav{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:26px;
       flex:1;
-      font-size:14px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:25px;
+      white-space:nowrap;
     }
 
     .nav a{
       position:relative;
-      padding:31px 0 26px;
-      white-space:nowrap;
-      color:#eee;
+      padding:30px 0 25px;
+      color:#f2f2f2;
+      font-size:13px;
     }
 
     .nav a.active{
@@ -119,238 +124,302 @@
       bottom:0;
       height:2px;
       background:var(--gold);
+      box-shadow:0 0 8px rgba(247,198,77,.35);
     }
 
     .logout{
       border:1px solid var(--gold2);
-      background:#080808;
-      color:#fff;
       border-radius:18px;
-      padding:13px 18px;
-      font-weight:700;
+      background:#070707;
+      color:#fff;
+      padding:12px 18px;
+      font-weight:800;
       cursor:pointer;
       white-space:nowrap;
     }
 
     .hero{
       position:relative;
+      min-height:430px;
       overflow:hidden;
-      border-bottom:1px solid #31240f;
+      border-bottom:1px solid #2c210d;
       background:#050505;
     }
 
-    .hero::before{
-      content:"";
+    .hero-bg{
       position:absolute;
       inset:0;
       background:
         linear-gradient(
           90deg,
-          rgba(0,0,0,.98) 0%,
-          rgba(0,0,0,.94) 28%,
-          rgba(0,0,0,.77) 48%,
-          rgba(0,0,0,.46) 68%,
-          rgba(0,0,0,.52) 100%
+          rgba(0,0,0,.99) 0%,
+          rgba(0,0,0,.97) 24%,
+          rgba(0,0,0,.86) 44%,
+          rgba(0,0,0,.52) 67%,
+          rgba(0,0,0,.42) 100%
         ),
-        url("35F2F7B6-7B66-470B-82DE-4420BA7A57B5.jpeg") 78% 38% / cover no-repeat;
-      filter:brightness(.72);
+        url("35F2F7B6-7B66-470B-82DE-4420BA7A57B5.jpeg") 82% 35% / cover no-repeat;
+      filter:brightness(.72) contrast(1.05);
       transform:scale(1.01);
     }
 
-    .hero::after{
+    .hero-bg::after{
       content:"";
       position:absolute;
       inset:0;
       background:
-        radial-gradient(circle at 75% 35%,rgba(246,198,91,.11),transparent 27%),
-        linear-gradient(180deg,transparent 65%,rgba(0,0,0,.78) 100%);
-      pointer-events:none;
+        radial-gradient(circle at 76% 28%, rgba(247,198,77,.08), transparent 22%),
+        linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.22) 60%,rgba(0,0,0,.72));
     }
 
-    .hero-content{
+    .hero-inner{
       position:relative;
       z-index:2;
-      width:min(var(--max),calc(100% - 34px));
+      width:min(var(--max),calc(100% - 28px));
+      min-height:430px;
       margin:auto;
-      min-height:500px;
       display:flex;
       align-items:center;
-      padding:54px 0 38px;
+      padding:36px 0 30px;
     }
 
     .hero-copy{
-      width:min(590px,58%);
+      width:min(570px,58%);
     }
 
-    .eyebrow{
+    .hero-logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .hero-logo-icon{
       color:var(--gold);
-      font-weight:800;
-      letter-spacing:5px;
-      font-size:15px;
-      margin-bottom:11px;
+      font-size:54px;
+      line-height:1;
+      filter:drop-shadow(0 0 10px rgba(247,198,77,.25));
+    }
+
+    .hero-logo-text strong{
+      display:block;
+      color:var(--gold);
+      font-family:Georgia,serif;
+      font-size:48px;
+      line-height:.9;
+    }
+
+    .hero-logo-text span{
+      display:block;
+      color:#f7d67c;
+      font-family:Georgia,serif;
+      font-size:24px;
+      letter-spacing:3px;
+      margin-top:3px;
+    }
+
+    .hero-mini{
+      margin:10px 0 8px;
+      color:#e3e3e3;
+      font-size:12px;
+      letter-spacing:3px;
+      font-weight:700;
     }
 
     .hero h1{
       margin:0;
-      font-size:66px;
-      line-height:.92;
-      font-weight:900;
-      letter-spacing:-2px;
       text-transform:uppercase;
+      font-size:58px;
+      line-height:.94;
+      letter-spacing:-2px;
+      font-weight:900;
     }
 
     .hero h1 span{
       color:var(--gold);
-      display:block;
     }
 
-    .hero-kicker{
-      margin-top:26px;
-      font-size:21px;
-      font-weight:800;
-      line-height:1.35;
+    .hero-line{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-top:13px;
+      color:#eaeaea;
+      font-size:14px;
+      font-weight:700;
+      text-transform:uppercase;
     }
 
-    .hero-desc{
-      margin-top:24px;
-      color:#e0e0e0;
-      font-size:18px;
-      line-height:1.55;
-      max-width:560px;
+    .hero-line::before,
+    .hero-line::after{
+      content:"";
+      height:1px;
+      background:var(--gold);
+      width:38px;
+      opacity:.85;
+    }
+
+    .hero-line strong{
+      color:var(--gold);
     }
 
     .hero-benefits{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:22px;
-      margin-top:31px;
+      display:flex;
+      gap:24px;
+      margin-top:22px;
+      flex-wrap:wrap;
     }
 
-    .hero-benefit{
+    .benefit{
       display:flex;
       align-items:center;
-      gap:10px;
-      font-size:12px;
-      font-weight:800;
-      line-height:1.15;
+      gap:8px;
+      min-width:135px;
     }
 
-    .hero-benefit-icon{
+    .benefit-icon{
       color:var(--gold);
-      font-size:28px;
-      width:35px;
-      flex:0 0 35px;
+      font-size:25px;
+      width:30px;
       text-align:center;
+    }
+
+    .benefit-text{
+      font-size:10px;
+      line-height:1.2;
+      font-weight:900;
+      text-transform:uppercase;
     }
 
     .packages-section{
       position:relative;
+      padding:18px 0 30px;
       background:
-        linear-gradient(rgba(0,0,0,.93),rgba(0,0,0,.97));
-      padding:18px 0 34px;
+        radial-gradient(circle at 50% 0%,rgba(247,198,77,.025),transparent 28%),
+        #040404;
     }
 
     .packages{
-      width:min(var(--max),calc(100% - 28px));
+      width:min(var(--max),calc(100% - 24px));
       margin:auto;
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:16px;
+      gap:14px;
     }
 
     .package-card{
       position:relative;
       overflow:hidden;
-      min-height:290px;
-      background:
-        linear-gradient(145deg,#0b0b0b 0%,#101010 62%,#070707 100%);
+      min-height:255px;
       border:1px solid var(--gold2);
-      border-radius:18px;
-      padding:24px 25px 18px;
-      display:grid;
-      grid-template-columns:1fr 155px;
-      gap:12px;
+      border-radius:14px;
+      background:
+        linear-gradient(145deg,#090909 0%,#0e0e0e 58%,#070707 100%);
       box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,.015),
-        0 0 18px rgba(201,149,42,.05);
+        inset 0 0 0 1px rgba(255,255,255,.012),
+        0 0 14px rgba(247,198,77,.03);
+      padding:20px 20px 18px;
+      display:grid;
+      grid-template-columns:1fr 145px;
+      gap:10px;
     }
 
     .package-card::before{
-      content:"🔱";
+      content:"";
       position:absolute;
-      right:20px;
-      top:41px;
-      font-size:118px;
-      line-height:1;
-      color:rgba(246,198,91,.055);
-      transform:rotate(-4deg);
+      inset:-20%;
       pointer-events:none;
-      filter:grayscale(1);
+      background:
+        radial-gradient(circle at 78% 38%,rgba(0,184,90,.085),transparent 15%),
+        radial-gradient(circle at 64% 52%,rgba(0,184,90,.06),transparent 17%),
+        radial-gradient(circle at 86% 68%,rgba(0,184,90,.04),transparent 16%);
+      filter:blur(18px);
+      opacity:.72;
+    }
+
+    .package-card::after{
+      content:"";
+      position:absolute;
+      right:7%;
+      top:24%;
+      width:44%;
+      height:48%;
+      pointer-events:none;
+      background:
+        radial-gradient(ellipse at center,
+          rgba(0,184,90,.06) 0%,
+          rgba(0,184,90,.035) 22%,
+          rgba(0,184,90,0) 70%);
+      filter:blur(9px);
+      transform:rotate(-12deg);
+      opacity:.7;
     }
 
     .package-left,
     .package-right{
       position:relative;
       z-index:2;
+      min-width:0;
     }
 
     .package-icon{
       color:var(--gold);
-      font-size:45px;
-      margin-bottom:9px;
+      font-size:40px;
       line-height:1;
+      margin-bottom:7px;
+      text-shadow:0 0 10px rgba(247,198,77,.13);
     }
 
     .package-title{
       margin:0;
-      font-size:29px;
+      text-transform:uppercase;
+      font-size:28px;
       line-height:1;
       font-weight:900;
-      text-transform:uppercase;
+      letter-spacing:-.5px;
     }
 
     .package-subtitle{
-      margin-top:8px;
-      font-size:18px;
-      font-weight:500;
+      margin-top:7px;
       text-transform:uppercase;
-      color:#e9e9e9;
+      color:#ededed;
+      font-size:16px;
     }
 
     .features{
-      margin:23px 0 0;
-      padding:0;
       list-style:none;
+      padding:0;
+      margin:20px 0 0;
       display:grid;
-      gap:10px;
+      gap:8px;
       color:#ededed;
-      font-size:16px;
-      line-height:1.3;
+      font-size:15px;
+      line-height:1.25;
     }
 
     .features li{
       display:flex;
-      gap:9px;
+      gap:8px;
       align-items:flex-start;
     }
 
     .check{
-      width:19px;
-      height:19px;
+      width:17px;
+      height:17px;
+      min-width:17px;
       border:1px solid var(--gold);
-      color:var(--gold);
       border-radius:50%;
       display:grid;
       place-items:center;
-      flex:0 0 19px;
-      font-size:11px;
+      color:var(--gold);
+      font-size:9px;
       font-weight:900;
       margin-top:1px;
     }
 
     .highlight{
       color:var(--gold);
-      font-weight:800;
+      font-weight:900;
     }
 
     .package-right{
@@ -358,136 +427,168 @@
       flex-direction:column;
       justify-content:flex-end;
       align-items:flex-end;
-      min-width:0;
     }
 
     .price{
       color:var(--gold);
-      font-size:47px;
-      font-weight:900;
+      font-size:45px;
       line-height:1;
-      letter-spacing:-1.5px;
+      font-weight:900;
       text-align:right;
-      text-shadow:0 0 12px rgba(246,198,91,.1);
+      letter-spacing:-1px;
+      text-shadow:0 0 12px rgba(247,198,77,.08);
     }
 
     .period{
+      margin-top:6px;
       color:var(--gold);
-      margin-top:8px;
-      font-size:18px;
-      text-transform:uppercase;
+      font-size:16px;
       font-weight:800;
+      text-transform:uppercase;
       text-align:right;
     }
 
     .select-btn{
-      margin-top:25px;
       width:100%;
+      margin-top:19px;
       border:0;
-      border-radius:11px;
-      padding:15px 11px;
-      cursor:pointer;
+      border-radius:9px;
+      padding:13px 10px;
+      background:linear-gradient(90deg,#d9a021 0%,#ffd361 49%,#d49a1d 100%);
+      color:#090909;
       font-weight:900;
-      font-size:16px;
-      color:#080808;
-      background:linear-gradient(90deg,#d99f24,#ffd45e,#d79d22);
-      box-shadow:inset 0 0 0 1px rgba(255,255,255,.28);
+      cursor:pointer;
+      font-size:15px;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);
     }
 
-    .card-label{
-      position:absolute;
-      left:24px;
-      bottom:13px;
-      font-size:10px;
-      color:#d8d8d8;
-      letter-spacing:3px;
-      text-transform:uppercase;
-      font-weight:800;
-    }
-
-    .trust{
-      width:min(var(--max),calc(100% - 28px));
-      margin:26px auto 0;
-      border-top:1px solid #3b2d15;
-      border-bottom:1px solid #3b2d15;
-      padding:22px 4px;
+    .trust-strip{
+      width:min(var(--max),calc(100% - 24px));
+      margin:24px auto 0;
+      padding:18px 0;
+      border-top:1px solid #30240f;
+      border-bottom:1px solid #30240f;
       display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:14px;
+      grid-template-columns:1fr 1.6fr 1fr;
+      gap:18px;
+      align-items:center;
     }
 
-    .trust-item{
+    .trust-block{
       display:flex;
-      gap:11px;
       align-items:center;
-      min-width:0;
+      gap:11px;
     }
 
     .trust-icon{
       color:var(--gold);
       font-size:28px;
       width:34px;
-      flex:0 0 34px;
       text-align:center;
     }
 
-    .trust-item strong{
+    .trust-copy strong{
       display:block;
       font-size:11px;
       text-transform:uppercase;
     }
 
-    .trust-item span{
+    .trust-copy span{
       display:block;
-      color:#bfbfbf;
+      margin-top:3px;
       font-size:11px;
-      margin-top:5px;
-      line-height:1.3;
+      color:#c5c5c5;
+    }
+
+    .payment-wrap{
+      text-align:center;
+    }
+
+    .payment-title{
+      font-size:11px;
+      text-transform:uppercase;
+      margin-bottom:7px;
+    }
+
+    .payments{
+      display:flex;
+      justify-content:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .payment-pill{
+      min-width:48px;
+      padding:8px 10px;
+      border-radius:7px;
+      background:#101010;
+      border:1px solid #232323;
+      font-size:12px;
+      font-weight:900;
+    }
+
+    .whatsapp-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:11px 16px;
+      border:1px solid var(--gold2);
+      border-radius:15px;
+      font-weight:800;
+      white-space:nowrap;
     }
 
     .footer{
-      width:min(var(--max),calc(100% - 28px));
+      width:min(var(--max),calc(100% - 24px));
       margin:auto;
-      padding:26px 0 35px;
+      padding:23px 0 30px;
       display:grid;
-      grid-template-columns:1fr 1.4fr 1fr;
-      align-items:center;
+      grid-template-columns:1fr 1.2fr 1fr;
       gap:20px;
+      align-items:center;
     }
 
-    .footer-brand{
+    .footer-brand strong{
       color:var(--gold);
-      font-family:Georgia,serif;
-      font-size:20px;
-      font-weight:800;
-    }
-
-    .footer small{
-      color:#bbb;
       display:block;
-      margin-top:6px;
+      font-family:Georgia,serif;
+      font-size:23px;
     }
 
-    .motto{
+    .footer-brand span{
+      display:block;
+      color:#d4b35d;
+      font-size:11px;
+      letter-spacing:2px;
+      margin-top:2px;
+    }
+
+    .footer-motto{
       text-align:center;
-      color:#d7d7d7;
-      letter-spacing:4px;
-      line-height:1.6;
-      font-size:12px;
+      color:#e5e5e5;
+      font-size:13px;
+      line-height:1.5;
+      letter-spacing:2.5px;
+      text-transform:uppercase;
+    }
+
+    .footer-motto strong{
+      color:var(--gold);
     }
 
     .social{
       display:flex;
       justify-content:flex-end;
-      gap:15px;
-      font-size:25px;
+      align-items:center;
+      gap:13px;
+      font-size:23px;
     }
 
-    @media(max-width:820px){
+    @media(max-width:860px){
       .header-inner{
         width:100%;
-        padding:0 14px;
-        min-height:84px;
+        padding:0 13px;
+        min-height:78px;
         flex-wrap:wrap;
         gap:0;
       }
@@ -498,8 +599,8 @@
 
       .logout{
         margin-left:auto;
-        padding:12px 15px;
-        font-size:14px;
+        font-size:13px;
+        padding:11px 14px;
       }
 
       .nav{
@@ -507,8 +608,8 @@
         width:100%;
         overflow-x:auto;
         justify-content:flex-start;
-        gap:28px;
-        border-top:1px solid #251d10;
+        gap:27px;
+        border-top:1px solid #20170a;
         scrollbar-width:none;
       }
 
@@ -517,146 +618,140 @@
       }
 
       .nav a{
-        padding:18px 0 16px;
-        font-size:13px;
         flex:0 0 auto;
+        padding:16px 0 14px;
+        font-size:12px;
       }
 
-      .hero-content{
-        min-height:460px;
-        align-items:flex-start;
-        padding-top:40px;
+      .hero{
+        min-height:420px;
       }
 
-      .hero::before{
+      .hero-inner{
+        min-height:420px;
+        padding-top:31px;
+      }
+
+      .hero-bg{
         background:
           linear-gradient(
             90deg,
-            rgba(0,0,0,.98) 0%,
-            rgba(0,0,0,.93) 33%,
-            rgba(0,0,0,.74) 56%,
-            rgba(0,0,0,.46) 78%,
-            rgba(0,0,0,.57) 100%
+            rgba(0,0,0,.995) 0%,
+            rgba(0,0,0,.97) 28%,
+            rgba(0,0,0,.82) 51%,
+            rgba(0,0,0,.43) 72%,
+            rgba(0,0,0,.38) 100%
           ),
-          url("35F2F7B6-7B66-470B-82DE-4420BA7A57B5.jpeg") 78% 38% / cover no-repeat;
-        filter:brightness(.66);
+          url("35F2F7B6-7B66-470B-82DE-4420BA7A57B5.jpeg") 86% 34% / cover no-repeat;
+        filter:brightness(.67) contrast(1.05);
       }
 
       .hero-copy{
-        width:60%;
+        width:56%;
       }
 
-      .eyebrow{
-        font-size:11px;
-        letter-spacing:3px;
+      .hero-logo-icon{
+        font-size:40px;
+      }
+
+      .hero-logo-text strong{
+        font-size:36px;
+      }
+
+      .hero-logo-text span{
+        font-size:18px;
       }
 
       .hero h1{
-        font-size:50px;
+        font-size:45px;
       }
 
-      .hero-kicker{
-        font-size:16px;
-        margin-top:18px;
+      .hero-mini{
+        font-size:9px;
+        letter-spacing:2px;
       }
 
-      .hero-desc{
-        font-size:14px;
-        margin-top:16px;
+      .hero-line{
+        font-size:11px;
       }
 
       .hero-benefits{
-        grid-template-columns:1fr;
-        gap:8px;
-        margin-top:21px;
+        gap:11px;
       }
 
-      .hero-benefit{
-        font-size:10px;
+      .benefit{
+        min-width:115px;
       }
 
-      .hero-benefit-icon{
+      .benefit-text{
+        font-size:9px;
+      }
+
+      .benefit-icon{
         font-size:22px;
       }
 
       .packages{
-        gap:12px;
+        gap:9px;
       }
 
       .package-card{
-        min-height:328px;
-        padding:18px 15px 16px;
-        grid-template-columns:1fr;
-        display:flex;
-        flex-direction:column;
-      }
-
-      .package-card::before{
-        right:-2px;
-        top:84px;
-        font-size:90px;
+        min-height:238px;
+        border-radius:12px;
+        padding:16px 14px 14px;
+        grid-template-columns:1fr 118px;
       }
 
       .package-icon{
-        font-size:34px;
-        margin-bottom:7px;
+        font-size:32px;
       }
 
       .package-title{
-        font-size:23px;
+        font-size:22px;
       }
 
       .package-subtitle{
-        font-size:14px;
-        margin-top:5px;
+        font-size:13px;
       }
 
       .features{
-        font-size:12px;
-        gap:7px;
-        margin-top:15px;
+        font-size:11.5px;
+        gap:6px;
+        margin-top:14px;
       }
 
       .check{
-        width:16px;
-        height:16px;
-        flex-basis:16px;
-        font-size:9px;
-      }
-
-      .package-right{
-        margin-top:auto;
-        width:100%;
-        align-items:flex-start;
+        width:15px;
+        height:15px;
+        min-width:15px;
+        font-size:8px;
       }
 
       .price{
-        font-size:38px;
-        text-align:left;
-        margin-top:15px;
+        font-size:36px;
       }
 
       .period{
-        font-size:13px;
-        text-align:left;
-        margin-top:4px;
+        font-size:11px;
       }
 
       .select-btn{
         margin-top:13px;
-        padding:12px 8px;
-        font-size:13px;
+        padding:11px 6px;
+        font-size:12px;
       }
 
-      .card-label{
-        position:static;
-        margin-top:10px;
-        font-size:8px;
-        letter-spacing:1.5px;
+      .trust-strip{
+        grid-template-columns:1fr;
+        gap:14px;
       }
 
-      .trust{
-        grid-template-columns:repeat(2,minmax(0,1fr));
+      .payment-wrap{
+        text-align:left;
+      }
+
+      .payments{
+        justify-content:flex-start;
       }
 
       .footer{
@@ -669,88 +764,179 @@
       }
     }
 
-    @media(max-width:520px){
-      .brand-mark{
+    @media(max-width:560px){
+      .brand-icon{
         font-size:25px;
       }
 
-      .brand-text strong{
+      .brand-copy strong{
         font-size:21px;
       }
 
-      .brand-text span{
-        font-size:8px;
-        letter-spacing:3px;
+      .brand-copy span{
+        font-size:7.5px;
+        letter-spacing:2.7px;
       }
 
-      .logout{
-        font-size:13px;
-        padding:11px 13px;
+      .hero{
+        min-height:390px;
       }
 
-      .hero-content{
-        width:calc(100% - 26px);
-        min-height:430px;
-        padding-top:34px;
+      .hero-inner{
+        width:calc(100% - 20px);
+        min-height:390px;
+        padding:25px 0 22px;
       }
 
       .hero-copy{
-        width:58%;
+        width:55%;
       }
 
-      .hero h1{
-        font-size:42px;
-        line-height:.94;
+      .hero-bg{
+        background:
+          linear-gradient(
+            90deg,
+            rgba(0,0,0,.995) 0%,
+            rgba(0,0,0,.97) 27%,
+            rgba(0,0,0,.83) 48%,
+            rgba(0,0,0,.37) 73%,
+            rgba(0,0,0,.33) 100%
+          ),
+          url("35F2F7B6-7B66-470B-82DE-4420BA7A57B5.jpeg") 88% 34% / cover no-repeat;
+        filter:brightness(.66) contrast(1.05);
       }
 
-      .hero-kicker{
-        font-size:14px;
+      .hero-logo{
+        gap:7px;
+        margin-bottom:8px;
       }
 
-      .hero-desc{
-        font-size:12px;
-        line-height:1.45;
-      }
-
-      .packages{
-        width:calc(100% - 18px);
-        gap:8px;
-      }
-
-      .package-card{
-        border-radius:14px;
-        min-height:344px;
-        padding:14px 12px 13px;
-      }
-
-      .package-icon{
+      .hero-logo-icon{
         font-size:30px;
       }
 
+      .hero-logo-text strong{
+        font-size:27px;
+      }
+
+      .hero-logo-text span{
+        font-size:12px;
+        letter-spacing:1.5px;
+      }
+
+      .hero-mini{
+        font-size:7px;
+        letter-spacing:1.4px;
+        margin-top:4px;
+      }
+
+      .hero h1{
+        font-size:35px;
+        line-height:.95;
+      }
+
+      .hero-line{
+        font-size:8.5px;
+        gap:5px;
+        margin-top:8px;
+      }
+
+      .hero-line::before,
+      .hero-line::after{
+        width:15px;
+      }
+
+      .hero-benefits{
+        margin-top:14px;
+        gap:7px;
+        display:grid;
+        grid-template-columns:1fr 1fr;
+      }
+
+      .benefit{
+        min-width:0;
+        gap:5px;
+      }
+
+      .benefit:nth-child(3){
+        grid-column:1 / 3;
+      }
+
+      .benefit-icon{
+        width:22px;
+        font-size:18px;
+      }
+
+      .benefit-text{
+        font-size:7.6px;
+      }
+
+      .packages-section{
+        padding-top:9px;
+      }
+
+      .packages{
+        width:calc(100% - 14px);
+        gap:7px;
+      }
+
+      .package-card{
+        min-height:220px;
+        border-radius:11px;
+        padding:12px 10px 11px;
+        grid-template-columns:1fr 92px;
+        gap:5px;
+      }
+
+      .package-icon{
+        font-size:26px;
+        margin-bottom:5px;
+      }
+
       .package-title{
-        font-size:20px;
+        font-size:18px;
       }
 
       .package-subtitle{
-        font-size:12px;
+        font-size:10.5px;
+        margin-top:4px;
       }
 
       .features{
-        font-size:10.5px;
-        gap:6px;
+        font-size:9.2px;
+        margin-top:10px;
+        gap:5px;
+      }
+
+      .check{
+        width:13px;
+        height:13px;
+        min-width:13px;
+        font-size:7px;
       }
 
       .price{
-        font-size:34px;
+        font-size:30px;
       }
 
       .period{
-        font-size:11px;
+        font-size:9px;
+        margin-top:3px;
       }
 
       .select-btn{
-        padding:11px 6px;
-        font-size:12px;
+        font-size:10px;
+        padding:9px 4px;
+        margin-top:10px;
+        border-radius:7px;
+      }
+
+      .trust-strip{
+        width:calc(100% - 14px);
+      }
+
+      .footer{
+        width:calc(100% - 14px);
       }
     }
   </style>
@@ -762,8 +948,8 @@
     <div class="header-inner">
 
       <div class="brand">
-        <div class="brand-mark">🔱</div>
-        <div class="brand-text">
+        <div class="brand-icon">🔱</div>
+        <div class="brand-copy">
           <strong>ISB</strong>
           <span>EL TRIDENTE</span>
         </div>
@@ -771,57 +957,64 @@
 
       <nav class="nav">
         <a href="index.html">Inicio</a>
-        <a href="paquetes.html" class="active">Paquetes</a>
+        <a class="active" href="paquetes.html">Paquetes</a>
         <a href="#">Mi Cuenta</a>
         <a href="https://wa.me/12254329795">Soporte</a>
         <a href="index.html#como-funciona">Cómo Funciona</a>
         <a href="index.html#contacto">Contacto</a>
       </nav>
 
-      <button class="logout" id="logoutBtn">↪ Cerrar sesión</button>
+      <button id="logoutBtn" class="logout">↪ Cerrar sesión</button>
 
     </div>
   </header>
 
 
   <section class="hero">
-    <div class="hero-content">
+
+    <div class="hero-bg"></div>
+
+    <div class="hero-inner">
 
       <div class="hero-copy">
 
-        <div class="eyebrow">PORTAL PRIVADO</div>
+        <div class="hero-logo">
+          <div class="hero-logo-icon">🔱</div>
 
-        <h1>
-          ELIGE TU
-          <span>PAQUETE</span>
-        </h1>
-
-        <div class="hero-kicker">
-          “DISCIPLINA HOY,<br>
-          RESULTADOS SIEMPRE.”
+          <div class="hero-logo-text">
+            <strong>ISB</strong>
+            <span>EL TRIDENTE</span>
+          </div>
         </div>
 
-        <div class="hero-desc">
-          Accede al paquete que mejor se adapte a ti.
-          Contenido, análisis y picks de alto nivel.
-          Forma parte de la familia <strong>ISB</strong>.
+        <div class="hero-mini">
+          DISCIPLINA &nbsp; | &nbsp; ANÁLISIS &nbsp; | &nbsp; RESULTADOS
+        </div>
+
+        <h1>
+          ELIGE TU <span>PAQUETE</span>
+        </h1>
+
+        <div class="hero-line">
+          DIFERENTES PLANES,
+          <strong>EL MISMO OBJETIVO</strong>
         </div>
 
         <div class="hero-benefits">
 
-          <div class="hero-benefit">
-            <div class="hero-benefit-icon">▥</div>
-            <div>ANÁLISIS<br>PROFESIONAL</div>
+          <div class="benefit">
+            <div class="benefit-icon">🛡</div>
+            <div class="benefit-text">JUGADAS<br>DE ALTO VALOR</div>
           </div>
 
-          <div class="hero-benefit">
-            <div class="hero-benefit-icon">🛡</div>
-            <div>INFORMACIÓN<br>CONFIABLE</div>
+          <div class="benefit">
+            <div class="benefit-icon">▥</div>
+            <div class="benefit-text">ANÁLISIS<br>PROFESIONAL</div>
           </div>
 
-          <div class="hero-benefit">
-            <div class="hero-benefit-icon">👥</div>
-            <div>COMUNIDAD<br>PRIVADA</div>
+          <div class="benefit">
+            <div class="benefit-icon">👥</div>
+            <div class="benefit-text">RESULTADOS<br>COMPROBADOS</div>
           </div>
 
         </div>
@@ -837,6 +1030,7 @@
     <div class="packages">
 
       <article class="package-card">
+
         <div class="package-left">
 
           <div class="package-icon">♛</div>
@@ -846,7 +1040,7 @@
           <ul class="features">
             <li><span class="check">✓</span><span>1 selección Premium del día</span></li>
             <li><span class="check">✓</span><span>Análisis detallado</span></li>
-            <li><span class="check">✓</span><span class="highlight">Incluye política de reembolso</span></li>
+            <li><span class="check">✓</span><span class="highlight">Reembolso si se pierde</span></li>
             <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
             <li><span class="check">✓</span><span>Soporte directo</span></li>
           </ul>
@@ -859,11 +1053,11 @@
           <button class="select-btn">Seleccionar →</button>
         </div>
 
-        <div class="card-label">El más completo</div>
       </article>
 
 
       <article class="package-card">
+
         <div class="package-left">
 
           <div class="package-icon">♛</div>
@@ -871,11 +1065,11 @@
           <div class="package-subtitle">Semanal</div>
 
           <ul class="features">
-            <li><span class="check">✓</span><span>1 selección Premium diaria (7 días)</span></li>
+            <li><span class="check">✓</span><span>7 selecciones (1 diaria)</span></li>
             <li><span class="check">✓</span><span>Análisis detallado</span></li>
+            <li><span class="check">✓</span><span>Mayor rentabilidad</span></li>
             <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
             <li><span class="check">✓</span><span>Soporte directo</span></li>
-            <li><span class="check">✓</span><span>Sin reembolso</span></li>
           </ul>
 
         </div>
@@ -886,11 +1080,11 @@
           <button class="select-btn">Seleccionar →</button>
         </div>
 
-        <div class="card-label">Disciplina semanal</div>
       </article>
 
 
       <article class="package-card">
+
         <div class="package-left">
 
           <div class="package-icon">◇</div>
@@ -900,7 +1094,7 @@
           <ul class="features">
             <li><span class="check">✓</span><span>1 selección Exclusiva del día</span></li>
             <li><span class="check">✓</span><span>Análisis y estadísticas</span></li>
-            <li><span class="check">✓</span><span class="highlight">Incluye política de reembolso</span></li>
+            <li><span class="check">✓</span><span class="highlight">Reembolso si se pierde</span></li>
             <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
             <li><span class="check">✓</span><span>Soporte directo</span></li>
           </ul>
@@ -913,11 +1107,11 @@
           <button class="select-btn">Seleccionar →</button>
         </div>
 
-        <div class="card-label">Información que marca la diferencia</div>
       </article>
 
 
       <article class="package-card">
+
         <div class="package-left">
 
           <div class="package-icon">◇</div>
@@ -925,11 +1119,11 @@
           <div class="package-subtitle">Semanal</div>
 
           <ul class="features">
-            <li><span class="check">✓</span><span>1 selección Exclusiva diaria (7 días)</span></li>
+            <li><span class="check">✓</span><span>7 selecciones Exclusivas</span></li>
             <li><span class="check">✓</span><span>Análisis y estadísticas</span></li>
+            <li><span class="check">✓</span><span>Mayor rentabilidad</span></li>
             <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
             <li><span class="check">✓</span><span>Soporte directo</span></li>
-            <li><span class="check">✓</span><span>Sin reembolso</span></li>
           </ul>
 
         </div>
@@ -940,23 +1134,23 @@
           <button class="select-btn">Seleccionar →</button>
         </div>
 
-        <div class="card-label">Un nivel más alto</div>
       </article>
 
 
       <article class="package-card">
+
         <div class="package-left">
 
-          <div class="package-icon">▥</div>
+          <div class="package-icon">▣</div>
           <h2 class="package-title">Pack Mensual</h2>
           <div class="package-subtitle">Mensual</div>
 
           <ul class="features">
-            <li><span class="check">✓</span><span>Entre 3 y 5 picks al mes</span></li>
+            <li><span class="check">✓</span><span>3 - 5 picks por semana</span></li>
             <li><span class="check">✓</span><span>Selecciones variadas</span></li>
-            <li><span class="check">✓</span><span>Análisis básico y estadísticas</span></li>
+            <li><span class="check">✓</span><span>Análisis completo</span></li>
             <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
-            <li><span class="check">✓</span><span>Sin reembolso</span></li>
+            <li><span class="check">✓</span><span>Soporte directo</span></li>
           </ul>
 
         </div>
@@ -967,20 +1161,20 @@
           <button class="select-btn">Seleccionar →</button>
         </div>
 
-        <div class="card-label">Más oportunidades</div>
       </article>
 
 
       <article class="package-card">
+
         <div class="package-left">
 
-          <div class="package-icon">👥</div>
+          <div class="package-icon">▥</div>
           <h2 class="package-title">Económica</h2>
           <div class="package-subtitle">Mensual</div>
 
           <ul class="features">
             <li><span class="check">✓</span><span>Acceso mensual</span></li>
-            <li><span class="check">✓</span><span>Selecciones especiales</span></li>
+            <li><span class="check">✓</span><span>Jugadas seleccionadas</span></li>
             <li><span class="check">✓</span><span>Contenido adicional</span></li>
             <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
             <li><span class="check">✓</span><span>Sin reembolso</span></li>
@@ -994,44 +1188,58 @@
           <button class="select-btn">Seleccionar →</button>
         </div>
 
-        <div class="card-label">Para los que siempre están</div>
       </article>
 
     </div>
 
 
-    <div class="trust">
+    <div class="trust-strip">
 
-      <div class="trust-item">
+      <div class="trust-block">
+
         <div class="trust-icon">🔒</div>
-        <div>
-          <strong>Pago seguro</strong>
+
+        <div class="trust-copy">
+          <strong>Pago seguro y protegido</strong>
           <span>Tus datos están protegidos.</span>
         </div>
+
       </div>
 
-      <div class="trust-item">
-        <div class="trust-icon">💳</div>
-        <div>
-          <strong>Múltiples métodos</strong>
-          <span>Tarjeta, PayPal, Cash App y más.</span>
+
+      <div class="payment-wrap">
+
+        <div class="payment-title">
+          Métodos de pago
         </div>
+
+        <div class="payments">
+          <div class="payment-pill">VISA</div>
+          <div class="payment-pill">MC</div>
+          <div class="payment-pill">PayPal</div>
+          <div class="payment-pill">Cash App</div>
+          <div class="payment-pill">CARD</div>
+        </div>
+
       </div>
 
-      <div class="trust-item">
-        <div class="trust-icon">☎</div>
-        <div>
-          <strong>Soporte directo</strong>
-          <span>WhatsApp disponible.</span>
-        </div>
-      </div>
 
-      <div class="trust-item">
-        <div class="trust-icon">🛡</div>
-        <div>
-          <strong>Tu confianza</strong>
-          <span>Es nuestra prioridad.</span>
+      <div class="trust-block">
+
+        <div class="trust-icon">🎧</div>
+
+        <div class="trust-copy">
+          <strong>Soporte 24/7 vía WhatsApp</strong>
+
+          <a
+            class="whatsapp-btn"
+            href="https://wa.me/12254329795"
+          >
+            WhatsApp
+          </a>
+
         </div>
+
       </div>
 
     </div>
@@ -1041,22 +1249,21 @@
 
   <footer class="footer">
 
-    <div>
-      <div class="footer-brand">ISB | EL TRIDENTE</div>
-      <small>Todos los derechos reservados.</small>
+    <div class="footer-brand">
+      <strong>ISB</strong>
+      <span>EL TRIDENTE</span>
     </div>
 
-    <div class="motto">
-      APUESTAS CON ESTRATEGIA,<br>
-      GANANCIAS CON DISCIPLINA
+    <div class="footer-motto">
+      “MÁS QUE PICKS,<br>
+      <strong>UNA FAMILIA</strong>”
     </div>
 
     <div class="social">
       <a href="https://www.instagram.com/idael_sportbet_oficial/">◎</a>
-      <a href="#">♪</a>
-      <a href="#">▶</a>
+      <span>♪</span>
+      <span>▶</span>
       <a href="https://wa.me/12254329795">◉</a>
-      <span>🔱</span>
     </div>
 
   </footer>
@@ -1065,16 +1272,21 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
-    const SUPABASE_URL = 'https://nfvkmxnprchvkufwvhpr.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1';
+    const SUPABASE_URL =
+      'https://nfvkmxnprchvkufwvhpr.supabase.co';
 
-    const supabaseClient = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
+    const SUPABASE_KEY =
+      'sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1';
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
 
     async function protegerPagina(){
-      const { data } = await supabaseClient.auth.getSession();
+      const { data } =
+        await supabaseClient.auth.getSession();
 
       if(!data.session){
         window.location.href = 'index.html';
@@ -1085,9 +1297,9 @@
 
     document
       .getElementById('logoutBtn')
-      .addEventListener('click', async () => {
+      .addEventListener('click',async()=>{
         await supabaseClient.auth.signOut();
-        window.location.href = 'index.html';
+        window.location.href='index.html';
       });
   </script>
 
