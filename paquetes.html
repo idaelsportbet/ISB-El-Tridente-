@@ -3,17 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>ISB | El Tridente - Paquetes</title>
 
 <style>
+
 :root{
   --bg:#030303;
-  --panel:#090909;
-  --gold:#f6c34f;
-  --gold2:#b98521;
-  --text:#ffffff;
+  --panel:#080808;
+  --panel2:#0b0b0b;
+  --gold:#f6bd35;
+  --gold-light:#ffd866;
+  --gold-dark:#9c6810;
+  --emerald:#00e67a;
+  --emerald-dark:#006b3a;
+  --white:#ffffff;
   --muted:#c9c9c9;
-  --green:#00aa56;
 }
 
 *{
@@ -26,8 +31,8 @@ html{
 
 body{
   margin:0;
-  background:var(--bg);
-  color:var(--text);
+  background:#030303;
+  color:white;
   font-family:Arial,Helvetica,sans-serif;
   overflow-x:hidden;
 }
@@ -38,39 +43,33 @@ a{
 }
 
 button{
-  font:inherit;
+  font-family:inherit;
 }
 
 
-/* ==============================
-   BARRA SUPERIOR - UNA SOLA FILA
-================================ */
+/* ========================================
+   BARRA SUPERIOR
+======================================== */
 
 .topbar{
   position:sticky;
   top:0;
-  z-index:100;
-  height:62px;
+  z-index:999;
   width:100%;
   background:rgba(2,2,2,.98);
-  border-bottom:1px solid #2b200e;
-  overflow-x:auto;
-  overflow-y:hidden;
-  scrollbar-width:none;
-}
-
-.topbar::-webkit-scrollbar{
-  display:none;
+  border-bottom:1px solid rgba(246,189,53,.45);
 }
 
 .topbar-inner{
   height:62px;
-  min-width:max-content;
+  width:100%;
   padding:0 10px;
+
   display:flex;
   align-items:center;
-  flex-wrap:nowrap;
-  gap:17px;
+  justify-content:space-between;
+
+  gap:8px;
   white-space:nowrap;
 }
 
@@ -82,37 +81,31 @@ button{
 }
 
 .brand-trident{
+  font-size:21px;
   color:var(--gold);
-  font-size:22px;
-  line-height:1;
 }
 
-.brand-name{
-  display:flex;
-  flex-direction:column;
-  line-height:1;
-}
-
-.brand-name strong{
+.brand-text strong{
+  display:block;
   color:var(--gold);
   font-family:Georgia,serif;
   font-size:17px;
+  line-height:1;
 }
 
-.brand-name small{
+.brand-text small{
+  display:block;
+  font-size:5px;
+  letter-spacing:1px;
   margin-top:3px;
-  color:#fff;
-  font-size:5.5px;
-  font-weight:800;
-  letter-spacing:1.3px;
 }
 
 .nav{
   display:flex;
-  flex-wrap:nowrap;
   align-items:center;
-  gap:17px;
-  flex:none;
+  justify-content:center;
+  gap:13px;
+  flex:1;
 }
 
 .nav a{
@@ -120,9 +113,9 @@ button{
   height:62px;
   display:flex;
   align-items:center;
-  font-size:10.5px;
-  font-weight:600;
-  color:#eee;
+
+  font-size:10px;
+  font-weight:700;
 }
 
 .nav a.active{
@@ -141,144 +134,163 @@ button{
 
 .logout{
   flex:none;
-  border:1px solid var(--gold2);
+
+  padding:8px 11px;
+
+  border:1px solid var(--gold);
+  border-radius:18px;
+
   background:#080808;
-  color:#fff;
-  padding:8px 10px;
-  border-radius:14px;
-  font-size:9.5px;
+  color:white;
+
+  font-size:9px;
   font-weight:800;
+
   cursor:pointer;
 }
 
 
-/* ==============================
-   HERO
-================================ */
+/* ========================================
+   PRESENTACIÓN
+======================================== */
 
 .hero{
   position:relative;
-  height:330px;
+  min-height:330px;
   overflow:hidden;
+
+  border-bottom:1px solid rgba(246,189,53,.55);
   background:#030303;
-  border-bottom:1px solid #2b200e;
 }
 
 .hero-photo-wrap{
   position:absolute;
   top:0;
-  right:0;
   bottom:0;
-  left:39%;
+  right:0;
+  left:38%;
+
   overflow:hidden;
 }
 
 .hero-photo{
   width:100%;
   height:100%;
-  display:block;
   object-fit:cover;
-  object-position:47% 42%;
-  filter:brightness(.72) contrast(1.05);
-  transform:scale(1.03);
+
+  object-position:48% 40%;
+
+  filter:
+    brightness(.85)
+    contrast(1.06);
 }
 
 .hero-photo-wrap::after{
   content:"";
+
   position:absolute;
   inset:0;
+
   background:
     linear-gradient(
       90deg,
       #030303 0%,
-      rgba(3,3,3,.94) 10%,
-      rgba(3,3,3,.67) 32%,
-      rgba(3,3,3,.25) 62%,
-      rgba(3,3,3,.10) 100%
+      rgba(3,3,3,.92) 10%,
+      rgba(3,3,3,.62) 33%,
+      rgba(3,3,3,.16) 67%,
+      rgba(3,3,3,.04) 100%
     ),
     linear-gradient(
       180deg,
-      rgba(0,0,0,.05) 50%,
-      rgba(0,0,0,.55) 100%
+      rgba(0,0,0,0) 50%,
+      rgba(0,0,0,.52) 100%
     );
 }
 
 .hero::before{
   content:"";
+
   position:absolute;
-  z-index:1;
   inset:0;
-  pointer-events:none;
+  z-index:1;
+
   background:
     linear-gradient(
       90deg,
       #030303 0%,
-      #030303 31%,
-      rgba(3,3,3,.91) 40%,
-      rgba(3,3,3,.28) 67%,
-      rgba(3,3,3,.06) 100%
+      #030303 28%,
+      rgba(3,3,3,.88) 39%,
+      rgba(3,3,3,.25) 65%,
+      rgba(3,3,3,.02) 100%
     );
 }
 
 .hero-inner{
   position:relative;
   z-index:3;
-  height:100%;
-  width:100%;
-  padding:22px 10px;
+
+  min-height:330px;
+
+  padding:20px 15px;
+
   display:flex;
   align-items:center;
 }
 
 .hero-copy{
-  width:53%;
-  max-width:500px;
+  width:54%;
+  max-width:520px;
 }
 
 .hero-brand{
   display:flex;
   align-items:center;
-  gap:6px;
+
+  gap:8px;
   margin-bottom:8px;
 }
 
 .hero-trident{
   color:var(--gold);
-  font-size:31px;
-  line-height:1;
+  font-size:33px;
 }
 
 .hero-isb{
-  color:var(--gold);
   font-family:Georgia,serif;
-  font-size:29px;
+  color:var(--gold);
+  font-size:31px;
   font-weight:900;
   line-height:.9;
 }
 
 .hero-el{
-  color:#e7c567;
+  margin-top:4px;
+
+  color:#e4be60;
   font-family:Georgia,serif;
+
   font-size:10px;
   letter-spacing:1.5px;
-  margin-top:3px;
 }
 
 .hero-mini{
-  margin-bottom:8px;
-  color:#ddd;
-  font-size:6.8px;
+  margin:7px 0 8px;
+
+  font-size:7px;
+  letter-spacing:1.4px;
+
   font-weight:800;
-  letter-spacing:1.1px;
-  white-space:nowrap;
+  color:#ddd;
 }
 
 .hero h1{
   margin:0;
-  font-size:31px;
-  line-height:.92;
+
+  font-size:36px;
+  line-height:.88;
+
   letter-spacing:-1px;
-  text-transform:uppercase;
+
   font-weight:900;
 }
 
@@ -289,442 +301,916 @@ button{
 
 .hero-sub{
   margin-top:9px;
-  color:#e8e8e8;
-  font-size:8px;
-  line-height:1.35;
-  font-weight:800;
-  text-transform:uppercase;
+
+  font-size:9px;
+  line-height:1.4;
+
+  font-weight:900;
 }
 
 .hero-sub strong{
   color:var(--gold);
 }
 
-.benefits{
+.hero-benefits{
   margin-top:14px;
+
   display:flex;
-  gap:10px;
   align-items:flex-start;
+
+  gap:10px;
 }
 
-.benefit{
+.hero-benefit{
   display:flex;
   align-items:center;
   gap:4px;
-  min-width:0;
 }
 
-.benefit svg{
+.hero-benefit svg{
   width:16px;
   height:16px;
-  min-width:16px;
-  fill:none;
+
   stroke:var(--gold);
+  fill:none;
+
   stroke-width:1.8;
 }
 
-.benefit-text{
+.hero-benefit span{
   font-size:5.8px;
-  line-height:1.25;
+  line-height:1.15;
+
   font-weight:900;
-  text-transform:uppercase;
 }
 
 
-/* ==============================
+/* ========================================
    PAQUETES
-================================ */
+======================================== */
 
 .packages-section{
-  padding:8px 6px 24px;
+  padding:9px 6px 20px;
+
   background:
     radial-gradient(
-      circle at 50% 0%,
-      rgba(246,195,79,.035),
-      transparent 25%
+      circle at 50% 10%,
+      rgba(0,230,122,.035),
+      transparent 35%
     ),
     #030303;
 }
 
 .packages{
+  width:100%;
   max-width:1100px;
+
   margin:auto;
+
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:7px;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:8px;
 }
 
 .package-card{
   position:relative;
+
   overflow:hidden;
+
   min-width:0;
-  height:218px;
-  padding:10px 9px;
-  border:1px solid var(--gold2);
-  border-radius:10px;
+  min-height:235px;
+
+  padding:13px 11px 10px;
+
+  border:1px solid var(--gold);
+
+  border-radius:11px;
+
   background:
     linear-gradient(
       145deg,
       #080808 0%,
-      #0b0b0b 55%,
+      #0b0b0b 60%,
       #060606 100%
     );
+
   box-shadow:
-    inset 0 0 15px rgba(255,255,255,.008),
-    0 0 8px rgba(246,195,79,.025);
+    0 0 8px rgba(246,189,53,.14),
+    inset 0 0 15px rgba(255,255,255,.01);
+
   display:flex;
   flex-direction:column;
 }
 
-/* SOLO HUMO VERDE - SIN IMAGEN */
+
+/* humo verde suave */
+
 .package-card::before{
   content:"";
+
   position:absolute;
-  pointer-events:none;
-  z-index:0;
-  width:65%;
-  height:75%;
-  right:-10%;
-  top:12%;
+
+  width:75%;
+  height:80%;
+
+  right:-12%;
+  top:9%;
+
   background:
     radial-gradient(
-      ellipse at 35% 30%,
-      rgba(0,155,74,.10),
-      transparent 35%
+      ellipse at 35% 25%,
+      rgba(0,230,122,.10),
+      transparent 32%
     ),
+
     radial-gradient(
       ellipse at 70% 55%,
-      rgba(0,190,90,.07),
-      transparent 37%
+      rgba(0,180,95,.08),
+      transparent 38%
     ),
+
     radial-gradient(
       ellipse at 40% 80%,
-      rgba(0,120,55,.06),
+      rgba(0,140,75,.06),
       transparent 35%
     );
-  filter:blur(13px);
-  opacity:.75;
-  transform:rotate(-8deg);
-}
 
-.package-card::after{
-  content:"";
-  position:absolute;
+  filter:blur(14px);
+
   pointer-events:none;
-  z-index:0;
-  right:2%;
-  bottom:0;
-  width:60%;
-  height:55%;
-  background:
-    radial-gradient(
-      ellipse at center,
-      rgba(0,145,70,.055),
-      transparent 68%
-    );
-  filter:blur(10px);
 }
 
 .card-top,
-.card-content,
-.card-bottom{
+.card-features,
+.price-row,
+.buy-btn{
   position:relative;
   z-index:2;
 }
 
 .card-top{
   display:flex;
-  align-items:flex-start;
-  gap:7px;
+  gap:8px;
+  align-items:center;
 }
 
 .card-icon{
-  width:27px;
-  height:27px;
-  min-width:27px;
-  display:grid;
-  place-items:center;
+  width:32px;
+  height:32px;
+  min-width:32px;
 }
 
 .card-icon svg{
-  width:25px;
-  height:25px;
-  stroke:var(--gold);
+  width:100%;
+  height:100%;
+
   fill:none;
-  stroke-width:1.7;
+
+  stroke:var(--gold);
+
+  stroke-width:1.8;
+
   stroke-linecap:round;
   stroke-linejoin:round;
-  filter:drop-shadow(0 0 3px rgba(246,195,79,.18));
-}
 
-.card-icon.crown svg{
-  fill:rgba(246,195,79,.10);
-}
-
-.card-title-wrap{
-  min-width:0;
+  filter:
+    drop-shadow(
+      0 0 4px
+      rgba(246,189,53,.32)
+    );
 }
 
 .card-title{
-  margin:1px 0 0;
-  color:#fff;
-  font-size:14px;
+  margin:0;
+
+  font-size:15px;
   line-height:1;
+
   font-weight:900;
-  text-transform:uppercase;
 }
 
 .card-type{
   margin-top:4px;
-  color:#d9d9d9;
-  font-size:7.2px;
-  line-height:1;
-  font-weight:700;
-  text-transform:uppercase;
+
+  color:var(--gold);
+
+  font-size:8px;
+
+  font-weight:900;
 }
 
-.card-content{
-  flex:1;
-  min-height:0;
-  margin-top:9px;
-  display:grid;
-  grid-template-columns:minmax(0,1fr) 68px;
-  gap:3px;
-}
-
-.features{
+.card-features{
   list-style:none;
+
   padding:0;
-  margin:0;
+  margin:15px 0 10px;
+
   display:flex;
   flex-direction:column;
-  gap:4px;
-  color:#efefef;
-  font-size:7.2px;
-  line-height:1.18;
+
+  gap:7px;
+
+  font-size:8px;
+  line-height:1.2;
 }
 
-.features li{
+.card-features li{
   display:flex;
   align-items:flex-start;
-  gap:4px;
+
+  gap:5px;
 }
 
 .check{
-  width:10px;
-  height:10px;
-  min-width:10px;
-  border:1px solid var(--gold);
-  color:var(--gold);
+  width:13px;
+  height:13px;
+
+  min-width:13px;
+
+  border:1.3px solid var(--gold);
+
   border-radius:50%;
+
+  color:var(--gold);
+
   display:grid;
+
   place-items:center;
-  font-size:5.5px;
+
+  font-size:7px;
+
   font-weight:900;
-  margin-top:0;
 }
 
-.highlight{
+.refund{
   color:var(--gold);
   font-weight:800;
 }
 
-.price-area{
-  align-self:end;
-  text-align:right;
-  padding-bottom:2px;
+.price-row{
+  margin-top:auto;
+  margin-bottom:9px;
+
+  display:flex;
+
+  justify-content:center;
+  align-items:baseline;
+
+  gap:4px;
 }
 
 .price{
   color:var(--gold);
-  font-size:23px;
-  line-height:.9;
+
+  font-size:30px;
+  line-height:1;
+
   font-weight:900;
-  letter-spacing:-1px;
-  white-space:nowrap;
 }
 
 .period{
-  margin-top:4px;
-  color:var(--gold);
-  font-size:6.5px;
+  color:var(--emerald);
+
+  font-size:10px;
+
   font-weight:900;
-  text-transform:uppercase;
 }
 
-.card-bottom{
-  margin-top:6px;
-  display:flex;
-  justify-content:flex-end;
-}
+.buy-btn{
+  width:100%;
 
-.select-btn{
-  width:74px;
-  border:0;
-  border-radius:5px;
-  padding:7px 3px;
+  min-height:34px;
+
+  border:1px solid var(--emerald);
+
+  border-radius:7px;
+
   background:
     linear-gradient(
-      90deg,
-      #bd8416,
-      #ffd45f,
-      #c78c1b
+      180deg,
+      #00b65f,
+      #006b39
     );
-  color:#080808;
-  font-size:7.5px;
+
+  box-shadow:
+    inset 0 0 10px rgba(255,255,255,.18),
+    0 0 8px rgba(0,230,122,.25);
+
+  color:white;
+
+  font-size:10px;
+
   font-weight:900;
+
   cursor:pointer;
 }
 
 
-/* ==============================
-   SEGURIDAD / PAGOS
-================================ */
+/* ========================================
+   SECCIONES DE ABAJO
+======================================== */
 
-.trust-strip{
-  max-width:1100px;
-  margin:17px auto 0;
-  padding:14px 4px;
-  border-top:1px solid #2b200e;
-  border-bottom:1px solid #2b200e;
-  display:grid;
-  grid-template-columns:1fr;
-  gap:13px;
+.lower-content{
+  padding:4px 10px 0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(0,230,122,.025),
+      transparent 35%
+    ),
+    #030303;
 }
 
-.trust-item{
+.section-block{
+  max-width:1100px;
+
+  margin:22px auto;
+}
+
+.section-title{
+  margin:0 0 14px;
+
   display:flex;
+
   align-items:center;
+
+  gap:10px;
+
+  color:var(--gold);
+
+  font-size:17px;
+
+  font-weight:900;
+
+  text-align:center;
+}
+
+.section-title::before,
+.section-title::after{
+  content:"";
+
+  flex:1;
+
+  height:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--gold)
+    );
+}
+
+.section-title::after{
+  background:
+    linear-gradient(
+      90deg,
+      var(--gold),
+      transparent
+    );
+}
+
+
+/* ========================================
+   POR QUÉ ELEGIR ISB
+======================================== */
+
+.why-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
   gap:8px;
 }
 
-.trust-item svg{
-  width:21px;
-  height:21px;
-  min-width:21px;
-  stroke:var(--gold);
-  fill:none;
-  stroke-width:1.8;
+.info-card{
+  padding:12px 9px;
+
+  min-height:105px;
+
+  border:1px solid rgba(246,189,53,.5);
+
+  border-radius:8px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #080808,
+      #0b0b0b
+    );
 }
 
-.trust-copy strong{
-  display:block;
-  font-size:8px;
-  text-transform:uppercase;
-}
-
-.trust-copy span{
-  display:block;
-  margin-top:2px;
-  color:#aaa;
-  font-size:7px;
-}
-
-.payment-title{
+.info-icon{
   margin-bottom:7px;
-  color:#ddd;
-  font-size:8px;
-  font-weight:800;
+
+  color:var(--gold);
+
+  font-size:24px;
+}
+
+.info-card strong{
+  display:block;
+
+  color:var(--gold);
+
+  font-size:9px;
+
   text-transform:uppercase;
 }
 
-.payments{
-  display:flex;
-  gap:5px;
-  flex-wrap:wrap;
+.info-card p{
+  margin:5px 0 0;
+
+  color:#ccc;
+
+  font-size:7px;
+  line-height:1.35;
 }
 
-.payment{
-  padding:5px 7px;
-  background:#0e0e0e;
-  border:1px solid #242424;
-  border-radius:5px;
-  color:#eee;
-  font-size:7px;
+
+/* ========================================
+   CÓMO FUNCIONA
+======================================== */
+
+.steps{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:8px;
+}
+
+.step{
+  min-height:130px;
+
+  padding:11px;
+
+  border:1px solid rgba(246,189,53,.45);
+
+  border-radius:8px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #07120d,
+      #080808
+    );
+}
+
+.step-number{
+  width:30px;
+  height:30px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:50%;
+
+  color:white;
+
+  background:
+    linear-gradient(
+      145deg,
+      #00b65f,
+      #004e2b
+    );
+
+  border:1px solid var(--emerald);
+
   font-weight:900;
 }
 
-.whatsapp-btn{
-  display:inline-block;
-  margin-top:5px;
-  padding:7px 10px;
-  border:1px solid var(--gold2);
-  border-radius:10px;
-  color:#fff;
-  font-size:7.5px;
-  font-weight:800;
+.step-icon{
+  color:var(--gold);
+
+  font-size:22px;
+
+  margin-top:8px;
+}
+
+.step strong{
+  display:block;
+
+  margin-top:8px;
+
+  font-size:9px;
+}
+
+.step p{
+  margin:4px 0 0;
+
+  font-size:7px;
+  line-height:1.4;
+
+  color:#ccc;
 }
 
 
-/* ==============================
+/* ========================================
+   FAQ
+======================================== */
+
+.faq-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:8px;
+}
+
+.faq{
+  overflow:hidden;
+
+  border:1px solid rgba(246,189,53,.55);
+
+  border-radius:7px;
+
+  background:#080808;
+}
+
+.faq summary{
+  padding:11px;
+
+  cursor:pointer;
+
+  list-style:none;
+
+  font-size:9px;
+
+  font-weight:700;
+}
+
+.faq summary::-webkit-details-marker{
+  display:none;
+}
+
+.faq p{
+  margin:0;
+
+  padding:
+    0 11px 11px;
+
+  color:#bbb;
+
+  font-size:7.5px;
+
+  line-height:1.45;
+}
+
+
+/* ========================================
+   FRASE
+======================================== */
+
+.results-banner{
+  max-width:1100px;
+
+  margin:22px auto;
+
+  padding:18px 14px;
+
+  border-top:1px solid var(--gold);
+  border-bottom:1px solid var(--gold);
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(246,189,53,.05),
+      rgba(0,230,122,.08),
+      rgba(246,189,53,.04)
+    );
+
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:12px;
+}
+
+.results-banner strong{
+  color:var(--gold);
+
+  font-size:14px;
+}
+
+.results-banner span{
+  color:#ddd;
+
+  font-size:9px;
+  font-style:italic;
+}
+
+
+/* ========================================
+   PAGOS Y SOPORTE
+======================================== */
+
+.payment-area{
+  max-width:1100px;
+
+  margin:auto;
+
+  padding:17px 0;
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:13px;
+
+  border-bottom:1px solid rgba(246,189,53,.4);
+}
+
+.payment-box{
+  min-width:0;
+}
+
+.payment-box strong{
+  display:block;
+
+  color:white;
+
+  font-size:8px;
+
+  text-transform:uppercase;
+}
+
+.payment-box p{
+  margin:4px 0;
+
+  color:#999;
+
+  font-size:7px;
+}
+
+.payment-methods{
+  margin-top:7px;
+
+  display:flex;
+
+  gap:5px;
+
+  flex-wrap:wrap;
+}
+
+.payment-pill{
+  padding:6px 8px;
+
+  background:#101010;
+
+  border:1px solid rgba(246,189,53,.4);
+
+  border-radius:5px;
+
+  font-size:7px;
+
+  font-weight:900;
+}
+
+.whatsapp{
+  display:inline-block;
+
+  margin-top:7px;
+
+  padding:8px 11px;
+
+  border:1px solid var(--emerald);
+
+  border-radius:14px;
+
+  color:var(--emerald);
+
+  font-size:8px;
+
+  font-weight:900;
+}
+
+
+/* ========================================
    FOOTER
-================================ */
+======================================== */
 
 .footer{
-  padding:18px 10px 25px;
+  padding:24px 12px 30px;
+
   text-align:center;
 }
 
 .footer-logo{
-  color:var(--gold);
   font-family:Georgia,serif;
-  font-size:21px;
+
+  color:var(--gold);
+
+  font-size:30px;
+
   font-weight:900;
 }
 
-.footer-sub{
-  margin-top:2px;
-  color:#d6b55c;
-  font-size:6px;
+.footer-logo-small{
+  color:#d7b151;
+
+  font-size:8px;
+
   letter-spacing:2px;
 }
 
 .footer-motto{
-  margin-top:10px;
-  color:#ddd;
-  font-size:8px;
-  letter-spacing:1.4px;
-  text-transform:uppercase;
+  margin-top:9px;
+
+  font-size:9px;
+
+  letter-spacing:2px;
 }
 
-.footer-motto strong{
-  color:var(--gold);
-}
+.social-grid{
+  margin:20px auto 0;
 
-.footer-social{
-  margin-top:10px;
-  font-size:8px;
-  color:#ddd;
-}
-
-.disclaimer{
   max-width:650px;
-  margin:14px auto 0;
-  color:#626262;
-  font-size:6px;
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:8px;
+
+  text-align:left;
+}
+
+.social-item{
+  padding:8px 10px;
+
+  border:1px solid #171717;
+
+  border-radius:7px;
+
+  font-size:8px;
+
+  color:#ccc;
+}
+
+.responsible{
+  max-width:900px;
+
+  margin:20px auto 0;
+
+  padding-top:15px;
+
+  border-top:1px solid rgba(246,189,53,.35);
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:15px;
+
+  text-align:left;
+
+  color:#777;
+
+  font-size:6.5px;
+
   line-height:1.4;
 }
 
+.responsible strong{
+  display:block;
 
-/* ==============================
-   TABLET / COMPUTADORA
-================================ */
+  color:#ddd;
 
-@media(min-width:701px){
+  font-size:7px;
+}
+
+
+/* ========================================
+   IPHONE
+======================================== */
+
+@media(max-width:700px){
 
   .topbar-inner{
-    max-width:1180px;
-    margin:auto;
-    padding:0 20px;
+    height:58px;
+
+    padding:0 7px;
+
+    gap:5px;
   }
 
+  .brand-trident{
+    font-size:17px;
+  }
+
+  .brand-text strong{
+    font-size:13px;
+  }
+
+  .brand-text small{
+    font-size:4px;
+  }
+
+  .nav{
+    gap:7px;
+  }
+
+  .nav a{
+    height:58px;
+
+    font-size:7.6px;
+  }
+
+  .logout{
+    padding:6px 7px;
+
+    font-size:7px;
+  }
+
+
   .hero{
-    height:430px;
+    min-height:310px;
   }
 
   .hero-inner{
+    min-height:310px;
+
+    padding:17px 10px;
+  }
+
+  .hero-copy{
+    width:54%;
+  }
+
+  .hero h1{
+    font-size:32px;
+  }
+
+  .hero-isb{
+    font-size:28px;
+  }
+
+
+  .package-card{
+    min-height:220px;
+
+    padding:11px 9px 9px;
+  }
+
+  .card-title{
+    font-size:14px;
+  }
+
+  .card-type{
+    font-size:7px;
+  }
+
+  .card-features{
+    font-size:7.4px;
+
+    gap:5px;
+  }
+
+  .price{
+    font-size:28px;
+  }
+
+  .period{
+    font-size:9px;
+  }
+
+  .buy-btn{
+    min-height:34px;
+
+    font-size:9px;
+  }
+}
+
+
+/* ========================================
+   COMPUTADORA
+======================================== */
+
+@media(min-width:850px){
+
+  .hero{
+    min-height:440px;
+  }
+
+  .hero-inner{
+    min-height:440px;
+
     max-width:1180px;
+
     margin:auto;
+
     padding:35px 20px;
   }
 
@@ -733,27 +1219,7 @@ button{
   }
 
   .hero h1{
-    font-size:56px;
-  }
-
-  .hero-isb{
-    font-size:42px;
-  }
-
-  .hero-trident{
-    font-size:44px;
-  }
-
-  .hero-mini{
-    font-size:10px;
-  }
-
-  .hero-sub{
-    font-size:12px;
-  }
-
-  .benefit-text{
-    font-size:8px;
+    font-size:60px;
   }
 
   .packages-section{
@@ -762,746 +1228,1426 @@ button{
   }
 
   .package-card{
-    height:245px;
-    padding:17px;
+    min-height:280px;
+
+    padding:20px;
   }
 
   .card-title{
-    font-size:22px;
+    font-size:25px;
   }
 
   .card-type{
-    font-size:10px;
+    font-size:12px;
   }
 
-  .features{
-    font-size:11px;
-    gap:6px;
-  }
-
-  .card-content{
-    grid-template-columns:1fr 120px;
+  .card-features{
+    font-size:12px;
   }
 
   .price{
-    font-size:38px;
+    font-size:45px;
   }
 
   .period{
-    font-size:10px;
+    font-size:14px;
   }
 
-  .select-btn{
-    width:120px;
-    font-size:11px;
-    padding:10px;
+  .buy-btn{
+    min-height:44px;
+
+    font-size:14px;
   }
 
-  .trust-strip{
-    grid-template-columns:1fr 1.3fr 1fr;
-  }
-}/* ==============================
-   AJUSTES FINALES IPHONE
-================================ */
-
-@media(max-width:700px){
-
-  /* Barra superior más compacta */
-  .topbar{
-    height:58px;
-  }
-
-  .topbar-inner{
-    height:58px;
-    padding:0 7px;
-    gap:11px;
-  }
-
-  .brand{
-    gap:4px;
-  }
-
-  .brand-trident{
-    font-size:19px;
-  }
-
-  .brand-name strong{
-    font-size:15px;
-  }
-
-  .brand-name small{
-    font-size:4.8px;
-    letter-spacing:1px;
-  }
-
-  .nav{
-    gap:12px;
-  }
-
-  .nav a{
-    height:58px;
-    font-size:9px;
-  }
-
-  .logout{
-    padding:7px 8px;
-    font-size:8.2px;
-    border-radius:12px;
-  }
-
-
-  /* Hero un poco más pequeño */
-  .hero{
-    height:305px;
-  }
-
-  .hero-inner{
-    padding:17px 9px;
-  }
-
-  .hero-copy{
-    width:52%;
-  }
-
-  /* Foto más visible */
-  .hero-photo{
-    filter:brightness(.86) contrast(1.04);
-    object-position:46% 40%;
-  }
-
-  .hero-photo-wrap{
-    left:41%;
-  }
-
-  .hero-photo-wrap::after{
-    background:
-      linear-gradient(
-        90deg,
-        #030303 0%,
-        rgba(3,3,3,.92) 11%,
-        rgba(3,3,3,.58) 31%,
-        rgba(3,3,3,.20) 60%,
-        rgba(3,3,3,.06) 100%
-      ),
-      linear-gradient(
-        180deg,
-        rgba(0,0,0,.02) 55%,
-        rgba(0,0,0,.42) 100%
-      );
-  }
-
-  .hero::before{
-    background:
-      linear-gradient(
-        90deg,
-        #030303 0%,
-        #030303 28%,
-        rgba(3,3,3,.88) 38%,
-        rgba(3,3,3,.22) 65%,
-        rgba(3,3,3,.03) 100%
-      );
-  }
-
-  /* Hero texto ligeramente más compacto */
-  .hero-trident{
-    font-size:28px;
-  }
-
-  .hero-isb{
-    font-size:26px;
-  }
-
-  .hero-el{
-    font-size:9px;
-  }
-
-  .hero-mini{
-    font-size:6.2px;
-    margin-bottom:6px;
-  }
-
-  .hero h1{
-    font-size:29px;
-  }
-
-  .hero-sub{
-    font-size:7.4px;
-    margin-top:7px;
-  }
-
-  .benefits{
-    margin-top:11px;
-    gap:7px;
-  }
-
-  .benefit svg{
-    width:14px;
-    height:14px;
-    min-width:14px;
-  }
-
-  .benefit-text{
-    font-size:5.3px;
-  }
-
-
-  /* Tarjetas un poco más compactas */
-  .package-card{
-    height:205px;
-    padding:9px 8px;
-  }
-
-  .card-title{
-    font-size:13px;
-  }
-
-  .card-type{
-    font-size:6.7px;
-  }
-
-  .features{
-    font-size:6.8px;
-    gap:3.5px;
-  }
-
-  .card-content{
-    grid-template-columns:minmax(0,1fr) 64px;
-  }
-
-  .price{
-    font-size:21px;
-  }
-
-  .period{
-    font-size:6px;
-  }
-
-  .select-btn{
-    width:70px;
-    padding:6.5px 3px;
-    font-size:7px;
+  .why-grid,
+  .steps{
+    grid-template-columns:
+      repeat(4,minmax(0,1fr));
   }
 }
+
 </style>
 </head>
 
+
 <body>
 
-<!-- BARRA SUPERIOR -->
+
+<!-- =====================================
+     BARRA
+===================================== -->
+
 <header class="topbar">
-  <div class="topbar-inner">
 
-    <a class="brand" href="index.html">
-      <span class="brand-trident">🔱</span>
+<div class="topbar-inner">
 
-      <span class="brand-name">
-        <strong>ISB</strong>
-        <small>EL TRIDENTE</small>
-      </span>
-    </a>
+<a
+  href="index.html"
+  class="brand"
+>
 
-    <nav class="nav">
-      <a href="index.html">Inicio</a>
-      <a href="paquetes.html" class="active">Paquetes</a>
-      <a href="#">Mi Cuenta</a>
-      <a href="https://wa.me/12254329795">Soporte</a>
-      <a href="index.html#contacto">Contacto</a>
-    </nav>
+<span class="brand-trident">
+🔱
+</span>
 
-    <button class="logout" id="logoutBtn">
-      Cerrar sesión
-    </button>
+<span class="brand-text">
 
-  </div>
+<strong>
+ISB
+</strong>
+
+<small>
+EL TRIDENTE
+</small>
+
+</span>
+
+</a>
+
+
+<nav class="nav">
+
+<a href="index.html">
+Inicio
+</a>
+
+<a
+  href="paquetes.html"
+  class="active"
+>
+Paquetes
+</a>
+
+<a href="#">
+Mi Cuenta
+</a>
+
+<a
+  href="https://wa.me/12254329795"
+>
+Soporte
+</a>
+
+<a
+  href="index.html#contacto"
+>
+Contacto
+</a>
+
+</nav>
+
+
+<button
+  class="logout"
+  id="logoutBtn"
+>
+Cerrar sesión
+</button>
+
+</div>
+
 </header>
 
 
-<!-- HERO -->
+
+<!-- =====================================
+     PRESENTACIÓN
+===================================== -->
+
 <section class="hero">
 
-  <div class="hero-photo-wrap">
-    <img
-      class="hero-photo"
-      src="35F2F7B6-7B66-470B-82DE-4420BA7A57B5.jpeg"
-      alt=""
-    >
-  </div>
 
-  <div class="hero-inner">
+<div class="hero-photo-wrap">
 
-    <div class="hero-copy">
+<img
+  src="35F2F7B6-7B66-470B-82DE-4420BA7A57B5.jpeg"
+  class="hero-photo"
+  alt=""
+>
 
-      <div class="hero-brand">
+</div>
 
-        <div class="hero-trident">
-          🔱
-        </div>
 
-        <div>
-          <div class="hero-isb">ISB</div>
-          <div class="hero-el">EL TRIDENTE</div>
-        </div>
+<div class="hero-inner">
 
-      </div>
 
-      <div class="hero-mini">
-        DISCIPLINA | ANÁLISIS | RESULTADOS
-      </div>
+<div class="hero-copy">
 
-      <h1>
-        ELIGE TU
-        <span>PAQUETE</span>
-      </h1>
 
-      <div class="hero-sub">
-        DIFERENTES PLANES,<br>
-        <strong>EL MISMO OBJETIVO</strong>
-      </div>
+<div class="hero-brand">
 
-      <div class="benefits">
+<div class="hero-trident">
+🔱
+</div>
 
-        <div class="benefit">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 3L20 6V11C20 16 16.5 20 12 21C7.5 20 4 16 4 11V6L12 3Z"/>
-            <path d="M8 12L11 15L16 9"/>
-          </svg>
+<div>
 
-          <div class="benefit-text">
-            ANÁLISIS<br>PROFESIONAL
-          </div>
-        </div>
+<div class="hero-isb">
+ISB
+</div>
 
-        <div class="benefit">
-          <svg viewBox="0 0 24 24">
-            <path d="M4 18V10"/>
-            <path d="M10 18V6"/>
-            <path d="M16 18V3"/>
-            <path d="M22 18H2"/>
-          </svg>
+<div class="hero-el">
+EL TRIDENTE
+</div>
 
-          <div class="benefit-text">
-            INFORMACIÓN<br>CONFIABLE
-          </div>
-        </div>
+</div>
 
-        <div class="benefit">
-          <svg viewBox="0 0 24 24">
-            <circle cx="9" cy="8" r="3"/>
-            <circle cx="17" cy="9" r="2.5"/>
-            <path d="M3 20C3 16 5.5 13 9 13C12.5 13 15 16 15 20"/>
-            <path d="M15 14C18.5 14 21 16 21 20"/>
-          </svg>
+</div>
 
-          <div class="benefit-text">
-            COMUNIDAD<br>PRIVADA
-          </div>
-        </div>
 
-      </div>
+<div class="hero-mini">
 
-    </div>
-  </div>
+DISCIPLINA | ANÁLISIS | RESULTADOS
+
+</div>
+
+
+<h1>
+
+ELIGE TU
+
+<span>
+PAQUETE
+</span>
+
+</h1>
+
+
+<div class="hero-sub">
+
+DIFERENTES PLANES,<br>
+
+<strong>
+EL MISMO OBJETIVO
+</strong>
+
+</div>
+
+
+<div class="hero-benefits">
+
+
+<div class="hero-benefit">
+
+<svg viewBox="0 0 24 24">
+
+<path d="M12 3L20 6V11C20 16 16.5 20 12 21C7.5 20 4 16 4 11V6L12 3Z"/>
+
+<path d="M8 12L11 15L16 9"/>
+
+</svg>
+
+<span>
+ANÁLISIS<br>
+PROFESIONAL
+</span>
+
+</div>
+
+
+<div class="hero-benefit">
+
+<svg viewBox="0 0 24 24">
+
+<path d="M4 18V11"/>
+
+<path d="M10 18V7"/>
+
+<path d="M16 18V3"/>
+
+<path d="M2 20H22"/>
+
+</svg>
+
+<span>
+INFORMACIÓN<br>
+CONFIABLE
+</span>
+
+</div>
+
+
+<div class="hero-benefit">
+
+<svg viewBox="0 0 24 24">
+
+<circle cx="8" cy="8" r="3"/>
+
+<circle cx="17" cy="9" r="2.5"/>
+
+<path d="M2 20C2 16 4 13 8 13C12 13 14 16 14 20"/>
+
+<path d="M14 14C18 14 21 16 21 20"/>
+
+</svg>
+
+<span>
+COMUNIDAD<br>
+PRIVADA
+</span>
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
 </section>
 
 
-<!-- PAQUETES -->
+
+<!-- =====================================
+     PAQUETES
+===================================== -->
+
 <main class="packages-section">
 
-  <div class="packages">
 
+<div class="packages">
 
-    <!-- PREMIUM DIARIO -->
-    <article class="package-card">
 
-      <div class="card-top">
 
-        <div class="card-icon crown">
-          <svg viewBox="0 0 24 24">
-            <path d="M3 7L7.5 11L12 4L16.5 11L21 7L19 18H5L3 7Z"/>
-            <path d="M5 18H19V21H5Z"/>
-          </svg>
-        </div>
+<!-- PREMIUM DIARIO -->
 
-        <div class="card-title-wrap">
-          <h2 class="card-title">Premium</h2>
-          <div class="card-type">Diario</div>
-        </div>
+<article class="package-card">
 
-      </div>
 
-      <div class="card-content">
+<div class="card-top">
 
-        <ul class="features">
-          <li><span class="check">✓</span><span>1 selección Premium del día</span></li>
-          <li><span class="check">✓</span><span>Análisis detallado</span></li>
-          <li><span class="check">✓</span><span class="highlight">Incluye política de reembolso</span></li>
-          <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
-          <li><span class="check">✓</span><span>Soporte directo</span></li>
-        </ul>
 
-        <div class="price-area">
-          <div class="price">$70</div>
-          <div class="period">/ Día</div>
-        </div>
+<div class="card-icon">
 
-      </div>
+<svg viewBox="0 0 24 24">
 
-      <div class="card-bottom">
-        <button class="select-btn">Seleccionar →</button>
-      </div>
+<path d="M3 7L7.5 11L12 4L16.5 11L21 7L19 18H5L3 7Z"/>
 
-    </article>
+<path d="M5 18H19V21H5Z"/>
 
+</svg>
 
-    <!-- PREMIUM SEMANAL -->
-    <article class="package-card">
+</div>
 
-      <div class="card-top">
 
-        <div class="card-icon crown">
-          <svg viewBox="0 0 24 24">
-            <path d="M3 7L7.5 11L12 4L16.5 11L21 7L19 18H5L3 7Z"/>
-            <path d="M5 18H19V21H5Z"/>
-          </svg>
-        </div>
+<div>
 
-        <div class="card-title-wrap">
-          <h2 class="card-title">Premium</h2>
-          <div class="card-type">Semanal</div>
-        </div>
+<h2 class="card-title">
+PREMIUM
+</h2>
 
-      </div>
+<div class="card-type">
+DIARIO
+</div>
 
-      <div class="card-content">
+</div>
 
-        <ul class="features">
-          <li><span class="check">✓</span><span>1 selección Premium diaria</span></li>
-          <li><span class="check">✓</span><span>Duración de 7 días</span></li>
-          <li><span class="check">✓</span><span>Análisis detallado</span></li>
-          <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
-          <li><span class="check">✓</span><span>Sin reembolso</span></li>
-        </ul>
 
-        <div class="price-area">
-          <div class="price">$399</div>
-          <div class="period">/ Semana</div>
-        </div>
+</div>
 
-      </div>
 
-      <div class="card-bottom">
-        <button class="select-btn">Seleccionar →</button>
-      </div>
+<ul class="card-features">
 
-    </article>
+<li>
 
+<span class="check">
+✓
+</span>
 
-    <!-- EXCLUSIVA DIARIA -->
-    <article class="package-card">
+<span>
+1 jugada del día
+</span>
 
-      <div class="card-top">
+</li>
 
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M5 8L9 3H15L19 8L12 21L5 8Z"/>
-            <path d="M5 8H19"/>
-            <path d="M9 3L12 8L15 3"/>
-            <path d="M12 8V21"/>
-          </svg>
-        </div>
 
-        <div class="card-title-wrap">
-          <h2 class="card-title">Exclusiva</h2>
-          <div class="card-type">Diaria</div>
-        </div>
+<li>
 
-      </div>
+<span class="check">
+✓
+</span>
 
-      <div class="card-content">
+<span>
+Análisis Destacado
+</span>
 
-        <ul class="features">
-          <li><span class="check">✓</span><span>1 selección Exclusiva del día</span></li>
-          <li><span class="check">✓</span><span>Análisis y estadísticas</span></li>
-          <li><span class="check">✓</span><span class="highlight">Incluye política de reembolso</span></li>
-          <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
-          <li><span class="check">✓</span><span>Soporte directo</span></li>
-        </ul>
+</li>
 
-        <div class="price-area">
-          <div class="price">$50</div>
-          <div class="period">/ Día</div>
-        </div>
 
-      </div>
+<li>
 
-      <div class="card-bottom">
-        <button class="select-btn">Seleccionar →</button>
-      </div>
+<span class="check">
+✓
+</span>
 
-    </article>
+<span class="refund">
+Incluye política de reembolso
+</span>
 
+</li>
 
-    <!-- EXCLUSIVA SEMANAL -->
-    <article class="package-card">
+</ul>
 
-      <div class="card-top">
 
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M5 8L9 3H15L19 8L12 21L5 8Z"/>
-            <path d="M5 8H19"/>
-            <path d="M9 3L12 8L15 3"/>
-            <path d="M12 8V21"/>
-          </svg>
-        </div>
+<div class="price-row">
 
-        <div class="card-title-wrap">
-          <h2 class="card-title">Exclusiva</h2>
-          <div class="card-type">Semanal</div>
-        </div>
+<span class="price">
+$70
+</span>
 
-      </div>
+<span class="period">
+/ DÍA
+</span>
 
-      <div class="card-content">
+</div>
 
-        <ul class="features">
-          <li><span class="check">✓</span><span>1 selección Exclusiva diaria</span></li>
-          <li><span class="check">✓</span><span>Duración de 7 días</span></li>
-          <li><span class="check">✓</span><span>Análisis y estadísticas</span></li>
-          <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
-          <li><span class="check">✓</span><span>Sin reembolso</span></li>
-        </ul>
 
-        <div class="price-area">
-          <div class="price">$299</div>
-          <div class="period">/ Semana</div>
-        </div>
+<button class="buy-btn">
+COMPRAR AHORA
+</button>
 
-      </div>
 
-      <div class="card-bottom">
-        <button class="select-btn">Seleccionar →</button>
-      </div>
+</article>
 
-    </article>
 
 
-    <!-- PACK MENSUAL -->
-    <article class="package-card">
+<!-- PREMIUM SEMANAL -->
 
-      <div class="card-top">
+<article class="package-card">
 
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24">
-            <rect x="3" y="5" width="18" height="16" rx="2"/>
-            <path d="M7 3V7"/>
-            <path d="M17 3V7"/>
-            <path d="M3 10H21"/>
-            <path d="M7 14H9"/>
-            <path d="M11 14H13"/>
-            <path d="M15 14H17"/>
-          </svg>
-        </div>
 
-        <div class="card-title-wrap">
-          <h2 class="card-title">Pack Mensual</h2>
-          <div class="card-type">Mensual</div>
-        </div>
+<div class="card-top">
 
-      </div>
 
-      <div class="card-content">
+<div class="card-icon">
 
-        <ul class="features">
-          <li><span class="check">✓</span><span>Entre 3 y 5 picks al mes</span></li>
-          <li><span class="check">✓</span><span>Selecciones variadas</span></li>
-          <li><span class="check">✓</span><span>Análisis básico y estadísticas</span></li>
-          <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
-          <li><span class="check">✓</span><span>Sin reembolso</span></li>
-        </ul>
+<svg viewBox="0 0 24 24">
 
-        <div class="price-area">
-          <div class="price">$150</div>
-          <div class="period">/ Mes</div>
-        </div>
+<path d="M3 7L7.5 11L12 4L16.5 11L21 7L19 18H5L3 7Z"/>
 
-      </div>
+<path d="M5 18H19V21H5Z"/>
 
-      <div class="card-bottom">
-        <button class="select-btn">Seleccionar →</button>
-      </div>
+</svg>
 
-    </article>
+</div>
 
 
-    <!-- ECONÓMICA -->
-    <article class="package-card">
+<div>
 
-      <div class="card-top">
+<h2 class="card-title">
+PREMIUM
+</h2>
 
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M4 20V15"/>
-            <path d="M10 20V11"/>
-            <path d="M16 20V7"/>
-            <path d="M22 20V3"/>
-            <path d="M2 20H23"/>
-          </svg>
-        </div>
+<div class="card-type">
+SEMANAL
+</div>
 
-        <div class="card-title-wrap">
-          <h2 class="card-title">Económica</h2>
-          <div class="card-type">Mensual</div>
-        </div>
+</div>
 
-      </div>
 
-      <div class="card-content">
+</div>
 
-        <ul class="features">
-          <li><span class="check">✓</span><span>Acceso mensual</span></li>
-          <li><span class="check">✓</span><span>Selecciones especiales</span></li>
-          <li><span class="check">✓</span><span>Contenido adicional</span></li>
-          <li><span class="check">✓</span><span>Acceso al portal privado</span></li>
-          <li><span class="check">✓</span><span>Sin reembolso</span></li>
-        </ul>
 
-        <div class="price-area">
-          <div class="price">$19.99</div>
-          <div class="period">/ Mes</div>
-        </div>
+<ul class="card-features">
 
-      </div>
 
-      <div class="card-bottom">
-        <button class="select-btn">Seleccionar →</button>
-      </div>
+<li>
 
-    </article>
+<span class="check">
+✓
+</span>
 
-  </div>
+<span>
+1 selección PREMIUM diaria
+</span>
 
+</li>
 
-  <!-- SEGURIDAD -->
-  <section class="trust-strip">
 
-    <div class="trust-item">
+<li>
 
-      <svg viewBox="0 0 24 24">
-        <rect x="4" y="10" width="16" height="11" rx="2"/>
-        <path d="M8 10V7C8 4.8 9.8 3 12 3C14.2 3 16 4.8 16 7V10"/>
-      </svg>
+<span class="check">
+✓
+</span>
 
-      <div class="trust-copy">
-        <strong>Pago seguro y protegido</strong>
-        <span>Tus datos están protegidos.</span>
-      </div>
+<span>
+Duración 7 Días
+</span>
 
-    </div>
+</li>
 
 
-    <div>
+<li>
 
-      <div class="payment-title">
-        Métodos de pago
-      </div>
+<span class="check">
+✓
+</span>
 
-      <div class="payments">
-        <span class="payment">VISA</span>
-        <span class="payment">MC</span>
-        <span class="payment">PayPal</span>
-        <span class="payment">Cash App</span>
-        <span class="payment">CARD</span>
-      </div>
+<span>
+Sin acceso al reembolso
+</span>
 
-    </div>
+</li>
 
 
-    <div class="trust-item">
+</ul>
 
-      <svg viewBox="0 0 24 24">
-        <path d="M4 13V11C4 6.6 7.6 3 12 3C16.4 3 20 6.6 20 11V13"/>
-        <path d="M4 13H7V19H4C3.4 19 3 18.6 3 18V14C3 13.4 3.4 13 4 13Z"/>
-        <path d="M20 13H17V19H20C20.6 19 21 18.6 21 18V14C21 13.4 20.6 13 20 13Z"/>
-      </svg>
 
-      <div class="trust-copy">
-        <strong>Soporte vía WhatsApp</strong>
+<div class="price-row">
 
-        <a
-          class="whatsapp-btn"
-          href="https://wa.me/12254329795"
-        >
-          Contactar
-        </a>
-      </div>
+<span class="price">
+$399
+</span>
 
-    </div>
+<span class="period">
+/ SEMANA
+</span>
 
-  </section>
+</div>
+
+
+<button class="buy-btn">
+COMPRAR AHORA
+</button>
+
+
+</article>
+
+
+
+<!-- EXCLUSIVA DIARIA -->
+
+<article class="package-card">
+
+
+<div class="card-top">
+
+
+<div class="card-icon">
+
+<svg viewBox="0 0 24 24">
+
+<path d="M5 8L9 3H15L19 8L12 21L5 8Z"/>
+
+<path d="M5 8H19"/>
+
+<path d="M9 3L12 8L15 3"/>
+
+<path d="M12 8V21"/>
+
+</svg>
+
+</div>
+
+
+<div>
+
+<h2 class="card-title">
+EXCLUSIVA
+</h2>
+
+<div class="card-type">
+DIARIA
+</div>
+
+</div>
+
+
+</div>
+
+
+<ul class="card-features">
+
+
+<li>
+
+<span class="check">
+✓
+</span>
+
+<span>
+1 jugada del día
+</span>
+
+</li>
+
+
+<li>
+
+<span class="check">
+✓
+</span>
+
+<span>
+Análisis Destacado
+</span>
+
+</li>
+
+
+<li>
+
+<span class="check">
+✓
+</span>
+
+<span class="refund">
+Incluye política de reembolso
+</span>
+
+</li>
+
+
+</ul>
+
+
+<div class="price-row">
+
+<span class="price">
+$50
+</span>
+
+<span class="period">
+/ DÍA
+</span>
+
+</div>
+
+
+<button class="buy-btn">
+COMPRAR AHORA
+</button>
+
+
+</article>
+
+
+
+<!-- EXCLUSIVA SEMANAL -->
+
+<article class="package-card">
+
+
+<div class="card-top">
+
+
+<div class="card-icon">
+
+<svg viewBox="0 0 24 24">
+
+<path d="M5 8L9 3H15L19 8L12 21L5 8Z"/>
+
+<path d="M5 8H19"/>
+
+<path d="M9 3L12 8L15 3"/>
+
+<path d="M12 8V21"/>
+
+</svg>
+
+</div>
+
+
+<div>
+
+<h2 class="card-title">
+EXCLUSIVA
+</h2>
+
+<div class="card-type">
+SEMANAL
+</div>
+
+</div>
+
+
+</div>
+
+
+<ul class="card-features">
+
+
+<li>
+
+<span class="check">
+✓
+</span>
+
+<span>
+1 selección EXCLUSIVA diaria
+</span>
+
+</li>
+
+
+<li>
+
+<span class="check">
+✓
+</span>
+
+<span>
+Duración 7 Días
+</span>
+
+</li>
+
+
+<li>
+
+<span class="check">
+✓
+</span>
+
+<span>
+Sin acceso al reembolso
+</span>
+
+</li>
+
+
+</ul>
+
+
+<div class="price-row">
+
+<span class="price">
+$299
+</span>
+
+<span class="period">
+/ SEMANA
+</span>
+
+</div>
+
+
+<button class="buy-btn">
+COMPRAR AHORA
+</button>
+
+
+</article>
+
+
+
+<!-- PACK MENSUAL -->
+
+<article class="package-card">
+
+
+<div class="card-top">
+
+
+<div class="card-icon">
+
+<svg viewBox="0 0 24 24">
+
+<rect
+  x="3"
+  y="5"
+  width="18"
+  height="16"
+  rx="2"
+/>
+
+<path d="M7 3V7"/>
+
+<path d="M17 3V7"/>
+
+<path d="M3 10H21"/>
+
+</svg>
+
+</div>
+
+
+<div>
+
+<h2 class="card-title">
+PACK MENSUAL
+</h2>
+
+<div class="card-type">
+MENSUAL
+</div>
+
+</div>
+
+
+</div>
+
+
+<ul class="card-features">
+
+
+<li>
+
+<span class="check">
+✓
+</span>
+
+<span>
+Entre 3-5 Picks al día
+</span>
+
+</li>
+
+
+<li>
+
+<span class="check">
+✓
+</span>
+
+<span>
+Análisis básico y estadísticas
+</span>
+
+</li>
+
+
+<li>
+
+<span class="check">
+✓
+</span>
+
+<span>
+No aplica política reembolso
+</span>
+
+</li>
+
+
+</ul>
+
+
+<div class="price-row">
+
+<span class="price">
+$150
+</span>
+
+<span class="period">
+/ MES
+</span>
+
+</div>
+
+
+<button class="buy-btn">
+COMPRAR AHORA
+</button>
+
+
+</article>
+
+
+
+<!-- ECONÓMICA -->
+
+<article class="package-card">
+
+
+<div class="card-top">
+
+
+<div class="card-icon">
+
+<svg viewBox="0 0 24 24">
+
+<path d="M4 20V15"/>
+
+<path d="M10 20V11"/>
+
+<path d="M16 20V7"/>
+
+<path d="M22 20V3"/>
+
+<path d="M2 20H23"/>
+
+</svg>
+
+</div>
+
+
+<div>
+
+<h2 class="card-title">
+ECONÓMICA
+</h2>
+
+<div class="card-type">
+MENSUAL
+</div>
+
+</div>
+
+
+</div>
+
+
+<ul class="card-features">
+
+
+<li>
+
+<span class="check">
+✓
+</span>
+
+<span>
+Acceso mensual
+</span>
+
+</li>
+
+
+<li>
+
+<span class="check">
+✓
+</span>
+
+<span>
+De 5-7 pick a la semana
+</span>
+
+</li>
+
+
+<li>
+
+<span class="check">
+✓
+</span>
+
+<span>
+Es la misma de Instagram
+</span>
+
+</li>
+
+
+</ul>
+
+
+<div class="price-row">
+
+<span class="price">
+$19.99
+</span>
+
+<span class="period">
+/ MES
+</span>
+
+</div>
+
+
+<button class="buy-btn">
+COMPRAR AHORA
+</button>
+
+
+</article>
+
+
+</div>
 
 </main>
 
 
-<!-- FOOTER -->
+
+<!-- =====================================
+     PARTE INFERIOR
+===================================== -->
+
+<section class="lower-content">
+
+
+
+<!-- POR QUÉ ELEGIR -->
+
+<div class="section-block">
+
+
+<h2 class="section-title">
+¿POR QUÉ ELEGIR ISB?
+</h2>
+
+
+<div class="why-grid">
+
+
+<div class="info-card">
+
+<div class="info-icon">
+🔱
+</div>
+
+<strong>
+ANÁLISIS REAL
+</strong>
+
+<p>
+Estudio, estadísticas y análisis antes de cada selección.
+</p>
+
+</div>
+
+
+<div class="info-card">
+
+<div class="info-icon">
+🔒
+</div>
+
+<strong>
+ACCESO PRIVADO
+</strong>
+
+<p>
+Contenido reservado para los miembros con paquete activo.
+</p>
+
+</div>
+
+
+<div class="info-card">
+
+<div class="info-icon">
+📊
+</div>
+
+<strong>
+DISCIPLINA Y CONSTANCIA
+</strong>
+
+<p>
+Un proceso organizado enfocado en análisis y seguimiento.
+</p>
+
+</div>
+
+
+<div class="info-card">
+
+<div class="info-icon">
+👥
+</div>
+
+<strong>
+UNA COMUNIDAD REAL
+</strong>
+
+<p>
+Más que clientes, una comunidad que forma parte de ISB.
+</p>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+<!-- CÓMO FUNCIONA -->
+
+<div class="section-block">
+
+
+<h2 class="section-title">
+¿CÓMO FUNCIONA?
+</h2>
+
+
+<div class="steps">
+
+
+<div class="step">
+
+<div class="step-number">
+1
+</div>
+
+<div class="step-icon">
+🛒
+</div>
+
+<strong>
+ELIGE TU PAQUETE
+</strong>
+
+<p>
+Selecciona el plan que más se adapte a ti.
+</p>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-number">
+2
+</div>
+
+<div class="step-icon">
+💳
+</div>
+
+<strong>
+REALIZA TU COMPRA
+</strong>
+
+<p>
+Completa el proceso de pago de tu paquete.
+</p>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-number">
+3
+</div>
+
+<div class="step-icon">
+🔐
+</div>
+
+<strong>
+RECIBE TU ACCESO
+</strong>
+
+<p>
+Tu cuenta tendrá acceso al contenido correspondiente.
+</p>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-number">
+4
+</div>
+
+<div class="step-icon">
+📋
+</div>
+
+<strong>
+CONSULTA TUS PICKS
+</strong>
+
+<p>
+Entra al portal privado y consulta tus selecciones.
+</p>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+<!-- PREGUNTAS -->
+
+<div class="section-block">
+
+
+<h2 class="section-title">
+PREGUNTAS FRECUENTES
+</h2>
+
+
+<div class="faq-grid">
+
+
+<details class="faq">
+
+<summary>
+¿Cuándo recibo mi jugada?
+</summary>
+
+<p>
+Las selecciones se publicarán dentro del portal cuando estén disponibles.
+</p>
+
+</details>
+
+
+<details class="faq">
+
+<summary>
+¿Cuánto dura mi paquete?
+</summary>
+
+<p>
+Los planes diarios, semanales y mensuales tienen la duración indicada en cada paquete.
+</p>
+
+</details>
+
+
+<details class="faq">
+
+<summary>
+¿Cómo funciona el reembolso?
+</summary>
+
+<p>
+La política de reembolso solamente aplica a los paquetes diarios que indiquen expresamente que la incluyen.
+</p>
+
+</details>
+
+
+<details class="faq">
+
+<summary>
+¿Cómo recibo mis selecciones?
+</summary>
+
+<p>
+Podrás consultar el contenido correspondiente desde tu cuenta y portal privado.
+</p>
+
+</details>
+
+
+</div>
+
+</div>
+
+
+
+<!-- FRASE -->
+
+<div class="results-banner">
+
+<strong>
+RESULTADOS HABLAN POR SÍ SOLOS
+</strong>
+
+<span>
+“Aquí no es suerte, es trabajo.”
+</span>
+
+</div>
+
+
+
+<!-- PAGOS -->
+
+<div class="payment-area">
+
+
+<div class="payment-box">
+
+<strong>
+🔒 PAGO SEGURO Y PROTEGIDO
+</strong>
+
+<p>
+Tus datos están protegidos.
+</p>
+
+
+<div class="payment-methods">
+
+<span class="payment-pill">
+VISA
+</span>
+
+<span class="payment-pill">
+MC
+</span>
+
+<span class="payment-pill">
+PayPal
+</span>
+
+<span class="payment-pill">
+Cash App
+</span>
+
+<span class="payment-pill">
+CARD
+</span>
+
+</div>
+
+</div>
+
+
+
+<div class="payment-box">
+
+<strong>
+💬 SOPORTE VÍA WHATSAPP
+</strong>
+
+<p>
+¿Necesitas ayuda con tu compra?
+</p>
+
+<a
+  class="whatsapp"
+  href="https://wa.me/12254329795"
+>
+
+CONTACTAR AHORA →
+
+</a>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================
+     FOOTER
+===================================== -->
+
 <footer class="footer">
 
-  <div class="footer-logo">
-    🔱 ISB
-  </div>
 
-  <div class="footer-sub">
-    EL TRIDENTE
-  </div>
+<div class="footer-logo">
+🔱 ISB
+</div>
 
-  <div class="footer-motto">
-    MÁS QUE PICKS,
-    <strong>UNA FAMILIA</strong>
-  </div>
+<div class="footer-logo-small">
+EL TRIDENTE
+</div>
 
-  <div class="footer-social">
-    @IDAEL_SPORTBET_OFICIAL
-  </div>
 
-  <div class="disclaimer">
-    Contenido informativo y de entretenimiento.
-    Las apuestas implican riesgo.
-    Solo para adultos donde sea legal.
-  </div>
+<div class="footer-motto">
+MÁS QUE PICKS, UNA FAMILIA
+</div>
+
+
+
+<div class="social-grid">
+
+
+<a
+  class="social-item"
+  href="https://www.instagram.com/idael_sportbet_oficial/"
+>
+📸 Idael_sportbet_oficial
+</a>
+
+
+<div class="social-item">
+🎵 Idael_SportBet_Oficial
+</div>
+
+
+<a
+  class="social-item"
+  href="mailto:idaelvargasbusiness@gmail.com"
+>
+✉️ idaelvargasbusiness@gmail.com
+</a>
+
+
+<a
+  class="social-item"
+  href="https://wa.me/12254329795"
+>
+💬 +1 (225) 432-9795
+</a>
+
+
+</div>
+
+
+
+<div class="responsible">
+
+
+<div>
+
+<strong>
+18+ · JUEGA CON RESPONSABILIDAD
+</strong>
+
+Las apuestas implican riesgo.
+Utiliza este contenido de forma responsable.
+
+</div>
+
+
+<div>
+
+<strong>
+SOLO PARA MAYORES DE 18 AÑOS
+</strong>
+
+Contenido informativo y de entretenimiento.
+Solo donde sea legal.
+
+</div>
+
+
+</div>
+
 
 </footer>
 
 
-<!-- SUPABASE -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- =====================================
+     SUPABASE
+===================================== -->
+
+<script
+src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
 
 <script>
+
 const SUPABASE_URL =
-  "https://nfvkmxnprchvkufwvhpr.supabase.co";
+"https://nfvkmxnprchvkufwvhpr.supabase.co";
+
 
 const SUPABASE_KEY =
-  "sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1";
+"sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1";
+
 
 const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 
 async function protegerPagina(){
 
-  const { data, error } =
-    await supabaseClient.auth.getSession();
-
-  if(error){
-    console.log(error);
-    return;
-  }
+  const { data } =
+  await supabaseClient.auth.getSession();
 
   if(!data.session){
-    window.location.href="index.html";
+
+    window.location.href =
+    "index.html";
+
   }
+
 }
 
 
@@ -1509,20 +2655,24 @@ async function cerrarSesion(){
 
   await supabaseClient.auth.signOut();
 
-  window.location.href="index.html";
+  window.location.href =
+  "index.html";
+
 }
 
 
 document
-  .getElementById("logoutBtn")
-  .addEventListener(
-    "click",
-    cerrarSesion
-  );
+.getElementById("logoutBtn")
+.addEventListener(
+  "click",
+  cerrarSesion
+);
 
 
 protegerPagina();
+
 </script>
+
 
 </body>
 </html>
