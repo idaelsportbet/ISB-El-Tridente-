@@ -1265,7 +1265,76 @@ button{
       repeat(4,minmax(0,1fr));
   }
 }
+/* HACER MÁS PEQUEÑOS LOS RECUADROS DE
+   "POR QUÉ ELEGIR ISB" Y "CÓMO FUNCIONA" */
 
+.why-grid,
+.steps{
+  gap:7px;
+}
+
+.info-card{
+  min-height:78px;
+  padding:9px 8px;
+  border-radius:7px;
+}
+
+.info-icon{
+  font-size:18px;
+  margin-bottom:5px;
+}
+
+.info-card strong{
+  font-size:8px;
+}
+
+.info-card p{
+  font-size:6.5px;
+  margin-top:4px;
+  line-height:1.25;
+}
+
+.step{
+  min-height:92px;
+  padding:8px;
+  border-radius:7px;
+}
+
+.step-number{
+  width:25px;
+  height:25px;
+  font-size:11px;
+}
+
+.step-icon{
+  font-size:17px;
+  margin-top:5px;
+}
+
+.step strong{
+  font-size:8px;
+  margin-top:5px;
+}
+
+.step p{
+  font-size:6.5px;
+  margin-top:3px;
+  line-height:1.25;
+}
+
+@media(max-width:700px){
+
+  .info-card{
+    min-height:74px;
+    padding:8px 7px;
+  }
+
+  .step{
+    min-height:88px;
+    padding:8px 7px;
+  }
+
+}
 </style>
 </head>
 
