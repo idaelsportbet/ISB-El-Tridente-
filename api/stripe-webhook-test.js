@@ -29,9 +29,7 @@ function calcularVencimiento(paquete) {
 function obtenerBody(req) {
   if (!req.body) return null;
 
-  if (typeof req.body === "object") {
-    return req.body;
-  }
+  if (typeof req.body === "object") return req.body;
 
   if (Buffer.isBuffer(req.body)) {
     return JSON.parse(req.body.toString("utf8"));
@@ -60,12 +58,6 @@ export default async function handler(req, res) {
       });
     }
 
-    if (!process.env.STRIPE_TEST_SECRET_KEY) {
-      return res.status(500).json({
-        error: "Falta STRIPE_TEST_SECRET_KEY"
-      });
-    }
-
     const stripeResponse = await fetch(
       `https://api.stripe.com/v1/events/${encodeURIComponent(body.id)}`,
       {
@@ -79,59 +71,46 @@ export default async function handler(req, res) {
     const evento = await stripeResponse.json();
 
     if (!stripeResponse.ok) {
-      console.error("Stripe TEST verificar evento:", evento);
-
       return res.status(400).json({
         error: "Stripe no pudo verificar el evento"
       });
     }
 
-    if (evento.livemode !== false) {
-      return res.status(400).json({
-        error: "Este endpoint solo acepta eventos de prueba"
-      });
-    }
-
     if (evento.type !== "checkout.session.completed") {
       return res.status(200).json({
-        received: true,
-        ignored: evento.type
+        received: true
       });
     }
 
-    const session = evento.data?.object;
-
-    if (!session) {
-      return res.status(400).json({
-        error: "Sesión de Stripe no encontrada"
-      });
-    }
+    const session = evento.data.object;
 
     if (session.payment_status !== "paid") {
       return res.status(200).json({
-        received: true,
-        ignored: "Pago no completado"
+        received: true
       });
     }
 
-    const userId =
-      session.metadata?.user_id ||
-      session.client_reference_id;
+    const nombre =
+      session.customer_details?.name ||
+      "Sin nombre";
 
-    const paquete = session.metadata?.paquete;
-
-    const email =
-      session.metadata?.email ||
+    const correo =
       session.customer_details?.email ||
-      session.customer_email;
+      session.customer_email ||
+      "Sin correo";
 
-    if (!userId || !paquete || !session.id) {
-      return res.status(400).json({
-        error: "Faltan datos del usuario o del paquete"
-      });
-    }
+    const paquete =
+      session.metadata?.paquete ||
+      "Sin paquete";
 
-    const venceEn = calcularVencimiento(paquete);
+    const cantidadPagada =
+      (session.amount_total || 0) / 100;
+
+    const fechaCompra =
+      new Date(session.created * 1000).toISOString();
+
+    const vencimiento =
+      calcularVencimiento(paquete);
 
     const respuestaSupabase = await fetch(
       `${SUPABASE_URL}/rest/v1/compras`,
@@ -139,39 +118,27 @@ export default async function handler(req, res) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "apikey": process.env.SUPABASE_SECRET_KEY,
-          "Authorization": `Bearer ${process.env.SUPABASE_SECRET_KEY}`,
-          "Prefer": "return=representation"
+          apikey: process.env.SUPABASE_SECRET_KEY,
+          Authorization: `Bearer ${process.env.SUPABASE_SECRET_KEY}`,
+          Prefer: "return=representation"
         },
         body: JSON.stringify({
-          user_id: userId,
-          email: email || null,
+          nombre,
+          correo,
           paquete,
-          stripe_session_id: session.id,
-          estado: "pagado_prueba",
-          vence_en: venceEn
+          cantidad_pagada_dolar: cantidadPagada,
+          fecha_compra: fechaCompra,
+          vencimiento
         })
       }
     );
 
     if (!respuestaSupabase.ok) {
-      const errorTexto = await respuestaSupabase.text();
-
-      if (
-        respuestaSupabase.status === 409 ||
-        errorTexto.toLowerCase().includes("duplicate")
-      ) {
-        return res.status(200).json({
-          received: true,
-          duplicate: true
-        });
-      }
-
-      console.error("Supabase TEST:", errorTexto);
+      const detalle = await respuestaSupabase.text();
 
       return res.status(500).json({
         error: "No se pudo registrar la compra en Supabase",
-        detalle: errorTexto
+        detalle
       });
     }
 
@@ -180,14 +147,10 @@ export default async function handler(req, res) {
     return res.status(200).json({
       received: true,
       test: true,
-      paquete,
-      user_id: userId,
       compra
     });
 
   } catch (error) {
-    console.error("Webhook TEST:", error);
-
     return res.status(500).json({
       error: error.message || "Error procesando webhook de prueba"
     });
