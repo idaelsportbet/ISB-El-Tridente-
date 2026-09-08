@@ -3368,12 +3368,7 @@ async function continuarPago(){
       return;
     }
 
-    const endpoint =
-  paqueteSeleccionado.nombre === "Premium Diario"
-    ? "/api/create-test-checkout-session"
-    : "/api/create-checkout-session";
-
-const respuesta = await fetch(endpoint,{
+    const respuesta = await fetch("/api/create-checkout-session",{
       method: "POST",
       headers: {
         "Content-Type": "application/json"
