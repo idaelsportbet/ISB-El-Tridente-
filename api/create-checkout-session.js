@@ -15,13 +15,13 @@ export default async function handler(req, res) {
     }
 
     const precios = {
-      "Premium Diario": "price_1UDCftDLF0zUmGGz5ZXKtc9v",
-      "Premium Semanal": "price_1UDCk9DLF0zUmGGzhOLvZdRN",
-      "Exclusiva Diaria": "price_1UDCm0DLF0zUmGGzY5gLMWFD",
-      "Exclusiva Semanal": "price_1UDCp1DLF0zUmGGzCfpEVDA8",
-      "Pack Mensual": "price_1UDCr7DLF0zUmGGz7LKrBTrt",
-      "Económica": "price_1UDCuyDLF0zUmGGzmkJlRLw8"
-    };
+  "Premium Diario": "price_1UDFtGDLF0zUmGGzJOv04WQ8",
+  "Premium Semanal": "price_1UDOflDLF0zUmGGzWFPpR0yY",
+  "Exclusiva Diaria": "price_1UDOhQDLF0zUmGGzQXzbmB4F",
+  "Exclusiva Semanal": "price_1UDOj7DLF0zUmGGz8bHbbRsH",
+  "Pack Mensual": "price_1UDOkQDLF0zUmGGzdnxmQBFi",
+  "Económica": "price_1UDOlhDLF0zUmGGzMsNtCE7h"
+};
 
     const priceId = precios[paquete];
 
