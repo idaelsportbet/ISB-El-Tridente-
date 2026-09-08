@@ -3360,18 +3360,24 @@ async function continuarPago(){
     boton.disabled = true;
     boton.textContent = "CARGANDO PAGO...";
 
+    const { data: { session } } = await supabaseClient.auth.getSession();
+
+    if(!session || !session.user){
+      alert("Debes iniciar sesión para comprar un paquete.");
+      window.location.href = "index.html";
+      return;
+    }
+
     const respuesta = await fetch("/api/create-checkout-session", {
-
       method: "POST",
-
       headers: {
         "Content-Type": "application/json"
       },
-
       body: JSON.stringify({
-        paquete: paqueteSeleccionado.nombre
+        paquete: paqueteSeleccionado.nombre,
+        user_id: session.user.id,
+        email: session.user.email
       })
-
     });
 
     const data = await respuesta.json();
@@ -3386,9 +3392,7 @@ async function continuarPago(){
 
     console.error(error);
 
-    alert(
-      "No se pudo abrir el pago. Inténtalo nuevamente."
-    );
+    alert("No se pudo abrir el pago. Inténtalo nuevamente.");
 
     boton.disabled = false;
     boton.textContent = textoOriginal;
