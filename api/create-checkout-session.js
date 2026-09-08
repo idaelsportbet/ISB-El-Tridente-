@@ -15,8 +15,7 @@ export default async function handler(req, res) {
 
   try {
 
-    const { paquete } = req.body || {};
-
+    const { paquete, user_id, email } = req.body || {};
     const priceId = PRICE_IDS[paquete];
 
     if (!priceId) {
