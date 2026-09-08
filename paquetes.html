@@ -3350,13 +3350,49 @@ function cerrarCompra(){
   document.getElementById("compraModal").classList.remove("active");
 }
 
-function continuarPago(){
-  alert(
-    "Próximo paso: pago de " +
-    paqueteSeleccionado.nombre +
-    " por " +
-    paqueteSeleccionado.precio
-  );
+async function continuarPago(){
+
+  const boton = document.querySelector(".continuar-pago");
+  const textoOriginal = boton.textContent;
+
+  try {
+
+    boton.disabled = true;
+    boton.textContent = "CARGANDO PAGO...";
+
+    const respuesta = await fetch("/api/create-checkout-session", {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+        paquete: paqueteSeleccionado.nombre
+      })
+
+    });
+
+    const data = await respuesta.json();
+
+    if(!respuesta.ok || !data.url){
+      throw new Error(data.error || "No se pudo iniciar el pago");
+    }
+
+    window.location.href = data.url;
+
+  } catch(error){
+
+    console.error(error);
+
+    alert(
+      "No se pudo abrir el pago. Inténtalo nuevamente."
+    );
+
+    boton.disabled = false;
+    boton.textContent = textoOriginal;
+  }
 }
 
 document.getElementById("compraModal").addEventListener("click", function(e){
