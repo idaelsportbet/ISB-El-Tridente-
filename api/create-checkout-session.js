@@ -39,7 +39,7 @@ export default async function handler(req, res) {
 
     const params = new URLSearchParams();
 
-    params.append("mode", "payment");
+    params.append("mode", paquete === "Económica" ? "subscription" : "payment");
     params.append("line_items[0][price]", priceId);
     params.append("line_items[0][quantity]", "1");
 
