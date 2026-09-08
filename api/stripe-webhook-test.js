@@ -1,60 +1,7 @@
-import crypto from "crypto";
-
-export const config = {
-  api: {
-    bodyParser: false
-  }
-};
-
 const SUPABASE_URL = "https://nfvkmxnprchvkufwvhpr.supabase.co";
 
-function leerBody(req) {
-  return new Promise((resolve, reject) => {
-    const chunks = [];
-
-    req.on("data", chunk => chunks.push(chunk));
-    req.on("end", () => resolve(Buffer.concat(chunks)));
-    req.on("error", reject);
-  });
-}
-
-function verificarFirmaStripe(payload, firma, secreto) {
-  if (!firma || !secreto) return false;
-
-  const partes = firma.split(",");
-
-  const timestamp = partes
-    .find(p => p.startsWith("t="))
-    ?.split("=")[1];
-
-  const firmas = partes
-    .filter(p => p.startsWith("v1="))
-    .map(p => p.split("=")[1]);
-
-  if (!timestamp || firmas.length === 0) return false;
-
-  const signedPayload = `${timestamp}.${payload.toString("utf8")}`;
-
-  const firmaEsperada = crypto
-    .createHmac("sha256", secreto)
-    .update(signedPayload)
-    .digest("hex");
-
-  return firmas.some(firma => {
-    try {
-      return crypto.timingSafeEqual(
-        Buffer.from(firma, "hex"),
-        Buffer.from(firmaEsperada, "hex")
-      );
-    } catch {
-      return false;
-    }
-  });
-}
-
 function calcularVencimiento(paquete) {
-  const ahora = new Date();
-  const vence = new Date(ahora);
+  const vence = new Date();
 
   switch (paquete) {
     case "Premium Diario":
@@ -79,6 +26,24 @@ function calcularVencimiento(paquete) {
   return vence.toISOString();
 }
 
+function obtenerBody(req) {
+  if (!req.body) return null;
+
+  if (typeof req.body === "object") {
+    return req.body;
+  }
+
+  if (Buffer.isBuffer(req.body)) {
+    return JSON.parse(req.body.toString("utf8"));
+  }
+
+  if (typeof req.body === "string") {
+    return JSON.parse(req.body);
+  }
+
+  return null;
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({
@@ -87,37 +52,65 @@ export default async function handler(req, res) {
   }
 
   try {
-    const rawBody = await leerBody(req);
+    const body = obtenerBody(req);
 
-    const stripeSignature = req.headers["stripe-signature"];
-    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET_TEST;
-
-    const firmaValida = verificarFirmaStripe(
-      rawBody,
-      stripeSignature,
-      webhookSecret
-    );
-
-    if (!firmaValida) {
+    if (!body?.id) {
       return res.status(400).json({
-        error: "Firma de Stripe TEST no válida"
+        error: "No se recibió ID del evento"
       });
     }
 
-    const evento = JSON.parse(rawBody.toString("utf8"));
+    if (!process.env.STRIPE_TEST_SECRET_KEY) {
+      return res.status(500).json({
+        error: "Falta STRIPE_TEST_SECRET_KEY"
+      });
+    }
+
+    const stripeResponse = await fetch(
+      `https://api.stripe.com/v1/events/${encodeURIComponent(body.id)}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${process.env.STRIPE_TEST_SECRET_KEY}`
+        }
+      }
+    );
+
+    const evento = await stripeResponse.json();
+
+    if (!stripeResponse.ok) {
+      console.error("Stripe TEST verificar evento:", evento);
+
+      return res.status(400).json({
+        error: "Stripe no pudo verificar el evento"
+      });
+    }
+
+    if (evento.livemode !== false) {
+      return res.status(400).json({
+        error: "Este endpoint solo acepta eventos de prueba"
+      });
+    }
 
     if (evento.type !== "checkout.session.completed") {
       return res.status(200).json({
-        received: true
+        received: true,
+        ignored: evento.type
       });
     }
 
-    const session = evento.data.object;
+    const session = evento.data?.object;
+
+    if (!session) {
+      return res.status(400).json({
+        error: "Sesión de Stripe no encontrada"
+      });
+    }
 
     if (session.payment_status !== "paid") {
       return res.status(200).json({
         received: true,
-        ignored: "Pago de prueba no completado"
+        ignored: "Pago no completado"
       });
     }
 
@@ -166,7 +159,7 @@ export default async function handler(req, res) {
 
       if (
         respuestaSupabase.status === 409 ||
-        errorTexto.includes("duplicate")
+        errorTexto.toLowerCase().includes("duplicate")
       ) {
         return res.status(200).json({
           received: true,
@@ -177,22 +170,26 @@ export default async function handler(req, res) {
       console.error("Supabase TEST:", errorTexto);
 
       return res.status(500).json({
-        error: "No se pudo registrar la compra de prueba"
+        error: "No se pudo registrar la compra en Supabase",
+        detalle: errorTexto
       });
     }
+
+    const compra = await respuestaSupabase.json();
 
     return res.status(200).json({
       received: true,
       test: true,
       paquete,
-      user_id: userId
+      user_id: userId,
+      compra
     });
 
   } catch (error) {
-    console.error("Webhook TEST error:", error);
+    console.error("Webhook TEST:", error);
 
     return res.status(500).json({
-      error: "Error procesando webhook de prueba"
+      error: error.message || "Error procesando webhook de prueba"
     });
   }
 }
