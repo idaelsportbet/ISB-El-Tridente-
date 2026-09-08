@@ -43,10 +43,13 @@ export default async function handler(req, res) {
       priceId
     );
 
-    params.append(
-      "line_items[0][quantity]",
-      "1"
-    );
+    params.append("client_reference_id", user_id || "");
+
+params.append("customer_email", email || "");
+
+params.append("metadata[user_id]", user_id || "");
+params.append("metadata[paquete]", paquete || "");
+params.append("metadata[email]", email || "");
 
     const stripeResponse = await fetch(
       "https://api.stripe.com/v1/checkout/sessions",
