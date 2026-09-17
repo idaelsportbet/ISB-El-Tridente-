@@ -1,1 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>Mi Cuenta | ISB El Tridente</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 80% 20%, rgba(0, 110, 60, .18), transparent 35%),
+        #050505;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    .topbar {
+      padding: 20px;
+      border-bottom: 1px solid #a97b20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      color: #f5bd3d;
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .volver {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .contenedor {
+      width: min(92%, 650px);
+      margin: 50px auto;
+    }
+
+    h1 {
+      color: #f5bd3d;
+      margin-bottom: 8px;
+    }
+
+    .subtitulo {
+      color: #aaa;
+      margin-bottom: 30px;
+    }
+
+    .tarjeta {
+      background: linear-gradient(
+        145deg,
+        rgba(18,18,18,.98),
+        rgba(0,55,35,.30)
+      );
+      border: 1px solid #b98a27;
+      border-radius: 18px;
+      padding: 25px;
+      box-shadow: 0 0 30px rgba(0,0,0,.45);
+    }
+
+    .fila {
+      padding: 14px 0;
+      border-bottom: 1px solid #292929;
+    }
+
+    .fila:last-child {
+      border-bottom: none;
+    }
+
+    .label {
+      color: #999;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .valor {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .estado {
+      display: inline-block;
+      padding: 7px 13px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .activo {
+      color: #37ef83;
+      background: rgba(55,239,131,.12);
+      border: 1px solid #37ef83;
+    }
+
+    .vencido {
+      color: #ff6565;
+      background: rgba(255,80,80,.12);
+      border: 1px solid #ff6565;
+    }
+
+    .mensaje {
+      text-align: center;
+      padding: 30px 10px;
+      color: #bbb;
+    }
+
+    .boton {
+      display: block;
+      margin-top: 25px;
+      padding: 15px;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      font-weight: 800;
+      border-radius: 10px;
+      background: linear-gradient(180deg,#14b85a,#087b3c);
+      border: 1px solid #32e77d;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="logo">🔱 ISB | EL TRIDENTE</div>
+    <a class="volver" href="paquetes.html">← Paquetes</a>
+  </header>
+
+  <main class="contenedor">
+
+    <h1>MI CUENTA</h1>
+
+    <div class="subtitulo">
+      Consulta tu paquete y el estado de tu acceso.
+    </div>
+
+    <div id="contenido" class="tarjeta">
+      <div class="mensaje">Cargando tu cuenta...</div>
+    </div>
+
+  </main>
+
+<script>
+const SUPABASE_URL =
+  "https://nfvkmxnprchvkufwvhpr.supabase.co";
+
+/*
+PEGA AQUÍ LA MISMA CLAVE PÚBLICA
+que ya utilizas en paquetes.html.
+NO pongas SUPABASE_SECRET_KEY aquí.
+*/
+const SUPABASE_ANON_KEY = "PEGA_AQUI_TU_CLAVE_PUBLICA";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+function fechaBonita(fecha) {
+  if (!fecha) return "—";
+
+  return new Date(fecha).toLocaleString(
+    "es-US",
+    {
+      dateStyle: "medium",
+      timeStyle: "short"
+    }
+  );
+}
+
+async function cargarCuenta() {
+
+  const contenido =
+    document.getElementById("contenido");
+
+  const {
+    data: { session }
+  } = await supabaseClient.auth.getSession();
+
+  if (!session?.user) {
+
+    contenido.innerHTML = `
+      <div class="mensaje">
+        Debes iniciar sesión para ver tu cuenta.
+      </div>
+
+      <a class="boton" href="index.html">
+        INICIAR SESIÓN
+      </a>
+    `;
+
+    return;
+  }
+
+  const userId = session.user.id;
+
+  const { data, error } =
+    await supabaseClient
+      .from("compras")
+      .select("*")
+      .eq("user_id", userId)
+      .order("fecha_compra", {
+        ascending: false
+      })
+      .limit(1);
+
+  if (error) {
+
+    console.error(error);
+
+    contenido.innerHTML = `
+      <div class="mensaje">
+        No se pudo cargar tu información.
+      </div>
+    `;
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+
+    contenido.innerHTML = `
+      <div class="mensaje">
+        Todavía no tienes un paquete registrado.
+      </div>
+
+      <a class="boton" href="paquetes.html">
+        VER PAQUETES
+      </a>
+    `;
+
+    return;
+  }
+
+  const compra = data[0];
+
+  const ahora = new Date();
+
+  const fechaVencimiento =
+    compra.vencimiento
+      ? new Date(compra.vencimiento)
+      : null;
+
+  const activo =
+    fechaVencimiento &&
+    fechaVencimiento > ahora;
+
+  contenido.innerHTML = `
+
+    <div class="fila">
+      <div class="label">NOMBRE</div>
+      <div class="valor">
+        ${compra.nombre || "—"}
+      </div>
+    </div>
+
+    <div class="fila">
+      <div class="label">CORREO</div>
+      <div class="valor">
+        ${compra.correo || session.user.email || "—"}
+      </div>
+    </div>
+
+    <div class="fila">
+      <div class="label">PAQUETE</div>
+      <div class="valor">
+        ${compra.paquete || "—"}
+      </div>
+    </div>
+
+    <div class="fila">
+      <div class="label">CANTIDAD PAGADA</div>
+      <div class="valor">
+        $${Number(
+          compra.cantidad_pagada_dolar || 0
+        ).toFixed(2)}
+      </div>
+    </div>
+
+    <div class="fila">
+      <div class="label">FECHA DE COMPRA</div>
+      <div class="valor">
+        ${fechaBonita(compra.fecha_compra)}
+      </div>
+    </div>
+
+    <div class="fila">
+      <div class="label">VENCIMIENTO</div>
+      <div class="valor">
+        ${fechaBonita(compra.vencimiento)}
+      </div>
+    </div>
+
+    <div class="fila">
+      <div class="label">ESTADO</div>
+
+      <span class="estado ${
+        activo ? "activo" : "vencido"
+      }">
+
+        ${activo ? "ACTIVO" : "VENCIDO"}
+
+      </span>
+    </div>
+  `;
+}
+
+cargarCuenta();
+</script>
+
+</body>
+</html>
