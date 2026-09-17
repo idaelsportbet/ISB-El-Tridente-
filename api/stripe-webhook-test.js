@@ -89,10 +89,12 @@ export default async function handler(req, res) {
         received: true
       });
     }
-const userId =
-  session.metadata?.user_id ||
-  session.client_reference_id ||
-  null;
+
+    const userId =
+      session.metadata?.user_id ||
+      session.client_reference_id ||
+      null;
+
     const nombre =
       session.customer_details?.name ||
       "Sin nombre";
@@ -100,6 +102,7 @@ const userId =
     const correo =
       session.customer_details?.email ||
       session.customer_email ||
+      session.metadata?.email ||
       "Sin correo";
 
     const paquete =
@@ -126,14 +129,14 @@ const userId =
           Prefer: "return=representation"
         },
         body: JSON.stringify({
-  user_id: userId,
-  nombre,
-  correo,
-  paquete,
-  cantidad_pagada_dolar: cantidadPagada,
-  fecha_compra: fechaCompra,
-  vencimiento
-})
+          user_id: userId,
+          nombre,
+          correo,
+          paquete,
+          cantidad_pagada_dolar: cantidadPagada,
+          fecha_compra: fechaCompra,
+          vencimiento
+        })
       }
     );
 
