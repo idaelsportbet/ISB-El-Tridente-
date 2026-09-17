@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { paquete, user_id, email } = req.body || {};
+    const { paquete, user_id, email, nombre } = req.body || {};
 
     if (!paquete) {
       return res.status(400).json({ error: "Falta el paquete" });
@@ -55,7 +55,11 @@ export default async function handler(req, res) {
 
     params.append("client_reference_id", user_id);
     params.append("metadata[user_id]", user_id);
-    params.append("metadata[paquete]", paquete);
+params.append("metadata[paquete]", paquete);
+
+if (nombre) {
+  params.append("metadata[nombre]", nombre);
+}
 
     if (email) {
       params.append("customer_email", email);
