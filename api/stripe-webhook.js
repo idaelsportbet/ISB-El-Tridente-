@@ -1,14 +1,78 @@
 const SUPABASE_URL = "https://nfvkmxnprchvkufwvhpr.supabase.co";
 
 function calcularVencimiento(paquete) {
-  const vence = new Date();
+  const ahora = new Date();
+
+  if (
+    paquete === "Premium Diario" ||
+    paquete === "Exclusiva Diaria"
+  ) {
+    // Obtener la fecha actual según horario Central de EE. UU.
+    const partes = new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/Chicago",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).formatToParts(ahora);
+
+    const valores = {};
+    for (const parte of partes) {
+      if (parte.type !== "literal") {
+        valores[parte.type] = parte.value;
+      }
+    }
+
+    // Medianoche que inicia el día siguiente en horario Central.
+    // Primero usamos una aproximación UTC y luego calculamos
+    // qué offset tiene Chicago en ese instante.
+    const aproximacion = new Date(
+      Date.UTC(
+        Number(valores.year),
+        Number(valores.month) - 1,
+        Number(valores.day) + 1,
+        0,
+        0,
+        0
+      )
+    );
+
+    const formatoChicago = new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/Chicago",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hourCycle: "h23"
+    });
+
+    const p = {};
+    for (const parte of formatoChicago.formatToParts(aproximacion)) {
+      if (parte.type !== "literal") {
+        p[parte.type] = parte.value;
+      }
+    }
+
+    const chicagoComoUTC = Date.UTC(
+      Number(p.year),
+      Number(p.month) - 1,
+      Number(p.day),
+      Number(p.hour),
+      Number(p.minute),
+      Number(p.second)
+    );
+
+    const offset = chicagoComoUTC - aproximacion.getTime();
+
+    return new Date(
+      aproximacion.getTime() - offset
+    ).toISOString();
+  }
+
+  const vence = new Date(ahora);
 
   switch (paquete) {
-    case "Premium Diario":
-    case "Exclusiva Diaria":
-      vence.setHours(24, 0, 0, 0);
-      break;
-
     case "Premium Semanal":
     case "Exclusiva Semanal":
       vence.setDate(vence.getDate() + 7);
