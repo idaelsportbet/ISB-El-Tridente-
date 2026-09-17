@@ -164,8 +164,9 @@ const userId =
   session.client_reference_id ||
   null;
     const nombre =
-      session.customer_details?.name ||
-      "Sin nombre";
+  session.metadata?.nombre ||
+  session.customer_details?.name ||
+  "Sin nombre";
 
     const correo =
       session.customer_details?.email ||
