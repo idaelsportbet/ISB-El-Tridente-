@@ -295,18 +295,104 @@ async function verificarAcceso() {
   nombrePaquete.textContent =
     nombre;
 
+ const hoy = new Date()
+  .toLocaleDateString("en-CA", {
+    timeZone: "America/Chicago"
+  });
+
+const { data: picks, error: errorPick } =
+  await supabaseClient
+    .from("picks")
+    .select("*")
+    .eq("paquete", compra.paquete)
+    .eq("fecha_pick", hoy)
+    .eq("activo", true)
+    .order("created_at", {
+      ascending: false
+    })
+    .limit(1);
+
+if (
+  errorPick ||
+  !picks ||
+  picks.length === 0
+) {
+
+  console.error(errorPick);
+
   contenido.innerHTML = `
     <div class="estado">
       ✓ ACCESO VERIFICADO
     </div>
 
     <div class="mensaje">
-      Tu acceso está activo.
-      <br><br>
-      Aquí aparecerá la jugada
-      correspondiente a tu paquete.
+      Todavía no se ha publicado
+      el pick de hoy.
     </div>
   `;
+
+  return;
+}
+
+const pick = picks[0];
+
+contenido.innerHTML = `
+  <div class="estado">
+    ✓ ACCESO VERIFICADO
+  </div>
+
+  <div class="mensaje">
+
+    <h2 style="
+      color:#f5c84c;
+      margin-top:0;
+    ">
+      ${pick["Título"] || "PICK DE HOY"}
+    </h2>
+
+    <div style="
+      font-size:18px;
+      color:white;
+      margin:22px 0;
+    ">
+      ${pick["Descripción"] || "—"}
+    </div>
+
+    <div style="
+      font-size:14px;
+      color:#aaa;
+      margin-bottom:6px;
+    ">
+      CUOTA
+    </div>
+
+    <div style="
+      font-size:32px;
+      font-weight:900;
+      color:#37ef83;
+      margin-bottom:22px;
+    ">
+      ${pick["Cuota"] || "—"}
+    </div>
+
+    ${
+      pick.imagen_url
+        ? `
+          <img
+            src="${pick.imagen_url}"
+            alt="Pick de hoy"
+            style="
+              width:100%;
+              border-radius:12px;
+              margin-top:15px;
+            "
+          >
+        `
+        : ""
+    }
+
+  </div>
+`;
 }
 
 verificarAcceso();
