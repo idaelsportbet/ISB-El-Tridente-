@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -120,15 +119,48 @@
       margin-bottom: 20px;
     }
 
+    .titulo-pick {
+      color: #f5c84c;
+      text-align: center;
+      margin: 15px 0 25px;
+    }
+
+    .descripcion-pick {
+      color: white;
+      text-align: center;
+      font-size: 19px;
+      margin-bottom: 25px;
+    }
+
+    .cuota-label {
+      text-align: center;
+      color: #999;
+      font-size: 13px;
+    }
+
+    .cuota {
+      text-align: center;
+      color: #37ef83;
+      font-size: 34px;
+      font-weight: 900;
+      margin-top: 8px;
+    }
+
+    .imagen-pick {
+      width: 100%;
+      display: block;
+      margin-top: 25px;
+      border-radius: 12px;
+      border: 1px solid rgba(185,138,39,.55);
+    }
+
     .boton {
       display: block;
       margin-top: 25px;
       padding: 15px;
-
       text-align: center;
       text-decoration: none;
       font-weight: 900;
-
       color: #f6cf63;
 
       background:
@@ -148,6 +180,7 @@
 <body>
 
 <header class="topbar">
+
   <div class="logo">
     🔱 ISB | EL TRIDENTE
   </div>
@@ -155,6 +188,7 @@
   <a class="volver" href="cuenta.html">
     ← Mi Cuenta
   </a>
+
 </header>
 
 <main class="contenedor">
@@ -174,6 +208,7 @@
 </main>
 
 <script>
+
 const SUPABASE_URL =
   "https://nfvkmxnprchvkufwvhpr.supabase.co";
 
@@ -186,6 +221,7 @@ const supabaseClient =
     SUPABASE_ANON_KEY
   );
 
+
 async function verificarAcceso() {
 
   const contenido =
@@ -194,9 +230,15 @@ async function verificarAcceso() {
   const nombrePaquete =
     document.getElementById("nombrePaquete");
 
+
+  /* =========================
+     VERIFICAR SESIÓN
+  ========================= */
+
   const {
     data: { session }
   } = await supabaseClient.auth.getSession();
+
 
   if (!session?.user) {
 
@@ -213,13 +255,23 @@ async function verificarAcceso() {
     return;
   }
 
-  const userId = session.user.id;
+
+  const userId =
+    session.user.id;
+
+
+  /* =========================
+     PAQUETE SOLICITADO
+  ========================= */
 
   const parametros =
-    new URLSearchParams(window.location.search);
+    new URLSearchParams(
+      window.location.search
+    );
 
   const paqueteSolicitado =
     parametros.get("paquete");
+
 
   if (!paqueteSolicitado) {
 
@@ -232,30 +284,55 @@ async function verificarAcceso() {
     return;
   }
 
+
+  /* =========================
+     VERIFICAR COMPRA ACTIVA
+  ========================= */
+
   const ahora =
     new Date().toISOString();
 
-  const { data, error } =
+
+  const {
+    data: compras,
+    error: errorCompra
+  } =
     await supabaseClient
       .from("compras")
       .select(
-        "paquete,vencimiento,user_id"
+        "paquete,vencimiento,user_id,fecha_compra"
       )
-      .eq("user_id", userId)
-      .eq("paquete", paqueteSolicitado)
-      .gt("vencimiento", ahora)
-      .order("fecha_compra", {
-        ascending: false
-      })
+      .eq(
+        "user_id",
+        userId
+      )
+      .eq(
+        "paquete",
+        paqueteSolicitado
+      )
+      .gt(
+        "vencimiento",
+        ahora
+      )
+      .order(
+        "fecha_compra",
+        {
+          ascending: false
+        }
+      )
       .limit(1);
 
+
   if (
-    error ||
-    !data ||
-    data.length === 0
+    errorCompra ||
+    !compras ||
+    compras.length === 0
   ) {
 
-    console.error(error);
+    console.error(
+      "Error compra:",
+      errorCompra
+    );
 
     contenido.innerHTML = `
       <div class="mensaje">
@@ -271,107 +348,163 @@ async function verificarAcceso() {
     return;
   }
 
-  const compra = data[0];
+
+  const compra =
+    compras[0];
+
+
+  /* =========================
+     NOMBRE VISUAL DEL PAQUETE
+  ========================= */
 
   let nombre =
     compra.paquete || "PAQUETE";
 
-  if (nombre.includes("Premium")) {
-    nombre = "🔱 PREMIUM";
+
+  if (
+    nombre.includes("Premium")
+  ) {
+
+    nombre =
+      "🔱 PREMIUM";
+
+  } else if (
+    nombre.includes("Exclusiva")
+  ) {
+
+    nombre =
+      "🔱 EXCLUSIVA";
+
+  } else if (
+    nombre.includes("Económica")
+  ) {
+
+    nombre =
+      "🔱 ECONÓMICA";
+
+  } else if (
+    nombre.includes("Pack Mensual")
+  ) {
+
+    nombre =
+      "🔱 PACK MENSUAL";
   }
 
-  else if (nombre.includes("Exclusiva")) {
-    nombre = "🔱 EXCLUSIVA";
-  }
-
-  else if (nombre.includes("Económica")) {
-    nombre = "🔱 ECONÓMICA";
-  }
-
-  else if (nombre.includes("Pack Mensual")) {
-    nombre = "🔱 PACK MENSUAL";
-  }
 
   nombrePaquete.textContent =
     nombre;
 
- const hoy = new Date()
-  .toLocaleDateString("en-CA", {
-    timeZone: "America/Chicago"
-  });
 
-const { data: picks, error: errorPick } =
-  await supabaseClient
-    .from("picks")
-    .select("*")
-    .eq("paquete", compra.paquete)
-    .eq("fecha_pick", hoy)
-    .eq("Activo", true)
-    .order("created_at", {
-      ascending: false
-    })
-    .limit(1);
+  /* =========================
+     FECHA DE PRUEBA
+     20 SEPTIEMBRE 2026
+  ========================= */
 
-if (
-  errorPick ||
-  !picks ||
-  picks.length === 0
-) {
+  const hoy =
+    "2026-09-20";
 
-  console.error(errorPick);
+
+  /* =========================
+     BUSCAR PICK
+  ========================= */
+
+  const {
+    data: picks,
+    error: errorPick
+  } =
+    await supabaseClient
+      .from("picks")
+      .select("*")
+      .eq(
+        "paquete",
+        compra.paquete
+      )
+      .eq(
+        "fecha_pick",
+        hoy
+      )
+      .eq(
+        "Activo",
+        true
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      )
+      .limit(1);
+
+
+  if (errorPick) {
+
+    console.error(
+      "ERROR CARGANDO PICK:",
+      errorPick
+    );
+
+    contenido.innerHTML = `
+      <div class="estado">
+        ✓ ACCESO VERIFICADO
+      </div>
+
+      <div class="mensaje">
+        Ocurrió un error cargando
+        el pick de hoy.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  if (
+    !picks ||
+    picks.length === 0
+  ) {
+
+    contenido.innerHTML = `
+      <div class="estado">
+        ✓ ACCESO VERIFICADO
+      </div>
+
+      <div class="mensaje">
+        Todavía no se ha publicado
+        el pick de hoy.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  /* =========================
+     MOSTRAR PICK
+  ========================= */
+
+  const pick =
+    picks[0];
+
 
   contenido.innerHTML = `
+
     <div class="estado">
       ✓ ACCESO VERIFICADO
     </div>
 
-    <div class="mensaje">
-      Todavía no se ha publicado
-      el pick de hoy.
-    </div>
-  `;
-
-  return;
-}
-
-const pick = picks[0];
-
-contenido.innerHTML = `
-  <div class="estado">
-    ✓ ACCESO VERIFICADO
-  </div>
-
-  <div class="mensaje">
-
-    <h2 style="
-      color:#f5c84c;
-      margin-top:0;
-    ">
+    <h2 class="titulo-pick">
       ${pick["Título"] || "PICK DE HOY"}
     </h2>
 
-    <div style="
-      font-size:18px;
-      color:white;
-      margin:22px 0;
-    ">
+    <div class="descripcion-pick">
       ${pick["Descripción"] || "—"}
     </div>
 
-    <div style="
-      font-size:14px;
-      color:#aaa;
-      margin-bottom:6px;
-    ">
+    <div class="cuota-label">
       CUOTA
     </div>
 
-    <div style="
-      font-size:32px;
-      font-weight:900;
-      color:#37ef83;
-      margin-bottom:22px;
-    ">
+    <div class="cuota">
       ${pick["Cuota"] || "—"}
     </div>
 
@@ -379,23 +512,20 @@ contenido.innerHTML = `
       pick.imagen_url
         ? `
           <img
+            class="imagen-pick"
             src="${pick.imagen_url}"
             alt="Pick de hoy"
-            style="
-              width:100%;
-              border-radius:12px;
-              margin-top:15px;
-            "
           >
         `
         : ""
     }
 
-  </div>
-`;
+  `;
 }
 
+
 verificarAcceso();
+
 </script>
 
 </body>
