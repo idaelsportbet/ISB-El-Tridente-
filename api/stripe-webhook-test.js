@@ -3,48 +3,58 @@ function calcularVencimiento(paquete) {
   const ahora = new Date();
 
   switch (paquete) {
+case "Premium Diario":
+case "Exclusiva Diaria": {
+  const timeZone = "America/Chicago";
 
-    case "Premium Diario":
-    case "Exclusiva Diaria": {
-      const partes = new Intl.DateTimeFormat("en-US", {
-        timeZone: "America/Chicago",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
-      }).formatToParts(ahora);
+  const partes = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(ahora);
 
-      const year = Number(
-        partes.find(p => p.type === "year").value
-      );
+  const valores = {};
 
-      const month = Number(
-        partes.find(p => p.type === "month").value
-      );
-
-      const day = Number(
-        partes.find(p => p.type === "day").value
-      );
-
-      const mananaUTC = new Date(
-        Date.UTC(year, month - 1, day + 1, 6, 0, 0)
-      );
-
-      const horaTexas = Number(
-        new Intl.DateTimeFormat("en-US", {
-          timeZone: "America/Chicago",
-          hour: "2-digit",
-          hourCycle: "h23"
-        })
-        .formatToParts(mananaUTC)
-        .find(p => p.type === "hour").value
-      );
-
-      mananaUTC.setUTCHours(
-        mananaUTC.getUTCHours() - horaTexas
-      );
-
-      return mananaUTC.toISOString();
+  for (const parte of partes) {
+    if (parte.type !== "literal") {
+      valores[parte.type] = parte.value;
     }
+  }
+
+  const siguienteDia = new Date(
+    Date.UTC(
+      Number(valores.year),
+      Number(valores.month) - 1,
+      Number(valores.day) + 1
+    )
+  );
+
+  const year = siguienteDia.getUTCFullYear();
+  const month = siguienteDia.getUTCMonth() + 1;
+  const day = siguienteDia.getUTCDate();
+
+  const medianocheAprox = new Date(
+    Date.UTC(year, month - 1, day, 6, 0, 0)
+  );
+
+  const horaLocal = Number(
+    new Intl.DateTimeFormat("en-US", {
+      timeZone,
+      hour: "2-digit",
+      hourCycle: "h23"
+    })
+      .formatToParts(medianocheAprox)
+      .find(p => p.type === "hour").value
+  );
+
+  medianocheAprox.setUTCHours(
+    medianocheAprox.getUTCHours() - horaLocal
+  );
+
+  return medianocheAprox.toISOString();
+}
+  
 
     case "Premium Semanal":
     case "Exclusiva Semanal": {
@@ -57,17 +67,25 @@ function calcularVencimiento(paquete) {
     case "Económica": {
       const vence = new Date(ahora);
       vence.setDate(vence.getDate() + 30);
+      return vence.toISOString();
+    }
 
     default:
       return null;
   }
+}
 
+function obtenerBody(req) {
   if (!req.body) return null;
 
-  if (typeof req.body === "object") return req.body;
+  if (typeof req.body === "object") {
+    return req.body;
+  }
 
   if (Buffer.isBuffer(req.body)) {
-    return JSON.parse(req.body.toString("utf8"));
+    return JSON.parse(
+      req.body.toString("utf8")
+    );
   }
 
   if (typeof req.body === "string") {
@@ -76,7 +94,6 @@ function calcularVencimiento(paquete) {
 
   return null;
 }
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({
