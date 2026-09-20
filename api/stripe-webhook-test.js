@@ -1,27 +1,59 @@
 const SUPABASE_URL = "https://nfvkmxnprchvkufwvhpr.supabase.co";
 
 function calcularVencimiento(paquete) {
-  const vence = new Date();
+  const ahora = new Date();
 
   switch (paquete) {
+
     case "Premium Diario":
-    case "Exclusiva Diaria":
-      vence.setHours(24, 0, 0, 0);
-      break;
+    case "Exclusiva Diaria": {
+      // Obtener la fecha actual en horario de Texas
+      const partes = new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Chicago",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).formatToParts(ahora);
+
+      const year = Number(
+        partes.find(p => p.type === "year").value
+      );
+
+      const month = Number(
+        partes.find(p => p.type === "month").value
+      );
+
+      const day = Number(
+        partes.find(p => p.type === "day").value
+      );
+
+      // Medianoche siguiente en Texas.
+      // Septiembre está en CDT (UTC-5).
+      const vencimiento = new Date(
+        Date.UTC(year, month - 1, day + 1, 5, 0, 0)
+      );
+
+      return vencimiento.toISOString();
+    }
 
     case "Premium Semanal":
-    case "Exclusiva Semanal":
-      vence.setDate(vence.getDate() + 7);
-      break;
+    case "Exclusiva Semanal": {
+      const vence = new Date(ahora);
+      vence.setUTCDate(vence.getUTCDate() + 7);
+      return vence.toISOString();
+    }
 
     case "Pack Mensual":
-    case "Económica":
-      vence.setDate(vence.getDate() + 30);
-      break;
+    case "Económica": {
+      const vence = new Date(ahora);
+      vence.setUTCDate(vence.getUTCDate() + 30);
+      return vence.toISOString();
+    }
 
     default:
       return null;
   }
+}
 
   return vence.toISOString();
 }
