@@ -13,36 +13,46 @@
       box-sizing: border-box;
     }
 
-   body {
+body {
   margin: 0;
   min-height: 100vh;
   color: white;
   font-family: Arial, sans-serif;
+  position: relative;
+  overflow-x: hidden;
 
   background:
     radial-gradient(
-      ellipse at 15% 25%,
-      rgba(0, 105, 63, .28) 0%,
-      rgba(0, 65, 42, .14) 25%,
-      transparent 55%
+      ellipse at 0% 18%,
+      rgba(0, 170, 85, .38) 0%,
+      rgba(0, 95, 50, .22) 18%,
+      transparent 42%
     ),
     radial-gradient(
-      ellipse at 85% 65%,
-      rgba(0, 120, 72, .22) 0%,
-      rgba(0, 55, 36, .12) 30%,
-      transparent 58%
+      ellipse at 100% 38%,
+      rgba(0, 150, 75, .32) 0%,
+      rgba(0, 80, 45, .18) 20%,
+      transparent 45%
     ),
     radial-gradient(
-      ellipse at 50% 100%,
-      rgba(0, 85, 52, .20),
-      transparent 55%
+      ellipse at 15% 78%,
+      rgba(0, 135, 70, .28) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      ellipse at 90% 92%,
+      rgba(0, 160, 80, .25) 0%,
+      transparent 38%
     ),
     linear-gradient(
       135deg,
-      #020403 0%,
-      #06110c 48%,
-      #010302 100%
+      #010302 0%,
+      #03150d 45%,
+      #010403 100%
     );
+
+  background-attachment: fixed;
+};
 
   background-attachment: fixed;
 }
@@ -112,6 +122,25 @@
 
   user-select: none;
   pointer-events: none;
+}
+    .proteccion-fondo {
+  position: fixed;
+  inset: -120px;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: .18;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='150'%3E%3Ctext x='10' y='75' fill='%23d9a52e' font-family='Arial' font-size='18' font-weight='700' transform='rotate(-18 180 75)'%3E%E2%9A%9C PREMIUM • ISB EL TRIDENTE%3C/text%3E%3C/svg%3E");
+
+  background-repeat: repeat;
+  background-size: 360px 150px;
+}
+
+.topbar,
+.contenedor {
+  position: relative;
+  z-index: 2;
 }
    h1 {
   margin-bottom: 8px;
