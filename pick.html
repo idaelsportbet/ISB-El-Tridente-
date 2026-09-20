@@ -154,13 +154,27 @@
       border: 1px solid rgba(185,138,39,.55);
     }
 
+    .error-box {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ff6565;
+      border-radius: 10px;
+      background: rgba(255, 80, 80, .08);
+      color: #ff9d9d;
+      font-size: 13px;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
     .boton {
       display: block;
       margin-top: 25px;
       padding: 15px;
+
       text-align: center;
       text-decoration: none;
       font-weight: 900;
+
       color: #f6cf63;
 
       background:
@@ -200,9 +214,11 @@
   <h1>PICK DE HOY</h1>
 
   <div id="contenido" class="tarjeta">
+
     <div class="mensaje">
       Verificando tu acceso...
     </div>
+
   </div>
 
 </main>
@@ -232,12 +248,30 @@ async function verificarAcceso() {
 
 
   /* =========================
-     VERIFICAR SESIÓN
+     SESIÓN
   ========================= */
 
   const {
-    data: { session }
-  } = await supabaseClient.auth.getSession();
+    data: { session },
+    error: errorSesion
+  } =
+    await supabaseClient.auth.getSession();
+
+
+  if (errorSesion) {
+
+    contenido.innerHTML = `
+      <div class="mensaje">
+        Error verificando tu sesión.
+      </div>
+
+      <div class="error-box">
+        ${errorSesion.message || "Error desconocido"}
+      </div>
+    `;
+
+    return;
+  }
 
 
   if (!session?.user) {
@@ -261,7 +295,7 @@ async function verificarAcceso() {
 
 
   /* =========================
-     PAQUETE SOLICITADO
+     PAQUETE DE LA URL
   ========================= */
 
   const parametros =
@@ -279,6 +313,10 @@ async function verificarAcceso() {
       <div class="mensaje">
         No se encontró el paquete solicitado.
       </div>
+
+      <a class="boton" href="cuenta.html">
+        VOLVER A MI CUENTA
+      </a>
     `;
 
     return;
@@ -286,7 +324,7 @@ async function verificarAcceso() {
 
 
   /* =========================
-     VERIFICAR COMPRA ACTIVA
+     VERIFICAR COMPRA
   ========================= */
 
   const ahora =
@@ -323,16 +361,31 @@ async function verificarAcceso() {
       .limit(1);
 
 
+  if (errorCompra) {
+
+    console.error(
+      "ERROR COMPRA:",
+      errorCompra
+    );
+
+    contenido.innerHTML = `
+      <div class="mensaje">
+        Error verificando tu paquete.
+      </div>
+
+      <div class="error-box">
+        ${errorCompra.message || "Error desconocido"}
+      </div>
+    `;
+
+    return;
+  }
+
+
   if (
-    errorCompra ||
     !compras ||
     compras.length === 0
   ) {
-
-    console.error(
-      "Error compra:",
-      errorCompra
-    );
 
     contenido.innerHTML = `
       <div class="mensaje">
@@ -354,7 +407,7 @@ async function verificarAcceso() {
 
 
   /* =========================
-     NOMBRE VISUAL DEL PAQUETE
+     NOMBRE DEL PAQUETE
   ========================= */
 
   let nombre =
@@ -397,7 +450,6 @@ async function verificarAcceso() {
 
   /* =========================
      FECHA DE PRUEBA
-     20 SEPTIEMBRE 2026
   ========================= */
 
   const hoy =
@@ -436,10 +488,14 @@ async function verificarAcceso() {
       .limit(1);
 
 
+  /* =========================
+     MOSTRAR ERROR EXACTO
+  ========================= */
+
   if (errorPick) {
 
     console.error(
-      "ERROR CARGANDO PICK:",
+      "ERROR SUPABASE PICKS:",
       errorPick
     );
 
@@ -450,13 +506,35 @@ async function verificarAcceso() {
 
       <div class="mensaje">
         Ocurrió un error cargando
-        el pick de hoy.
+        el pick.
+      </div>
+
+      <div class="error-box">
+        <strong>ERROR SUPABASE:</strong>
+        <br><br>
+
+        Código:
+        ${errorPick.code || "—"}
+
+        <br><br>
+
+        Mensaje:
+        ${errorPick.message || "—"}
+
+        <br><br>
+
+        Detalles:
+        ${errorPick.details || "—"}
       </div>
     `;
 
     return;
   }
 
+
+  /* =========================
+     NO HAY PICK
+  ========================= */
 
   if (
     !picks ||
@@ -521,6 +599,7 @@ async function verificarAcceso() {
     }
 
   `;
+
 }
 
 
