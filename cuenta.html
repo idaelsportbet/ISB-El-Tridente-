@@ -303,7 +303,15 @@ async function cargarCuenta() {
         ${fechaBonita(compra.vencimiento)}
       </div>
     </div>
+<div class="fila">
+  <div class="label">ESTADO</div>
 
+  <span class="estado ${
+    activo ? "activo" : "vencido"
+  }">
+    ${activo ? "ACTIVO" : "VENCIDO"}
+  </span>
+</div>
   ${activo ? `
   <div class="fila">
     <div class="label">TU PAQUETE</div>
