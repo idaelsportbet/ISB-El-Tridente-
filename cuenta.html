@@ -85,7 +85,34 @@
       width: min(92%, 650px);
       margin: 50px auto;
     }
+.marca-paquete {
+  text-align: center;
+  font-size: clamp(42px, 10vw, 82px);
+  font-weight: 900;
+  letter-spacing: 4px;
+  margin-bottom: 12px;
+  opacity: .20;
 
+  background: linear-gradient(
+    180deg,
+    #fff4b0 0%,
+    #d9a52e 25%,
+    #8c5805 48%,
+    #ffe889 60%,
+    #a96d08 78%,
+    #f5c84c 100%
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  text-shadow:
+    0 0 25px rgba(218, 166, 45, .15);
+
+  user-select: none;
+  pointer-events: none;
+}
    h1 {
   margin-bottom: 8px;
   font-weight: 900;
@@ -300,7 +327,22 @@ async function cargarCuenta() {
   }
 
   const compra = data[0];
+const marcaPaquete =
+  document.getElementById("marcaPaquete");
 
+let nombreMarca = compra.paquete || "";
+
+if (nombreMarca.includes("Premium")) {
+  nombreMarca = "🔱 PREMIUM";
+} else if (nombreMarca.includes("Exclusiva")) {
+  nombreMarca = "🔱 EXCLUSIVA";
+} else if (nombreMarca.includes("Económica")) {
+  nombreMarca = "🔱 ECONÓMICA";
+} else if (nombreMarca.includes("Pack Mensual")) {
+  nombreMarca = "🔱 PACK MENSUAL";
+}
+
+marcaPaquete.textContent = nombreMarca;
   const ahora = new Date();
 
   const fechaVencimiento =
