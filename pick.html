@@ -306,7 +306,7 @@ const { data: picks, error: errorPick } =
     .select("*")
     .eq("paquete", compra.paquete)
     .eq("fecha_pick", hoy)
-    .eq("activo", true)
+    .eq("Activo", true)
     .order("created_at", {
       ascending: false
     })
