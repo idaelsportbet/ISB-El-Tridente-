@@ -1,1 +1,316 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Pick de Hoy | ISB El Tridente</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      color: white;
+
+      background:
+        radial-gradient(
+          ellipse at 10% 20%,
+          rgba(0, 150, 75, .28),
+          transparent 40%
+        ),
+        radial-gradient(
+          ellipse at 90% 70%,
+          rgba(0, 120, 65, .22),
+          transparent 42%
+        ),
+        linear-gradient(
+          135deg,
+          #010302,
+          #03150d 50%,
+          #010403
+        );
+    }
+
+    .topbar {
+      padding: 20px;
+      border-bottom: 1px solid #a97b20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 900;
+      color: #f5c84c;
+    }
+
+    .volver {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .contenedor {
+      width: min(92%, 700px);
+      margin: 50px auto;
+    }
+
+    .paquete {
+      text-align: center;
+      font-size: clamp(38px, 9vw, 70px);
+      font-weight: 900;
+      opacity: .22;
+      margin-bottom: 15px;
+
+      background: linear-gradient(
+        180deg,
+        #fff4b0,
+        #c58a18,
+        #ffe889,
+        #a96d08
+      );
+
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    h1 {
+      color: #f5c84c;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .tarjeta {
+      background:
+        linear-gradient(
+          145deg,
+          rgba(15,15,15,.98),
+          rgba(0,55,35,.35)
+        );
+
+      border: 1px solid #b98a27;
+      border-radius: 18px;
+      padding: 28px;
+
+      box-shadow:
+        0 0 35px rgba(0,0,0,.55);
+    }
+
+    .mensaje {
+      text-align: center;
+      color: #bbb;
+      padding: 25px 10px;
+      line-height: 1.6;
+    }
+
+    .estado {
+      text-align: center;
+      color: #37ef83;
+      font-weight: 900;
+      margin-bottom: 20px;
+    }
+
+    .boton {
+      display: block;
+      margin-top: 25px;
+      padding: 15px;
+
+      text-align: center;
+      text-decoration: none;
+      font-weight: 900;
+
+      color: #f6cf63;
+
+      background:
+        linear-gradient(
+          180deg,
+          #159653,
+          #08753c,
+          #034d29
+        );
+
+      border: 1px solid #d4a52e;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="logo">
+    🔱 ISB | EL TRIDENTE
+  </div>
+
+  <a class="volver" href="cuenta.html">
+    ← Mi Cuenta
+  </a>
+</header>
+
+<main class="contenedor">
+
+  <div id="nombrePaquete" class="paquete">
+    🔱
+  </div>
+
+  <h1>PICK DE HOY</h1>
+
+  <div id="contenido" class="tarjeta">
+    <div class="mensaje">
+      Verificando tu acceso...
+    </div>
+  </div>
+
+</main>
+
+<script>
+const SUPABASE_URL =
+  "https://nfvkmxnprchvkufwvhpr.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+async function verificarAcceso() {
+
+  const contenido =
+    document.getElementById("contenido");
+
+  const nombrePaquete =
+    document.getElementById("nombrePaquete");
+
+  const {
+    data: { session }
+  } = await supabaseClient.auth.getSession();
+
+  if (!session?.user) {
+
+    contenido.innerHTML = `
+      <div class="mensaje">
+        Debes iniciar sesión para acceder.
+      </div>
+
+      <a class="boton" href="index.html">
+        INICIAR SESIÓN
+      </a>
+    `;
+
+    return;
+  }
+
+  const userId = session.user.id;
+
+  const parametros =
+    new URLSearchParams(window.location.search);
+
+  const paqueteSolicitado =
+    parametros.get("paquete");
+
+  if (!paqueteSolicitado) {
+
+    contenido.innerHTML = `
+      <div class="mensaje">
+        No se encontró el paquete solicitado.
+      </div>
+    `;
+
+    return;
+  }
+
+  const ahora =
+    new Date().toISOString();
+
+  const { data, error } =
+    await supabaseClient
+      .from("compras")
+      .select(
+        "paquete,vencimiento,user_id"
+      )
+      .eq("user_id", userId)
+      .eq("paquete", paqueteSolicitado)
+      .gt("vencimiento", ahora)
+      .order("fecha_compra", {
+        ascending: false
+      })
+      .limit(1);
+
+  if (
+    error ||
+    !data ||
+    data.length === 0
+  ) {
+
+    console.error(error);
+
+    contenido.innerHTML = `
+      <div class="mensaje">
+        🔒 No tienes acceso activo
+        a este paquete.
+      </div>
+
+      <a class="boton" href="cuenta.html">
+        VOLVER A MI CUENTA
+      </a>
+    `;
+
+    return;
+  }
+
+  const compra = data[0];
+
+  let nombre =
+    compra.paquete || "PAQUETE";
+
+  if (nombre.includes("Premium")) {
+    nombre = "🔱 PREMIUM";
+  }
+
+  else if (nombre.includes("Exclusiva")) {
+    nombre = "🔱 EXCLUSIVA";
+  }
+
+  else if (nombre.includes("Económica")) {
+    nombre = "🔱 ECONÓMICA";
+  }
+
+  else if (nombre.includes("Pack Mensual")) {
+    nombre = "🔱 PACK MENSUAL";
+  }
+
+  nombrePaquete.textContent =
+    nombre;
+
+  contenido.innerHTML = `
+    <div class="estado">
+      ✓ ACCESO VERIFICADO
+    </div>
+
+    <div class="mensaje">
+      Tu acceso está activo.
+      <br><br>
+      Aquí aparecerá la jugada
+      correspondiente a tu paquete.
+    </div>
+  `;
+}
+
+verificarAcceso();
+</script>
+
+</body>
+</html>
