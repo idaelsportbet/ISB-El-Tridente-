@@ -123,27 +123,16 @@
       color: #f5c84c;
       text-align: center;
       margin: 15px 0 25px;
+      font-size: 25px;
     }
 
     .descripcion-pick {
       color: white;
       text-align: center;
       font-size: 19px;
+      line-height: 1.6;
+      white-space: pre-line;
       margin-bottom: 25px;
-    }
-
-    .cuota-label {
-      text-align: center;
-      color: #999;
-      font-size: 13px;
-    }
-
-    .cuota {
-      text-align: center;
-      color: #37ef83;
-      font-size: 34px;
-      font-weight: 900;
-      margin-top: 8px;
     }
 
     .imagen-pick {
@@ -188,6 +177,28 @@
       border: 1px solid #d4a52e;
       border-radius: 10px;
     }
+
+    @media (max-width: 600px) {
+      .topbar {
+        padding: 16px;
+      }
+
+      .logo {
+        font-size: 18px;
+      }
+
+      .volver {
+        font-size: 13px;
+      }
+
+      .contenedor {
+        margin: 35px auto;
+      }
+
+      .tarjeta {
+        padding: 22px 18px;
+      }
+    }
   </style>
 </head>
 
@@ -204,6 +215,7 @@
   </a>
 
 </header>
+
 
 <main class="contenedor">
 
@@ -222,6 +234,7 @@
   </div>
 
 </main>
+
 
 <script>
 
@@ -248,7 +261,7 @@ async function verificarAcceso() {
 
 
   /* =========================
-     SESIÓN
+     1. VERIFICAR SESIÓN
   ========================= */
 
   const {
@@ -295,7 +308,7 @@ async function verificarAcceso() {
 
 
   /* =========================
-     PAQUETE DE LA URL
+     2. LEER PAQUETE DE LA URL
   ========================= */
 
   const parametros =
@@ -324,7 +337,7 @@ async function verificarAcceso() {
 
 
   /* =========================
-     VERIFICAR COMPRA
+     3. VERIFICAR COMPRA
   ========================= */
 
   const ahora =
@@ -389,8 +402,7 @@ async function verificarAcceso() {
 
     contenido.innerHTML = `
       <div class="mensaje">
-        🔒 No tienes acceso activo
-        a este paquete.
+        🔒 No tienes acceso activo a este paquete.
       </div>
 
       <a class="boton" href="cuenta.html">
@@ -407,7 +419,7 @@ async function verificarAcceso() {
 
 
   /* =========================
-     NOMBRE DEL PAQUETE
+     4. MOSTRAR PAQUETE
   ========================= */
 
   let nombre =
@@ -415,28 +427,29 @@ async function verificarAcceso() {
 
 
   if (
-    nombre.includes("Premium")
+    nombre.toLowerCase().includes("premium")
   ) {
 
     nombre =
       "🔱 PREMIUM";
 
   } else if (
-    nombre.includes("Exclusiva")
+    nombre.toLowerCase().includes("exclusiva")
   ) {
 
     nombre =
       "🔱 EXCLUSIVA";
 
   } else if (
-    nombre.includes("Económica")
+    nombre.toLowerCase().includes("económica") ||
+    nombre.toLowerCase().includes("economica")
   ) {
 
     nombre =
       "🔱 ECONÓMICA";
 
   } else if (
-    nombre.includes("Pack Mensual")
+    nombre.toLowerCase().includes("pack mensual")
   ) {
 
     nombre =
@@ -449,7 +462,8 @@ async function verificarAcceso() {
 
 
   /* =========================
-     FECHA DE PRUEBA
+     5. FECHA DEL PICK
+     TEMPORAL: 20 SEPTIEMBRE
   ========================= */
 
   const hoy =
@@ -457,7 +471,7 @@ async function verificarAcceso() {
 
 
   /* =========================
-     BUSCAR PICK
+     6. BUSCAR PICK
   ========================= */
 
   const {
@@ -466,7 +480,9 @@ async function verificarAcceso() {
   } =
     await supabaseClient
       .from("picks")
-      .select("*")
+      .select(
+        "id,created_at,paquete,titulo,descripcion,fecha_pick,activo,imagen_url"
+      )
       .eq(
         "paquete",
         compra.paquete
@@ -476,7 +492,7 @@ async function verificarAcceso() {
         hoy
       )
       .eq(
-        "Activo",
+        "activo",
         true
       )
       .order(
@@ -489,7 +505,7 @@ async function verificarAcceso() {
 
 
   /* =========================
-     MOSTRAR ERROR EXACTO
+     7. ERROR DE SUPABASE
   ========================= */
 
   if (errorPick) {
@@ -505,12 +521,13 @@ async function verificarAcceso() {
       </div>
 
       <div class="mensaje">
-        Ocurrió un error cargando
-        el pick.
+        Ocurrió un error cargando el pick.
       </div>
 
       <div class="error-box">
+
         <strong>ERROR SUPABASE:</strong>
+
         <br><br>
 
         Código:
@@ -525,6 +542,7 @@ async function verificarAcceso() {
 
         Detalles:
         ${errorPick.details || "—"}
+
       </div>
     `;
 
@@ -533,7 +551,7 @@ async function verificarAcceso() {
 
 
   /* =========================
-     NO HAY PICK
+     8. NO EXISTE PICK
   ========================= */
 
   if (
@@ -547,8 +565,7 @@ async function verificarAcceso() {
       </div>
 
       <div class="mensaje">
-        Todavía no se ha publicado
-        el pick de hoy.
+        Todavía no se ha publicado el pick de hoy.
       </div>
     `;
 
@@ -557,7 +574,7 @@ async function verificarAcceso() {
 
 
   /* =========================
-     MOSTRAR PICK
+     9. MOSTRAR PICK
   ========================= */
 
   const pick =
@@ -571,19 +588,11 @@ async function verificarAcceso() {
     </div>
 
     <h2 class="titulo-pick">
-      ${pick["Título"] || "PICK DE HOY"}
+      ${pick.titulo || "PICK DE HOY"}
     </h2>
 
     <div class="descripcion-pick">
-      ${pick["Descripción"] || "—"}
-    </div>
-
-    <div class="cuota-label">
-      CUOTA
-    </div>
-
-    <div class="cuota">
-      ${pick["Cuota"] || "—"}
+      ${pick.descripcion || "—"}
     </div>
 
     ${
