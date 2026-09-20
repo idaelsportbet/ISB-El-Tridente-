@@ -304,17 +304,14 @@ async function cargarCuenta() {
       </div>
     </div>
 
-    <div class="fila">
-      <div class="label">ESTADO</div>
-
-      <span class="estado ${
-        activo ? "activo" : "vencido"
-      }">
-
-        ${activo ? "ACTIVO" : "VENCIDO"}
-
-      </span>
-    </div>
+  ${activo ? `
+  <div class="fila">
+    <div class="label">TU PAQUETE</div>
+    <a class="boton" href="pick.html?paquete=${encodeURIComponent(compra.paquete)}">
+      🔱 VER PICK DE HOY
+    </a>
+  </div>
+` : ""}
   `;
 }
 
