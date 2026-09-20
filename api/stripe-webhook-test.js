@@ -7,7 +7,6 @@ function calcularVencimiento(paquete) {
 
     case "Premium Diario":
     case "Exclusiva Diaria": {
-      // Obtener la fecha actual en horario de Texas
       const partes = new Intl.DateTimeFormat("en-US", {
         timeZone: "America/Chicago",
         year: "numeric",
@@ -27,35 +26,46 @@ function calcularVencimiento(paquete) {
         partes.find(p => p.type === "day").value
       );
 
-      // Medianoche siguiente en Texas.
-      // Septiembre está en CDT (UTC-5).
-      const vencimiento = new Date(
-        Date.UTC(year, month - 1, day + 1, 5, 0, 0)
+      const fechaTexas = `${year}-${String(month).padStart(2, "0")}-${String(day + 1).padStart(2, "0")}T00:00:00`;
+
+      const aproximada = new Date(`${fechaTexas}-06:00`);
+
+      const partesHora = new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Chicago",
+        hour: "2-digit",
+        hour12: false
+      }).formatToParts(aproximada);
+
+      const horaTexas = Number(
+        partesHora.find(p => p.type === "hour").value
       );
 
-      return vencimiento.toISOString();
+      const ajusteHoras = horaTexas === 1 ? 1 : 0;
+
+      aproximada.setUTCHours(
+        aproximada.getUTCHours() - ajusteHoras
+      );
+
+      return aproximada.toISOString();
     }
 
     case "Premium Semanal":
     case "Exclusiva Semanal": {
       const vence = new Date(ahora);
-      vence.setUTCDate(vence.getUTCDate() + 7);
+      vence.setDate(vence.getDate() + 7);
       return vence.toISOString();
     }
 
     case "Pack Mensual":
     case "Económica": {
       const vence = new Date(ahora);
-      vence.setUTCDate(vence.getUTCDate() + 30);
+      vence.setDate(vence.getDate() + 30);
       return vence.toISOString();
     }
 
     default:
       return null;
   }
-}
-
-  return vence.toISOString();
 }
 
 function obtenerBody(req) {
