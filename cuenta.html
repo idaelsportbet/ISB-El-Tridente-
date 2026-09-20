@@ -397,24 +397,24 @@ if (compra.paquete?.includes("Premium")) {
 } else if (compra.paquete?.includes("Pack Mensual")) {
   nombreProteccion = "PACK MENSUAL • ISB EL TRIDENTE";
 }
-  const textoSVG = `
-<svg xmlns="http://www.w3.org/2000/svg" width="420" height="150">
+const textoSVG = `
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="130">
   <text
-    x="15"
-    y="75"
-    fill="#d9a52e"
-    font-family="Arial"
-    font-size="17"
+    x="20"
+    y="70"
+    fill="#c99728"
+    fill-opacity="0.75"
+    font-family="Arial, sans-serif"
+    font-size="16"
     font-weight="700"
-    transform="rotate(-18 210 75)"
-  >
-    🔱 ${nombreProteccion}
-  </text>
+    letter-spacing="1"
+    transform="rotate(-15 220 65)"
+  >${nombreProteccion}</text>
 </svg>
 `;
 
 proteccionFondo.style.backgroundImage =
-  `url("data:image/svg+xml,${encodeURIComponent(textoSVG)}")`;
+  `url("data:image/svg+xml;charset=UTF-8,${encodeURIComponent(textoSVG)}")`;
 marcaPaquete.textContent = nombreMarca;
   const ahora = new Date();
 
