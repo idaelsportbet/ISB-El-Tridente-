@@ -3366,7 +3366,10 @@ async function continuarPago(){
       return;
     }
 
-    const endpoint = "/api/create-checkout-session";
+    const endpoint =
+  new URLSearchParams(window.location.search).get("modo") === "prueba"
+    ? "/api/create-test-checkout-session"
+    : "/api/create-checkout-session";
 
 const respuesta = await fetch(endpoint, {
       method: "POST",
