@@ -1,5 +1,4 @@
 const SUPABASE_URL = "https://nfvkmxnprchvkufwvhpr.supabase.co";
-
 function calcularVencimiento(paquete) {
   const ahora = new Date();
 
@@ -26,27 +25,25 @@ function calcularVencimiento(paquete) {
         partes.find(p => p.type === "day").value
       );
 
-      const fechaTexas = `${year}-${String(month).padStart(2, "0")}-${String(day + 1).padStart(2, "0")}T00:00:00`;
-
-      const aproximada = new Date(`${fechaTexas}-06:00`);
-
-      const partesHora = new Intl.DateTimeFormat("en-US", {
-        timeZone: "America/Chicago",
-        hour: "2-digit",
-        hour12: false
-      }).formatToParts(aproximada);
+      const mananaUTC = new Date(
+        Date.UTC(year, month - 1, day + 1, 6, 0, 0)
+      );
 
       const horaTexas = Number(
-        partesHora.find(p => p.type === "hour").value
+        new Intl.DateTimeFormat("en-US", {
+          timeZone: "America/Chicago",
+          hour: "2-digit",
+          hourCycle: "h23"
+        })
+        .formatToParts(mananaUTC)
+        .find(p => p.type === "hour").value
       );
 
-      const ajusteHoras = horaTexas === 1 ? 1 : 0;
-
-      aproximada.setUTCHours(
-        aproximada.getUTCHours() - ajusteHoras
+      mananaUTC.setUTCHours(
+        mananaUTC.getUTCHours() - horaTexas
       );
 
-      return aproximada.toISOString();
+      return mananaUTC.toISOString();
     }
 
     case "Premium Semanal":
