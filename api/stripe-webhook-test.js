@@ -57,15 +57,11 @@ function calcularVencimiento(paquete) {
     case "Económica": {
       const vence = new Date(ahora);
       vence.setDate(vence.getDate() + 30);
-      return vence.toISOString();
-    }
 
     default:
       return null;
   }
-}
 
-function obtenerBody(req) {
   if (!req.body) return null;
 
   if (typeof req.body === "object") return req.body;
