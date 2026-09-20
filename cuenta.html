@@ -227,17 +227,35 @@ body {
     }
 
     .boton {
-      display: block;
-      margin-top: 25px;
-      padding: 15px;
-      text-align: center;
-      text-decoration: none;
-      color: white;
-      font-weight: 800;
-      border-radius: 10px;
-      background: linear-gradient(180deg,#14b85a,#087b3c);
-      border: 1px solid #32e77d;
-    }
+  display: block;
+  margin-top: 25px;
+  padding: 15px;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 900;
+  letter-spacing: .5px;
+  border-radius: 10px;
+
+  color: #f6cf63;
+
+  background:
+    linear-gradient(
+      180deg,
+      #159653 0%,
+      #08753c 55%,
+      #034d29 100%
+    );
+
+  border: 1px solid #d4a52e;
+
+  box-shadow:
+    0 0 18px rgba(0, 190, 95, .18),
+    inset 0 1px 0 rgba(255, 235, 160, .12);
+
+  text-shadow:
+    0 1px 0 #6e4505,
+    0 0 7px rgba(255, 211, 91, .38);
+}
   </style>
 </head>
 <div id="proteccionFondo" class="proteccion-fondo"></div>
@@ -358,7 +376,8 @@ async function cargarCuenta() {
   const compra = data[0];
 const marcaPaquete =
   document.getElementById("marcaPaquete");
-
+const proteccionFondo =
+  document.getElementById("proteccionFondo");
 let nombreMarca = compra.paquete || "";
 
 if (nombreMarca.includes("Premium")) {
@@ -370,7 +389,35 @@ if (nombreMarca.includes("Premium")) {
 } else if (nombreMarca.includes("Pack Mensual")) {
   nombreMarca = "🔱 PACK MENSUAL";
 }
+let nombreProteccion = "ISB EL TRIDENTE";
 
+if (compra.paquete?.includes("Premium")) {
+  nombreProteccion = "PREMIUM • ISB EL TRIDENTE";
+} else if (compra.paquete?.includes("Exclusiva")) {
+  nombreProteccion = "EXCLUSIVA • ISB EL TRIDENTE";
+} else if (compra.paquete?.includes("Económica")) {
+  nombreProteccion = "ECONÓMICA • ISB EL TRIDENTE";
+} else if (compra.paquete?.includes("Pack Mensual")) {
+  nombreProteccion = "PACK MENSUAL • ISB EL TRIDENTE";
+}
+  const textoSVG = `
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="150">
+  <text
+    x="15"
+    y="75"
+    fill="#d9a52e"
+    font-family="Arial"
+    font-size="17"
+    font-weight="700"
+    transform="rotate(-18 210 75)"
+  >
+    🔱 ${nombreProteccion}
+  </text>
+</svg>
+`;
+
+proteccionFondo.style.backgroundImage =
+  `url("data:image/svg+xml,${encodeURIComponent(textoSVG)}")`;
 marcaPaquete.textContent = nombreMarca;
   const ahora = new Date();
 
