@@ -14,9 +14,9 @@
     body{margin:0;background:#030303;min-height:100vh;color:#eee;font:16px system-ui;isolation:isolate}
     body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(3,3,3,.66),rgba(3,3,3,.38),rgba(3,3,3,.66)),url('hero.jpeg') center 35%/cover no-repeat;pointer-events:none}
     main{max-width:700px;margin:32px auto;padding:24px;border-top:3px solid #22e58b;border-radius:16px;background:rgba(5,18,11,.93);box-shadow:0 0 36px #18c77718;backdrop-filter:blur(6px)}
-    a,h1{color:#39ef9d}h1{letter-spacing:1px}
+    a{color:#39ef9d}h1{color:#ffd700;letter-spacing:1px;text-shadow:0 0 18px #ffd70020}
     label{display:block;margin:18px 0 6px;color:#d9f8e7}
-    input:not([type=checkbox]),textarea{width:100%;padding:12px;background:#10281b;border:1px solid #287c51;border-radius:8px;color:#fff;font:inherit}
+    input:not([type=checkbox]),textarea{width:100%;padding:12px;background:#050907;border:1px solid #287c51;border-radius:8px;color:#fff;font:inherit}
     input::placeholder,textarea::placeholder{color:#a2bfae}
     input:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid #39ef9d;outline-offset:3px}
     input[type=checkbox]{accent-color:#22e58b;width:18px;height:18px;vertical-align:middle}
@@ -25,6 +25,8 @@
     legend{color:#39ef9d;padding:0 8px}fieldset label{margin:12px}
     button{width:100%;padding:16px;background:linear-gradient(135deg,#32ed96,#16b969);color:#032213;border:1px solid #45ffa9;border-radius:8px;font:700 16px system-ui;cursor:pointer;box-shadow:0 5px 22px #18c77725}
     button:hover:not(:disabled){background:#49ffa9}button:disabled{opacity:.5;cursor:wait}
+    button[type=submit]{background:linear-gradient(135deg,#075b35,#034526);color:#ffd700}
+    button[type=submit]:hover:not(:disabled){background:#08663d}
     #estado{white-space:pre-wrap;line-height:1.6;color:#97efbe}small{color:#b6c0ba}
     @media(max-width:600px){main{margin:16px 12px;padding:20px}h1{font-size:27px}}
   </style>
