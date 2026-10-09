@@ -1,0 +1,15 @@
+{
+  "id": "/admin",
+  "name": "ISB Admin — El Tridente",
+  "short_name": "ISB Admin",
+  "description": "Panel privado para publicar picks de ISB El Tridente.",
+  "start_url": "/admin",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#090c0b",
+  "theme_color": "#090c0b",
+  "icons": [
+    { "src": "/admin-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/admin-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

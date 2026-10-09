@@ -271,6 +271,7 @@ body {
       Consulta tu paquete y el estado de tu acceso.
     </div>
 
+    <a id="adminLink" class="boton" href="admin.html" hidden style="display:none">ADMINISTRAR PICKS</a>
     <div id="contenido" class="tarjeta">
       <div class="mensaje">Cargando tu cuenta...</div>
     </div>
@@ -331,6 +332,18 @@ async function cargarCuenta() {
   }
 
   const userId = session.user.id;
+  try {
+    const accesoAdmin = await fetch("/api/admin-picks", {
+      headers: { Authorization: `Bearer ${session.access_token}` }
+    });
+    if (accesoAdmin.ok) {
+      const enlaceAdmin = document.getElementById("adminLink");
+      enlaceAdmin.hidden = false;
+      enlaceAdmin.style.display = "inline-block";
+    }
+  } catch {
+    console.error("No se pudo comprobar el panel de administrador.");
+  }
 
   const { data, error } =
     await supabaseClient
@@ -488,7 +501,12 @@ marcaPaquete.textContent = nombreMarca;
       🔱 VER PICK DE HOY
     </a>
   </div>
-` : ""}
+` : `
+  <div class="fila">
+    <div class="label">RENUEVA TU ACCESO</div>
+    <a class="boton" href="paquetes.html">VER PAQUETES</a>
+  </div>
+`}
   `;
 }
 

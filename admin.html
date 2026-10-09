@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Publicar picks | ISB El Tridente</title>
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#090c0b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ISB Admin">
+  <link rel="manifest" href="admin.webmanifest">
+  <link rel="apple-touch-icon" href="admin-icon-192.png">
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#090c0b;color:#eee;font:16px system-ui}main{max-width:700px;margin:32px auto;padding:24px}a{color:#e9bc55}h1{color:#e9bc55}label{display:block;margin:18px 0 6px}input:not([type=checkbox]),textarea{width:100%;padding:12px;background:#151b18;border:1px solid #506052;border-radius:8px;color:#fff;font:inherit}textarea{min-height:180px}fieldset{margin:24px 0;border:1px solid #506052;border-radius:8px}fieldset label{margin:12px}button{width:100%;padding:16px;background:#e9bc55;border:0;border-radius:8px;font:700 16px system-ui;cursor:pointer}button:disabled{opacity:.5;cursor:wait}#estado{white-space:pre-wrap;line-height:1.6}small{color:#b6c0ba}
+  </style>
+</head>
+<body><main>
+  <a href="cuenta.html">← Mi cuenta</a><h1>🔱 ISB Admin</h1>
+  <button id="instalar" type="button" hidden>INSTALAR ISB ADMIN</button>
+  <p id="instrucciones" hidden>Escribe el pick y selecciona todos los paquetes que deben recibirlo.</p>
+  <p id="estado" role="status" aria-live="polite">Comprobando tu acceso…</p>
+  <form id="publicar" hidden>
+    <label for="titulo">Título</label><input id="titulo" required maxlength="160" placeholder="Ej. Selección del día">
+    <label for="descripcion">Pick y análisis</label><textarea id="descripcion" required maxlength="10000" placeholder="Partido, selección, cuota y análisis"></textarea>
+    <label for="fecha">Fecha del pick</label><input id="fecha" type="date" required><small>Fecha según el horario Central de EE. UU.</small>
+    <label for="imagen">Enlace de imagen (opcional)</label><input id="imagen" type="url" placeholder="https://…">
+    <fieldset><legend>Paquetes que recibirán este pick</legend>
+      <label><input type="checkbox" name="paquete" value="Premium Diario"> Premium Diario</label>
+      <label><input type="checkbox" name="paquete" value="Premium Semanal"> Premium Semanal</label>
+      <label><input type="checkbox" name="paquete" value="Exclusiva Diaria"> Exclusiva Diaria</label>
+      <label><input type="checkbox" name="paquete" value="Exclusiva Semanal"> Exclusiva Semanal</label>
+      <label><input type="checkbox" name="paquete" value="Pack Mensual"> Pack Mensual</label>
+      <label><input type="checkbox" name="paquete" value="Económica"> Económica</label>
+    </fieldset>
+    <button type="submit">PUBLICAR PICK</button>
+    <button id="nuevo" type="button" hidden style="margin-top:12px">PUBLICAR OTRO PICK</button>
+    <p><small>Se mostrará en la web a quienes tengan acceso activo. No envía mensajes por WhatsApp ni correo.</small></p>
+  </form>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const client = supabase.createClient("https://nfvkmxnprchvkufwvhpr.supabase.co", "sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1");
+const form = document.getElementById("publicar"), estado = document.getElementById("estado");
+const partes = new Intl.DateTimeFormat("en-US", {timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
+const fecha = Object.fromEntries(partes.map(p => [p.type,p.value]));
+document.getElementById("fecha").value = `${fecha.year}-${fecha.month}-${fecha.day}`;
+async function request(method, body) {
+  const {data:{session}} = await client.auth.getSession();
+  if (!session) throw new Error("Inicia sesión desde Inicio con tu cuenta de administrador y vuelve a este panel.");
+  const response = await fetch("/api/admin-picks", {method,headers:{Authorization:`Bearer ${session.access_token}`,"Content-Type":"application/json"}, ...(body ? {body:JSON.stringify(body)} : {})});
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || "No se pudo conectar con el panel.");
+  return data;
+}
+let accesoAutorizado=false, solicitudInstalacion;
+const instalar=document.getElementById("instalar");
+window.addEventListener("beforeinstallprompt",event=>{
+  event.preventDefault();solicitudInstalacion=event;
+  instalar.hidden=!accesoAutorizado;
+});
+instalar.addEventListener("click",async()=>{
+  if(!solicitudInstalacion)return;
+  await solicitudInstalacion.prompt();solicitudInstalacion=null;instalar.hidden=true;
+});
+if("serviceWorker" in navigator) navigator.serviceWorker.register("/admin-sw.js").catch(()=>{});
+request("GET").then(() => {
+  accesoAutorizado=true;form.hidden=false;document.getElementById("instrucciones").hidden=false;
+  instalar.hidden=!solicitudInstalacion;estado.textContent="Acceso de administrador confirmado.";
+  if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !navigator.standalone) {
+    estado.textContent+=" En Safari: Compartir → Añadir a pantalla de inicio para instalar ISB Admin.";
+  }
+}).catch(error => {estado.textContent=error.message});
+document.getElementById("nuevo").addEventListener("click", () => {
+  form.querySelectorAll("input,textarea").forEach(input=>input.disabled=false);
+  document.getElementById("titulo").value="";
+  document.getElementById("descripcion").value="";
+  document.getElementById("imagen").value="";
+  const button=form.querySelector('button[type="submit"]');button.disabled=false;button.textContent="PUBLICAR PICK";
+  document.getElementById("nuevo").hidden=true;estado.textContent="Listo para publicar otro pick.";
+  document.getElementById("titulo").focus();
+});
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+  const paquetes = [...form.querySelectorAll('input[name="paquete"]:checked')].map(input=>input.value);
+  if (!paquetes.length) {estado.textContent="Selecciona al menos un paquete.";return;}
+  const button = form.querySelector('button[type="submit"]'); button.disabled=true;estado.textContent="Publicando…";
+  try {
+    const data = await request("POST", {titulo:document.getElementById("titulo").value,descripcion:document.getElementById("descripcion").value,fecha_pick:document.getElementById("fecha").value,imagen_url:document.getElementById("imagen").value.trim(),paquetes});
+    estado.textContent=`Pick publicado para ${data.publicados} paquete(s).`;button.textContent="PUBLICADO";
+    form.querySelectorAll("input,textarea").forEach(input=>input.disabled=true);
+    document.getElementById("nuevo").hidden=false;
+  } catch(error) {estado.textContent=error.message;button.disabled=false;}
+});
+</script></body></html>

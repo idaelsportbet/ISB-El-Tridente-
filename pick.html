@@ -463,11 +463,14 @@ async function verificarAcceso() {
 
   /* =========================
      5. FECHA DEL PICK
-     TEMPORAL: 20 SEPTIEMBRE
+     HORARIO CENTRAL DE EE. UU.
   ========================= */
 
-  const hoy =
-    "2026-09-20";
+  const partesFecha = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Chicago", year: "numeric", month: "2-digit", day: "2-digit"
+  }).formatToParts(new Date());
+  const fechaActual = Object.fromEntries(partesFecha.map(p => [p.type, p.value]));
+  const hoy = `${fechaActual.year}-${fechaActual.month}-${fechaActual.day}`;
 
 
   /* =========================
@@ -579,6 +582,14 @@ async function verificarAcceso() {
 
   const pick =
     picks[0];
+  const escaparTexto = valor => String(valor).replace(/[&<>"']/g, caracter => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  }[caracter]));
+  let imagenSegura = "";
+  try {
+    const url = new URL(pick.imagen_url);
+    if (url.protocol === "https:" && !url.username && !url.password) imagenSegura = url.href;
+  } catch {}
 
 
   contenido.innerHTML = `
@@ -588,19 +599,19 @@ async function verificarAcceso() {
     </div>
 
     <h2 class="titulo-pick">
-      ${pick.titulo || "PICK DE HOY"}
+      ${escaparTexto(pick.titulo || "PICK DE HOY")}
     </h2>
 
-    <div class="descripcion-pick">
-      ${pick.descripcion || "—"}
+    <div class="descripcion-pick" style="white-space:pre-wrap">
+      ${escaparTexto(pick.descripcion || "—")}
     </div>
 
     ${
-      pick.imagen_url
+      imagenSegura
         ? `
           <img
             class="imagen-pick"
-            src="${pick.imagen_url}"
+            src="${escaparTexto(imagenSegura)}"
             alt="Pick de hoy"
           >
         `
