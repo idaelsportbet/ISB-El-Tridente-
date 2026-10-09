@@ -100,16 +100,25 @@ loginForm?.addEventListener('submit', async (e) => {
       password: password
     });
 
-  submitButton.disabled = false;
-  submitButton.textContent = 'Entrar';
-
   if (error) {
+    submitButton.disabled = false;
+    submitButton.textContent = 'Entrar';
     alert('Correo o contraseña incorrectos.');
     return;
   }
 
- login?.close();
-window.location.href = '/paquetes.html';
+  let destino = '/paquetes.html';
+  try {
+    const acceso = await fetch('/api/admin-picks', {
+      headers: { Authorization: `Bearer ${data.session.access_token}` },
+      signal: AbortSignal.timeout(8000)
+    });
+    if (acceso.ok) destino = '/admin';
+  } catch {
+    // Mi cuenta también permite abrir el panel si la comprobación falla temporalmente.
+  }
+  login?.close();
+  window.location.href = destino;
 });
 
 document.querySelectorAll('.modal .close').forEach(btn => {
