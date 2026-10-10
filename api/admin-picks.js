@@ -41,9 +41,24 @@ export default async function handler(req, res) {
     }
     if (req.method === "GET") return res.status(200).json({ autorizado: true });
     if (req.body?.accion === "activar_prueba") {
-      // Only the authenticated owner can grant a temporary, free access to their own account.
+      // Only the authenticated owner can grant a temporary, free access to an existing account.
       const headers = { apikey: secret, Authorization: `Bearer ${secret}` };
-      const consulta = new URLSearchParams({ select: "paquete,vencimiento", user_id: `eq.${user.id}`, paquete: "eq.Premium Diario", vencimiento: `gt.${new Date().toISOString()}`, limit: "1" });
+      let destinatario = user;
+      const correoPrueba = req.body.correo_prueba;
+      if (correoPrueba !== undefined && (typeof correoPrueba !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoPrueba.trim()) || correoPrueba.length > 254)) return res.status(400).json({ error: "Revisa el correo de la cuenta de prueba." });
+      if (correoPrueba && correoPrueba.trim().toLowerCase() !== user.email?.toLowerCase()) {
+        const correo = correoPrueba.trim().toLowerCase();
+        const busqueda = new URLSearchParams({ select: "user_id", correo: `eq.${correo}`, order: "fecha_compra.desc", limit: "1" });
+        const compras = await fetch(`${SUPABASE_URL}/rest/v1/compras?${busqueda}`, { headers });
+        if (!compras.ok) return res.status(502).json({ error: "No se pudo encontrar la cuenta de prueba." });
+        const cuentas = await compras.json();
+        if (!cuentas[0]?.user_id) return res.status(404).json({ error: "No se encontró una cuenta con compras para ese correo." });
+        const cuenta = await fetch(`${SUPABASE_URL}/auth/v1/admin/users/${encodeURIComponent(cuentas[0].user_id)}`, { headers });
+        if (!cuenta.ok) return res.status(404).json({ error: "No se encontró esa cuenta de cliente." });
+        destinatario = await cuenta.json();
+        if (destinatario.email?.toLowerCase() !== correo || !destinatario.id) return res.status(400).json({ error: "El correo de compra no coincide con la cuenta. Revisa el correo con el que inicias sesión." });
+      }
+      const consulta = new URLSearchParams({ select: "paquete,vencimiento", user_id: `eq.${destinatario.id}`, paquete: "eq.Premium Diario", vencimiento: `gt.${new Date().toISOString()}`, limit: "1" });
       const anterior = await fetch(`${SUPABASE_URL}/rest/v1/compras?${consulta}`, { headers });
       if (!anterior.ok) return res.status(502).json({ error: "No se pudo comprobar tu acceso." });
       const filas = await anterior.json();
@@ -51,7 +66,7 @@ export default async function handler(req, res) {
       const ahora = new Date();
       const resultado = await fetch(`${SUPABASE_URL}/rest/v1/compras`, {
         method: "POST", headers: { ...headers, "Content-Type": "application/json", Prefer: "return=minimal" },
-        body: JSON.stringify({ user_id: user.id, nombre: `${user.user_metadata?.full_name || "Administrador"} (PRUEBA SIN COBRO)`, correo: user.email, paquete: "Premium Diario", cantidad_pagada_dolar: 0, fecha_compra: ahora.toISOString(), vencimiento: new Date(ahora.getTime() + 60 * 60 * 1000).toISOString() })
+        body: JSON.stringify({ user_id: destinatario.id, nombre: `${destinatario.user_metadata?.full_name || "Cliente"} (PRUEBA SIN COBRO)`, correo: destinatario.email, paquete: "Premium Diario", cantidad_pagada_dolar: 0, fecha_compra: ahora.toISOString(), vencimiento: new Date(ahora.getTime() + 60 * 60 * 1000).toISOString() })
       });
       if (!resultado.ok) return res.status(502).json({ error: "No se pudo activar el paquete de prueba." });
       return res.status(201).json({ paquete: "Premium Diario", prueba: true, duracion: "1 hora" });
