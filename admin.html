@@ -9,6 +9,9 @@
   <meta name="apple-mobile-web-app-title" content="ISB Admin">
   <link rel="manifest" href="admin.webmanifest">
   <link rel="apple-touch-icon" href="admin-icon-192.png">
+  <link rel="stylesheet" href="resultados.css?v=20261010-editor">
+  <script src="resultados-calendario.js?v=20261010-tabla" defer></script>
+  <script src="admin-resultados.js?v=20261010-editor" defer></script>
   <style>
     *{box-sizing:border-box}[hidden]{display:none!important}
     body{margin:0;background:#030303;min-height:100vh;color:#eee;font:16px system-ui;isolation:isolate}
@@ -40,7 +43,7 @@
   <p id="estado" role="status" aria-live="polite">Comprobando tu acceso…</p>
   <nav id="secciones" class="tabs" aria-label="Secciones del administrador" hidden>
     <button type="button" id="tabPick" aria-pressed="true">PUBLICAR PICK</button>
-    <button type="button" id="tabPublicados" aria-pressed="false">PICKS PUBLICADOS</button><button type="button" id="tabClientes" aria-pressed="false">CLIENTES Y COMPRAS</button>
+    <button type="button" id="tabPublicados" aria-pressed="false">PICKS PUBLICADOS</button><button type="button" id="tabClientes" aria-pressed="false">CLIENTES Y COMPRAS</button><button type="button" id="tabResultados" aria-pressed="false">PUBLICAR RESULTADOS</button>
   </nav>
   <section id="clientes" hidden>
     <h2>Clientes y compras</h2>
