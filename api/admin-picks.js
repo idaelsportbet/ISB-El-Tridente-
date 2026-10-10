@@ -58,13 +58,23 @@ export default async function handler(req, res) {
         const compras = await fetch(`${SUPABASE_URL}/rest/v1/compras?${busqueda}`, { headers });
         if (!compras.ok) return res.status(502).json({ error: "No se pudo encontrar la cuenta de prueba." });
         const cuentas = await compras.json();
-        if (!cuentas[0]?.user_id) return res.status(404).json({ error: "No se encontró una cuenta con compras para ese correo." });
+        if (!cuentas[0]?.user_id) {
+          let encontrada;
+          for(let pagina=1;pagina<=10;pagina++) {
+            const lista = await fetch(`${SUPABASE_URL}/auth/v1/admin/users?page=${pagina}&per_page=1000`,{headers});
+            if(!lista.ok)return res.status(502).json({error:"No se pudo comprobar la cuenta de cliente."});
+            const datos=await lista.json();encontrada=datos.users?.find(u=>u.email?.toLowerCase()===correo);
+            if(encontrada || !datos.users?.length || datos.users.length<1000)break;
+          }
+          if(!encontrada)return res.status(404).json({error:"Ese correo todavía no tiene una cuenta registrada."});
+          cuentas.push({user_id:encontrada.id});
+        }
         const cuenta = await fetch(`${SUPABASE_URL}/auth/v1/admin/users/${encodeURIComponent(cuentas[0].user_id)}`, { headers });
         if (!cuenta.ok) return res.status(404).json({ error: "No se encontró esa cuenta de cliente." });
         destinatario = await cuenta.json();
         if (destinatario.email?.toLowerCase() !== correo || !destinatario.id) return res.status(400).json({ error: "El correo de compra no coincide con la cuenta. Revisa el correo con el que inicias sesión." });
       }
-      const accesoFijo = req.body.permanente === true && destinatario.email?.toLowerCase() === "floresidael2000@gmail.com";
+      const accesoFijo = req.body.permanente === true && ["floresidael2000@gmail.com","machadofelixb@gmail.com"].includes(destinatario.email?.toLowerCase());
       const paquetesPrueba = req.body.todos === true ? PAQUETES : ["Premium Diario"];
       const consulta = new URLSearchParams({ select: "paquete,vencimiento", user_id: `eq.${destinatario.id}`, vencimiento: `gt.${new Date().toISOString()}`, limit: "100" });
       const anterior = await fetch(`${SUPABASE_URL}/rest/v1/compras?${consulta}`, { headers });
@@ -75,7 +85,7 @@ export default async function handler(req, res) {
       const ahora = new Date();
       const resultado = await fetch(`${SUPABASE_URL}/rest/v1/compras`, {
         method: "POST", headers: { ...headers, "Content-Type": "application/json", Prefer: "return=minimal" },
-        body: JSON.stringify(faltantes.map(paquete => ({ user_id: destinatario.id, nombre: `${destinatario.user_metadata?.full_name || "Cliente"} (${accesoFijo ? "ACCESO DEL PROPIETARIO" : "PRUEBA SIN COBRO"})`, correo: destinatario.email, paquete, cantidad_pagada_dolar: 0, fecha_compra: ahora.toISOString(), vencimiento: accesoFijo ? "2099-12-31T23:59:59.000Z" : new Date(ahora.getTime() + 60 * 60 * 1000).toISOString() })))
+        body: JSON.stringify(faltantes.map(paquete => ({ user_id: destinatario.id, nombre: `${destinatario.user_metadata?.full_name || "Cliente"} (${accesoFijo ? "ACCESO DE CORTESÍA" : "PRUEBA SIN COBRO"})`, correo: destinatario.email, paquete, cantidad_pagada_dolar: 0, fecha_compra: ahora.toISOString(), vencimiento: accesoFijo ? "2099-12-31T23:59:59.000Z" : new Date(ahora.getTime() + 60 * 60 * 1000).toISOString() })))
       });
       if (!resultado.ok) return res.status(502).json({ error: "No se pudo activar el paquete de prueba." });
       return res.status(201).json({ paquete: "Premium Diario", prueba: true, duracion: "1 hora" });
