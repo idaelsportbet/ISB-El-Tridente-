@@ -58,15 +58,18 @@ export default async function handler(req, res) {
         destinatario = await cuenta.json();
         if (destinatario.email?.toLowerCase() !== correo || !destinatario.id) return res.status(400).json({ error: "El correo de compra no coincide con la cuenta. Revisa el correo con el que inicias sesión." });
       }
-      const consulta = new URLSearchParams({ select: "paquete,vencimiento", user_id: `eq.${destinatario.id}`, paquete: "eq.Premium Diario", vencimiento: `gt.${new Date().toISOString()}`, limit: "1" });
+      const accesoFijo = req.body.permanente === true && destinatario.email?.toLowerCase() === "floresidael2000@gmail.com";
+      const paquetesPrueba = req.body.todos === true ? PAQUETES : ["Premium Diario"];
+      const consulta = new URLSearchParams({ select: "paquete,vencimiento", user_id: `eq.${destinatario.id}`, vencimiento: `gt.${new Date().toISOString()}`, limit: "100" });
       const anterior = await fetch(`${SUPABASE_URL}/rest/v1/compras?${consulta}`, { headers });
       if (!anterior.ok) return res.status(502).json({ error: "No se pudo comprobar tu acceso." });
       const filas = await anterior.json();
-      if (filas.length) return res.status(200).json({ paquete: "Premium Diario", existente: true });
+      const faltantes = paquetesPrueba.filter(paquete => !filas.some(f => f.paquete === paquete && (!accesoFijo || Date.parse(f.vencimiento) > Date.parse("2098-01-01"))));
+      if (!faltantes.length) return res.status(200).json({ paquete: "Premium Diario", existente: true });
       const ahora = new Date();
       const resultado = await fetch(`${SUPABASE_URL}/rest/v1/compras`, {
         method: "POST", headers: { ...headers, "Content-Type": "application/json", Prefer: "return=minimal" },
-        body: JSON.stringify({ user_id: destinatario.id, nombre: `${destinatario.user_metadata?.full_name || "Cliente"} (PRUEBA SIN COBRO)`, correo: destinatario.email, paquete: "Premium Diario", cantidad_pagada_dolar: 0, fecha_compra: ahora.toISOString(), vencimiento: new Date(ahora.getTime() + 60 * 60 * 1000).toISOString() })
+        body: JSON.stringify(faltantes.map(paquete => ({ user_id: destinatario.id, nombre: `${destinatario.user_metadata?.full_name || "Cliente"} (${accesoFijo ? "ACCESO DEL PROPIETARIO" : "PRUEBA SIN COBRO"})`, correo: destinatario.email, paquete, cantidad_pagada_dolar: 0, fecha_compra: ahora.toISOString(), vencimiento: accesoFijo ? "2099-12-31T23:59:59.000Z" : new Date(ahora.getTime() + 60 * 60 * 1000).toISOString() })))
       });
       if (!resultado.ok) return res.status(502).json({ error: "No se pudo activar el paquete de prueba." });
       return res.status(201).json({ paquete: "Premium Diario", prueba: true, duracion: "1 hora" });
