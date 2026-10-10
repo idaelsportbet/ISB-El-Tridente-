@@ -9,7 +9,7 @@ function mostrarResultados(){
  for(const nombre of ['DÍA',...ResultadosCalendario.categorias]){const th=document.createElement('th');th.scope='col';th.textContent=nombre.toUpperCase();filaCabecera.append(th);}cabecera.append(filaCabecera);tabla.append(cabecera);
  const cuerpo=document.createElement('tbody');
  for(const d of p.filas){const fila=document.createElement('tr'),dia=document.createElement('th');dia.scope='row';dia.textContent=(tipoResultados==='mensuales'?d.numero+' · ':'')+d.dia;fila.append(dia);
- for(const c of ResultadosCalendario.categorias){const td=document.createElement('td');td.className='resultado-estado';td.dataset.clave=d.fecha+'|'+c;td.textContent='— SIN PUBLICAR';fila.append(td);}cuerpo.append(fila);}
+ for(const c of ResultadosCalendario.categorias){const td=document.createElement('td');td.className='resultado-estado';td.dataset.clave=d.fecha+'|'+c;td.dataset.paquete=c;td.textContent='— SIN PUBLICAR';fila.append(td);}cuerpo.append(fila);}
  tabla.append(cuerpo);const scroll=document.createElement('div');scroll.className='resultados-tabla-scroll';scroll.tabIndex=0;scroll.setAttribute('aria-label','Tabla de resultados '+tipoResultados);scroll.append(tabla);document.getElementById('resultadosTabla').replaceChildren(scroll);
  cargarResultados(p,++resultadosSolicitud);
 }
@@ -27,4 +27,5 @@ async function comprobarResultados(){
 }
 document.querySelectorAll('[data-periodo]').forEach(b=>b.addEventListener('click',()=>{tipoResultados=b.dataset.periodo;document.querySelectorAll('[data-periodo]').forEach(o=>o.setAttribute('aria-pressed',String(o===b)));mostrarResultados();}));
 comprobarResultados();
+
 
