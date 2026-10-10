@@ -166,7 +166,14 @@ form.addEventListener("submit", async event => {
     const vista = document.getElementById("pickPublicado"), ver = document.getElementById("verPublicado");
     vista.innerHTML = (data.picks || []).map(p => `<article style="padding:22px;margin:14px 0;border:1px solid #ad8736;border-radius:12px;background:linear-gradient(#031009bf,#031009d4),url(hero.jpeg) center/cover"><h3 style="color:#efc766">${escapar(p.paquete)}</h3><p>${escapar(p.fecha_pick)}</p><h2 style="color:#efc766">${escapar(p.titulo)}</h2>${p.imagen_url ? `<img src="${escapar(p.imagen_url)}" alt="Imagen del pick" style="max-width:100%">` : ""}<p style="white-space:pre-wrap;font-size:18px;font-weight:700;color:white">${escapar(p.descripcion)}</p></article>`).join("");
     ver.hidden = !data.picks?.length;
-    ver.onclick = () => { vista.hidden = false; vista.scrollIntoView({behavior:"smooth",block:"start"}); };
+    ver.onclick = () => {
+      const tabs=document.querySelector(".tabs");
+      document.querySelector("main").append(vista);
+      let volver=document.getElementById("volverEditor");
+      if(!volver){volver=document.createElement("button");volver.id="volverEditor";volver.type="button";volver.textContent="← VOLVER AL ADMINISTRADOR";vista.prepend(volver);}
+      volver.onclick=()=>{vista.hidden=true;form.hidden=false;if(tabs)tabs.hidden=false;estado.hidden=false;};
+      form.hidden=true;if(tabs)tabs.hidden=true;estado.hidden=true;vista.hidden=false;vista.scrollIntoView({behavior:"smooth",block:"start"});
+    };
   } catch(error) {estado.textContent=error.message;button.disabled=false;}
 });
 </script></body></html>
