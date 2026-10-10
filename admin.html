@@ -10,7 +10,7 @@
   <link rel="manifest" href="admin.webmanifest">
   <link rel="apple-touch-icon" href="admin-icon-192.png">
   <style>
-    *{box-sizing:border-box}
+    *{box-sizing:border-box}[hidden]{display:none!important}
     body{margin:0;background:#030303;min-height:100vh;color:#eee;font:16px system-ui;isolation:isolate}
     body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(3,3,3,.66),rgba(3,3,3,.38),rgba(3,3,3,.66)),url('hero.jpeg') center 35%/cover no-repeat;pointer-events:none}
     main{max-width:700px;margin:32px auto;padding:24px;border-top:3px solid #22e58b;border-radius:16px;background:rgba(5,18,11,.93);box-shadow:0 0 36px #18c77718;backdrop-filter:blur(6px)}
@@ -29,6 +29,8 @@
     button[type=submit]:hover:not(:disabled){background:#08663d}
     #estado{white-space:pre-wrap;line-height:1.6;color:#97efbe}small{color:#b6c0ba}
     @media(max-width:600px){main{margin:16px 12px;padding:20px}h1{font-size:27px}}
+    .tabs{display:flex;gap:12px;margin:20px 0}.tabs button{background:#092719;color:#ffd700;font-size:14px}.tabs button[aria-pressed=true]{border-color:#ffd700}
+    #clientes h2{color:#ffd700}.tabla-scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:12px 8px;text-align:left;border-bottom:1px solid #287c51;white-space:nowrap}th{color:#ffd700}.activo{color:#39ef9d}.vencido{color:#ffb68e}.paginas{display:flex;gap:12px;margin-top:18px}.paginas button{font-size:14px}#comprasEstado{line-height:1.5}
   </style>
 </head>
 <body><main>
@@ -36,6 +38,17 @@
   <button id="instalar" type="button" hidden>INSTALAR ISB ADMIN</button>
   <p id="instrucciones" hidden>Escribe el pick y selecciona todos los paquetes que deben recibirlo.</p>
   <p id="estado" role="status" aria-live="polite">Comprobando tu acceso…</p>
+  <nav id="secciones" class="tabs" aria-label="Secciones del administrador" hidden>
+    <button type="button" id="tabPick" aria-pressed="true">PUBLICAR PICK</button>
+    <button type="button" id="tabClientes" aria-pressed="false">CLIENTES Y COMPRAS</button>
+  </nav>
+  <section id="clientes" hidden>
+    <h2>Clientes y compras</h2>
+    <button type="button" id="actualizarCompras">ACTUALIZAR COMPRAS</button>
+    <p id="comprasEstado" role="status" aria-live="polite"></p>
+    <div class="tabla-scroll"><table><thead><tr><th>Usuario</th><th>Nombre</th><th>Correo</th><th>Paquete</th><th>Pagado (USD)</th><th>Compra</th><th>Vencimiento</th><th>Acceso</th></tr></thead><tbody id="comprasFilas"></tbody></table></div>
+    <div class="paginas"><button type="button" id="anteriorCompras" disabled>ANTERIOR</button><button type="button" id="siguienteCompras" disabled>SIGUIENTE</button></div>
+  </section>
   <form id="publicar" hidden>
     <label for="titulo">Título</label><input id="titulo" required maxlength="160" placeholder="Ej. Selección del día">
     <label for="descripcion">Pick y análisis</label><textarea id="descripcion" required maxlength="10000" placeholder="Partido, selección, cuota y análisis"></textarea>
@@ -61,10 +74,10 @@ const form = document.getElementById("publicar"), estado = document.getElementBy
 const partes = new Intl.DateTimeFormat("en-US", {timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
 const fecha = Object.fromEntries(partes.map(p => [p.type,p.value]));
 document.getElementById("fecha").value = `${fecha.year}-${fecha.month}-${fecha.day}`;
-async function request(method, body) {
+async function request(method, body, query="") {
   const {data:{session}} = await client.auth.getSession();
   if (!session) throw new Error("Inicia sesión desde Inicio con tu cuenta de administrador y vuelve a este panel.");
-  const response = await fetch("/api/admin-picks", {method,headers:{Authorization:`Bearer ${session.access_token}`,"Content-Type":"application/json"}, ...(body ? {body:JSON.stringify(body)} : {})});
+  const response = await fetch("/api/admin-picks"+query, {method,headers:{Authorization:`Bearer ${session.access_token}`,"Content-Type":"application/json"}, ...(body ? {body:JSON.stringify(body)} : {})});
   const data = await response.json();
   if (!response.ok) throw new Error(data.error || "No se pudo conectar con el panel.");
   return data;
@@ -82,11 +95,45 @@ instalar.addEventListener("click",async()=>{
 if("serviceWorker" in navigator) navigator.serviceWorker.register("/admin-sw.js").catch(()=>{});
 request("GET").then(() => {
   accesoAutorizado=true;form.hidden=false;document.getElementById("instrucciones").hidden=false;
+  document.getElementById("secciones").hidden=false;
   instalar.hidden=!solicitudInstalacion;estado.textContent="Acceso de administrador confirmado.";
   if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !navigator.standalone) {
     estado.textContent+=" En Safari: Compartir → Añadir a pantalla de inicio para instalar ISB Admin.";
   }
 }).catch(error => {estado.textContent=error.message});
+let paginaCompras=0, cargandoCompras=false;
+const avisoCompras=document.getElementById("comprasEstado"), tablaCompras=document.getElementById("comprasFilas");
+const anterior=document.getElementById("anteriorCompras"), siguiente=document.getElementById("siguienteCompras");
+async function cargarCompras(pagina=0){
+  if(cargandoCompras)return;
+  cargandoCompras=true;anterior.disabled=true;siguiente.disabled=true;
+  document.getElementById("actualizarCompras").disabled=true;avisoCompras.textContent="Cargando compras…";tablaCompras.replaceChildren();
+  try {
+    const data=await request("GET",undefined,`?vista=compras&pagina=${pagina}`);paginaCompras=data.pagina;
+    const formato=new Intl.DateTimeFormat("es",{timeZone:"America/Chicago",dateStyle:"medium",timeStyle:"short"});
+    const fechaTexto=valor=>valor&&Number.isFinite(Date.parse(valor))?formato.format(new Date(valor)):"—";
+    for(const compra of data.compras){
+      const activo=Date.parse(compra.vencimiento)>Date.now();
+      const fila=document.createElement("tr");
+      const valores=[compra.usuario||"No registrado",compra.nombre||"—",compra.correo||"—",compra.paquete||"—",new Intl.NumberFormat("es",{style:"currency",currency:"USD"}).format(Number(compra.cantidad_pagada_dolar)||0),fechaTexto(compra.fecha_compra),fechaTexto(compra.vencimiento),activo?"Activo":"Vencido"];
+      valores.forEach((valor,index)=>{const celda=document.createElement("td");celda.textContent=valor;if(index===7)celda.className=activo?"activo":"vencido";fila.append(celda)});
+      tablaCompras.append(fila);
+    }
+    avisoCompras.textContent=data.compras.length?`Página ${paginaCompras+1} · ${data.compras.length} compras · Fechas en horario Central.`:"No hay compras registradas en esta página.";
+    anterior.disabled=paginaCompras===0;siguiente.disabled=!data.hayMas;
+  } catch(error){avisoCompras.textContent=error.message;}
+  finally {cargandoCompras=false;document.getElementById("actualizarCompras").disabled=false;}
+}
+document.getElementById("tabClientes").addEventListener("click",()=>{
+  form.hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=false;
+  document.getElementById("tabClientes").setAttribute("aria-pressed","true");document.getElementById("tabPick").setAttribute("aria-pressed","false");cargarCompras(0);
+});
+document.getElementById("tabPick").addEventListener("click",()=>{
+  form.hidden=false;document.getElementById("instrucciones").hidden=false;document.getElementById("clientes").hidden=true;
+  document.getElementById("tabClientes").setAttribute("aria-pressed","false");document.getElementById("tabPick").setAttribute("aria-pressed","true");
+});
+document.getElementById("actualizarCompras").addEventListener("click",()=>cargarCompras(paginaCompras));
+anterior.addEventListener("click",()=>cargarCompras(paginaCompras-1));siguiente.addEventListener("click",()=>cargarCompras(paginaCompras+1));
 document.getElementById("nuevo").addEventListener("click", () => {
   form.querySelectorAll("input,textarea").forEach(input=>input.disabled=false);
   document.getElementById("titulo").value="";
