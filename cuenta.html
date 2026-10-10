@@ -272,6 +272,8 @@ body {
     </div>
 
     <a id="adminLink" class="boton" href="admin.html" hidden style="display:none">ADMINISTRAR PICKS</a>
+    <div id="estadoPago" class="mensaje" role="status" hidden></div>
+    <button id="revisarPago" class="boton" type="button" hidden style="width:100%;cursor:pointer">VOLVER A COMPROBAR MI PAGO</button>
     <div id="contenido" class="tarjeta">
       <div class="mensaje">Cargando tu cuenta...</div>
     </div>
@@ -307,6 +309,42 @@ function fechaBonita(fecha) {
   );
 }
 
+function escaparTexto(valor) {
+  return String(valor ?? "—").replace(/[&<>"']/g, caracter => ({"&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"}[caracter]));
+}
+
+let comprobandoPago = false;
+async function comprobarPago(session) {
+  const parametros = new URLSearchParams(window.location.search);
+  if (parametros.get("payment") !== "success") return;
+  const mensaje = document.getElementById("estadoPago");
+  const boton = document.getElementById("revisarPago");
+  mensaje.hidden = false;
+  if (comprobandoPago) return;
+  comprobandoPago = true;
+  boton.hidden = true;
+  mensaje.textContent = "Comprobando tu pago y la activación de tu paquete...";
+  try {
+    const response = await fetch(`/api/payment-status?session_id=${encodeURIComponent(parametros.get("session_id") || "")}`, {
+      headers: { Authorization: `Bearer ${session.access_token}` }, signal: AbortSignal.timeout(25000)
+    });
+    const pago = await response.json();
+    if (!response.ok) throw new Error(pago.error);
+    if (pago.estado === "activo") {
+      mensaje.textContent = `Pago confirmado. Tu paquete ${pago.paquete} ya está activo.`;
+      history.replaceState(null, "", window.location.pathname);
+      await cargarCuenta();
+    } else {
+      mensaje.textContent = pago.estado === "activando" ? "Stripe confirmó tu pago. Estamos activando tu paquete; vuelve a comprobarlo en unos segundos." : "El pago aún no está confirmado. No necesitas realizar otra compra para comprobarlo.";
+      boton.hidden = false;
+    }
+  } catch (error) {
+    mensaje.textContent = error.message || "No se pudo comprobar tu pago. Inténtalo de nuevo.";
+    boton.hidden = false;
+  } finally { comprobandoPago = false; }
+  boton.onclick = () => comprobarPago(session);
+}
+
 async function cargarCuenta() {
 
   const contenido =
@@ -332,6 +370,7 @@ async function cargarCuenta() {
   }
 
   const userId = session.user.id;
+  comprobarPago(session);
   try {
     const accesoAdmin = await fetch("/api/admin-picks", {
       headers: { Authorization: `Bearer ${session.access_token}` }
@@ -353,7 +392,7 @@ async function cargarCuenta() {
       .order("fecha_compra", {
         ascending: false
       })
-      .limit(1);
+      .limit(100);
 
   if (error) {
 
@@ -383,7 +422,14 @@ async function cargarCuenta() {
     return;
   }
 
-  const compra = data[0];
+  // Keep the longest active access per package; otherwise show its latest purchase.
+  const porPaquete = new Map();
+  for (const fila of data) {
+    const anterior = porPaquete.get(fila.paquete);
+    if (!anterior || (new Date(fila.vencimiento) > new Date() && new Date(fila.vencimiento) > new Date(anterior.vencimiento))) porPaquete.set(fila.paquete, fila);
+  }
+  contenido.innerHTML = "";
+  for (const compra of porPaquete.values()) {
 const marcaPaquete =
   document.getElementById("marcaPaquete");
 const proteccionFondo =
@@ -428,7 +474,8 @@ const textoSVG = `
 
 proteccionFondo.style.backgroundImage =
   `url("data:image/svg+xml;charset=UTF-8,${encodeURIComponent(textoSVG)}")`;
-marcaPaquete.textContent = nombreMarca;
+marcaPaquete.textContent = porPaquete.size === 1 ? nombreMarca : "MIS PAQUETES";
+if (porPaquete.size > 1) proteccionFondo.style.backgroundImage = "none";
   const ahora = new Date();
 
   const fechaVencimiento =
@@ -440,26 +487,26 @@ marcaPaquete.textContent = nombreMarca;
     fechaVencimiento &&
     fechaVencimiento > ahora;
 
-  contenido.innerHTML = `
+  contenido.innerHTML += `
 
     <div class="fila">
       <div class="label">NOMBRE</div>
       <div class="valor">
-        ${compra.nombre || "—"}
+        ${escaparTexto(compra.nombre || session.user.user_metadata?.full_name || "—")}
       </div>
     </div>
 
     <div class="fila">
       <div class="label">CORREO</div>
       <div class="valor">
-        ${compra.correo || session.user.email || "—"}
+        ${escaparTexto(compra.correo || session.user.email || "—")}
       </div>
     </div>
 
     <div class="fila">
       <div class="label">PAQUETE</div>
       <div class="valor">
-        ${compra.paquete || "—"}
+        ${escaparTexto(compra.paquete || "—")}
       </div>
     </div>
 
@@ -507,7 +554,9 @@ marcaPaquete.textContent = nombreMarca;
     <a class="boton" href="paquetes.html">VER PAQUETES</a>
   </div>
 `}
+  <hr style="border:0;border-top:1px solid #b98a27;margin:28px 0">
   `;
+  }
 }
 
 cargarCuenta();
