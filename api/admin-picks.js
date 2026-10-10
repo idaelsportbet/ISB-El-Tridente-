@@ -110,7 +110,7 @@ export default async function handler(req, res) {
       console.error("No se pudo publicar el pick", result.status);
       return res.status(502).json({ error: "No se pudo confirmar la publicación. Revisa la tabla picks antes de volver a intentarlo." });
     }
-    return res.status(201).json({ publicados: filas.length });
+    return res.status(201).json({ publicados: filas.length, picks: filas });
   } catch {
     return res.status(500).json({ error: "No se pudo confirmar la publicación. Revisa los picks antes de volver a intentarlo." });
   }
