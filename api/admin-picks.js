@@ -40,10 +40,13 @@ export default async function handler(req, res) {
       return res.status(200).json({compras:compras.map(c=>({...c,usuario:usuarios.get(c.user_id)||null})),pagina,hayMas:filas.length>25});
     }
     if (req.method === "GET" && req.query?.vista === "picks") {
-      const query = new URLSearchParams({select:"id,paquete,titulo,descripcion,fecha_pick,imagen_url,activo",order:"created_at.desc",limit:"100"});
+      const esHistorial=req.query.historial === "1", pagina=Number(req.query.pagina || 0);
+      if(!Number.isInteger(pagina)||pagina<0||pagina>10000)return res.status(400).json({error:"Página inválida."});
+      const query = new URLSearchParams({select:"id,paquete,titulo,descripcion,fecha_pick,imagen_url,activo",order:esHistorial?"fecha_pick.asc,created_at.asc":"fecha_pick.desc,created_at.desc",limit:esHistorial?"26":"1",offset:esHistorial?String(pagina*25):"0"});
+      if(!esHistorial){if(!PAQUETES.includes(req.query.paquete))return res.status(400).json({error:"Selecciona un paquete."});query.set("paquete",`eq.${req.query.paquete}`);}
       const respuesta = await fetch(`${SUPABASE_URL}/rest/v1/picks?${query}`,{headers:{apikey:secret,Authorization:`Bearer ${secret}`}});
       if(!respuesta.ok)return res.status(502).json({error:"No se pudieron cargar los picks publicados."});
-      return res.status(200).json({picks:await respuesta.json()});
+      return res.status(200).json(await respuesta.json().then(filas=>({picks:esHistorial?filas.slice(0,25):filas,hayMas:esHistorial&&filas.length>25})));
     }
     if (req.method === "GET") return res.status(200).json({ autorizado: true });
     if (req.body?.accion === "activar_prueba") {
