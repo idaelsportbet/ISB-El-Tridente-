@@ -29,6 +29,85 @@ const supabaseClient = window.supabase.createClient(
 
 const registerForm = document.querySelector('[data-form="register"]');
 const loginForm = document.querySelector('[data-form="login"]');
+const recovery = document.getElementById('recoveryModal');
+const passwordModal = document.getElementById('passwordModal');
+const recoveryForm = document.querySelector('[data-form="recovery"]');
+const passwordForm = document.querySelector('[data-form="password"]');
+let recoveryAuthorized = false;
+
+document.querySelectorAll('[data-open="recovery"]').forEach(button => button.addEventListener('click', () => {
+  recoveryForm.elements.email.value = loginForm.elements.email.value;
+  login.close();
+  recovery.showModal();
+}));
+
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  if (event === 'PASSWORD_RECOVERY' && session) {
+    recoveryAuthorized = true;
+    login?.close();
+    register?.close();
+    recovery?.close();
+    if (!passwordModal.open) passwordModal.showModal();
+  }
+});
+
+if (new URLSearchParams(window.location.hash.slice(1)).has('error_description')) {
+  recovery.showModal();
+  recoveryForm.querySelector('[data-recovery-message]').textContent = 'El enlace venció o no es válido. Solicita uno nuevo.';
+  history.replaceState(null, '', window.location.pathname);
+}
+
+recoveryForm?.addEventListener('submit', async event => {
+  event.preventDefault();
+  const button = recoveryForm.querySelector('button[type="submit"]');
+  const message = recoveryForm.querySelector('[data-recovery-message]');
+  button.disabled = true;
+  message.textContent = 'Solicitando enlace…';
+  try {
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(recoveryForm.elements.email.value.trim(), {
+      redirectTo: window.location.origin + '/'
+    });
+    message.textContent = error ? 'No se pudo enviar el enlace. Espera un momento e inténtalo de nuevo.' : 'Si existe una cuenta con ese correo, recibirás un enlace para recuperar el acceso. Revisa también spam.';
+  } catch {
+    message.textContent = 'No hay conexión. Inténtalo nuevamente.';
+  } finally {
+    button.disabled = false;
+  }
+});
+
+passwordForm?.addEventListener('submit', async event => {
+  event.preventDefault();
+  const message = passwordForm.querySelector('[data-password-message]');
+  const password = passwordForm.elements.password.value;
+  if (!recoveryAuthorized) {
+    message.textContent = 'Abre el enlace de recuperación recibido en tu correo.';
+    return;
+  }
+  if (password !== passwordForm.elements.confirm_password.value) {
+    message.textContent = 'Las contraseñas no coinciden.';
+    return;
+  }
+  const button = passwordForm.querySelector('button[type="submit"]');
+  button.disabled = true;
+  try {
+    const { error } = await supabaseClient.auth.updateUser({ password });
+    if (error) {
+      message.textContent = 'No se pudo guardar. Comprueba la contraseña o solicita un enlace nuevo.';
+      return;
+    }
+    recoveryAuthorized = false;
+    passwordForm.reset();
+    message.textContent = 'Contraseña guardada. Ya puedes iniciar sesión con ella.';
+    await supabaseClient.auth.signOut();
+    passwordModal.close();
+    login.showModal();
+    alert('Contraseña guardada. Inicia sesión con tu nueva contraseña.');
+  } catch {
+    message.textContent = 'No se pudo guardar. Revisa tu conexión e inténtalo de nuevo.';
+  } finally {
+    button.disabled = false;
+  }
+});
 
 registerForm?.addEventListener('submit', async (e) => {
   e.preventDefault();

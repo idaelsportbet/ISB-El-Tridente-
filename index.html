@@ -228,7 +228,8 @@
     placeholder="••••••••">
 </label>
       <button class="btn btn-gold btn-wide" type="submit">Entrar</button>
-      <p class="form-note">Acceso seguro al portal privado de ISB..</p>
+      <p><button type="button" class="link-button" data-open="recovery">¿Olvidaste tu contraseña?</button></p>
+      <p class="form-note">Acceso seguro al portal privado de ISB.</p>
     </form>
   </dialog>
 
@@ -320,6 +321,25 @@
       </button>
     </p>
 
+  </form>
+</dialog>
+<dialog id="recoveryModal" class="modal">
+  <form class="modal-card" data-form="recovery">
+    <button type="button" class="close" aria-label="Cerrar">×</button>
+    <p class="eyebrow">ISB EL TRIDENTE</p><h2>Recuperar mi cuenta</h2>
+    <p>Escribe el correo con el que creaste tu cuenta. Te enviaremos un enlace para crear una contraseña nueva.</p>
+    <label>Correo electrónico<input type="email" name="email" autocomplete="email" required placeholder="tu@gmail.com"></label>
+    <button class="btn btn-gold btn-wide" type="submit">Enviar enlace de recuperación</button>
+    <p data-recovery-message role="status" aria-live="polite"></p>
+  </form>
+</dialog>
+<dialog id="passwordModal" class="modal">
+  <form class="modal-card" data-form="password">
+    <p class="eyebrow">ISB EL TRIDENTE</p><h2>Nueva contraseña</h2>
+    <label>Nueva contraseña<input type="password" name="password" autocomplete="new-password" minlength="8" required placeholder="Mínimo 8 caracteres"></label>
+    <label>Repite la contraseña<input type="password" name="confirm_password" autocomplete="new-password" minlength="8" required></label>
+    <button class="btn btn-gold btn-wide" type="submit">Guardar contraseña</button>
+    <p data-password-message role="status" aria-live="polite"></p>
   </form>
 </dialog>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
