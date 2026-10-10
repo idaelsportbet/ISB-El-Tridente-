@@ -65,7 +65,7 @@
     </fieldset>
     <button type="submit">PUBLICAR PICK</button>
     <button id="verPublicado" type="button" hidden style="margin-top:12px">VER PICK PUBLICADO</button><section id="pickPublicado" hidden style="margin-top:20px"></section><button id="nuevo" type="button" hidden style="margin-top:12px">PUBLICAR OTRO PICK</button>
-    <p><small>Se mostrará en la web a quienes tengan acceso activo. No envía mensajes por WhatsApp ni correo.</small></p>
+    <p><small>Se mostrará en la web a quienes tengan acceso activo. Los avisos por correo a clientes con acceso activo requieren conectar el servicio de correo.</small></p>
   </form>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -179,7 +179,10 @@ form.addEventListener("submit", async event => {
   const button = form.querySelector('button[type="submit"]'); button.disabled=true;estado.textContent="Publicando…";
   try {
     const data = await request("POST", {titulo:document.getElementById("titulo").value,descripcion:document.getElementById("descripcion").value,fecha_pick:document.getElementById("fecha").value,imagen_url:document.getElementById("imagen").value.trim(),juego_url:document.getElementById("juego").value.trim(),paquetes});
-    estado.textContent=`Pick publicado para ${data.publicados} paquete(s).`;button.textContent="PUBLICADO";
+    estado.textContent=`Pick publicado para ${data.publicados} paquete(s).`;
+    if(data.notificaciones?.estado === "enviados")estado.textContent+=` Avisos enviados al servicio de correo: ${data.notificaciones.enviados}.`;
+    else if(data.notificaciones?.estado === "sin_configurar")estado.textContent+=" Los avisos por correo aún no están activados: falta configurar el remitente.";
+    else estado.textContent+=" El pick está guardado, pero los avisos por correo no se completaron. No vuelvas a publicar el pick para reintentar el correo.";button.textContent="PUBLICADO";
     form.querySelectorAll("input,textarea").forEach(input=>input.disabled=true);
     document.getElementById("nuevo").hidden=false;
     const vista = document.getElementById("pickPublicado"), ver = document.getElementById("verPublicado");
