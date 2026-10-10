@@ -26,11 +26,16 @@ function contenidoPick(pick) {
   imagen = urlSegura(pick.imagen_url);
   return `<div class="pick-date">${escapar(pick.fecha_pick)}</div><h3 class="pick-title">${escapar(pick.titulo || "Pick de hoy")}</h3>${imagen ? `<img class="pick-image" src="${escapar(imagen)}" alt="Imagen del pick" loading="lazy">` : ""}<p class="pick-description" style="white-space:pre-wrap">${escapar(descripcion)}</p>${juego ? `<a class="button" href="${escapar(juego)}" target="_blank" rel="noopener noreferrer">VER JUEGO</a>` : ""}`;
 }
+function marcaPick(paquete) {
+  const texto = escapar(`ISB EL TRIDENTE · ${paquete}`);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="250" height="40"><text x="4" y="26" fill="#efc766" font-family="Arial" font-size="11" font-weight="700" transform="rotate(-10 125 20)">${texto}</text></svg>`;
+  return escapar(`url("data:image/svg+xml,${encodeURIComponent(svg)}")`);
+}
 function renderPicks(compras) {
   if (!compras.length) { contenido.innerHTML = `<section class="panel">${sinPaquetes()}</section>`; return; }
   if (filtroActual !== "Todos" && !compras.some(c=>c.paquete === filtroActual)) filtroActual = "Todos";
   const filtros = ["Todos",...compras.map(c=>c.paquete)];
-  contenido.innerHTML = `<div class="filters" aria-label="Filtrar por paquete">${filtros.map((f,i)=>`<button class="filter" type="button" data-filtro="${i}" aria-pressed="${f===filtroActual}">${escapar(f)}</button>`).join("")}</div>${compras.filter(c=>filtroActual === "Todos" || c.paquete===filtroActual).map(compra=>`<article class="panel"><div class="package-head"><h2 class="package-title">${escapar(compra.paquete)}</h2><span class="status">ACTIVO</span></div><div class="pick-preview">${compra.errorPick ? `<p class="message">No se pudo cargar el pick. Actualiza la página para intentarlo de nuevo.</p>` : compra.pick ? contenidoPick(compra.pick) : `<p class="message">Todavía no se ha publicado el pick de hoy para este paquete.</p>`}</div></article>`).join("")}`;
+  contenido.innerHTML = `<div class="filters" aria-label="Filtrar por paquete">${filtros.map((f,i)=>`<button class="filter" type="button" data-filtro="${i}" aria-pressed="${f===filtroActual}">${escapar(f)}</button>`).join("")}</div>${compras.filter(c=>filtroActual === "Todos" || c.paquete===filtroActual).map(compra=>`<article class="panel"><div class="package-head"><h2 class="package-title">${escapar(compra.paquete)}</h2><span class="status">ACTIVO</span></div><div class="pick-preview" style="--marca-pick:${marcaPick(compra.paquete)}">${compra.errorPick ? `<p class="message">No se pudo cargar el pick. Actualiza la página para intentarlo de nuevo.</p>` : compra.pick ? contenidoPick(compra.pick) : `<p class="message">Todavía no se ha publicado el pick de hoy para este paquete.</p>`}</div></article>`).join("")}`;
   document.querySelectorAll("[data-filtro]").forEach(boton=>boton.addEventListener("click",()=>{filtroActual=filtros[Number(boton.dataset.filtro)];renderPicks(comprasVisibles);}));
 }
 async function cargarPortal() {
