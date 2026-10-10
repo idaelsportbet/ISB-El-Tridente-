@@ -71,10 +71,10 @@ async function cargarPortal() {
           const estado = document.getElementById("estadoPrueba");
           estado.hidden = false;estado.textContent = "Activando tu paquete de prueba...";
           try {
-            const respuesta = await fetch("/api/admin-picks",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${session.access_token}`},body:JSON.stringify({accion:"activar_prueba",correo_prueba:correoPrueba?.value || session.user.email}),signal:AbortSignal.timeout(15000)});
+            const respuesta = await fetch("/api/admin-picks",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${session.access_token}`},body:JSON.stringify({accion:"activar_prueba",todos:true,permanente:true,correo_prueba:correoPrueba?.value || session.user.email}),signal:AbortSignal.timeout(15000)});
             const resultado = await respuesta.json();
             if (!respuesta.ok) throw new Error(resultado.error);
-            estado.textContent = resultado.existente ? "Ya tienes Premium Diario activo. Puedes publicar tu jugada para ese paquete." : "Premium Diario activo durante 1 hora para probar. Total pagado: $0.00; no se hizo ningún cobro.";
+            estado.textContent = resultado.existente ? "Ya tienes Premium Diario activo. Puedes publicar tu jugada para ese paquete." : "Acceso a todos los paquetes activado. Total pagado: $0.00; no se hizo ningún cobro.";
             await cargarPortal();
           } catch(error) { estado.textContent = error.message || "No se pudo activar la prueba."; }
           finally { prueba.disabled = false; }
