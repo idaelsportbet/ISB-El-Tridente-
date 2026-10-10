@@ -40,7 +40,7 @@ export default async function handler(req, res) {
       return res.status(200).json({compras:compras.map(c=>({...c,usuario:usuarios.get(c.user_id)||null})),pagina,hayMas:filas.length>25});
     }
     if (req.method === "GET") return res.status(200).json({ autorizado: true });
-    const { titulo, descripcion, fecha_pick, imagen_url = "", paquetes } = req.body || {};
+    const { titulo, descripcion, fecha_pick, imagen_url = "", juego_url = "", paquetes } = req.body || {};
     if (typeof titulo !== "string" || !titulo.trim() || titulo.length > 160 ||
         typeof descripcion !== "string" || !descripcion.trim() || descripcion.length > 10000 ||
         typeof fecha_pick !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(fecha_pick) ||
@@ -57,8 +57,17 @@ export default async function handler(req, res) {
     if (!imagenValida) {
       return res.status(400).json({ error: "La imagen debe tener un enlace HTTPS válido." });
     }
+    let juegoValido = typeof juego_url === "string" && juego_url.length <= 2048;
+    if (juegoValido && juego_url) {
+      try { const url = new URL(juego_url); juegoValido = url.protocol === "https:" && !url.username && !url.password; }
+      catch { juegoValido = false; }
+    }
+    if (!juegoValido) return res.status(400).json({error:"El juego debe tener un enlace HTTPS válido."});
+    // Store an optional plain-text footer with the existing pick, without a schema migration.
+    const contenido = descripcion.trim() + (juego_url ? `\n\nVer juego: ${new URL(juego_url).href}` : "");
+    if (contenido.length > 10000) return res.status(400).json({error:"Acorta el análisis para incluir el enlace del juego."});
     const filas = [...new Set(paquetes)].map(paquete => ({
-      titulo: titulo.trim(), descripcion: descripcion.trim(), fecha_pick,
+      titulo: titulo.trim(), descripcion: contenido, fecha_pick,
       imagen_url: imagen_url || null, paquete, activo: true
     }));
     const result = await fetch(`${SUPABASE_URL}/rest/v1/picks`, {
