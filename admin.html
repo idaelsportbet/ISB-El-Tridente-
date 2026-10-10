@@ -54,6 +54,7 @@
     <label for="descripcion">Pick y análisis</label><textarea id="descripcion" required maxlength="10000" placeholder="Partido, selección, cuota y análisis"></textarea>
     <label for="fecha">Fecha del pick</label><input id="fecha" type="date" required><small>Fecha según el horario Central de EE. UU.</small>
     <label for="imagen">Enlace de imagen (opcional)</label><input id="imagen" type="url" placeholder="https://…">
+    <label for="juego">Enlace para ver el juego (opcional)</label><input id="juego" type="url" maxlength="2048" placeholder="https://…"><small>Pega el enlace del partido concreto para abrir ese juego. El botón aparece solo si agregas un enlace.</small>
     <fieldset><legend>Paquetes que recibirán este pick</legend>
       <label><input type="checkbox" name="paquete" value="Premium Diario"> Premium Diario</label>
       <label><input type="checkbox" name="paquete" value="Premium Semanal"> Premium Semanal</label>
@@ -139,6 +140,7 @@ document.getElementById("nuevo").addEventListener("click", () => {
   document.getElementById("titulo").value="";
   document.getElementById("descripcion").value="";
   document.getElementById("imagen").value="";
+  document.getElementById("juego").value="";
   const button=form.querySelector('button[type="submit"]');button.disabled=false;button.textContent="PUBLICAR PICK";
   document.getElementById("nuevo").hidden=true;estado.textContent="Listo para publicar otro pick.";
   document.getElementById("titulo").focus();
@@ -149,7 +151,7 @@ form.addEventListener("submit", async event => {
   if (!paquetes.length) {estado.textContent="Selecciona al menos un paquete.";return;}
   const button = form.querySelector('button[type="submit"]'); button.disabled=true;estado.textContent="Publicando…";
   try {
-    const data = await request("POST", {titulo:document.getElementById("titulo").value,descripcion:document.getElementById("descripcion").value,fecha_pick:document.getElementById("fecha").value,imagen_url:document.getElementById("imagen").value.trim(),paquetes});
+    const data = await request("POST", {titulo:document.getElementById("titulo").value,descripcion:document.getElementById("descripcion").value,fecha_pick:document.getElementById("fecha").value,imagen_url:document.getElementById("imagen").value.trim(),juego_url:document.getElementById("juego").value.trim(),paquetes});
     estado.textContent=`Pick publicado para ${data.publicados} paquete(s).`;button.textContent="PUBLICADO";
     form.querySelectorAll("input,textarea").forEach(input=>input.disabled=true);
     document.getElementById("nuevo").hidden=false;

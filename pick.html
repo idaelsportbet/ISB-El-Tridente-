@@ -591,6 +591,18 @@ async function verificarAcceso() {
     if (url.protocol === "https:" && !url.username && !url.password) imagenSegura = url.href;
   } catch {}
 
+  let descripcionPick = pick.descripcion || "—", juegoSeguro = "";
+  const enlaceJuego = descripcionPick.match(/\n\nVer juego: (https:\/\/[^\s]+)\s*$/);
+  if (enlaceJuego) {
+    try {
+      const url = new URL(enlaceJuego[1]);
+      if (url.protocol === "https:" && !url.username && !url.password) {
+        juegoSeguro = url.href;
+        descripcionPick = descripcionPick.slice(0, enlaceJuego.index);
+      }
+    } catch {}
+  }
+
 
   contenido.innerHTML = `
 
@@ -603,8 +615,10 @@ async function verificarAcceso() {
     </h2>
 
     <div class="descripcion-pick" style="white-space:pre-wrap">
-      ${escaparTexto(pick.descripcion || "—")}
+      ${escaparTexto(descripcionPick)}
     </div>
+
+    ${juegoSeguro ? `<a class="boton" href="${escaparTexto(juegoSeguro)}" target="_blank" rel="noopener noreferrer">VER JUEGO ↗</a>` : ""}
 
     ${
       imagenSegura
