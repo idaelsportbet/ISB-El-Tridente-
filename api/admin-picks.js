@@ -39,6 +39,12 @@ export default async function handler(req, res) {
       }
       return res.status(200).json({compras:compras.map(c=>({...c,usuario:usuarios.get(c.user_id)||null})),pagina,hayMas:filas.length>25});
     }
+    if (req.method === "GET" && req.query?.vista === "picks") {
+      const query = new URLSearchParams({select:"id,paquete,titulo,descripcion,fecha_pick,imagen_url,activo",order:"created_at.desc",limit:"100"});
+      const respuesta = await fetch(`${SUPABASE_URL}/rest/v1/picks?${query}`,{headers:{apikey:secret,Authorization:`Bearer ${secret}`}});
+      if(!respuesta.ok)return res.status(502).json({error:"No se pudieron cargar los picks publicados."});
+      return res.status(200).json({picks:await respuesta.json()});
+    }
     if (req.method === "GET") return res.status(200).json({ autorizado: true });
     if (req.body?.accion === "activar_prueba") {
       // Only the authenticated owner can grant a temporary, free access to an existing account.
