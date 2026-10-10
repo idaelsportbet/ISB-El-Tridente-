@@ -7,3 +7,4 @@
 .pick-preview:before{opacity:.23;background-size:300px 64px}
 .pick-preview{background:linear-gradient(135deg,#03170e,#020c08)}.pick-preview:before{z-index:0}.pick-preview>*{position:relative;z-index:1}
 .pick-preview:before{inset:-90px;transform:rotate(-10deg);background-size:300px 52px}
+.pick-preview{background:linear-gradient(#031009dd,#031009f5),url("hero.jpeg") center/cover}
