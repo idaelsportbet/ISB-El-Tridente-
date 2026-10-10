@@ -46,7 +46,7 @@ export default async function handler(req, res) {
 
     params.append(
       "success_url",
-      "https://www.idaelsportbet.me/paquetes.html?payment=success&session_id={CHECKOUT_SESSION_ID}"
+      "https://www.idaelsportbet.me/cuenta.html?payment=success&session_id={CHECKOUT_SESSION_ID}"
     );
 
     params.append(
