@@ -1,6 +1,36 @@
 const SUPABASE_URL = "https://nfvkmxnprchvkufwvhpr.supabase.co";
 const PAQUETES = ["Premium Diario", "Premium Semanal", "Exclusiva Diaria", "Exclusiva Semanal", "Pack Mensual", "Económica"];
 
+async function notificarPicks(filas, secret) {
+  const key=process.env.RESEND_API_KEY, remitente=process.env.PICK_EMAIL_FROM;
+  if(!key || !remitente)return {estado:"sin_configurar",enviados:0};
+  try {
+    const paquetes=[...new Set(filas.map(f=>f.paquete))], destinatarios=new Map();
+    for(let pagina=0;pagina<100;pagina++) {
+      const query=new URLSearchParams({select:"correo,paquete,vencimiento",paquete:`in.(${paquetes.join(",")})`,vencimiento:`gt.${new Date().toISOString()}`,order:"id.asc",limit:"1000",offset:String(pagina*1000)});
+      const respuesta=await fetch(`${SUPABASE_URL}/rest/v1/compras?${query}`,{headers:{apikey:secret,Authorization:`Bearer ${secret}`},signal:AbortSignal.timeout(8000)});
+      if(!respuesta.ok)return {estado:"error",enviados:0};
+      const compras=await respuesta.json();
+      for(const compra of compras) {
+        const correo=String(compra.correo || "").trim().toLowerCase();
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)||!paquetes.includes(compra.paquete)||!(Date.parse(compra.vencimiento)>Date.now()))continue;
+        if(!destinatarios.has(correo))destinatarios.set(correo,new Set());
+        destinatarios.get(correo).add(compra.paquete);
+      }
+      if(compras.length<1000)break;
+      if(pagina===99)return {estado:"error",enviados:0};
+    }
+    const correos=[...destinatarios].map(([correo,paquetes])=>({from:remitente,to:[correo],reply_to:"idaelvargasbusiness@gmail.com",subject:"Tu pick de ISB EL TRIDENTE ya está publicado",text:`Hola,\n\nSe ha publicado un nuevo pick para tus paquetes: ${[...paquetes].join(", ")}.\nFecha del pick: ${filas[0].fecha_pick}.\n\nEntra con tu cuenta para verlo:\nhttps://www.idaelsportbet.me/mis-picks\n\nISB EL TRIDENTE`}));
+    let enviados=0;
+    for(let inicio=0;inicio<correos.length;inicio+=100) {
+      const respuesta=await fetch("https://api.resend.com/emails/batch",{method:"POST",headers:{Authorization:`Bearer ${key}`,"Content-Type":"application/json"},body:JSON.stringify(correos.slice(inicio,inicio+100)),signal:AbortSignal.timeout(8000)});
+      if(!respuesta.ok)return {estado:enviados?"parcial":"error",enviados,total:correos.length};
+      enviados+=Math.min(100,correos.length-inicio);
+      if(inicio+100<correos.length)await new Promise(resolve=>setTimeout(resolve,600));
+    }
+    return {estado:"enviados",enviados};
+  } catch {return {estado:"error",enviados:0};}
+}
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
   if (!["GET", "POST"].includes(req.method)) return res.status(405).json({ error: "Método no permitido" });
@@ -137,7 +167,8 @@ export default async function handler(req, res) {
       console.error("No se pudo publicar el pick", result.status);
       return res.status(502).json({ error: "No se pudo confirmar la publicación. Revisa la tabla picks antes de volver a intentarlo." });
     }
-    return res.status(201).json({ publicados: filas.length, picks: filas });
+    const notificaciones=await notificarPicks(filas,secret);
+    return res.status(201).json({ publicados: filas.length, picks: filas, notificaciones });
   } catch {
     return res.status(500).json({ error: "No se pudo confirmar la publicación. Revisa los picks antes de volver a intentarlo." });
   }
