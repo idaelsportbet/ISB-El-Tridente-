@@ -6,6 +6,12 @@
  const aviso=panel.querySelector('#estadoEditorResultados'),guardar=panel.querySelector('#guardarResultados'),referencia=panel.querySelector('#referenciaResultados');
  referencia.value=ResultadosCalendario.hoy().toISOString().slice(0,10);
  let tipo='semanales',secuencia=0,listo=false,filas=[],ocupado=false;
+ const ampliar=document.createElement('dialog');ampliar.className='resultado-escritura';
+ ampliar.innerHTML='<h2 id="tituloEscrituraResultado"></h2><label for="textoEscrituraResultado">Escribe una jugada por línea</label><textarea id="textoEscrituraResultado" maxlength="1000" placeholder="Real Madrid vs Villarreal\nUnder 3.5 goles\nReal Madrid a ganar"></textarea><div class="tabs"><button type="button" data-cancelar>VOLVER</button><button type="button" data-listo>LISTO</button></div>';
+ document.body.append(ampliar);const textoAmplio=ampliar.querySelector('textarea');let casillaAbierta=null;
+ function abrirEscritura(f){if(!listo||ocupado)return;casillaAbierta=f;ampliar.querySelector('h2').textContent=f.categoria+' · '+f.fecha;textoAmplio.value=f.texto.value;ampliar.showModal();textoAmplio.focus();}
+ ampliar.querySelector('[data-cancelar]').onclick=()=>ampliar.close();
+ ampliar.querySelector('[data-listo]').onclick=()=>{if(casillaAbierta&&casillaAbierta.texto.value!==textoAmplio.value){casillaAbierta.texto.value=textoAmplio.value;casillaAbierta.cambio=true;}ampliar.close();};
  async function api(method,body,q=''){
  const {data:{session}}=await client.auth.getSession();if(!session)throw new Error('Inicia sesión con tu cuenta de administrador.');
  const r=await fetch('/api/resultados'+q,{method,headers:{Authorization:'Bearer '+session.access_token,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(12000)});
@@ -20,7 +26,7 @@
  for(const d of p.filas){const row=document.createElement('tr'),th=document.createElement('th');th.scope='row';th.textContent=(tipo==='mensuales'?d.numero+' · ':'')+d.dia;row.append(th);
  for(const c of ResultadosCalendario.categorias){const td=document.createElement('td'),texto=document.createElement('textarea'),estado=document.createElement('select');texto.maxLength=1000;texto.placeholder='Pick o comentario (opcional)';texto.setAttribute('aria-label',d.fecha+' '+c+' pick');estado.setAttribute('aria-label',d.fecha+' '+c+' resultado');
  for(const [v,t] of [['','Sin publicar'],['ganado','✓ GANADO'],['perdido','✕ PERDIDO'],['sin_pick','— NO SE ENVIÓ']]){const option=document.createElement('option');option.value=v;option.textContent=t;estado.append(option);}
- const f={fecha:d.fecha,categoria:c,texto,estado,cambio:false};texto.oninput=()=>f.cambio=true;estado.onchange=()=>f.cambio=true;filas.push(f);td.append(texto,estado);row.append(td);}tbody.append(row);}
+ const f={fecha:d.fecha,categoria:c,texto,estado,cambio:false};texto.oninput=()=>f.cambio=true;estado.onchange=()=>f.cambio=true;const editar=document.createElement('button');editar.type='button';editar.className='ampliar-resultado';editar.textContent='EDITAR';editar.setAttribute('aria-label','Editar '+c+' '+d.fecha);editar.onclick=()=>abrirEscritura(f);texto.onclick=()=>{if(matchMedia('(max-width:600px)').matches)abrirEscritura(f);};filas.push(f);td.append(texto,editar,estado);row.append(td);}tbody.append(row);}
  tabla.append(tbody);const scroll=document.createElement('div');scroll.className='resultados-tabla-scroll';scroll.append(tabla);document.getElementById('tablaEditorResultados').replaceChildren(scroll);aviso.textContent='Cargando resultados guardados…';
  try{const data=await api('GET',undefined,'?desde='+p.inicio+'&hasta='+p.fin);if(version!==secuencia)return;const mapa=new Map(data.resultados.map(f=>[f.fecha+'|'+f.categoria,f]));for(const f of filas){const v=mapa.get(f.fecha+'|'+f.categoria);if(v){f.texto.value=v.texto;f.estado.value=v.estado;}}listo=true;guardar.disabled=false;aviso.textContent='Edita una casilla y publica. Semanal y mensual comparten los mismos resultados por fecha.';}
  catch(e){if(version===secuencia)aviso.textContent=e.message;}
