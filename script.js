@@ -172,6 +172,8 @@ loginForm?.addEventListener('submit', async (e) => {
 
   submitButton.disabled = true;
   submitButton.textContent = 'Entrando...';
+  const loginMessage = loginForm.querySelector('[data-login-message]');
+  loginMessage.textContent = '';
 
   const { data, error } =
     await supabaseClient.auth.signInWithPassword({
@@ -182,7 +184,7 @@ loginForm?.addEventListener('submit', async (e) => {
   if (error) {
     submitButton.disabled = false;
     submitButton.textContent = 'Entrar';
-    alert('Correo o contraseña incorrectos.');
+    loginMessage.textContent = 'Correo o contraseña incorrectos. Puedes recuperar tu cuenta abajo.';
     return;
   }
 
