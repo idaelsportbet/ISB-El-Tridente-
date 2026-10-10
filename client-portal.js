@@ -35,7 +35,12 @@ function renderPicks(compras) {
   if (!compras.length) { contenido.innerHTML = `<section class="panel">${sinPaquetes()}</section>`; return; }
   if (filtroActual !== "Todos" && !compras.some(c=>c.paquete === filtroActual)) filtroActual = "Todos";
   const filtros = ["Todos",...compras.map(c=>c.paquete)];
-  contenido.innerHTML = `<div class="filters" aria-label="Filtrar por paquete">${filtros.map((f,i)=>`<button class="filter" type="button" data-filtro="${i}" aria-pressed="${f===filtroActual}">${escapar(f)}</button>`).join("")}</div>${compras.filter(c=>filtroActual === "Todos" || c.paquete===filtroActual).map(compra=>`<article class="panel"><div class="package-head"><h2 class="package-title">${escapar(compra.paquete)}</h2><span class="status">ACTIVO</span></div><div class="pick-preview" style="--marca-pick:${marcaPick(compra.paquete)}">${compra.errorPick ? `<p class="message">No se pudo cargar el pick. Actualiza la página para intentarlo de nuevo.</p>` : compra.pick ? contenidoPick(compra.pick) : `<p class="message">Todavía no se ha publicado el pick de hoy para este paquete.</p>`}</div></article>`).join("")}`;
+  if(filtroActual === "Todos") {
+    contenido.innerHTML = `<section class="panel"><h2 class="section-title">ELIGE TU PAQUETE</h2><div class="package-options">${compras.map((c,i)=>`<button class="filter package-option" type="button" data-paquete="${i}">${escapar(c.paquete)}</button>`).join("")}</div></section>`;
+    document.querySelectorAll("[data-paquete]").forEach(b=>b.addEventListener("click",()=>{filtroActual=compras[Number(b.dataset.paquete)].paquete;renderPicks(comprasVisibles);}));
+    return;
+  }
+  contenido.innerHTML = `<div class="filters"><button class="filter" type="button" data-filtro="0">← VOLVER A MIS PAQUETES</button></div>${compras.filter(c=>filtroActual === "Todos" || c.paquete===filtroActual).map(compra=>`<article class="panel"><div class="package-head"><h2 class="package-title">${escapar(compra.paquete)}</h2><span class="status">ACTIVO</span></div><div class="pick-preview" style="--marca-pick:${marcaPick(compra.paquete)}">${compra.errorPick ? `<p class="message">No se pudo cargar el pick. Actualiza la página para intentarlo de nuevo.</p>` : compra.pick ? contenidoPick(compra.pick) : `<p class="message">Todavía no se ha publicado el pick de hoy para este paquete.</p>`}</div></article>`).join("")}`;
   document.querySelectorAll("[data-filtro]").forEach(boton=>boton.addEventListener("click",()=>{filtroActual=filtros[Number(boton.dataset.filtro)];renderPicks(comprasVisibles);}));
 }
 async function cargarPortal() {

@@ -11,3 +11,4 @@
 .pick-description{font-weight:600;color:#f4f6f4;text-shadow:0 1px 3px #000;line-height:1.8}.pick-preview{background:linear-gradient(#031009a6,#031009bf),url("hero.jpeg") center/cover}
 @media(max-width:600px){.pick-description{font-size:18px;font-weight:700;line-height:1.85}.pick-preview{padding:22px 12px}}
 .pick-preview{background:linear-gradient(#031009bf,#031009d4),url("hero.jpeg") center/cover}.pick-description{font-weight:700;color:#fff;text-shadow:0 1px 4px #000}@media(max-width:600px){.pick-description{font-weight:800}}
+.package-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.package-option{color:#efc766;border-color:#a68135;border-radius:10px;padding:18px 10px;font-size:15px;background:linear-gradient(#07502e,#031c12)}@media(max-width:360px){.package-options{grid-template-columns:1fr}}
