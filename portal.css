@@ -5,3 +5,5 @@
 .pick-preview:before{opacity:.16;background-size:132px 34px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='132' height='34'%3E%3Ctext x='3' y='22' fill='%23efc766' font-family='Arial' font-size='11' font-weight='700' transform='rotate(-14 66 17)'%3EISB EL TRIDENTE%3C/text%3E%3C/svg%3E")}
 .pick-preview:before{background-image:var(--marca-pick);background-size:250px 40px}
 .pick-preview:before{opacity:.23;background-size:300px 64px}
+.pick-preview{background:linear-gradient(135deg,#03170e,#020c08)}.pick-preview:before{z-index:0}.pick-preview>*{position:relative;z-index:1}
+.pick-preview:before{inset:-90px;transform:rotate(-10deg);background-size:300px 52px}
