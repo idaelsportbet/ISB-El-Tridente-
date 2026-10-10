@@ -18,6 +18,27 @@ export default async function handler(req, res) {
     const autorizado = adminId ? user.id === adminId :
       typeof user.email === "string" && user.email.toLowerCase() === adminEmail && Boolean(user.email_confirmed_at);
     if (!autorizado) return res.status(403).json({ error: "Esta cuenta no tiene permiso para publicar picks." });
+    if (req.method === "GET" && req.query?.vista === "compras") {
+      const pagina = Number(req.query.pagina || 0);
+      if (!Number.isInteger(pagina) || pagina < 0 || pagina > 10000) return res.status(400).json({error:"Página inválida."});
+      const query = new URLSearchParams({select:"user_id,nombre,correo,paquete,cantidad_pagada_dolar,fecha_compra,vencimiento",order:"fecha_compra.desc",limit:"26",offset:String(pagina*25)});
+      const headers = {apikey:secret,Authorization:`Bearer ${secret}`};
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/compras?${query}`,{headers});
+      if (!response.ok) return res.status(502).json({error:"No se pudieron cargar las compras."});
+      const filas = await response.json();
+      const compras = filas.slice(0,25);
+      const usuarios = new Map();
+      const ids = [...new Set(compras.map(c=>c.user_id).filter(Boolean))];
+      for(let i=0;i<ids.length;i+=5) {
+        await Promise.all(ids.slice(i,i+5).map(async id=>{
+          try {
+            const info = await fetch(`${SUPABASE_URL}/auth/v1/admin/users/${encodeURIComponent(id)}`,{headers,signal:AbortSignal.timeout(4000)});
+            if(info.ok) {const cuenta=await info.json();usuarios.set(id,cuenta.user_metadata?.username || "");}
+          } catch {}
+        }));
+      }
+      return res.status(200).json({compras:compras.map(c=>({...c,usuario:usuarios.get(c.user_id)||null})),pagina,hayMas:filas.length>25});
+    }
     if (req.method === "GET") return res.status(200).json({ autorizado: true });
     const { titulo, descripcion, fecha_pick, imagen_url = "", paquetes } = req.body || {};
     if (typeof titulo !== "string" || !titulo.trim() || titulo.length > 160 ||
