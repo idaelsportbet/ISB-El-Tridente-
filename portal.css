@@ -10,3 +10,4 @@
 .pick-preview{background:linear-gradient(#031009dd,#031009f5),url("hero.jpeg") center/cover}
 .pick-description{font-weight:600;color:#f4f6f4;text-shadow:0 1px 3px #000;line-height:1.8}.pick-preview{background:linear-gradient(#031009a6,#031009bf),url("hero.jpeg") center/cover}
 @media(max-width:600px){.pick-description{font-size:18px;font-weight:700;line-height:1.85}.pick-preview{padding:22px 12px}}
+.pick-preview{background:linear-gradient(#031009bf,#031009d4),url("hero.jpeg") center/cover}.pick-description{font-weight:700;color:#fff;text-shadow:0 1px 4px #000}@media(max-width:600px){.pick-description{font-weight:800}}
