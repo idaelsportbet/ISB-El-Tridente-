@@ -28,7 +28,7 @@ function contenidoPick(pick) {
 }
 function marcaPick(paquete) {
   const texto = escapar(`ISB EL TRIDENTE · ${paquete}`);
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="250" height="40"><text x="4" y="26" fill="#efc766" font-family="Arial" font-size="11" font-weight="700" transform="rotate(-10 125 20)">${texto}</text></svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="64"><text x="24" y="38" fill="#efc766" font-family="Arial" font-size="12" font-weight="700" transform="rotate(-8 150 32)">${texto}</text></svg>`;
   return escapar(`url("data:image/svg+xml,${encodeURIComponent(svg)}")`);
 }
 function renderPicks(compras) {
