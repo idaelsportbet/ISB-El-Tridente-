@@ -51,7 +51,7 @@
   </section>
   <form id="publicar" hidden>
     <label for="titulo">Título</label><input id="titulo" required maxlength="160" placeholder="Ej. Selección del día">
-    <label for="descripcion">Pick y análisis</label><textarea id="descripcion" required maxlength="10000" placeholder="Partido, selección, cuota y análisis"></textarea>
+    <label for="descripcion">Pick y análisis</label><div id="emojis" role="group" aria-label="Emojis para el pick" style="display:flex;flex-wrap:wrap;gap:8px;margin:10px 0"></div><textarea id="descripcion" required maxlength="10000" placeholder="Partido, selección, cuota y análisis"></textarea>
     <label for="fecha">Fecha del pick</label><input id="fecha" type="date" required><small>Fecha según el horario Central de EE. UU.</small>
     <label for="imagen">Enlace de imagen (opcional)</label><input id="imagen" type="url" placeholder="https://…">
     <label for="juego">Enlace para ver el juego (opcional)</label><input id="juego" type="url" maxlength="2048" placeholder="https://…"><small>Pega el enlace del partido concreto para abrir ese juego. El botón aparece solo si agregas un enlace.</small>
@@ -146,6 +146,13 @@ document.getElementById("nuevo").addEventListener("click", () => {
   document.getElementById("verPublicado").hidden=true;document.getElementById("pickPublicado").hidden=true;document.getElementById("nuevo").hidden=true;estado.textContent="Listo para publicar otro pick.";
   document.getElementById("titulo").focus();
 });
+const campoPick = document.getElementById("descripcion");
+for (const [emoji,nombre] of [["⚽","Fútbol"],["⚾","Béisbol"],["🏈","Fútbol americano"],["🏒","Hockey NHL"],["🔥","Fuego"],["📍","Ubicación"],["✅","Marca verde"],["🏀","Baloncesto"]]) {
+  const boton = document.createElement("button");boton.type="button";boton.textContent=emoji;boton.setAttribute("aria-label",nombre);boton.title=nombre;boton.style.cssText="width:46px;padding:8px;font-size:24px;background:#092719;border-color:#ad8736";
+  boton.addEventListener("mousedown",evento=>evento.preventDefault());
+  boton.addEventListener("click",()=>{if(campoPick.disabled)return;const inicio=campoPick.selectionStart,fin=campoPick.selectionEnd;if(campoPick.value.length-(fin-inicio)+emoji.length>campoPick.maxLength)return;campoPick.setRangeText(emoji,inicio,fin,"end");campoPick.focus();campoPick.dispatchEvent(new Event("input",{bubbles:true}));});
+  document.getElementById("emojis").append(boton);
+}
 form.addEventListener("submit", async event => {
   event.preventDefault();
   const paquetes = [...form.querySelectorAll('input[name="paquete"]:checked')].map(input=>input.value);
