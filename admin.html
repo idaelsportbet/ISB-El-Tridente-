@@ -64,13 +64,14 @@
       <label><input type="checkbox" name="paquete" value="Económica"> Económica</label>
     </fieldset>
     <button type="submit">PUBLICAR PICK</button>
-    <button id="nuevo" type="button" hidden style="margin-top:12px">PUBLICAR OTRO PICK</button>
+    <button id="verPublicado" type="button" hidden style="margin-top:12px">VER PICK PUBLICADO</button><section id="pickPublicado" hidden style="margin-top:20px"></section><button id="nuevo" type="button" hidden style="margin-top:12px">PUBLICAR OTRO PICK</button>
     <p><small>Se mostrará en la web a quienes tengan acceso activo. No envía mensajes por WhatsApp ni correo.</small></p>
   </form>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const client = supabase.createClient("https://nfvkmxnprchvkufwvhpr.supabase.co", "sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1");
+const escapar = valor => {const nodo=document.createElement("span");nodo.textContent=String(valor ?? "");return nodo.innerHTML.replace(/"/g,"&quot;");};
 const form = document.getElementById("publicar"), estado = document.getElementById("estado");
 const partes = new Intl.DateTimeFormat("en-US", {timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
 const fecha = Object.fromEntries(partes.map(p => [p.type,p.value]));
@@ -142,7 +143,7 @@ document.getElementById("nuevo").addEventListener("click", () => {
   document.getElementById("imagen").value="";
   document.getElementById("juego").value="";
   const button=form.querySelector('button[type="submit"]');button.disabled=false;button.textContent="PUBLICAR PICK";
-  document.getElementById("nuevo").hidden=true;estado.textContent="Listo para publicar otro pick.";
+  document.getElementById("verPublicado").hidden=true;document.getElementById("pickPublicado").hidden=true;document.getElementById("nuevo").hidden=true;estado.textContent="Listo para publicar otro pick.";
   document.getElementById("titulo").focus();
 });
 form.addEventListener("submit", async event => {
@@ -155,6 +156,10 @@ form.addEventListener("submit", async event => {
     estado.textContent=`Pick publicado para ${data.publicados} paquete(s).`;button.textContent="PUBLICADO";
     form.querySelectorAll("input,textarea").forEach(input=>input.disabled=true);
     document.getElementById("nuevo").hidden=false;
+    const vista = document.getElementById("pickPublicado"), ver = document.getElementById("verPublicado");
+    vista.innerHTML = (data.picks || []).map(p => `<article style="padding:22px;margin:14px 0;border:1px solid #ad8736;border-radius:12px;background:linear-gradient(#031009bf,#031009d4),url(hero.jpeg) center/cover"><h3 style="color:#efc766">${escapar(p.paquete)}</h3><p>${escapar(p.fecha_pick)}</p><h2 style="color:#efc766">${escapar(p.titulo)}</h2>${p.imagen_url ? `<img src="${escapar(p.imagen_url)}" alt="Imagen del pick" style="max-width:100%">` : ""}<p style="white-space:pre-wrap;font-size:18px;font-weight:700;color:white">${escapar(p.descripcion)}</p></article>`).join("");
+    ver.hidden = !data.picks?.length;
+    ver.onclick = () => { vista.hidden = false; vista.scrollIntoView({behavior:"smooth",block:"start"}); };
   } catch(error) {estado.textContent=error.message;button.disabled=false;}
 });
 </script></body></html>
