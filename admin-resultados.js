@@ -19,7 +19,7 @@
  for(const c of ['DÍA',...ResultadosCalendario.categorias]){const th=document.createElement('th');th.scope='col';th.textContent=c;tr.append(th);}head.append(tr);tabla.append(head);const tbody=document.createElement('tbody');filas=[];
  for(const d of p.filas){const row=document.createElement('tr'),th=document.createElement('th');th.scope='row';th.textContent=(tipo==='mensuales'?d.numero+' · ':'')+d.dia;row.append(th);
  for(const c of ResultadosCalendario.categorias){const td=document.createElement('td'),texto=document.createElement('textarea'),estado=document.createElement('select');texto.maxLength=1000;texto.placeholder='Pick o comentario (opcional)';texto.setAttribute('aria-label',d.fecha+' '+c+' pick');estado.setAttribute('aria-label',d.fecha+' '+c+' resultado');
- for(const [v,t] of [['','Sin publicar'],['ganado','✓ GANADO'],['perdido','✕ PERDIDO'],['pendiente','• PENDIENTE'],['sin_pick','— SIN PICK']]){const option=document.createElement('option');option.value=v;option.textContent=t;estado.append(option);}
+ for(const [v,t] of [['','Sin publicar'],['ganado','✓ GANADO'],['perdido','✕ PERDIDO'],['sin_pick','— NO SE ENVIÓ']]){const option=document.createElement('option');option.value=v;option.textContent=t;estado.append(option);}
  const f={fecha:d.fecha,categoria:c,texto,estado,cambio:false};texto.oninput=()=>f.cambio=true;estado.onchange=()=>f.cambio=true;filas.push(f);td.append(texto,estado);row.append(td);}tbody.append(row);}
  tabla.append(tbody);const scroll=document.createElement('div');scroll.className='resultados-tabla-scroll';scroll.append(tabla);document.getElementById('tablaEditorResultados').replaceChildren(scroll);aviso.textContent='Cargando resultados guardados…';
  try{const data=await api('GET',undefined,'?desde='+p.inicio+'&hasta='+p.fin);if(version!==secuencia)return;const mapa=new Map(data.resultados.map(f=>[f.fecha+'|'+f.categoria,f]));for(const f of filas){const v=mapa.get(f.fecha+'|'+f.categoria);if(v){f.texto.value=v.texto;f.estado.value=v.estado;}}listo=true;guardar.disabled=false;aviso.textContent='Edita una casilla y publica. Semanal y mensual comparten los mismos resultados por fecha.';}
@@ -41,3 +41,4 @@
  catch(e){aviso.textContent=e.message;}finally{ocupado=false;guardar.disabled=false;}
  };
 })();
+

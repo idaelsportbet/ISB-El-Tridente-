@@ -16,7 +16,7 @@ function mostrarResultados(){
 async function cargarResultados(p,solicitud){
  const aviso=document.querySelector('#resultadosPanel .message');aviso.textContent='Cargando resultados…';
  try{const r=await fetch('/api/resultados?desde='+p.inicio+'&hasta='+p.fin,{headers:{Authorization:'Bearer '+resultadosSesion},signal:AbortSignal.timeout(10000)});const data=await r.json();if(solicitud!==resultadosSolicitud)return;if(!r.ok)throw new Error(data.error);
- const mapa=new Map(data.resultados.map(x=>[x.fecha+'|'+x.categoria,x]));const etiquetas={ganado:'✓ GANADO',perdido:'✕ PERDIDO',sin_pick:'— SIN PICK',pendiente:'• PENDIENTE'};
+ const mapa=new Map(data.resultados.map(x=>[x.fecha+'|'+x.categoria,x]));const etiquetas={ganado:'✓ GANADO',perdido:'✕ PERDIDO',sin_pick:'— NO SE ENVIÓ',pendiente:'• PENDIENTE'};
  document.querySelectorAll('[data-clave]').forEach(td=>{const v=mapa.get(td.dataset.clave);if(!v||!etiquetas[v.estado])return;td.replaceChildren();if(v.texto){const texto=document.createElement('div');texto.className='resultado-texto';texto.textContent=v.texto;td.append(texto);}const e=document.createElement('span');e.className='resultado-estado resultado-'+v.estado;e.textContent=etiquetas[v.estado];td.append(e);});aviso.textContent=data.resultados.length?'':'Todavía no hay resultados publicados para este periodo.';
  }catch(e){if(solicitud===resultadosSolicitud)aviso.textContent=e.message||'No se pudieron cargar los resultados.';}
 }
@@ -27,3 +27,4 @@ async function comprobarResultados(){
 }
 document.querySelectorAll('[data-periodo]').forEach(b=>b.addEventListener('click',()=>{tipoResultados=b.dataset.periodo;document.querySelectorAll('[data-periodo]').forEach(o=>o.setAttribute('aria-pressed',String(o===b)));mostrarResultados();}));
 comprobarResultados();
+
