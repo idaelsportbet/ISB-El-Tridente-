@@ -512,7 +512,7 @@ if (porPaquete.size > 1) proteccionFondo.style.backgroundImage = "none";
     </div>
 
     <div class="fila">
-      <div class="label">CANTIDAD PAGADA</div>
+      <div class="label">TOTAL PAGADO</div>
       <div class="valor">
         $${Number(
           compra.cantidad_pagada_dolar || 0
@@ -542,19 +542,12 @@ if (porPaquete.size > 1) proteccionFondo.style.backgroundImage = "none";
     ${activo ? "ACTIVO" : "VENCIDO"}
   </span>
 </div>
-  ${activo ? `
   <div class="fila">
     <div class="label">TU PAQUETE</div>
     <a class="boton" href="pick.html?paquete=${encodeURIComponent(compra.paquete)}">
-      🔱 VER PICK DE HOY
+      VER MIS PICKS
     </a>
   </div>
-` : `
-  <div class="fila">
-    <div class="label">RENUEVA TU ACCESO</div>
-    <a class="boton" href="paquetes.html">VER PAQUETES</a>
-  </div>
-`}
   <hr style="border:0;border-top:1px solid #b98a27;margin:28px 0">
   `;
   }
