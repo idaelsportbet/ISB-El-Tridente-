@@ -40,6 +40,22 @@ export default async function handler(req, res) {
       return res.status(200).json({compras:compras.map(c=>({...c,usuario:usuarios.get(c.user_id)||null})),pagina,hayMas:filas.length>25});
     }
     if (req.method === "GET") return res.status(200).json({ autorizado: true });
+    if (req.body?.accion === "activar_prueba") {
+      // Only the authenticated owner can grant a temporary, free access to their own account.
+      const headers = { apikey: secret, Authorization: `Bearer ${secret}` };
+      const consulta = new URLSearchParams({ select: "paquete,vencimiento", user_id: `eq.${user.id}`, paquete: "eq.Premium Diario", vencimiento: `gt.${new Date().toISOString()}`, limit: "1" });
+      const anterior = await fetch(`${SUPABASE_URL}/rest/v1/compras?${consulta}`, { headers });
+      if (!anterior.ok) return res.status(502).json({ error: "No se pudo comprobar tu acceso." });
+      const filas = await anterior.json();
+      if (filas.length) return res.status(200).json({ paquete: "Premium Diario", existente: true });
+      const ahora = new Date();
+      const resultado = await fetch(`${SUPABASE_URL}/rest/v1/compras`, {
+        method: "POST", headers: { ...headers, "Content-Type": "application/json", Prefer: "return=minimal" },
+        body: JSON.stringify({ user_id: user.id, nombre: `${user.user_metadata?.full_name || "Administrador"} (PRUEBA SIN COBRO)`, correo: user.email, paquete: "Premium Diario", cantidad_pagada_dolar: 0, fecha_compra: ahora.toISOString(), vencimiento: new Date(ahora.getTime() + 60 * 60 * 1000).toISOString() })
+      });
+      if (!resultado.ok) return res.status(502).json({ error: "No se pudo activar el paquete de prueba." });
+      return res.status(201).json({ paquete: "Premium Diario", prueba: true, duracion: "1 hora" });
+    }
     const { titulo, descripcion, fecha_pick, imagen_url = "", juego_url = "", paquetes } = req.body || {};
     if (typeof titulo !== "string" || !titulo.trim() || titulo.length > 160 ||
         typeof descripcion !== "string" || !descripcion.trim() || descripcion.length > 10000 ||
