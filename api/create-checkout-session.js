@@ -39,7 +39,8 @@ export default async function handler(req, res) {
 
     const params = new URLSearchParams();
 
-    params.append("mode", paquete === "Económica" ? "subscription" : "payment");
+    // All configured prices are one-time purchases. Monthly access is granted by the webhook.
+    params.append("mode", "payment");
     params.append("line_items[0][price]", priceId);
     params.append("line_items[0][quantity]", "1");
 
