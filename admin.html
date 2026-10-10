@@ -40,7 +40,7 @@
   <p id="estado" role="status" aria-live="polite">Comprobando tu acceso…</p>
   <nav id="secciones" class="tabs" aria-label="Secciones del administrador" hidden>
     <button type="button" id="tabPick" aria-pressed="true">PUBLICAR PICK</button>
-    <button type="button" id="tabClientes" aria-pressed="false">CLIENTES Y COMPRAS</button>
+    <button type="button" id="tabPublicados" aria-pressed="false">PICKS PUBLICADOS</button><button type="button" id="tabClientes" aria-pressed="false">CLIENTES Y COMPRAS</button>
   </nav>
   <section id="clientes" hidden>
     <h2>Clientes y compras</h2>
@@ -146,6 +146,12 @@ document.getElementById("nuevo").addEventListener("click", () => {
   document.getElementById("verPublicado").hidden=true;document.getElementById("pickPublicado").hidden=true;document.getElementById("nuevo").hidden=true;estado.textContent="Listo para publicar otro pick.";
   document.getElementById("titulo").focus();
 });
+const historial=document.createElement("section");historial.hidden=true;document.querySelector("main").append(historial);
+document.getElementById("tabPublicados").addEventListener("click",async()=>{
+  form.hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=false;historial.textContent="Cargando picks publicados…";
+  try{const datos=await request("GET",undefined,"?vista=picks");historial.innerHTML=`<h2 style="color:#efc766">PICKS PUBLICADOS</h2>${datos.picks.length?datos.picks.map(p=>`<article style="padding:20px;border:1px solid #ad8736;border-radius:12px;margin:14px 0;background:linear-gradient(#031009bf,#031009d4),url(hero.jpeg) center/cover"><h3 style="color:#efc766">${escapar(p.paquete)}</h3><p>${escapar(p.fecha_pick)}</p><h2>${escapar(p.titulo)}</h2>${p.imagen_url?`<img src="${escapar(p.imagen_url)}" alt="Imagen del pick" style="max-width:100%">`:""}<p style="white-space:pre-wrap;font-size:18px;font-weight:700">${escapar(p.descripcion)}</p></article>`).join(""):"<p>Todavía no hay picks publicados.</p>"}`;}catch(error){historial.textContent=error.message;}
+});
+for(const id of ["tabPick","tabClientes"])document.getElementById(id).addEventListener("click",()=>historial.hidden=true);
 const campoPick = document.getElementById("descripcion");
 for (const [emoji,nombre] of [["⚽","Fútbol"],["⚾","Béisbol"],["🏈","Fútbol americano"],["🏒","Hockey NHL"],["🔥","Fuego"],["📍","Ubicación"],["✅","Marca verde"],["🏀","Baloncesto"]]) {
   const boton = document.createElement("button");boton.type="button";boton.textContent=emoji;boton.setAttribute("aria-label",nombre);boton.title=nombre;boton.style.cssText="width:46px;padding:8px;font-size:24px;background:#092719;border-color:#ad8736";
