@@ -11,3 +11,4 @@ h1,h2,.page-title,.brand b,.brand:not(:has(b)),.footer-brand{background-image:va
 
 h1,h2,.page-title,.brand b,.brand:not(:has(b)),.footer-brand,.hero h1 span,.hero-isb,.hero-el,.price,.precio,.compra-precio,.footer-logo{text-shadow:none!important;filter:drop-shadow(0 2px 2px #0008)}body{background:radial-gradient(ellipse at 12% 35%,#0c9b5b30,transparent 65%),radial-gradient(ellipse at 90% 75%,#0c9b5b25,transparent 65%),#052b1d!important}
 
+body{background:radial-gradient(ellipse at 8% 45%,#07513224,transparent 58%),radial-gradient(ellipse at 90% 85%,#0751321c,transparent 60%),#030706!important;background-attachment:fixed!important}.topbar,.footer{background:#030706f5!important}.hero{background-color:#030706!important}
