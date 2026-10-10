@@ -8,3 +8,4 @@
 .pick-preview{background:linear-gradient(135deg,#03170e,#020c08)}.pick-preview:before{z-index:0}.pick-preview>*{position:relative;z-index:1}
 .pick-preview:before{inset:-90px;transform:rotate(-10deg);background-size:300px 52px}
 .pick-preview{background:linear-gradient(#031009dd,#031009f5),url("hero.jpeg") center/cover}
+.pick-description{font-weight:600;color:#f4f6f4;text-shadow:0 1px 3px #000;line-height:1.8}.pick-preview{background:linear-gradient(#031009a6,#031009bf),url("hero.jpeg") center/cover}
