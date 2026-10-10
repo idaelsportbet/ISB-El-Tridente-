@@ -18,11 +18,19 @@ function sinPaquetes() { return `<div class="empty message">No tienes paquetes a
 function renderCuenta(user, compras) {
   contenido.innerHTML = `<section class="panel" aria-labelledby="personalTitulo"><h2 id="personalTitulo" class="section-title">MI INFORMACIÓN</h2><div class="personal">${fila("NOMBRE",user.user_metadata?.full_name || compras[0]?.nombre || "—")}${fila("CORREO",user.email || "—")}</div></section><section class="panel" aria-labelledby="paquetesTitulo"><h2 id="paquetesTitulo" class="section-title">MIS PAQUETES</h2>${compras.length ? compras.map(compra => `<article class="package"><div class="package-head"><h3 class="package-title">${escapar(compra.paquete)}</h3><span class="status">ACTIVO</span></div>${fila("TOTAL PAGADO",`$${Number(compra.cantidad_pagada_dolar || 0).toFixed(2)} USD`)}${fila("FECHA DE COMPRA",fechaBonita(compra.fecha_compra))}${fila("VENCIMIENTO",fechaBonita(compra.vencimiento))}</article>`).join("") + `<a class="button" href="mis-picks.html">VER MIS PICKS →</a>` : sinPaquetes()}</section>`;
 }
+function contenidoPick(pick) {
+  let descripcion = pick.descripcion || "", juego = "", imagen = "";
+  const enlace = descripcion.match(/\n\nVer juego: (https:\/\/[^\s]+)\s*$/);
+  const urlSegura = valor => { try { const url = new URL(valor); return url.protocol === "https:" && !url.username && !url.password ? url.href : ""; } catch { return ""; } };
+  if (enlace && (juego = urlSegura(enlace[1]))) descripcion = descripcion.slice(0,enlace.index);
+  imagen = urlSegura(pick.imagen_url);
+  return `<div class="pick-date">${escapar(pick.fecha_pick)}</div><h3 class="pick-title">${escapar(pick.titulo || "Pick de hoy")}</h3>${imagen ? `<img class="pick-image" src="${escapar(imagen)}" alt="Imagen del pick" loading="lazy">` : ""}<p class="pick-description" style="white-space:pre-wrap">${escapar(descripcion)}</p>${juego ? `<a class="button" href="${escapar(juego)}" target="_blank" rel="noopener noreferrer">VER JUEGO</a>` : ""}`;
+}
 function renderPicks(compras) {
   if (!compras.length) { contenido.innerHTML = `<section class="panel">${sinPaquetes()}</section>`; return; }
   if (filtroActual !== "Todos" && !compras.some(c=>c.paquete === filtroActual)) filtroActual = "Todos";
   const filtros = ["Todos",...compras.map(c=>c.paquete)];
-  contenido.innerHTML = `<div class="filters" aria-label="Filtrar por paquete">${filtros.map((f,i)=>`<button class="filter" type="button" data-filtro="${i}" aria-pressed="${f===filtroActual}">${escapar(f)}</button>`).join("")}</div>${compras.filter(c=>filtroActual === "Todos" || c.paquete===filtroActual).map(compra=>`<article class="panel"><div class="package-head"><h2 class="package-title">${escapar(compra.paquete)}</h2><span class="status">ACTIVO</span></div><div class="pick-preview">${compra.errorPick ? `<p class="message">No se pudo cargar el pick. Actualiza la página para intentarlo de nuevo.</p>` : compra.pick ? `<div class="pick-date">${escapar(compra.pick.fecha_pick)}</div><h3 class="pick-title">${escapar(compra.pick.titulo || "Pick de hoy")}</h3><p class="pick-description">${escapar((compra.pick.descripcion || "").replace(/\n\nVer juego: https:\/\/[^\s]+\s*$/,"").slice(0,180))}</p><a class="button" href="pick.html?paquete=${encodeURIComponent(compra.paquete)}">VER PICK →</a>` : `<p class="message">Todavía no se ha publicado el pick de hoy para este paquete.</p>`}</div></article>`).join("")}`;
+  contenido.innerHTML = `<div class="filters" aria-label="Filtrar por paquete">${filtros.map((f,i)=>`<button class="filter" type="button" data-filtro="${i}" aria-pressed="${f===filtroActual}">${escapar(f)}</button>`).join("")}</div>${compras.filter(c=>filtroActual === "Todos" || c.paquete===filtroActual).map(compra=>`<article class="panel"><div class="package-head"><h2 class="package-title">${escapar(compra.paquete)}</h2><span class="status">ACTIVO</span></div><div class="pick-preview">${compra.errorPick ? `<p class="message">No se pudo cargar el pick. Actualiza la página para intentarlo de nuevo.</p>` : compra.pick ? contenidoPick(compra.pick) : `<p class="message">Todavía no se ha publicado el pick de hoy para este paquete.</p>`}</div></article>`).join("")}`;
   document.querySelectorAll("[data-filtro]").forEach(boton=>boton.addEventListener("click",()=>{filtroActual=filtros[Number(boton.dataset.filtro)];renderPicks(comprasVisibles);}));
 }
 async function cargarPortal() {
@@ -39,7 +47,7 @@ async function cargarPortal() {
       const partes = Object.fromEntries(new Intl.DateTimeFormat("en-US",{timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date()).map(p=>[p.type,p.value]));
       const hoy = `${partes.year}-${partes.month}-${partes.day}`;
       await Promise.all(comprasVisibles.map(async compra=>{
-        const {data:picks,error} = await supabaseClient.from("picks").select("titulo,descripcion,fecha_pick").eq("paquete",compra.paquete).eq("fecha_pick",hoy).eq("activo",true).order("created_at",{ascending:false}).limit(1);
+        const {data:picks,error} = await supabaseClient.from("picks").select("titulo,descripcion,fecha_pick,imagen_url").eq("paquete",compra.paquete).eq("fecha_pick",hoy).eq("activo",true).order("created_at",{ascending:false}).limit(1);
         compra.pick = picks?.[0]; compra.errorPick = Boolean(error);
       }));
       comprasVisibles = comprasVisibles.filter(c=>new Date(c.vencimiento)>new Date());
