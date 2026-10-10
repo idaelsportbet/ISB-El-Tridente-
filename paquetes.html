@@ -1758,7 +1758,7 @@ function cerrarContacto(){
 
 document
   .getElementById("contactModal")
-  .addEventListener("click", function(event){
+  ?.addEventListener("click", function(event){
 
     if(event.target === this){
       cerrarContacto();
@@ -3396,7 +3396,7 @@ const respuesta = await fetch(endpoint, {
 
     console.error(error);
 
-    alert("No se pudo abrir el pago. Inténtalo nuevamente.");
+    alert("No se pudo abrir el pago. " + (error.message || "Inténtalo nuevamente."));
 
     boton.disabled = false;
     boton.textContent = textoOriginal;
