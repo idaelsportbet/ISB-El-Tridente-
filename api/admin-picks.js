@@ -75,7 +75,12 @@ export default async function handler(req, res) {
         if (destinatario.email?.toLowerCase() !== correo || !destinatario.id) return res.status(400).json({ error: "El correo de compra no coincide con la cuenta. Revisa el correo con el que inicias sesión." });
       }
       const accesoFijo = req.body.permanente === true && ["floresidael2000@gmail.com","machadofelixb@gmail.com"].includes(destinatario.email?.toLowerCase());
-      const paquetesPrueba = req.body.todos === true ? PAQUETES : ["Premium Diario"];
+      const paquetesPrueba = req.body.todos === true ? (destinatario.email?.toLowerCase() === "machadofelixb@gmail.com" ? ["Premium Diario","Exclusiva Diaria","Pack Mensual","Económica"] : PAQUETES) : ["Premium Diario"];
+      if(accesoFijo && destinatario.email?.toLowerCase() === "machadofelixb@gmail.com") {
+        const filtro = new URLSearchParams({user_id:`eq.${destinatario.id}`,paquete:"in.(Premium Semanal,Exclusiva Semanal)",nombre:"like.*(ACCESO DE CORTESÍA)",cantidad_pagada_dolar:"eq.0"});
+        const ajuste = await fetch(`${SUPABASE_URL}/rest/v1/compras?${filtro}`,{method:"PATCH",headers:{...headers,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({vencimiento:new Date().toISOString()})});
+        if(!ajuste.ok)return res.status(502).json({error:"No se pudo ajustar el acceso semanal."});
+      }
       const consulta = new URLSearchParams({ select: "paquete,vencimiento", user_id: `eq.${destinatario.id}`, vencimiento: `gt.${new Date().toISOString()}`, limit: "100" });
       const anterior = await fetch(`${SUPABASE_URL}/rest/v1/compras?${consulta}`, { headers });
       if (!anterior.ok) return res.status(502).json({ error: "No se pudo comprobar tu acceso." });
