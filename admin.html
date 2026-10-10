@@ -147,10 +147,23 @@ document.getElementById("nuevo").addEventListener("click", () => {
   document.getElementById("titulo").focus();
 });
 const historial=document.createElement("section");historial.hidden=true;document.querySelector("main").append(historial);
-document.getElementById("tabPublicados").addEventListener("click",async()=>{
-  form.hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=false;historial.textContent="Cargando picks publicados…";
-  try{const datos=await request("GET",undefined,"?vista=picks");historial.innerHTML=`<h2 style="color:#efc766">PICKS PUBLICADOS</h2>${datos.picks.length?datos.picks.map(p=>`<article style="padding:20px;border:1px solid #ad8736;border-radius:12px;margin:14px 0;background:linear-gradient(#031009bf,#031009d4),url(hero.jpeg) center/cover"><h3 style="color:#efc766">${escapar(p.paquete)}</h3><p>${escapar(p.fecha_pick)}</p><h2>${escapar(p.titulo)}</h2>${p.imagen_url?`<img src="${escapar(p.imagen_url)}" alt="Imagen del pick" style="max-width:100%">`:""}<p style="white-space:pre-wrap;font-size:18px;font-weight:700">${escapar(p.descripcion)}</p></article>`).join(""):"<p>Todavía no hay picks publicados.</p>"}`;}catch(error){historial.textContent=error.message;}
-});
+const paquetesPanel=["Premium Diario","Premium Semanal","Exclusiva Diaria","Exclusiva Semanal","Pack Mensual","Económica"];
+function tarjetaPublicado(p){return `<article style="padding:22px;border:1px solid #ad8736;border-radius:12px;margin:14px 0;background:linear-gradient(#031009bf,#031009d4),url(hero.jpeg) center/cover"><h3 style="color:#efc766">${escapar(p.paquete)}</h3><p>${escapar(p.fecha_pick)}</p><h2>${escapar(p.titulo)}</h2>${p.imagen_url?`<img src="${escapar(p.imagen_url)}" alt="Imagen del pick" style="max-width:100%">`:""}<p style="white-space:pre-wrap;font-size:18px;font-weight:700">${escapar(p.descripcion)}</p></article>`;}
+async function abrirPublicados(){
+  form.hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=false;
+  historial.innerHTML=`<h2 style="color:#efc766">PICKS PUBLICADOS</h2><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">${paquetesPanel.map((p,i)=>`<button type="button" data-publicado="${i}" style="background:#092719;color:#efc766;border-color:#ad8736;font-size:14px;padding:16px 8px">${escapar(p)}</button>`).join("")}</div><button id="abrirHistorial" type="button" style="margin-top:18px">VER HISTORIAL</button><section id="detallePublicados" style="margin-top:20px"></section>`;
+  const detalle=document.getElementById("detallePublicados");
+  historial.querySelectorAll("[data-publicado]").forEach(b=>b.addEventListener("click",async()=>{
+    detalle.textContent="Cargando pick…";
+    try{const paquete=paquetesPanel[Number(b.dataset.publicado)];const datos=await request("GET",undefined,`?vista=picks&paquete=${encodeURIComponent(paquete)}`);detalle.innerHTML=datos.picks[0]?tarjetaPublicado(datos.picks[0]):"<p>Todavía no hay un pick publicado para este paquete.</p>";}catch(error){detalle.textContent=error.message;}
+  }));
+  document.getElementById("abrirHistorial").onclick=()=>abrirHistorial(0);
+}
+async function abrirHistorial(pagina){
+  historial.innerHTML="Cargando historial…";
+  try{const datos=await request("GET",undefined,`?vista=picks&historial=1&pagina=${pagina}`);historial.innerHTML=`<h2 style="color:#efc766">HISTORIAL DE PICKS</h2><p>De los más antiguos a los más nuevos.</p><button id="volverPublicados" type="button">← VOLVER A PAQUETES</button>${datos.picks.length?datos.picks.map(tarjetaPublicado).join(""):"<p>Todavía no hay picks publicados.</p>"}<div style="display:flex;gap:12px;margin-top:18px"><button id="histAnterior" type="button" ${pagina===0?"disabled":""}>ANTERIOR</button><button id="histSiguiente" type="button" ${!datos.hayMas?"disabled":""}>SIGUIENTE</button></div>`;document.getElementById("volverPublicados").onclick=abrirPublicados;document.getElementById("histAnterior").onclick=()=>abrirHistorial(pagina-1);document.getElementById("histSiguiente").onclick=()=>abrirHistorial(pagina+1);}catch(error){historial.textContent=error.message;}
+}
+document.getElementById("tabPublicados").addEventListener("click",abrirPublicados);
 for(const id of ["tabPick","tabClientes"])document.getElementById(id).addEventListener("click",()=>historial.hidden=true);
 const campoPick = document.getElementById("descripcion");
 for (const [emoji,nombre] of [["⚽","Fútbol"],["⚾","Béisbol"],["🏈","Fútbol americano"],["🏒","Hockey NHL"],["🔥","Fuego"],["📍","Ubicación"],["✅","Marca verde"],["🏀","Baloncesto"]]) {
