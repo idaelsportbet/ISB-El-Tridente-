@@ -1055,6 +1055,9 @@ a.buy-btn{
 }
 
 .social-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
   padding:8px 10px;
 
   border:1px solid #171717;
@@ -1065,6 +1068,18 @@ a.buy-btn{
 
   color:#ccc;
 }
+
+.social-logo{
+  display:inline-flex;
+  flex:0 0 18px;
+  width:18px;
+  height:18px;
+  align-items:center;
+  justify-content:center;
+}
+
+.social-logo svg{display:block;width:18px;height:18px}
+.whatsapp-logo{color:#25d366}
 
 .responsible{
   max-width:900px;
@@ -1563,8 +1578,9 @@ a.buy-btn{
       class="contact-option"
       href="https://wa.me/12254329795"
       target="_blank"
+      rel="noopener noreferrer"
     >
-      <span>💬</span>
+      <span class="social-logo whatsapp-logo" aria-hidden="true"><svg viewBox="0 0 32 32"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3Zm0 23.5a10.5 10.5 0 0 1-5.3-1.4l-.4-.2-3.9 1 1-3.8-.3-.4A10.5 10.5 0 1 1 16 26.5Zm5.8-7.9c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.3.2-.6.1a8.6 8.6 0 0 1-4.3-3.8c-.3-.5.3-.5.9-1.7.1-.2.1-.4 0-.6s-.7-1.7-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6 2.5 3.8 6 5.3c.8.4 1.5.6 2 .7.8.3 1.6.2 2.2.1.7-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5s-.4-.2-.7-.4Z"/></svg></span>
       <div>
         <strong>WhatsApp</strong>
         <small>+1 (225) 432-9795</small>
@@ -1576,11 +1592,12 @@ a.buy-btn{
       class="contact-option"
       href="https://www.instagram.com/idael_sportbet_oficial/"
       target="_blank"
+      rel="noopener noreferrer"
     >
-      <span>◎</span>
+      <span class="social-logo instagram-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><defs><linearGradient id="ig-modal-gradient" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#ffdc80"/><stop offset=".35" stop-color="#fcaf45"/><stop offset=".65" stop-color="#f77737"/><stop offset=".82" stop-color="#e1306c"/><stop offset="1" stop-color="#833ab4"/></linearGradient></defs><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="url(#ig-modal-gradient)" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="url(#ig-modal-gradient)" stroke-width="2"/><circle cx="17.5" cy="6.7" r="1.2" fill="#e1306c"/></svg></span>
       <div>
         <strong>Instagram</strong>
-        <small>@Idael_sportbet_oficial <span class="ig-verified">✔</span>
+        <small>@idael_sportbet_oficial <span class="account-official">CUENTA OFICIAL</span></small>
       </div>
       <b>›</b>
     </a>
@@ -1714,6 +1731,11 @@ a.buy-btn{
   text-align:center;
 }
 
+.contact-option > .social-logo{display:flex;align-items:center;justify-content:center;width:26px;height:26px;margin:auto}
+.contact-option > .social-logo svg{display:block;width:24px;height:24px}
+.contact-option > .whatsapp-logo{color:#25d366}
+.account-official{display:inline-flex;align-items:center;padding:2px 5px;border:1px solid #d4af3770;border-radius:999px;color:#e4c469;font-size:6px;font-weight:800;letter-spacing:.35px;white-space:nowrap}
+
 .contact-option strong{
   display:block;
 
@@ -1775,8 +1797,6 @@ document
   });
 
 </script>
-  Idael_sportbet_oficial <span class="ig-verified">✔</span>
-</style>
 <link rel="stylesheet" href="tema-isb.css?v=20261010-paquetes-fondo-oscuro"></head>
 
 
@@ -3051,13 +3071,17 @@ MÁS QUE PICKS, UNA FAMILIA
 <a
   class="social-item"
   href="https://www.instagram.com/idael_sportbet_oficial/"
+  target="_blank"
+  rel="noopener noreferrer"
 >
-📸 Idael_sportbet_oficial
+<span class="social-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><defs><linearGradient id="ig-footer-gradient" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#ffdc80"/><stop offset=".35" stop-color="#fcaf45"/><stop offset=".65" stop-color="#f77737"/><stop offset=".82" stop-color="#e1306c"/><stop offset="1" stop-color="#833ab4"/></linearGradient></defs><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="url(#ig-footer-gradient)" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="url(#ig-footer-gradient)" stroke-width="2"/><circle cx="17.5" cy="6.7" r="1.2" fill="#e1306c"/></svg></span>
+<span>Idael_sportbet_oficial</span><span class="account-official">CUENTA OFICIAL</span>
 </a>
 
 
-<div class="social-item">
- Idael_SportBet_Oficial
+<div class="social-item" aria-label="TikTok: Idael SportBet Oficial">
+<span class="social-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="#25f4ee" d="M12.6 3h3c.2 1.8 1.3 3.2 2.8 4.1.8.5 1.8.8 2.7.8v3.2a9.6 9.6 0 0 1-5.4-1.7v6.8a6.5 6.5 0 1 1-6.5-6.5c.4 0 .8 0 1.2.1v3.3a3.4 3.4 0 1 0 2.2 3.1V3Z" transform="translate(-1 0)"/><path fill="#fe2c55" d="M12.6 3h3c.2 1.8 1.3 3.2 2.8 4.1.8.5 1.8.8 2.7.8v3.2a9.6 9.6 0 0 1-5.4-1.7v6.8a6.5 6.5 0 1 1-6.5-6.5c.4 0 .8 0 1.2.1v3.3a3.4 3.4 0 1 0 2.2 3.1V3Z" transform="translate(1 0)"/><path fill="#fff" d="M12.6 3h3c.2 1.8 1.3 3.2 2.8 4.1.8.5 1.8.8 2.7.8v3.2a9.6 9.6 0 0 1-5.4-1.7v6.8a6.5 6.5 0 1 1-6.5-6.5c.4 0 .8 0 1.2.1v3.3a3.4 3.4 0 1 0 2.2 3.1V3Z"/></svg></span>
+<span>Idael_SportBet_Oficial</span>
 </div>
 
 
@@ -3072,8 +3096,11 @@ MÁS QUE PICKS, UNA FAMILIA
 <a
   class="social-item"
   href="https://wa.me/12254329795"
+  target="_blank"
+  rel="noopener noreferrer"
 >
-💬 +1 (225) 432-9795
+<span class="social-logo whatsapp-logo" aria-hidden="true"><svg viewBox="0 0 32 32"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3Zm0 23.5a10.5 10.5 0 0 1-5.3-1.4l-.4-.2-3.9 1 1-3.8-.3-.4A10.5 10.5 0 1 1 16 26.5Zm5.8-7.9c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.3.2-.6.1a8.6 8.6 0 0 1-4.3-3.8c-.3-.5.3-.5.9-1.7.1-.2.1-.4 0-.6s-.7-1.7-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6 2.5 3.8 6 5.3c.8.4 1.5.6 2 .7.8.3 1.6.2 2.2.1.7-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5s-.4-.2-.7-.4Z"/></svg></span>
+<span>+1 (225) 432-9795</span>
 </a>
 
 
