@@ -16,14 +16,15 @@
     *{box-sizing:border-box}[hidden]{display:none!important}
     body{margin:0;background:#030303;min-height:100vh;color:#eee;font:16px system-ui;isolation:isolate}
     body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(3,3,3,.66),rgba(3,3,3,.38),rgba(3,3,3,.66)),url('hero.jpeg') center 35%/cover no-repeat;pointer-events:none}
-    main{max-width:700px;margin:32px auto;padding:24px;border-top:3px solid #22e58b;border-radius:16px;background:rgba(5,18,11,.93);box-shadow:0 0 36px #18c77718;backdrop-filter:blur(6px)}
+    main{max-width:760px;margin:32px auto;padding:24px;border-top:3px solid #22e58b;border-radius:16px;background:rgba(5,18,11,.93);box-shadow:0 0 36px #18c77718;backdrop-filter:blur(6px)}
     a{color:#39ef9d}h1{color:#ffd700;letter-spacing:1px;text-shadow:0 0 18px #ffd70020}
     label{display:block;margin:18px 0 6px;color:#d9f8e7}
-    input:not([type=checkbox]),textarea{width:100%;padding:12px;background:#050907;border:1px solid #287c51;border-radius:8px;color:#fff;font:inherit}
+    input:not([type=checkbox]),textarea,select{width:100%;padding:12px;background:#050907;border:1px solid #287c51;border-radius:8px;color:#fff;font:inherit}
     input::placeholder,textarea::placeholder{color:#a2bfae}
     input:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid #39ef9d;outline-offset:3px}
     input[type=checkbox]{accent-color:#22e58b;width:18px;height:18px;vertical-align:middle}
-    textarea{min-height:180px}
+    textarea{min-height:100px}
+    .editor-section{margin:22px 0;padding:16px;border:1px solid #287c51;border-radius:12px;background:linear-gradient(145deg,#0d2317,#07130d)}.editor-section h2{margin:0 0 8px;color:#d9b653;font-size:18px;letter-spacing:.06em}.editor-section>small{display:block;margin-bottom:12px}.entry-card{position:relative;margin:12px 0;padding:14px;border:1px solid #9c7a2d88;border-radius:10px;background:#050907}.entry-card label{margin-top:0}.entry-grid{display:grid;grid-template-columns:minmax(140px,.7fr) minmax(0,2fr);gap:12px;align-items:end}.entry-card .remove-entry{width:auto;padding:6px 12px;margin-top:10px;background:#23130c;color:#ffd7b0;border-color:#9c5736;font-size:12px}.add-entry{width:auto;padding:10px 16px;background:#092719;color:#f2d278;border-color:#ad8736;font-size:14px}.auto-prefix{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center}.auto-prefix span{font-size:22px}.pick-preview-admin{margin:24px 0;padding:18px;border:1px solid #ad8736;border-radius:12px;background:linear-gradient(#031009b5,#031009d4),url('hero.jpeg') center/cover;text-align:center}.pick-preview-admin h3,.pick-preview-admin .preview-title{font-family:Georgia,serif;color:#efc766}.pick-preview-admin .preview-title{font-size:25px}.pick-preview-admin .preview-match,.pick-preview-admin .pick-match{font-weight:500;color:#e0e8e2}.pick-preview-admin .preview-play,.pick-preview-admin .pick-play{font-weight:800;color:#fff}.pick-preview-admin .preview-odds,.pick-preview-admin .preview-instagram,.pick-preview-admin .pick-odds,.pick-preview-admin .pick-instagram{font-weight:500;color:#efc766}.pick-preview-admin .pick-arrow{color:#29e68b}.pick-preview-admin .pick-analysis-label{color:#efc766;font-size:12px;font-weight:800}.pick-preview-admin .pick-analysis{color:#d5ddd7}
     fieldset{margin:24px 0;border:1px solid #278451;border-radius:8px;background:#0d2317}
     legend{color:#39ef9d;padding:0 8px}fieldset label{margin:12px}
     button{width:100%;padding:16px;background:linear-gradient(135deg,#32ed96,#16b969);color:#032213;border:1px solid #45ffa9;border-radius:8px;font:700 16px system-ui;cursor:pointer;box-shadow:0 5px 22px #18c77725}
@@ -31,7 +32,7 @@
     button[type=submit]{background:linear-gradient(135deg,#075b35,#034526);color:#ffd700}
     button[type=submit]:hover:not(:disabled){background:#08663d}
     #estado{white-space:pre-wrap;line-height:1.6;color:#97efbe}small{color:#b6c0ba}
-    @media(max-width:600px){main{margin:16px 12px;padding:20px}h1{font-size:27px}}
+    @media(max-width:600px){main{margin:16px 12px;padding:20px}h1{font-size:27px}.entry-grid{grid-template-columns:1fr;gap:8px}.editor-section{padding:13px}}
     .tabs{display:flex;gap:12px;margin:20px 0}.tabs button{background:#092719;color:#ffd700;font-size:14px}.tabs button[aria-pressed=true]{border-color:#ffd700}
     #clientes h2{color:#ffd700}.tabla-scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:12px 8px;text-align:left;border-bottom:1px solid #287c51;white-space:nowrap}th{color:#ffd700}.activo{color:#39ef9d}.vencido{color:#ffb68e}.paginas{display:flex;gap:12px;margin-top:18px}.paginas button{font-size:14px}#comprasEstado{line-height:1.5}
   </style>
@@ -53,8 +54,12 @@
     <div class="paginas"><button type="button" id="anteriorCompras" disabled>ANTERIOR</button><button type="button" id="siguienteCompras" disabled>SIGUIENTE</button></div>
   </section>
   <form id="publicar" hidden>
-    <label for="titulo">Título</label><input id="titulo" required maxlength="160" placeholder="Ej. Selección del día">
-    <label for="descripcion">Pick y análisis</label><div id="emojis" role="group" aria-label="Emojis para el pick" style="display:flex;flex-wrap:wrap;gap:8px;margin:10px 0"></div><textarea id="descripcion" required maxlength="10000" placeholder="Partido, selección, cuota y análisis"></textarea>
+    <label for="titulo">Título del pick</label><div class="auto-prefix"><span aria-hidden="true">📍</span><input id="titulo" required maxlength="150" placeholder="Ej. Selección destacada de hoy"></div><small>El pin se agrega automáticamente al publicar.</small>
+    <section class="editor-section" aria-labelledby="partidosTitulo"><h2 id="partidosTitulo">PARTIDOS</h2><small>Elige el deporte y escribe el enfrentamiento completo.</small><div id="partidos"></div><button class="add-entry" id="agregarPartido" type="button">+ AGREGAR PARTIDO</button></section>
+    <section class="editor-section" aria-labelledby="jugadasTitulo"><h2 id="jugadasTitulo">JUGADAS</h2><small>La flecha verde se agrega automáticamente a cada jugada.</small><div id="jugadas"></div><button class="add-entry" id="agregarJugada" type="button">+ AGREGAR JUGADA</button></section>
+    <section class="editor-section"><h2>CUOTA</h2><label for="cuota">Cuota</label><div class="auto-prefix"><span aria-hidden="true">🔥</span><input id="cuota" required maxlength="20" inputmode="decimal" placeholder="+110"></div><small>El fuego se agrega automáticamente.</small></section>
+    <section class="editor-section"><h2>INSTAGRAM</h2><label for="instagram">Tu marca de Instagram</label><input id="instagram" maxlength="60" value="@idael_sportbet_oficial" placeholder="@tu_usuario"><small>Se incluirá automáticamente en el pick publicado.</small></section>
+    <label for="analisis">Análisis (opcional)</label><textarea id="analisis" maxlength="5000" placeholder="Escribe aquí el análisis, si deseas incluirlo"></textarea>
     <label for="fecha">Fecha del pick</label><input id="fecha" type="date" required><small>Fecha según el horario Central de EE. UU.</small>
     <label for="imagen">Enlace de imagen (opcional)</label><input id="imagen" type="url" placeholder="https://…">
     <label for="juego">Enlace para ver el juego (opcional)</label><input id="juego" type="url" maxlength="2048" placeholder="https://…"><small>Pega el enlace del partido concreto para abrir ese juego. El botón aparece solo si agregas un enlace.</small>
@@ -66,16 +71,47 @@
       <label><input type="checkbox" name="paquete" value="Pack Mensual"> Pack Mensual</label>
       <label><input type="checkbox" name="paquete" value="Económica"> Económica</label>
     </fieldset>
+    <section class="pick-preview-admin" id="vistaPreviaAdmin" aria-live="polite"><h3>VISTA PREVIA DEL PICK</h3><div id="contenidoPrevia"></div></section>
     <button type="submit">PUBLICAR PICK</button>
     <button id="verPublicado" type="button" hidden style="margin-top:12px">VER PICK PUBLICADO</button><section id="pickPublicado" hidden style="margin-top:20px"></section><button id="nuevo" type="button" hidden style="margin-top:12px">PUBLICAR OTRO PICK</button>
     <p><small>Se mostrará en la web a quienes tengan acceso activo. Los avisos por correo a clientes con acceso activo requieren conectar el servicio de correo.</small></p>
   </form>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="pick-render.js?v=20261010-pick-semantico"></script>
 <script>
 const client = supabase.createClient("https://nfvkmxnprchvkufwvhpr.supabase.co", "sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1");
 const escapar = valor => {const nodo=document.createElement("span");nodo.textContent=String(valor ?? "");return nodo.innerHTML.replace(/"/g,"&quot;");};
 const form = document.getElementById("publicar"), estado = document.getElementById("estado");
+const deportes=[{nombre:"Fútbol",icono:"⚽"},{nombre:"MLB",icono:"⚾"},{nombre:"NBA",icono:"🏀"},{nombre:"NHL",icono:"🏒"},{nombre:"NFL",icono:"🏈"},{nombre:"UFC",icono:"🥊"}];
+const partidosEl=document.getElementById("partidos"), jugadasEl=document.getElementById("jugadas");
+function renumerar(contenedor,prefijo){[...contenedor.children].forEach((card,i)=>{const label=card.querySelector("label[data-label]");if(label){label.textContent=prefijo+(i+1);card.querySelector("[data-enfrentamiento]")?.setAttribute("aria-label",`Enfrentamiento del partido ${i+1}`)}const input=card.querySelector("[data-texto-jugada]");if(input){input.placeholder=`Escribe la jugada ${i+1}…`;input.setAttribute("aria-label",`Jugada ${i+1}`)}})}
+function agregarPartido(deporte="Fútbol",enfrentamiento=""){
+  const card=document.createElement("div");card.className="entry-card";card.dataset.partido="";
+  const grid=document.createElement("div");grid.className="entry-grid";const col1=document.createElement("div"),col2=document.createElement("div");
+  const ld=document.createElement("label");ld.dataset.label="";const select=document.createElement("select");select.dataset.deporte="";
+  for(const d of deportes){const op=document.createElement("option");op.value=d.nombre;op.textContent=`${d.icono} ${d.nombre}`;op.selected=d.nombre===deporte;select.append(op)}
+  const lj=document.createElement("label");lj.textContent="Enfrentamiento";const input=document.createElement("input");input.type="text";input.required=true;input.maxLength=240;input.dataset.enfrentamiento="";input.setAttribute("aria-label",`Enfrentamiento del partido ${partidosEl.children.length+1}`);input.placeholder="Ej. Real Madrid vs Villarreal";input.value=enfrentamiento;
+  col1.append(ld,select);col2.append(lj,input);grid.append(col1,col2);card.append(grid);
+  if(partidosEl.children.length){const remove=document.createElement("button");remove.type="button";remove.className="remove-entry";remove.textContent="Quitar partido";remove.addEventListener("click",()=>{card.remove();renumerar(partidosEl,"Deporte · Partido ");actualizarPrevia()});card.append(remove)}
+  partidosEl.append(card);input.addEventListener("input",actualizarPrevia);select.addEventListener("change",actualizarPrevia);renumerar(partidosEl,"Deporte · Partido ");actualizarPrevia();
+}
+function agregarJugada(texto=""){
+  const card=document.createElement("div");card.className="entry-card";card.dataset.jugada="";const label=document.createElement("label");label.dataset.label="";
+  const input=document.createElement("input");input.type="text";input.required=true;input.maxLength=500;input.dataset.textoJugada="";input.setAttribute("aria-label",`Jugada ${jugadasEl.children.length+1}`);input.value=texto;card.append(label,input);
+  if(jugadasEl.children.length){const remove=document.createElement("button");remove.type="button";remove.className="remove-entry";remove.textContent="Quitar jugada";remove.addEventListener("click",()=>{card.remove();renumerar(jugadasEl,"Jugada ");actualizarPrevia()});card.append(remove)}
+  jugadasEl.append(card);input.addEventListener("input",actualizarPrevia);renumerar(jugadasEl,"Jugada ");actualizarPrevia();
+}
+function actualizarPrevia(){
+  const destino=document.getElementById("contenidoPrevia");if(!destino)return;destino.replaceChildren();
+  const titulo=document.createElement("h2");titulo.className="preview-title";titulo.textContent=`📍 ${document.getElementById("titulo").value||"Título del pick"}`;destino.append(titulo);
+  for(const c of partidosEl.children){const texto=c.querySelector("[data-enfrentamiento]").value;if(texto){const p=document.createElement("p");p.className="preview-match";p.textContent=`${deportes.find(d=>d.nombre===c.querySelector("[data-deporte]").value)?.icono||"🏟️"} ${texto}`;destino.append(p)}}
+  for(const c of jugadasEl.children){const texto=c.querySelector("[data-texto-jugada]").value;if(texto){const p=document.createElement("p");p.className="preview-play";const arrow=document.createElement("span");arrow.textContent="→";arrow.style.color="#29e68b";p.append(arrow,document.createTextNode(` ${texto}`));destino.append(p)}}
+  const cuota=document.getElementById("cuota").value;if(cuota){const p=document.createElement("p");p.className="preview-odds";p.textContent=`🔥 ${cuota}`;destino.append(p)}
+  const insta=document.getElementById("instagram").value.trim();if(insta){const p=document.createElement("p");p.className="preview-instagram";p.textContent=`📸 ${insta.startsWith("@")?insta:"@"+insta}`;destino.append(p)}
+  const analisis=document.getElementById("analisis").value.trim();if(analisis){const p=document.createElement("p");p.textContent=`Análisis: ${analisis}`;destino.append(p)}
+}
+agregarPartido();agregarJugada();document.getElementById("agregarPartido").addEventListener("click",()=>agregarPartido());document.getElementById("agregarJugada").addEventListener("click",()=>agregarJugada());
+for(const id of ["titulo","cuota","instagram","analisis"])document.getElementById(id).addEventListener("input",actualizarPrevia);
 const partes = new Intl.DateTimeFormat("en-US", {timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
 const fecha = Object.fromEntries(partes.map(p => [p.type,p.value]));
 document.getElementById("fecha").value = `${fecha.year}-${fecha.month}-${fecha.day}`;
@@ -140,9 +176,10 @@ document.getElementById("tabPick").addEventListener("click",()=>{
 document.getElementById("actualizarCompras").addEventListener("click",()=>cargarCompras(paginaCompras));
 anterior.addEventListener("click",()=>cargarCompras(paginaCompras-1));siguiente.addEventListener("click",()=>cargarCompras(paginaCompras+1));
 document.getElementById("nuevo").addEventListener("click", () => {
-  form.querySelectorAll("input,textarea").forEach(input=>input.disabled=false);
+  form.querySelectorAll("input,textarea,select,.add-entry,.remove-entry").forEach(input=>input.disabled=false);
   document.getElementById("titulo").value="";
-  document.getElementById("descripcion").value="";
+  document.getElementById("analisis").value="";document.getElementById("cuota").value="";document.getElementById("instagram").value="@idael_sportbet_oficial";
+  partidosEl.replaceChildren();jugadasEl.replaceChildren();agregarPartido();agregarJugada();
   document.getElementById("imagen").value="";
   document.getElementById("juego").value="";
   const button=form.querySelector('button[type="submit"]');button.disabled=false;button.textContent="PUBLICAR PICK";
@@ -151,7 +188,7 @@ document.getElementById("nuevo").addEventListener("click", () => {
 });
 const historial=document.createElement("section");historial.hidden=true;document.querySelector("main").append(historial);
 const paquetesPanel=["Premium Diario","Premium Semanal","Exclusiva Diaria","Exclusiva Semanal","Pack Mensual","Económica"];
-function tarjetaPublicado(p){return `<article style="padding:22px;border:1px solid #ad8736;border-radius:12px;margin:14px 0;background:linear-gradient(#031009bf,#031009d4),url(hero.jpeg) center/cover"><h3 style="color:#efc766">${escapar(p.paquete)}</h3><p>${escapar(p.fecha_pick)}</p><h2>${escapar(p.titulo)}</h2>${p.imagen_url?`<img src="${escapar(p.imagen_url)}" alt="Imagen del pick" style="max-width:100%">`:""}<p style="white-space:pre-wrap;font-size:18px;font-weight:700">${escapar(p.descripcion)}</p></article>`;}
+function tarjetaPublicado(p){return `<article style="padding:22px;border:1px solid #ad8736;border-radius:12px;margin:14px 0;background:linear-gradient(#031009bf,#031009d4),url(hero.jpeg) center/cover"><h3 style="color:#efc766">${escapar(p.paquete)}</h3><p>${escapar(p.fecha_pick)}</p><h2>${escapar(p.titulo)}</h2>${p.imagen_url?`<img src="${escapar(p.imagen_url)}" alt="Imagen del pick" style="max-width:100%">`:""}${window.renderPickDescription(p.descripcion)}</article>`;}
 async function abrirPublicados(){
   form.hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=false;
   historial.innerHTML=`<h2 style="color:#efc766">PICKS PUBLICADOS</h2><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">${paquetesPanel.map((p,i)=>`<button type="button" data-publicado="${i}" style="background:#092719;color:#efc766;border-color:#ad8736;font-size:14px;padding:16px 8px">${escapar(p)}</button>`).join("")}</div><button id="abrirHistorial" type="button" style="margin-top:18px">VER HISTORIAL</button><section id="detallePublicados" style="margin-top:20px"></section>`;
@@ -168,28 +205,23 @@ async function abrirHistorial(pagina){
 }
 document.getElementById("tabPublicados").addEventListener("click",abrirPublicados);
 for(const id of ["tabPick","tabClientes"])document.getElementById(id).addEventListener("click",()=>historial.hidden=true);
-const campoPick = document.getElementById("descripcion");
-for (const [emoji,nombre] of [["⚽","Fútbol"],["⚾","Béisbol"],["🏈","Fútbol americano"],["🏒","Hockey NHL"],["🔥","Fuego"],["📍","Ubicación"],["✅","Marca verde"],["🏀","Baloncesto"]]) {
-  const boton = document.createElement("button");boton.type="button";boton.textContent=emoji;boton.setAttribute("aria-label",nombre);boton.title=nombre;boton.style.cssText="width:46px;padding:8px;font-size:24px;background:#092719;border-color:#ad8736";
-  boton.addEventListener("mousedown",evento=>evento.preventDefault());
-  boton.addEventListener("click",()=>{if(campoPick.disabled)return;const inicio=campoPick.selectionStart,fin=campoPick.selectionEnd;if(campoPick.value.length-(fin-inicio)+emoji.length>campoPick.maxLength)return;campoPick.setRangeText(emoji,inicio,fin,"end");campoPick.focus();campoPick.dispatchEvent(new Event("input",{bubbles:true}));});
-  document.getElementById("emojis").append(boton);
-}
 form.addEventListener("submit", async event => {
   event.preventDefault();
   const paquetes = [...form.querySelectorAll('input[name="paquete"]:checked')].map(input=>input.value);
   if (!paquetes.length) {estado.textContent="Selecciona al menos un paquete.";return;}
   const button = form.querySelector('button[type="submit"]'); button.disabled=true;estado.textContent="Publicando…";
   try {
-    const data = await request("POST", {titulo:document.getElementById("titulo").value,descripcion:document.getElementById("descripcion").value,fecha_pick:document.getElementById("fecha").value,imagen_url:document.getElementById("imagen").value.trim(),juego_url:document.getElementById("juego").value.trim(),paquetes});
+    const partidos=[...partidosEl.children].map(c=>({deporte:c.querySelector("[data-deporte]").value,enfrentamiento:c.querySelector("[data-enfrentamiento]").value.trim()}));
+    const jugadas=[...jugadasEl.children].map(c=>c.querySelector("[data-texto-jugada]").value.trim());
+    const data = await request("POST", {titulo:document.getElementById("titulo").value,partidos,jugadas,cuota:document.getElementById("cuota").value.trim(),instagram:document.getElementById("instagram").value.trim(),analisis:document.getElementById("analisis").value.trim(),fecha_pick:document.getElementById("fecha").value,imagen_url:document.getElementById("imagen").value.trim(),juego_url:document.getElementById("juego").value.trim(),paquetes});
     estado.textContent=`Pick publicado para ${data.publicados} paquete(s).`;
     if(data.notificaciones?.estado === "enviados")estado.textContent+=` Avisos enviados al servicio de correo: ${data.notificaciones.enviados}.`;
     else if(data.notificaciones?.estado === "sin_configurar")estado.textContent+=" Los avisos por correo aún no están activados: falta configurar el remitente.";
     else estado.textContent+=" El pick está guardado, pero los avisos por correo no se completaron. No vuelvas a publicar el pick para reintentar el correo.";button.textContent="PUBLICADO";
-    form.querySelectorAll("input,textarea").forEach(input=>input.disabled=true);
+    form.querySelectorAll("input,textarea,select,.add-entry,.remove-entry").forEach(input=>input.disabled=true);
     document.getElementById("nuevo").hidden=false;
     const vista = document.getElementById("pickPublicado"), ver = document.getElementById("verPublicado");
-    vista.innerHTML = (data.picks || []).map(p => `<article style="padding:22px;margin:14px 0;border:1px solid #ad8736;border-radius:12px;background:linear-gradient(#031009bf,#031009d4),url(hero.jpeg) center/cover"><h3 style="color:#efc766">${escapar(p.paquete)}</h3><p>${escapar(p.fecha_pick)}</p><h2 style="color:#efc766">${escapar(p.titulo)}</h2>${p.imagen_url ? `<img src="${escapar(p.imagen_url)}" alt="Imagen del pick" style="max-width:100%">` : ""}<p style="white-space:pre-wrap;font-size:18px;font-weight:700;color:white">${escapar(p.descripcion)}</p></article>`).join("");
+    vista.innerHTML = (data.picks || []).map(p => `<article style="padding:22px;margin:14px 0;border:1px solid #ad8736;border-radius:12px;background:linear-gradient(#031009bf,#031009d4),url(hero.jpeg) center/cover"><h3 style="color:#efc766">${escapar(p.paquete)}</h3><p>${escapar(p.fecha_pick)}</p><h2 style="color:#efc766">${escapar(p.titulo)}</h2>${p.imagen_url ? `<img src="${escapar(p.imagen_url)}" alt="Imagen del pick" style="max-width:100%">` : ""}${window.renderPickDescription(p.descripcion)}</article>`).join("");
     ver.hidden = !data.picks?.length;
     ver.onclick = () => {
       const tabs=document.querySelector(".tabs");

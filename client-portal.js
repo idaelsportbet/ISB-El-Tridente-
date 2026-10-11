@@ -27,7 +27,7 @@ function contenidoPick(pick) {
   const urlSegura = valor => { try { const url = new URL(valor); return url.protocol === "https:" && !url.username && !url.password ? url.href : ""; } catch { return ""; } };
   if (enlace && (juego = urlSegura(enlace[1]))) descripcion = descripcion.slice(0,enlace.index);
   imagen = urlSegura(pick.imagen_url);
-  return `<div class="pick-date">${escapar(pick.fecha_pick)}</div><h3 class="pick-title">${escapar(pick.titulo || "Pick de hoy")}</h3>${imagen ? `<img class="pick-image" src="${escapar(imagen)}" alt="Imagen del pick" loading="lazy">` : ""}<p class="pick-description" style="white-space:pre-wrap">${escapar(descripcion)}</p>${juego ? `<a class="button" href="${escapar(juego)}" target="_blank" rel="noopener noreferrer">VER JUEGO</a>` : ""}`;
+  return `<div class="pick-date">${escapar(pick.fecha_pick)}</div><h3 class="pick-title">${escapar(pick.titulo || "Pick de hoy")}</h3>${imagen ? `<img class="pick-image" src="${escapar(imagen)}" alt="Imagen del pick" loading="lazy">` : ""}${window.renderPickDescription(descripcion)}${juego ? `<a class="button" href="${escapar(juego)}" target="_blank" rel="noopener noreferrer">VER JUEGO</a>` : ""}`;
 }
 function marcaPick(paquete) {
   const texto = escapar(`ISB EL TRIDENTE · ${paquete}`);

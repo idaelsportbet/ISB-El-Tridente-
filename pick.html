@@ -135,6 +135,17 @@
       margin-bottom: 25px;
     }
 
+    .pick-line { margin: 9px 0; }
+    .pick-match { font-size: 18px; font-weight: 600; color: #e0e8e2; }
+    .pick-play { display:flex; justify-content:center; align-items:baseline; gap:9px; font-size:20px; font-weight:800; color:#fff; }
+    .pick-arrow { color:#29e68b; font-weight:900; }
+    .pick-odds { display:flex; justify-content:center; gap:8px; margin-top:16px; color:#efc766; font-size:18px; font-weight:600; }
+    .pick-instagram { margin-top:14px; color:#efc766; font-size:14px; font-weight:600; }
+    .pick-analysis-label { margin-top:18px; color:#efc766; font-size:12px; font-weight:800; letter-spacing:.12em; }
+    .pick-analysis { margin-top:6px; color:#d5ddd7; font-size:15px; line-height:1.65; }
+    .pick-space { height:7px; }
+    @media(max-width:600px) { .pick-play { font-size:18px; } .pick-match,.pick-odds { font-size:16px; } .pick-analysis { font-size:14px; } }
+
     .imagen-pick {
       width: 100%;
       display: block;
@@ -236,7 +247,7 @@
 </main>
 
 
-<script>
+<script src="pick-render.js?v=20261010-pick-semantico"></script><script>
 
 const SUPABASE_URL =
   "https://nfvkmxnprchvkufwvhpr.supabase.co";
@@ -614,9 +625,7 @@ async function verificarAcceso() {
       ${escaparTexto(pick.titulo || "PICK DE HOY")}
     </h2>
 
-    <div class="descripcion-pick" style="white-space:pre-wrap">
-      ${escaparTexto(descripcionPick)}
-    </div>
+    ${window.renderPickDescription(descripcionPick)}
 
     ${juegoSeguro ? `<a class="boton" href="${escaparTexto(juegoSeguro)}" target="_blank" rel="noopener noreferrer">VER JUEGO ↗</a>` : ""}
 

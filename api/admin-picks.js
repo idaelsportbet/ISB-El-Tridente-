@@ -128,9 +128,16 @@ export default async function handler(req, res) {
       if (!resultado.ok) return res.status(502).json({ error: "No se pudo activar el paquete de prueba." });
       return res.status(201).json({ paquete: "Premium Diario", prueba: true, duracion: "1 hora" });
     }
-    const { titulo, descripcion, fecha_pick, imagen_url = "", juego_url = "", paquetes } = req.body || {};
+    const { titulo, descripcion, partidos, jugadas, cuota, instagram = "", analisis = "", fecha_pick, imagen_url = "", juego_url = "", paquetes } = req.body || {};
+    const estructurado = Array.isArray(partidos) || Array.isArray(jugadas) || cuota !== undefined;
+    const deportes = { "Fútbol":"⚽", MLB:"⚾", NBA:"🏀", NHL:"🏒", NFL:"🏈", UFC:"🥊" };
+    const partidosValidos = Array.isArray(partidos) && partidos.length > 0 && partidos.length <= 12 && partidos.every(p => p && typeof p.deporte === "string" && Object.hasOwn(deportes, p.deporte) && typeof p.enfrentamiento === "string" && p.enfrentamiento.trim().length > 2 && p.enfrentamiento.trim().length <= 240);
+    const jugadasValidas = Array.isArray(jugadas) && jugadas.length > 0 && jugadas.length <= 20 && jugadas.every(j => typeof j === "string" && j.trim().length > 0 && j.trim().length <= 500);
+    const cuotaValida = typeof cuota === "string" && /^[+-]?\d{1,8}(?:[.,]\d{1,4})?$/.test(cuota.trim());
+    const instagramValido = typeof instagram === "string" && instagram.length <= 60 && (!instagram.trim() || /^@?[a-zA-Z0-9._]{1,30}$/.test(instagram.trim()));
+    const analisisValido = typeof analisis === "string" && analisis.length <= 5000;
     if (typeof titulo !== "string" || !titulo.trim() || titulo.length > 160 ||
-        typeof descripcion !== "string" || !descripcion.trim() || descripcion.length > 10000 ||
+        (estructurado ? !(partidosValidos && jugadasValidas && cuotaValida && instagramValido && analisisValido) : (typeof descripcion !== "string" || !descripcion.trim() || descripcion.length > 10000)) ||
         typeof fecha_pick !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(fecha_pick) ||
         !Number.isFinite(Date.parse(`${fecha_pick}T00:00:00Z`)) ||
         new Date(`${fecha_pick}T00:00:00Z`).toISOString().slice(0,10) !== fecha_pick ||
@@ -151,11 +158,20 @@ export default async function handler(req, res) {
       catch { juegoValido = false; }
     }
     if (!juegoValido) return res.status(400).json({error:"El juego debe tener un enlace HTTPS válido."});
-    // Store an optional plain-text footer with the existing pick, without a schema migration.
-    const contenido = descripcion.trim() + (juego_url ? `\n\nVer juego: ${new URL(juego_url).href}` : "");
+    const tituloPick = titulo.trim().startsWith("📍") ? titulo.trim() : `📍 ${titulo.trim()}`;
+    const descripcionPick = estructurado ? [
+      ...partidos.map(p => `🏟️ ${deportes[p.deporte]} ${p.deporte} · ${p.enfrentamiento.trim()}`),
+      "",
+      ...jugadas.map(j => `🟢 → ${j.trim()}`),
+      `🔥 ${cuota.trim()}`,
+      instagram.trim() ? `📸 ${instagram.trim().startsWith("@") ? instagram.trim() : `@${instagram.trim()}`}` : "",
+      analisis.trim() ? `\nAnálisis:\n${analisis.trim()}` : ""
+    ].filter(Boolean).join("\n") : descripcion.trim();
+    // Keep the structured pick in the existing text column; no database migration is required.
+    const contenido = descripcionPick + (juego_url ? `\n\nVer juego: ${new URL(juego_url).href}` : "");
     if (contenido.length > 10000) return res.status(400).json({error:"Acorta el análisis para incluir el enlace del juego."});
     const filas = [...new Set(paquetes)].map(paquete => ({
-      titulo: titulo.trim(), descripcion: contenido, fecha_pick,
+      titulo: tituloPick, descripcion: contenido, fecha_pick,
       imagen_url: imagen_url || null, paquete, activo: true
     }));
     const result = await fetch(`${SUPABASE_URL}/rest/v1/picks`, {
