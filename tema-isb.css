@@ -17,3 +17,10 @@ body:has(main.packages-section) main.packages-section{background:linear-gradient
 body:has(.sports-strip)>main:not(.shell):not(.contenedor){background:#030706!important}
 .sports-strip{background:#030706!important;border-color:#9c7a2d88!important}
 .sports-strip div{background:radial-gradient(ellipse at 85% 15%,#087c4650,transparent 65%),linear-gradient(145deg,#073a25,#052b1d 62%,#03170e)!important;border-color:#9c7a2d88!important;box-shadow:0 0 12px #000a,inset 0 0 18px #25ee7310}
+
+/* Paneles oscuros para mejorar el contraste del texto, el oro y los botones. */
+:root,body{--isb-panel:radial-gradient(ellipse at 8% 12%,#0b56351f,transparent 70%),linear-gradient(145deg,#0a100c,#070d09 62%,#040705)}
+.topbar,.panel,.package,.modal-card,.contact-card,.card,.plan,.paquete-card,.tarjeta,.footer,.cta,.package-card,.payment-box,.compra-box,.faq,.results-banner,.step,.social-item,.info-card,.result-card,.results-editor,.sports-strip div{background:radial-gradient(ellipse at 82% 12%,#0b56351f,transparent 72%),linear-gradient(145deg,#0a100c,#070d09 62%,#040705)!important;border-color:#9c7a2d88!important}
+.packages-section .package-card{background:radial-gradient(ellipse at 86% 12%,#0b56352c,transparent 70%),linear-gradient(145deg,#0a100c,#070d09 62%,#040705)!important;box-shadow:0 0 12px #000a,inset 0 0 18px #25ee7308}
+.sports-strip div{box-shadow:0 0 12px #000a,inset 0 0 18px #25ee7308}
+.resultados-vista .resultados-tabla{background:#070c09!important}.resultados-vista .resultados-tabla thead th{background:linear-gradient(145deg,#0a100c,#070d09)!important}.resultados-vista .resultados-tabla tbody th,.resultados-vista .resultados-tabla tbody td{background:#080d09!important}
