@@ -608,6 +608,14 @@ button{
   cursor:pointer;
 }
 
+a.buy-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-top:auto;
+  text-decoration:none;
+}
+
 
 /* ========================================
    SECCIONES DE ABAJO
@@ -2012,7 +2020,7 @@ PRIVADA
 
 <!-- PREMIUM DIARIO -->
 
-<article class="package-card">
+<article class="package-card" data-paquete="Premium Diario">
 
 
 <div class="card-top">
@@ -2114,7 +2122,7 @@ COMPRAR AHORA
 
 <!-- PREMIUM SEMANAL -->
 
-<article class="package-card">
+<article class="package-card" data-paquete="Premium Semanal">
 
 
 <div class="card-top">
@@ -2218,7 +2226,7 @@ COMPRAR AHORA
 
 <!-- EXCLUSIVA DIARIA -->
 
-<article class="package-card">
+<article class="package-card" data-paquete="Exclusiva Diaria">
 
 
 <div class="card-top">
@@ -2326,7 +2334,7 @@ COMPRAR AHORA
 
 <!-- EXCLUSIVA SEMANAL -->
 
-<article class="package-card">
+<article class="package-card" data-paquete="Exclusiva Semanal">
 
 
 <div class="card-top">
@@ -2434,7 +2442,7 @@ COMPRAR AHORA
 
 <!-- PACK MENSUAL -->
 
-<article class="package-card">
+<article class="package-card" data-paquete="Pack Mensual">
 
 
 <div class="card-top">
@@ -2548,7 +2556,7 @@ COMPRAR AHORA
 
 <!-- ECONÓMICA -->
 
-<article class="package-card">
+<article class="package-card" data-paquete="Económica">
 
 
 <div class="card-top">
@@ -3135,16 +3143,43 @@ window.supabase.createClient(
 
 async function protegerPagina(){
 
-  const { data } =
-  await supabaseClient.auth.getSession();
+  const { data } = await supabaseClient.auth.getSession();
 
   if(!data.session){
 
     window.location.href =
     "index.html";
 
+    return;
   }
 
+  await mostrarPaquetesActivos(data.session.user.id);
+}
+
+async function mostrarPaquetesActivos(userId){
+  try {
+    const { data: compras, error } = await supabaseClient
+      .from("compras")
+      .select("paquete,vencimiento")
+      .eq("user_id", userId)
+      .gt("vencimiento", new Date().toISOString())
+      .limit(100);
+    if(error) return;
+
+    const activos = new Set((compras || []).map(compra => compra.paquete));
+    document.querySelectorAll(".package-card[data-paquete]").forEach(card => {
+      const nombre = card.dataset.paquete;
+      if(!activos.has(nombre)) return;
+
+      card.querySelector(".price-row")?.remove();
+      card.querySelector(".buy-btn")?.remove();
+      const boton = document.createElement("a");
+      boton.className = "buy-btn view-package-btn";
+      boton.href = `mis-picks.html?paquete=${encodeURIComponent(nombre)}`;
+      boton.textContent = "VER PAQUETE";
+      card.append(boton);
+    });
+  } catch {}
 }
 
 
