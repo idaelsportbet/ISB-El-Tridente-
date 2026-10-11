@@ -3,7 +3,7 @@ const vistaPicks = document.body.dataset.vista === "picks";
 const contenido = document.getElementById("contenido");
 let comprasVisibles = [], filtroActual = new URLSearchParams(window.location.search).get("paquete") || "Todos", cargando = false, comprobandoPago = false;
 const escapar = valor => String(valor ?? "—").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-function fechaBonita(valor) { const fecha = new Date(valor); return Number.isFinite(fecha.getTime()) ? fecha.toLocaleString("es-US",{timeZone:"America/Chicago",dateStyle:"medium",timeStyle:"short"}) : "—"; }
+function fechaCentral(){const p=new Intl.DateTimeFormat("en-US",{timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());return `${p.find(x=>x.type==="year").value}-${p.find(x=>x.type==="month").value}-${p.find(x=>x.type==="day").value}`}if(vistaPicks){const fechaInicial=fechaCentral();const revisarDia=setInterval(()=>{if(fechaCentral()!==fechaInicial){clearInterval(revisarDia);window.location.reload()}},5000)}function fechaBonita(valor) { const fecha = new Date(valor); return Number.isFinite(fecha.getTime()) ? fecha.toLocaleString("es-US",{timeZone:"America/Chicago",dateStyle:"medium",timeStyle:"short"}) : "—"; }
 function fila(label,valor) { return `<div class="row"><div class="label">${label}</div><div class="value">${escapar(valor)}</div></div>`; }
 function paquetesActivos(compras) {
   const paquetes = new Map();
