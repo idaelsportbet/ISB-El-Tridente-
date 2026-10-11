@@ -33,10 +33,10 @@
  }
  boton.onclick=async()=>{
  try{await request('GET');}catch(e){estado.textContent=e.message;return;}
- form.hidden=true;document.getElementById('clientes').hidden=true;historial.hidden=true;document.getElementById('instrucciones').hidden=true;panel.hidden=false;document.querySelector('main').style.maxWidth='1200px';
+ form.hidden=true;document.getElementById('clientes').hidden=true;document.getElementById('supportAdmin').hidden=true;historial.hidden=true;document.getElementById('instrucciones').hidden=true;panel.hidden=false;document.querySelector('main').style.maxWidth='1200px';
  document.querySelectorAll('#secciones button').forEach(b=>b.setAttribute('aria-pressed',String(b===boton)));cargar();
  };
- for(const id of ['tabPick','tabClientes','tabPublicados'])document.getElementById(id).addEventListener('click',()=>{panel.hidden=true;boton.setAttribute('aria-pressed','false');document.querySelector('main').style.maxWidth='700px';});
+ for(const id of ['tabPick','tabClientes','tabPublicados','tabSoporte'])document.getElementById(id).addEventListener('click',()=>{panel.hidden=true;boton.setAttribute('aria-pressed','false');document.querySelector('main').style.maxWidth='700px';});
  panel.querySelectorAll('[data-edicion]').forEach(b=>b.onclick=()=>{tipo=b.dataset.edicion;panel.querySelectorAll('[data-edicion]').forEach(o=>o.setAttribute('aria-pressed',String(o===b)));cargar();});referencia.onchange=cargar;
  guardar.onclick=async()=>{
  if(!listo||ocupado)return;const cambios=filas.filter(f=>f.cambio);

@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Soporte | ISB El Tridente</title>
+  <link rel="stylesheet" href="portal.css?v=20261011-support"><link rel="stylesheet" href="tema-isb.css?v=20261010-fondo-oscuro">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script><script src="support-client.js?v=20261011-support" defer></script>
+  <style>
+    .support-shell{max-width:900px}.support-form{display:grid;gap:12px}.support-form label{display:grid;gap:6px;color:#e6c564}.support-form input,.support-form textarea,.support-form select{width:100%;padding:13px;border:1px solid #9b783b;border-radius:9px;background:#080d09;color:#fff;font:inherit}.support-form textarea{min-height:140px;resize:vertical}.support-ticket{margin:16px 0;padding:16px;border:1px solid #9b783b88;border-radius:12px;background:#080d09}.support-ticket h3{color:#e6c564}.support-ticket-messages{display:grid;gap:9px}.support-message{padding:11px;border-radius:8px;background:#101711;white-space:pre-wrap;overflow-wrap:anywhere}.support-message.admin{border-left:3px solid #22d58a}.support-message.customer{border-left:3px solid #d6b85d}.support-ticket small{display:block;color:#c8c3b7;margin-top:4px}.support-link{display:inline-flex;margin-top:10px;padding:12px;border:1px solid #b89547;border-radius:8px;color:#edc560}.support-reply{display:grid;gap:8px;margin-top:12px}.support-reply textarea{width:100%;min-height:80px;padding:12px;background:#080d09;color:white;border:1px solid #9b783b;border-radius:8px;font:inherit}.support-help{color:#aaa;font-size:13px;line-height:1.6}
+  </style>
+</head>
+<body><main class="shell support-shell"><header class="topbar"><a class="brand" href="cuenta.html">🔱 ISB EL TRIDENTE</a><a class="toplink" href="cuenta.html">← Mi cuenta</a></header><h1 class="page-title">SOPORTE</h1><div class="divider"></div>
+  <section id="supportAccess" class="panel message" role="status">Comprobando tu sesión…</section>
+  <section id="supportWorkspace" hidden><section class="panel"><h2 class="section-title">¿EN QUÉ PODEMOS AYUDARTE?</h2><p>Envía tu consulta desde aquí para que quede registrada en tu cuenta y en el panel de soporte.</p><form id="supportForm" class="support-form"><label>Asunto<input name="subject" required maxlength="120" placeholder="Ej. Mi paquete o mi cuenta"></label><label>Mensaje<textarea name="message" required minlength="5" maxlength="4000" placeholder="Cuéntanos qué necesitas…"></textarea></label><label>¿Cómo prefieres que te respondamos?<select name="channel"><option value="portal">Dentro de esta página</option><option value="email">Por correo</option><option value="whatsapp">Por WhatsApp</option></select></label><button class="button" type="submit">ENVIAR AL SOPORTE</button><p id="supportFormStatus" class="message" role="status" aria-live="polite"></p><div id="supportExternalLink"></div></form></section>
+    <section class="panel"><div class="package-head"><h2 class="section-title">MIS CONVERSACIONES</h2><button id="refreshMyTickets" class="filter" type="button">ACTUALIZAR</button></div><p id="myTicketsStatus" class="message" role="status" aria-live="polite"></p><div id="myTickets"></div></section></section>
+  </main></body></html>
