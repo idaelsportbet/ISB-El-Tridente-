@@ -31,9 +31,9 @@ async function notificarPicks(filas, secret) {
     return {estado:"enviados",enviados};
   } catch {return {estado:"error",enviados:0};}
 }
-export default async function handler(req, res) {
+function fechaActualCentral(){const p=new Intl.DateTimeFormat("en-US",{timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());return `${p.find(x=>x.type==="year").value}-${p.find(x=>x.type==="month").value}-${p.find(x=>x.type==="day").value}`}export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
-  if (!["GET", "POST"].includes(req.method)) return res.status(405).json({ error: "Método no permitido" });
+  if (!["GET", "POST", "PATCH"].includes(req.method)) return res.status(405).json({ error: "Método no permitido" });
   const secret = process.env.SUPABASE_SECRET_KEY;
   const adminId = (process.env.ADMIN_USER_ID || "").trim();
   const adminEmail = "idaelvargasbusiness@gmail.com";
@@ -47,7 +47,7 @@ export default async function handler(req, res) {
     const user = await auth.json();
     const autorizado = adminId ? user.id === adminId :
       typeof user.email === "string" && user.email.toLowerCase() === adminEmail && Boolean(user.email_confirmed_at);
-    if (!autorizado) return res.status(403).json({ error: "Esta cuenta no tiene permiso para publicar picks." });
+    if (!autorizado) return res.status(403).json({ error: "Esta cuenta no tiene permiso para publicar picks." }); if (req.method === "PATCH") return modificarPick(req,res,secret);
     if (req.method === "GET" && req.query?.vista === "compras") {
       const pagina = Number(req.query.pagina || 0);
       if (!Number.isInteger(pagina) || pagina < 0 || pagina > 10000) return res.status(400).json({error:"Página inválida."});
@@ -73,7 +73,7 @@ export default async function handler(req, res) {
       const esHistorial=req.query.historial === "1", pagina=Number(req.query.pagina || 0);
       if(!Number.isInteger(pagina)||pagina<0||pagina>10000)return res.status(400).json({error:"Página inválida."});
       const query = new URLSearchParams({select:"id,paquete,titulo,descripcion,fecha_pick,imagen_url,activo",order:esHistorial?"fecha_pick.asc,created_at.asc":"fecha_pick.desc,created_at.desc",limit:esHistorial?"26":"1",offset:esHistorial?String(pagina*25):"0"});
-      if(!esHistorial){if(!PAQUETES.includes(req.query.paquete))return res.status(400).json({error:"Selecciona un paquete."});query.set("paquete",`eq.${req.query.paquete}`);}
+      if(!esHistorial){if(!PAQUETES.includes(req.query.paquete))return res.status(400).json({error:"Selecciona un paquete."});query.set("paquete",`eq.${req.query.paquete}`);query.set("activo","eq.true");query.set("fecha_pick",`eq.${fechaActualCentral()}`);}
       const respuesta = await fetch(`${SUPABASE_URL}/rest/v1/picks?${query}`,{headers:{apikey:secret,Authorization:`Bearer ${secret}`}});
       if(!respuesta.ok)return res.status(502).json({error:"No se pudieron cargar los picks publicados."});
       return res.status(200).json(await respuesta.json().then(filas=>({picks:esHistorial?filas.slice(0,25):filas,hayMas:esHistorial&&filas.length>25})));
