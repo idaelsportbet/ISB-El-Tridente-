@@ -11,7 +11,7 @@ const login = document.getElementById('loginModal');
 const register = document.getElementById('registerModal');
 
 document.querySelectorAll('[data-open="login"]').forEach(b => b.addEventListener('click', () => login.showModal()));
-document.querySelectorAll('[data-open="register"]').forEach(b => b.addEventListener('click', () => register.showModal()));
+document.querySelectorAll('[data-open="register"]').forEach(b => b.addEventListener('click', () => register.showModal())); if (new URLSearchParams(window.location.search).get('login') === 'admin') login?.showModal();
 
 document.querySelectorAll('.modal').forEach(dialog => {
   dialog.addEventListener('click', e => {
