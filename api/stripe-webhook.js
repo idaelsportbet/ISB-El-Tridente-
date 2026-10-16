@@ -10,7 +10,8 @@ function calcularVencimiento(paquete) {
 
   if (
     paquete === "Premium Diario" ||
-    paquete === "Exclusiva Diaria"
+    paquete === "Exclusiva Diaria" ||
+    paquete === "Reto de 10 días para $10K"
   ) {
     // Obtener la fecha actual según horario Central de EE. UU.
     const partes = new Intl.DateTimeFormat("en-US", {
