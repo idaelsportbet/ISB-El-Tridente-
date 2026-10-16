@@ -86,6 +86,7 @@
   .admin-app{display:block!important}.sidebar{display:none!important}.topbar{height:auto!important;min-height:64px;padding:8px 20px!important}.admin-brand-mini{display:flex;align-items:center;gap:8px}.top-nav{display:flex;min-width:0}.admin-profile{width:auto;align-self:center}.admin-menu{top:calc(100% + 8px)}
   @media(max-width:700px){.topbar{display:grid!important;grid-template-columns:minmax(0,1fr) auto;gap:7px 8px}.top-nav{grid-column:1/-1;grid-row:2;width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;overflow:visible}.topbar-label{display:none}.admin-menu{right:8px}.top-nav .nav-item{width:100%;min-height:44px;justify-content:flex-start;padding:9px 10px;font-size:12px}.admin-brand-mini{font-size:17px}.admin-brand-mini span{font-size:8px}.support-reply{grid-template-columns:1fr}.support-reply button{width:100%}}
   @media(max-width:420px){.topbar{padding:8px 7px!important}.top-nav .nav-item{padding:8px 8px;font-size:11px}.top-nav .nav-item .nav-icon{display:none}}
+  #descuentoPanel{max-width:900px;margin:20px auto;padding:24px;border:1px solid #a9823966;border-radius:14px;background:rgba(2,7,5,.9)}#descuentoPanel h1{color:#edc560;font-family:Georgia,serif}#descuentoPanel>p{color:#dedbd0;line-height:1.6}.discount-status-card{display:grid;gap:18px;max-width:560px;margin-top:24px;padding:22px;border:1px solid #b4934b77;border-radius:12px;background:rgba(4,8,6,.88)}#descuentoEstado{color:#f3d37b;font-weight:700}#alternarDescuento{max-width:440px;background:linear-gradient(110deg,#ffe18b,#c49330 45%,#f2ce70);border-color:#fff0b4;color:#120e04;letter-spacing:1px}#alternarDescuento.is-active{background:linear-gradient(110deg,#17221a,#080b09);border-color:#d9b85d;color:#f3d37b}
 </style></head>
 <body><div class="admin-app">
   <div class="admin-stage">
@@ -95,7 +96,8 @@
       <button type="button" class="nav-item" id="tabResultados" aria-pressed="false"><span class="nav-icon">▥</span><span>Estadísticas</span></button>
       <button type="button" class="nav-item" id="tabClientes" aria-pressed="false"><span class="nav-icon">♧</span><span>Comunidad</span></button>
       <button type="button" class="nav-item" id="tabSoporte" aria-pressed="false"><span class="nav-icon">✉</span><span>Soporte</span></button>
-    </nav><button id="instalar" type="button" hidden>INSTALAR ISB ADMIN</button><button id="adminMenuToggle" class="admin-profile" type="button" aria-expanded="false" aria-controls="adminMenu"><span class="profile-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 21c.5-4.1 2.7-6.2 6.5-6.2s6 2.1 6.5 6.2"/></svg></span><span><strong>ADMIN</strong><small>ISB EL TRIDENTE</small></span><span class="profile-chevron" aria-hidden="true">⌄</span></button><div id="adminMenu" class="admin-menu" hidden><p class="admin-menu-title">PANELES DE ADMINISTRACIÓN</p><button type="button" class="nav-item" data-panel="tabPick">⌂ &nbsp; Publicar Pick</button><button type="button" class="nav-item" data-panel="tabPublicados">▤ &nbsp; Mis Picks</button><button type="button" class="nav-item" data-panel="tabResultados">▥ &nbsp; Estadísticas</button><button type="button" class="nav-item" data-panel="tabClientes">♧ &nbsp; Comunidad</button><button type="button" class="nav-item" data-panel="tabSoporte">✉ &nbsp; Soporte</button></div></header>
+      <button type="button" class="nav-item" id="tabDescuento" aria-pressed="false"><span class="nav-icon">%</span><span>Descuentos</span></button>
+    </nav><button id="instalar" type="button" hidden>INSTALAR ISB ADMIN</button><button id="adminMenuToggle" class="admin-profile" type="button" aria-expanded="false" aria-controls="adminMenu"><span class="profile-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 21c.5-4.1 2.7-6.2 6.5-6.2s6 2.1 6.5 6.2"/></svg></span><span><strong>ADMIN</strong><small>ISB EL TRIDENTE</small></span><span class="profile-chevron" aria-hidden="true">⌄</span></button><div id="adminMenu" class="admin-menu" hidden><p class="admin-menu-title">PANELES DE ADMINISTRACIÓN</p><button type="button" class="nav-item" data-panel="tabPick">⌂ &nbsp; Publicar Pick</button><button type="button" class="nav-item" data-panel="tabPublicados">▤ &nbsp; Mis Picks</button><button type="button" class="nav-item" data-panel="tabResultados">▥ &nbsp; Estadísticas</button><button type="button" class="nav-item" data-panel="tabClientes">♧ &nbsp; Comunidad</button><button type="button" class="nav-item" data-panel="tabSoporte">✉ &nbsp; Soporte</button><button type="button" class="nav-item" data-panel="tabDescuento">% &nbsp; Descuentos</button></div></header>
     <main>
   <p id="estado" role="status" aria-live="polite">Comprobando tu acceso…</p><a id="adminLoginButton" class="admin-login-button" href="/index.html?login=admin" hidden>INICIAR SESIÓN</a>
   <section id="clientes" hidden>
@@ -106,6 +108,11 @@
     <div class="paginas"><button type="button" id="anteriorCompras" disabled>ANTERIOR</button><button type="button" id="siguienteCompras" disabled>SIGUIENTE</button></div>
   </section>
   <section id="supportAdmin" hidden><h2>MENSAJES DE SOPORTE</h2><p>Los mensajes enviados desde el portal de clientes aparecen aquí.</p><button type="button" id="refreshSupport">ACTUALIZAR MENSAJES</button><p id="supportAdminStatus" role="status" aria-live="polite"></p><div id="supportAdminList"></div></section>
+  <section id="descuentoPanel" hidden>
+    <h1>DESCUENTO PARA CLIENTES</h1>
+    <p>Activa una promoción general del 30% en Premium Diario, Premium Semanal, Exclusiva Diaria, Exclusiva Semanal y Pack Mensual. Económica mantiene su precio normal.</p>
+    <div class="discount-status-card"><span id="descuentoEstado" role="status" aria-live="polite">Consultando promoción…</span><button id="alternarDescuento" type="button" disabled>ACTIVAR DESCUENTO DEL 30%</button></div>
+  </section>
   <section id="editorLayout" class="editor-layout" hidden>
     <header class="editor-heading"><div><h1>PUBLICAR PICK</h1><p>COMPARTE TU ANÁLISIS Y POTENCIA A LA COMUNIDAD</p><p id="instrucciones" hidden>Escribe el pick y selecciona todos los paquetes que deben recibirlo.</p></div></header>
   <form id="publicar" hidden>
@@ -252,6 +259,33 @@ async function cargarSoporteAdmin(){
   }catch(error){supportStatus.textContent=error.message;}finally{b.disabled=false;}
 }
 document.getElementById("tabSoporte").addEventListener("click",()=>{form.hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;historial.hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("supportAdmin").hidden=false;document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabSoporte")));cargarSoporteAdmin();});
+const descuentoPanel=document.getElementById("descuentoPanel"), descuentoEstado=document.getElementById("descuentoEstado"), alternarDescuento=document.getElementById("alternarDescuento");
+let descuentoHabilitado=false;
+async function peticionDescuento(method,body){
+  const {data:{session}}=await client.auth.getSession();
+  if(!session)throw new Error("Tu sesión venció. Inicia sesión nuevamente.");
+  const response=await fetch("/api/package-discount",{method,headers:{Authorization:`Bearer ${session.access_token}`,"Content-Type":"application/json"},...(body?{body:JSON.stringify(body)}:{})});
+  const data=await response.json();if(!response.ok)throw new Error(data.error||"No se pudo consultar la promoción.");return data;
+}
+function mostrarEstadoDescuento(active){
+  descuentoHabilitado=active===true;
+  descuentoEstado.textContent=descuentoHabilitado?"Promoción activa: 30% menos en los cinco paquetes participantes. Económica conserva su precio normal.":"Promoción apagada. Todos los paquetes muestran su precio normal.";
+  alternarDescuento.textContent=descuentoHabilitado?"DESACTIVAR DESCUENTO DEL 30%":"ACTIVAR DESCUENTO DEL 30%";
+  alternarDescuento.classList.toggle("is-active",descuentoHabilitado);
+}
+document.getElementById("tabDescuento").addEventListener("click",async()=>{
+  form.hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=true;descuentoPanel.hidden=false;
+  document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabDescuento")));
+  alternarDescuento.disabled=true;descuentoEstado.textContent="Consultando promoción…";
+  try{const data=await peticionDescuento("GET");mostrarEstadoDescuento(data.active);}catch(error){descuentoEstado.textContent=error.message;}
+  finally{alternarDescuento.disabled=false;}
+});
+alternarDescuento.addEventListener("click",async()=>{
+  alternarDescuento.disabled=true;descuentoEstado.textContent="Guardando cambio…";
+  try{const data=await peticionDescuento("POST",{active:!descuentoHabilitado});mostrarEstadoDescuento(data.active);}
+  catch(error){descuentoEstado.textContent=error.message;}
+  finally{alternarDescuento.disabled=false;}
+});
 document.getElementById("refreshSupport").addEventListener("click",cargarSoporteAdmin);
 document.getElementById("actualizarCompras").addEventListener("click",()=>cargarCompras(paginaCompras));
 anterior.addEventListener("click",()=>cargarCompras(paginaCompras-1));siguiente.addEventListener("click",()=>cargarCompras(paginaCompras+1));
@@ -315,6 +349,7 @@ form.addEventListener("submit", async event => {
   } catch(error) {estado.textContent=error.message;button.disabled=false;}
 });
 </script></body></html>
+
 
 
 
