@@ -202,6 +202,19 @@ loginForm?.addEventListener('submit', async (e) => {
   window.location.href = destino;
 });
 
+document.querySelectorAll('.password-toggle').forEach(button => {
+  button.addEventListener('click', () => {
+    const input = button.closest('.password-field')?.querySelector('input');
+    if (!input) return;
+    const show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    button.classList.toggle('is-visible', show);
+    button.setAttribute('aria-pressed', String(show));
+    button.setAttribute('aria-label', show ? 'Ocultar contraseña' : 'Mostrar contraseña');
+    button.title = show ? 'Ocultar contraseña' : 'Mostrar contraseña';
+  });
+});
+
 document.querySelectorAll('.modal .close').forEach(btn => {
   btn.addEventListener('click', () => {
     const modal = btn.closest('dialog');
