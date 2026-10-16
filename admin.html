@@ -109,8 +109,8 @@
   </section>
   <section id="supportAdmin" hidden><h2>MENSAJES DE SOPORTE</h2><p>Los mensajes enviados desde el portal de clientes aparecen aquí.</p><button type="button" id="refreshSupport">ACTUALIZAR MENSAJES</button><p id="supportAdminStatus" role="status" aria-live="polite"></p><div id="supportAdminList"></div></section>
   <section id="descuentoPanel" hidden>
-    <h1>DESCUENTO PARA CLIENTES</h1>
-    <p>Activa una promoción general del 30% en Premium Diario, Premium Semanal, Exclusiva Diaria, Exclusiva Semanal y Pack Mensual. Económica mantiene su precio normal.</p>
+    <h1>DESCUENTO PARA CLIENTES DE ISB</h1>
+    <p>Al activarla, la promoción será del 30% en todos los paquetes, excepto el paquete Económica.</p>
     <div class="discount-status-card"><span id="descuentoEstado" role="status" aria-live="polite">Consultando promoción…</span><button id="alternarDescuento" type="button" disabled>ACTIVAR DESCUENTO DEL 30%</button></div>
   </section>
   <section id="editorLayout" class="editor-layout" hidden>
@@ -269,7 +269,7 @@ async function peticionDescuento(method,body){
 }
 function mostrarEstadoDescuento(active){
   descuentoHabilitado=active===true;
-  descuentoEstado.textContent=descuentoHabilitado?"Promoción activa: 30% menos en los cinco paquetes participantes. Económica conserva su precio normal.":"Promoción apagada. Todos los paquetes muestran su precio normal.";
+  descuentoEstado.textContent=descuentoHabilitado?"Promoción activa del 30% para clientes de ISB. Económica queda excluida.":"Promoción apagada. Al activarla, será del 30% en todos los paquetes, excepto Económica.";
   alternarDescuento.textContent=descuentoHabilitado?"DESACTIVAR DESCUENTO DEL 30%":"ACTIVAR DESCUENTO DEL 30%";
   alternarDescuento.classList.toggle("is-active",descuentoHabilitado);
 }
