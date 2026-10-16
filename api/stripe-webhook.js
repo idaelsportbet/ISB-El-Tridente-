@@ -9,7 +9,8 @@ function calcularVencimiento(paquete) {
   }
 
   if (paquete === "Reto de 10 días para $10K") {
-    return new Date(ahora.getTime() + 10 * 24 * 60 * 60 * 1000).toISOString();
+    // A one-time purchase keeps access until the administrator closes this challenge cycle.
+    return new Date("2099-12-31T23:59:59.999Z").toISOString();
   }
 
   if (
