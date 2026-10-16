@@ -571,7 +571,8 @@ button{
   font-weight:900;
 }
 
-.price-before{color:#c5c1b2;font-size:.58em;font-weight:650;text-decoration:line-through;text-decoration-color:#ed4b4b;text-decoration-thickness:2px;white-space:nowrap}
+.price-before{position:relative;display:inline-block;color:#c5c1b2;font-size:.68em;font-weight:750;line-height:1;white-space:nowrap}
+.price-before::after{position:absolute;content:"";left:-6%;top:50%;width:112%;height:2px;background:#ed4b4b;transform:rotate(-18deg);transform-origin:center;pointer-events:none}
 .price-row{flex-wrap:wrap}
 .package-discount-badge{position:relative;z-index:2;align-self:center;margin:8px auto 2px;padding:3px 8px;border:1px solid #d8b957;border-radius:999px;background:#120f08;color:#ffe18b;font-size:9px;font-weight:900;letter-spacing:.6px}
 
