@@ -2712,6 +2712,30 @@ COMPRAR AHORA
 
 </article>
 
+<!-- CHAMPIONS LEAGUE COMPLETA -->
+<article class="package-card" data-paquete="Champions League Completa">
+  <div class="card-top">
+    <div class="card-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M8 3h8v4a4 4 0 0 1-8 0V3Z"/>
+        <path d="M8 5H4v2a4 4 0 0 0 4 4M16 5h4v2a4 4 0 0 1-4 4"/>
+        <path d="M12 11v6M8 21h8M9 17h6v4H9z"/>
+      </svg>
+    </div>
+    <div>
+      <h2 class="card-title">CHAMPIONS LEAGUE</h2>
+      <div class="card-type">COMPLETA · TEMPORADA 2026/27</div>
+    </div>
+  </div>
+  <ul class="card-features">
+    <li><span class="check">✓</span><span>De 1 a 3 jugadas al día</span></li>
+    <li><span class="check">✓</span><span>Solo UEFA Champions League</span></li>
+    <li><span class="check">✓</span><span>Acceso durante toda la temporada</span></li>
+  </ul>
+  <div class="price-row"><span class="price">$200</span><span class="period">/ TEMPORADA</span></div>
+  <button class="buy-btn" onclick="abrirCompra('Champions League Completa', '$200', 'TEMPORADA')">COMPRAR AHORA</button>
+</article>
+
 
 </div>
 
@@ -3244,7 +3268,8 @@ const descuentoBase = {
   "Premium Semanal": 39900,
   "Exclusiva Diaria": 5000,
   "Exclusiva Semanal": 29900,
-  "Pack Mensual": 15000
+  "Pack Mensual": 15000,
+  "Champions League Completa": 20000
 };
 let descuentoActivo = false;
 function formatoUSD(cents){
