@@ -19,7 +19,7 @@ export default async function handler(req,res){
  if(!r.ok)return res.status(503).json({error:'Falta conectar la publicación de resultados.'});
  return res.status(200).json({resultados:await r.json()});
  }
- const adminId=(process.env.ADMIN_USER_ID||'').trim(),autorizado=adminId?user.id===adminId:user.email?.toLowerCase()==='idaelvargasbusiness@gmail.com'&&Boolean(user.email_confirmed_at);
+ const adminId=(process.env.ADMIN_USER_ID||'').trim(),correo=user.email?.toLowerCase(),autorizado=Boolean(user.email_confirmed_at)&&['idaelvargasbusiness@gmail.com','felixyaiden@icloud.com'].includes(correo)||(adminId&&user.id===adminId);
  if(!autorizado)return res.status(403).json({error:'Solo el administrador puede publicar resultados.'});
  const filas=req.body?.resultados;
  if(!Array.isArray(filas)||!filas.length||filas.length>124)return res.status(400).json({error:'Selecciona resultados para publicar.'});
