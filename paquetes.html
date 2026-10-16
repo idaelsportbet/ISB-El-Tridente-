@@ -347,16 +347,20 @@ button{
 .hero-promo{
   display:grid;
   justify-items:start;
-  gap:4px;
-  margin:0 0 8px;
-  padding:0;
+  gap:5px;
+  width:min(100%,560px);
+  margin:9px 0 10px;
+  padding:0 0 9px;
   color:var(--gold-light);
   text-shadow:0 1px 10px rgba(246,189,53,.42);
 }
 .hero-promo[hidden]{display:none!important}
-.hero-brand[hidden]{display:none!important}
-.hero-promo strong{max-width:100%;color:var(--gold-light);font-size:clamp(21px,4vw,44px);font-weight:1000;line-height:.92;letter-spacing:-.025em;text-shadow:0 1px 10px rgba(246,189,53,.48)}
-.hero-promo span{color:var(--gold);font-size:clamp(9px,1.1vw,13px);font-weight:900;letter-spacing:.24em}
+.hero-promo-main{display:flex;align-items:center;gap:10px}
+.hero-promo-main strong{color:var(--gold-light);font-size:clamp(35px,7vw,82px);font-weight:1000;line-height:.9;letter-spacing:-.035em;text-shadow:0 2px 12px rgba(246,189,53,.5)}
+.hero-promo-main span{color:var(--gold-light);font-size:clamp(16px,2.8vw,38px);font-weight:1000;line-height:.94;letter-spacing:-.025em}
+.hero-promo small{color:var(--gold);font-size:clamp(9px,1.4vw,15px);font-weight:900;letter-spacing:.36em}
+.hero-promo::after{content:"";display:block;width:92%;height:1px;background:linear-gradient(90deg,var(--gold),rgba(246,189,53,.12))}
+@media(max-width:420px){.hero-promo-main{gap:7px}.hero-promo-main strong{font-size:32px}.hero-promo-main span{font-size:15px}.hero-promo small{letter-spacing:.28em}}
 
 
 /* ========================================
@@ -1943,16 +1947,16 @@ EL TRIDENTE
 
 </div>
 
-<div class="hero-promo" id="heroPromo" hidden aria-label="30% de descuento, solo en ISB">
-  <strong>30% DE<br>DESCUENTO</strong>
-  <span>SOLO EN ISB</span>
-</div>
-
-
 <div class="hero-mini">
 
 DISCIPLINA | ANÁLISIS | RESULTADOS
 
+</div>
+
+
+<div class="hero-promo" id="heroPromo" hidden aria-label="30% de descuento, solo en ISB">
+  <div class="hero-promo-main"><strong>30%</strong><span>DE<br>DESCUENTO</span></div>
+  <small>SOLO EN ISB</small>
 </div>
 
 
@@ -3256,8 +3260,6 @@ async function cargarDescuento(){
   }catch{descuentoActivo=false;}
   const heroPromo=document.getElementById("heroPromo");
   if(heroPromo)heroPromo.hidden=!descuentoActivo;
-  const heroBrand=document.getElementById("heroBrand");
-  if(heroBrand)heroBrand.hidden=descuentoActivo;
   document.querySelectorAll(".package-card[data-paquete]").forEach(card=>{
     const name=card.dataset.paquete;
     const cents=descuentoBase[name];
