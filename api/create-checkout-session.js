@@ -34,6 +34,26 @@ export default async function handler(req, res) {
       });
     }
 
+    if (paqueteReto) {
+      const secret = process.env.SUPABASE_SECRET_KEY;
+      if (!secret) return res.status(503).json({ error: "No se pudo comprobar si el reto está abierto. Inténtalo más tarde." });
+      try {
+        const query = new URLSearchParams({ select: "value", key: "eq.reto_10_dias", limit: "1" });
+        const statusResponse = await fetch(
+          `https://nfvkmxnprchvkufwvhpr.supabase.co/rest/v1/isb_site_settings?${query}`,
+          { headers: { apikey: secret, Authorization: `Bearer ${secret}` }, signal: AbortSignal.timeout(4000) }
+        );
+        if (!statusResponse.ok) throw new Error("No se pudo consultar el estado del reto.");
+        const rows = await statusResponse.json();
+        if (rows[0]?.value?.active === false) {
+          return res.status(410).json({ error: "El reto terminó y no acepta nuevas compras por ahora." });
+        }
+      } catch (error) {
+        console.error("No se pudo verificar el estado del reto.", error);
+        return res.status(503).json({ error: "No se pudo comprobar si el reto está abierto. Inténtalo más tarde." });
+      }
+    }
+
     if (!process.env.STRIPE_SECRET_KEY) {
       return res.status(500).json({
         error: "STRIPE_SECRET_KEY no está configurada"

@@ -98,7 +98,8 @@
       <button type="button" class="nav-item" id="tabSoporte" aria-pressed="false"><span class="nav-icon">✉</span><span>Soporte</span></button>
       <button type="button" class="nav-item" id="tabDescuento" aria-pressed="false"><span class="nav-icon">%</span><span>Descuentos</span></button>
       <button type="button" class="nav-item" id="tabRefund" aria-pressed="false"><span class="nav-icon">↩</span><span>Reembolsos</span></button>
-    </nav><button id="instalar" type="button" hidden>INSTALAR ISB ADMIN</button><button id="adminMenuToggle" class="admin-profile" type="button" aria-expanded="false" aria-controls="adminMenu"><span class="profile-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 21c.5-4.1 2.7-6.2 6.5-6.2s6 2.1 6.5 6.2"/></svg></span><span><strong>ADMIN</strong><small>ISB EL TRIDENTE</small></span><span class="profile-chevron" aria-hidden="true">⌄</span></button><div id="adminMenu" class="admin-menu" hidden><p class="admin-menu-title">PANELES DE ADMINISTRACIÓN</p><button type="button" class="nav-item" data-panel="tabPick">⌂ &nbsp; Publicar Pick</button><button type="button" class="nav-item" data-panel="tabPublicados">▤ &nbsp; Mis Picks</button><button type="button" class="nav-item" data-panel="tabResultados">▥ &nbsp; Estadísticas</button><button type="button" class="nav-item" data-panel="tabClientes">♧ &nbsp; Comunidad</button><button type="button" class="nav-item" data-panel="tabSoporte">✉ &nbsp; Soporte</button><button type="button" class="nav-item" data-panel="tabDescuento">% &nbsp; Descuentos</button><button type="button" class="nav-item" data-panel="tabRefund">↩ &nbsp; Reembolsos</button></div></header>
+      <button type="button" class="nav-item" id="tabReto" aria-pressed="false"><span class="nav-icon">♧</span><span>Reto 10 días</span></button>
+    </nav><button id="instalar" type="button" hidden>INSTALAR ISB ADMIN</button><button id="adminMenuToggle" class="admin-profile" type="button" aria-expanded="false" aria-controls="adminMenu"><span class="profile-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 21c.5-4.1 2.7-6.2 6.5-6.2s6 2.1 6.5 6.2"/></svg></span><span><strong>ADMIN</strong><small>ISB EL TRIDENTE</small></span><span class="profile-chevron" aria-hidden="true">⌄</span></button><div id="adminMenu" class="admin-menu" hidden><p class="admin-menu-title">PANELES DE ADMINISTRACIÓN</p><button type="button" class="nav-item" data-panel="tabPick">⌂ &nbsp; Publicar Pick</button><button type="button" class="nav-item" data-panel="tabPublicados">▤ &nbsp; Mis Picks</button><button type="button" class="nav-item" data-panel="tabResultados">▥ &nbsp; Estadísticas</button><button type="button" class="nav-item" data-panel="tabClientes">♧ &nbsp; Comunidad</button><button type="button" class="nav-item" data-panel="tabSoporte">✉ &nbsp; Soporte</button><button type="button" class="nav-item" data-panel="tabDescuento">% &nbsp; Descuentos</button><button type="button" class="nav-item" data-panel="tabRefund">↩ &nbsp; Reembolsos</button><button type="button" class="nav-item" data-panel="tabReto">♧ &nbsp; Reto 10 días</button></div></header>
     <main>
   <p id="estado" role="status" aria-live="polite">Comprobando tu acceso…</p><a id="adminLoginButton" class="admin-login-button" href="/index.html?login=admin" hidden>INICIAR SESIÓN</a>
   <section id="clientes" hidden>
@@ -116,6 +117,11 @@
     <div class="tabla-scroll"><table><thead><tr><th>Nombre</th><th>Correo</th><th>Paquete</th><th>Pagado</th><th>Fecha</th><th>Acción</th></tr></thead><tbody id="refundRows"></tbody></table></div>
   </section>
   <section id="supportAdmin" hidden><h2>MENSAJES DE SOPORTE</h2><p>Los mensajes enviados desde el portal de clientes aparecen aquí.</p><button type="button" id="refreshSupport">ACTUALIZAR MENSAJES</button><p id="supportAdminStatus" role="status" aria-live="polite"></p><div id="supportAdminList"></div></section>
+  <section id="challengeCycleAdmin" hidden>
+    <h2>RETO DE 10 DÍAS PARA $10K</h2>
+    <p>El acceso del cliente permanece activo después de un pago único mientras el reto esté abierto. Al finalizarlo, se cierran las compras y el acceso de ese ciclo; al abrir uno nuevo, los clientes anteriores vuelven a comprar para entrar.</p>
+    <div class="discount-status-card"><span id="challengeCycleStatus" role="status" aria-live="polite">Consultando el reto…</span><button id="toggleChallengeCycle" type="button" disabled>CONSULTANDO…</button></div>
+  </section>
   <section id="descuentoPanel" hidden>
     <h1>DESCUENTO PARA CLIENTES DE ISB</h1>
     <p>Al activarla, la promoción será del 30% en todos los paquetes, excepto el paquete Económica.</p>
@@ -274,11 +280,52 @@ async function cargarRefunds(){
   }catch(error){refundStatus.textContent=error.message;}
   finally{button.disabled=false;}
 }
+document.getElementById("tabReto").addEventListener("click",()=>{
+  form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=true;descuentoPanel.hidden=true;challengeCyclePanel.hidden=false;
+  document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabReto")));
+  cargarCicloReto();
+});
 document.getElementById("tabRefund").addEventListener("click",()=>{
   form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=true;descuentoPanel.hidden=true;document.getElementById("refundAdmin").hidden=false;
   document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabRefund")));
   cargarRefunds();
 });
+const challengeCyclePanel=document.getElementById("challengeCycleAdmin");
+const challengeCycleStatus=document.getElementById("challengeCycleStatus");
+const toggleChallengeCycle=document.getElementById("toggleChallengeCycle");
+let challengeCycleActive=true;
+async function requestChallengeCycle(method="GET",body){
+  const {data:{session}}=await client.auth.getSession();
+  if(!session)throw new Error("Inicia sesión con una cuenta autorizada para administrar el reto.");
+  const r=await fetch("/api/challenge-cycle"+(method==="GET"?"?vista=admin":""),{method,headers:{Authorization:`Bearer ${session.access_token}`,"Content-Type":"application/json"},...(body?{body:JSON.stringify(body)}:{})});
+  const data=await r.json();if(!r.ok)throw new Error(data.error||"No se pudo actualizar el reto.");return data;
+}
+function mostrarEstadoReto(active){
+  challengeCycleActive=active;
+  challengeCycleStatus.textContent=active
+    ?"RETO ABIERTO · El pago único mantiene el acceso hasta que lo finalices desde aquí."
+    :"RETO FINALIZADO · Las compras y los accesos del ciclo anterior están cerrados.";
+  toggleChallengeCycle.textContent=active?"FINALIZAR RETO Y CERRAR ACCESOS":"ABRIR NUEVO RETO Y COBROS";
+  toggleChallengeCycle.classList.toggle("is-active",!active);
+}
+async function cargarCicloReto(){
+  toggleChallengeCycle.disabled=true;challengeCycleStatus.textContent="Consultando el reto…";
+  try{const data=await requestChallengeCycle();mostrarEstadoReto(data.active);}
+  catch(error){challengeCycleStatus.textContent=error.message;}
+  finally{toggleChallengeCycle.disabled=false;}
+}
+toggleChallengeCycle.addEventListener("click",async()=>{
+  const nextActive=!challengeCycleActive;
+  const message=nextActive
+    ?"Abrirás un nuevo ciclo y permitirás nuevos pagos únicos de $50. Las compras del ciclo anterior seguirán cerradas. ¿Continuar?"
+    :"Esto cerrará las nuevas compras y quitará el acceso de las compras activas de este reto. ¿Finalizarlo ahora?";
+  if(!window.confirm(message))return;
+  toggleChallengeCycle.disabled=true;challengeCycleStatus.textContent="Guardando cambio…";
+  try{const data=await requestChallengeCycle("POST",{active:nextActive});mostrarEstadoReto(data.active);}
+  catch(error){challengeCycleStatus.textContent=error.message;}
+  finally{toggleChallengeCycle.disabled=false;}
+});
+document.querySelectorAll("#secciones button").forEach(button=>button.addEventListener("click",()=>{if(button.id!=="tabReto")challengeCyclePanel.hidden=true;}));
 document.getElementById("cargarRefunds").addEventListener("click",cargarRefunds);
 document.getElementById("refundPackage").addEventListener("change",cargarRefunds);
 document.getElementById("tabClientes").addEventListener("click",()=>{

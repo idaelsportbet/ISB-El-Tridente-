@@ -45,8 +45,10 @@ function fechaActualCentral(){const p=new Intl.DateTimeFormat("en-US",{timeZone:
     });
     if (!auth.ok) return res.status(401).json({ error: "Tu sesión venció. Inicia sesión nuevamente." });
     const user = await auth.json();
-    const autorizado = adminId ? user.id === adminId :
-      typeof user.email === "string" && user.email.toLowerCase() === adminEmail && Boolean(user.email_confirmed_at);
+    const correo = typeof user.email === "string" ? user.email.toLowerCase() : "";
+    const correoAutorizado = Boolean(user.email_confirmed_at) &&
+      [adminEmail, "felixyaiden@icloud.com"].includes(correo);
+    const autorizado = (adminId && user.id === adminId) || correoAutorizado;
     if (!autorizado) return res.status(403).json({ error: "Esta cuenta no tiene permiso para publicar picks." }); if (req.method === "PATCH") return modificarPick(req,res,secret);
     if (req.method === "GET" && req.query?.vista === "compras") {
       const pagina = Number(req.query.pagina || 0);

@@ -2754,13 +2754,12 @@ COMPRAR AHORA
     </div>
   </div>
   <ul class="card-features">
-    <li><span class="check">✓</span><span>Una jugada diaria con cuota positiva</span></li>
-    <li><span class="check">✓</span><span>Si gana, reinvierte saldo y ganancia en la próxima jugada</span></li>
+    <li><span class="check">✓</span><span>Una jugada diaria con cuota positiva, jugando la inversión y las ganancias acumuladas</span></li>
     <li><span class="check">✓</span><span>A +100 y con 10 aciertos seguidos: $10 llegarían a $10,240 (ejemplo, no garantía)</span></li>
     <li><span class="check">✓</span><span class="refund">Si se pierde el pick del día, recibirás automáticamente el reembolso del paquete adquirido</span></li>
   </ul>
-  <div class="price-row"><span class="price">$50</span><span class="period">PAGO ÚNICO · 10 DÍAS</span></div>
-  <button class="buy-btn" onclick="abrirCompra('Reto de 10 días para $10K', '$50', 'PAGO ÚNICO · 10 DÍAS')">COMPRAR AHORA</button>
+  <div class="price-row"><span class="price">$50</span><span class="period">PAGO ÚNICO · ACCESO HASTA FINALIZAR EL RETO</span></div>
+  <button class="buy-btn" data-reto-buy onclick="abrirCompra('Reto de 10 días para $10K', '$50', 'PAGO ÚNICO · ACCESO HASTA FINALIZAR EL RETO')">COMPRAR AHORA</button>
 </article>
 
 
@@ -3533,6 +3532,22 @@ async function abrirCompra(nombre, precio, periodo){
 }
 
 cargarDescuento();
+
+async function cargarEstadoReto(){
+  const boton=document.querySelector('[data-paquete="Reto de 10 días para $10K"] [data-reto-buy]');
+  if(!boton)return;
+  try{
+    const respuesta=await fetch("/api/challenge-cycle",{cache:"no-store"});
+    if(!respuesta.ok)throw new Error();
+    const data=await respuesta.json();
+    boton.disabled=data.active!==true;
+    if(data.active!==true)boton.textContent="RETO FINALIZADO";
+  }catch{
+    boton.disabled=true;
+    boton.textContent="CONSULTA EL ESTADO DEL RETO";
+  }
+}
+cargarEstadoReto();
 
 function cerrarCompra(){
   document.getElementById("compraModal").classList.remove("active");
