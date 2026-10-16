@@ -25,7 +25,7 @@ export default async function handler(req, res) {
 
     const paqueteChampions = paquete === "Champions League Completa";
     const paqueteReto = paquete === "Reto de 10 días para $10K";
-    const montoManualCentavos = paqueteChampions ? 20000 : paqueteReto ? 15000 : null;
+    const montoManualCentavos = paqueteChampions ? 20000 : paqueteReto ? 5000 : null;
     const priceId = precios[paquete];
 
     if (!priceId && montoManualCentavos === null) {
