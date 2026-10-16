@@ -345,24 +345,17 @@ button{
 }
 
 .hero-promo{
-  position:absolute;
-  z-index:4;
-  right:clamp(12px,4vw,54px);
-  bottom:clamp(14px,4vh,30px);
   display:grid;
-  justify-items:center;
-  gap:3px;
-  padding:10px 16px;
-  border:1px solid rgba(246,189,53,.85);
-  border-radius:9px;
-  background:linear-gradient(135deg,rgba(2,10,7,.94),rgba(4,45,28,.88));
-  box-shadow:0 0 18px rgba(0,230,122,.15),inset 0 0 14px rgba(246,189,53,.08);
-  text-align:center;
-  pointer-events:none;
+  justify-items:start;
+  gap:4px;
+  margin:0 0 8px;
+  padding:0;
+  color:var(--gold-light);
+  text-shadow:0 1px 10px rgba(246,189,53,.42);
 }
 .hero-promo[hidden]{display:none!important}
-.hero-promo strong{color:var(--gold-light);font-size:clamp(16px,2.2vw,25px);font-weight:1000;letter-spacing:.06em;text-shadow:0 1px 8px rgba(246,189,53,.45);white-space:nowrap}
-.hero-promo span{color:#fff;font-size:clamp(8px,1vw,11px);font-weight:900;letter-spacing:.22em}
+.hero-promo strong{max-width:100%;color:var(--gold-light);font-size:clamp(21px,4vw,44px);font-weight:1000;line-height:.92;letter-spacing:-.025em;text-shadow:0 1px 10px rgba(246,189,53,.48)}
+.hero-promo span{color:var(--gold);font-size:clamp(9px,1.1vw,13px);font-weight:900;letter-spacing:.24em}
 
 
 /* ========================================
@@ -1929,24 +1922,9 @@ Cerrar sesión
 <div class="hero-copy">
 
 
-<div class="hero-brand">
-
-<div class="hero-trident">
-🔱
-</div>
-
-<div>
-
-<div class="hero-isb">
-ISB
-</div>
-
-<div class="hero-el">
-EL TRIDENTE
-</div>
-
-</div>
-
+<div class="hero-promo" id="heroPromo" hidden aria-label="30% de descuento, solo en ISB">
+  <strong>30% DE<br>DESCUENTO</strong>
+  <span>SOLO EN ISB</span>
 </div>
 
 
@@ -2046,11 +2024,6 @@ PRIVADA
 
 </div>
 
-</div>
-
-<div class="hero-promo" id="heroPromo" hidden aria-label="30% de descuento, solo en ISB">
-  <strong>30% DE DESCUENTO</strong>
-  <span>SOLO EN ISB</span>
 </div>
 
 </div>
