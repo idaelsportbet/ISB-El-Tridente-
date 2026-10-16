@@ -3,6 +3,11 @@ const SUPABASE_URL = "https://nfvkmxnprchvkufwvhpr.supabase.co";
 function calcularVencimiento(paquete) {
   const ahora = new Date();
 
+  if (paquete === "Champions League Completa") {
+    // Access ends at midnight Central after the 2026/27 final on June 5, 2027.
+    return new Date("2027-06-06T05:00:00.000Z").toISOString();
+  }
+
   if (
     paquete === "Premium Diario" ||
     paquete === "Exclusiva Diaria"
