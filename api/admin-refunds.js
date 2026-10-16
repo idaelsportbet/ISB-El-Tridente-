@@ -1,6 +1,6 @@
 const SUPABASE_URL = "https://nfvkmxnprchvkufwvhpr.supabase.co";
 const ADMIN_EMAIL = "idaelvargasbusiness@gmail.com";
-const PAQUETES_REEMBOLSABLES = ["Premium Diario", "Exclusiva Diaria", "Reto de 10 días para $10K"];
+const PAQUETES_REEMBOLSABLES = ["Premium Diario", "Exclusiva Diaria"];
 
 async function isAdmin(authorization, secret) {
   if (!/^Bearer \S+$/.test(authorization || "")) return false;
@@ -15,6 +15,24 @@ async function isAdmin(authorization, secret) {
   const correoAutorizado = Boolean(user.email_confirmed_at) &&
     [ADMIN_EMAIL, "felixyaiden@icloud.com"].includes(correo);
   return (adminId && user.id === adminId) || correoAutorizado;
+}
+
+function centralDayBounds(day) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(day || "")) return null;
+  const [year, month, date] = day.split("-").map(Number);
+  const base = Date.UTC(year, month - 1, date);
+  if (new Date(base).toISOString().slice(0, 10) !== day) return null;
+  const midnightUtc = utc => {
+    const hour = Number(new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/Chicago",
+      hour: "2-digit",
+      hourCycle: "h23"
+    }).formatToParts(new Date(utc)).find(item => item.type === "hour")?.value);
+    if (!Number.isFinite(hour)) throw new Error("No se pudo calcular la fecha Central.");
+    return new Date(utc - hour * 60 * 60 * 1000);
+  };
+  const next = Date.UTC(year, month - 1, date + 1);
+  return { start: midnightUtc(base + 6 * 60 * 60 * 1000), end: midnightUtc(next + 6 * 60 * 60 * 1000) };
 }
 
 async function supabaseRequest(path, secret, options = {}) {
@@ -100,14 +118,16 @@ export default async function handler(req, res) {
 
     if (req.method === "GET") {
       const paquete = String(req.query?.paquete || "");
-      if (!PAQUETES_REEMBOLSABLES.includes(paquete)) return res.status(400).json({ error: "Elige un paquete con política de reembolso." });
-      const desde = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+      const fecha = String(req.query?.fecha || "");
+      const bounds = centralDayBounds(fecha);
+      if (!PAQUETES_REEMBOLSABLES.includes(paquete)) return res.status(400).json({ error: "Solo se permiten Premium Diario y Exclusiva Diaria." });
+      if (!bounds) return res.status(400).json({ error: "Selecciona una fecha válida." });
       const query = new URLSearchParams({
         select: "id,user_id,nombre,correo,paquete,cantidad_pagada_dolar,fecha_compra,vencimiento",
         paquete: `eq.${paquete}`,
-        fecha_compra: `gte.${desde}`,
-        order: "fecha_compra.desc",
-        limit: "100"
+        order: "fecha_compra.asc",
+        limit: "500",
+        and: `(fecha_compra.gte.${bounds.start.toISOString()},fecha_compra.lt.${bounds.end.toISOString()})`
       });
       const response = await supabaseRequest(`compras?${query}`, secret);
       if (!response.ok) return res.status(502).json({ error: "No se pudieron cargar las compras recientes." });
@@ -116,8 +136,10 @@ export default async function handler(req, res) {
 
     const purchaseId = String(req.body?.purchase_id || "");
     const paquete = String(req.body?.paquete || "");
-    if (!/^(?:[0-9]{1,18}|[0-9a-f]{8}-[0-9a-f-]{27})$/i.test(purchaseId) || !PAQUETES_REEMBOLSABLES.includes(paquete)) {
-      return res.status(400).json({ error: "Selecciona una compra válida de un paquete reembolsable." });
+    const fecha = String(req.body?.fecha || "");
+    const bounds = centralDayBounds(fecha);
+    if (!/^(?:[0-9]{1,18}|[0-9a-f]{8}-[0-9a-f-]{27})$/i.test(purchaseId) || !PAQUETES_REEMBOLSABLES.includes(paquete) || !bounds) {
+      return res.status(400).json({ error: "Selecciona una compra válida de Premium Diario o Exclusiva Diaria y su fecha." });
     }
     const query = new URLSearchParams({
       select: "id,user_id,nombre,correo,paquete,cantidad_pagada_dolar,fecha_compra",
@@ -130,6 +152,10 @@ export default async function handler(req, res) {
     const purchases = await purchaseResponse.json();
     const compra = purchases[0];
     if (!compra?.user_id || !compra.correo || !compra.fecha_compra) return res.status(404).json({ error: "No se encontró esa compra." });
+    const fechaCompra = Date.parse(compra.fecha_compra);
+    if (!Number.isFinite(fechaCompra) || fechaCompra < bounds.start.getTime() || fechaCompra >= bounds.end.getTime()) {
+      return res.status(400).json({ error: "La compra no pertenece al paquete y fecha seleccionados." });
+    }
 
     const session = await buscarSesionCompra(compra);
     if (!session) return res.status(409).json({ error: "No encontré un pago de Stripe que coincida exactamente con esta compra. No se envió ningún reembolso." });

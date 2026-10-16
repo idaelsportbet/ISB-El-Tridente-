@@ -86,7 +86,7 @@
   .admin-app{display:block!important}.sidebar{display:none!important}.topbar{height:auto!important;min-height:64px;padding:8px 20px!important}.admin-brand-mini{display:flex;align-items:center;gap:8px}.top-nav{display:flex;min-width:0}.admin-profile{width:auto;align-self:center}.admin-menu{top:calc(100% + 8px)}
   @media(max-width:700px){.topbar{display:grid!important;grid-template-columns:minmax(0,1fr) auto;gap:7px 8px}.top-nav{grid-column:1/-1;grid-row:2;width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;overflow:visible}.topbar-label{display:none}.admin-menu{right:8px}.top-nav .nav-item{width:100%;min-height:44px;justify-content:flex-start;padding:9px 10px;font-size:12px}.admin-brand-mini{font-size:17px}.admin-brand-mini span{font-size:8px}.support-reply{grid-template-columns:1fr}.support-reply button{width:100%}}
   @media(max-width:420px){.topbar{padding:8px 7px!important}.top-nav .nav-item{padding:8px 8px;font-size:11px}.top-nav .nav-item .nav-icon{display:none}}
-  .refund-controls{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin:16px 0}.refund-controls label{display:grid;gap:6px}.refund-controls select{min-width:240px;padding:12px;background:#080b09;color:#f3d37b;border:1px solid #bd913c88;border-radius:8px}.refund-controls button,.refund-action{background:linear-gradient(110deg,#ffe18b,#c49330 45%,#f2ce70);border:1px solid #fff0b4;color:#120e04;font-weight:900;padding:12px 16px;border-radius:8px;cursor:pointer}.refund-action:disabled{opacity:.6;cursor:wait}\n  #descuentoPanel{max-width:900px;margin:20px auto;padding:24px;border:1px solid #a9823966;border-radius:14px;background:rgba(2,7,5,.9)}#descuentoPanel h1{color:#edc560;font-family:Georgia,serif}#descuentoPanel>p{color:#dedbd0;line-height:1.6}.discount-status-card{display:grid;gap:18px;max-width:560px;margin-top:24px;padding:22px;border:1px solid #b4934b77;border-radius:12px;background:rgba(4,8,6,.88)}#descuentoEstado{color:#f3d37b;font-weight:700}#alternarDescuento{max-width:440px;background:linear-gradient(110deg,#ffe18b,#c49330 45%,#f2ce70);border-color:#fff0b4;color:#120e04;letter-spacing:1px}#alternarDescuento.is-active{background:linear-gradient(110deg,#17221a,#080b09);border-color:#d9b85d;color:#f3d37b}
+  .refund-controls{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin:16px 0}.refund-controls label{display:grid;gap:6px}.refund-controls select,.refund-controls input{min-width:240px;padding:12px;background:#080b09;color:#f3d37b;border:1px solid #bd913c88;border-radius:8px}.refund-controls button,.refund-action{background:linear-gradient(110deg,#ffe18b,#c49330 45%,#f2ce70);border:1px solid #fff0b4;color:#120e04;font-weight:900;padding:12px 16px;border-radius:8px;cursor:pointer}.refund-action:disabled{opacity:.6;cursor:wait}\n  #descuentoPanel{max-width:900px;margin:20px auto;padding:24px;border:1px solid #a9823966;border-radius:14px;background:rgba(2,7,5,.9)}#descuentoPanel h1{color:#edc560;font-family:Georgia,serif}#descuentoPanel>p{color:#dedbd0;line-height:1.6}.discount-status-card{display:grid;gap:18px;max-width:560px;margin-top:24px;padding:22px;border:1px solid #b4934b77;border-radius:12px;background:rgba(4,8,6,.88)}#descuentoEstado{color:#f3d37b;font-weight:700}#alternarDescuento{max-width:440px;background:linear-gradient(110deg,#ffe18b,#c49330 45%,#f2ce70);border-color:#fff0b4;color:#120e04;letter-spacing:1px}#alternarDescuento.is-active{background:linear-gradient(110deg,#17221a,#080b09);border-color:#d9b85d;color:#f3d37b}
 </style></head>
 <body><div class="admin-app">
   <div class="admin-stage">
@@ -110,11 +110,11 @@
     <div class="paginas"><button type="button" id="anteriorCompras" disabled>ANTERIOR</button><button type="button" id="siguienteCompras" disabled>SIGUIENTE</button></div>
   </section>
   <section id="refundAdmin" hidden>
-    <h2>REEMBOLSOS POR PAQUETE</h2>
-    <p>Cuando confirmes que el pick del día se perdió, selecciona aquí la compra y procesa el reembolso del paquete adquirido. Stripe enviará el dinero automáticamente al método de pago original.</p>
-    <div class="refund-controls"><label for="refundPackage">Paquete</label><select id="refundPackage"><option value="Premium Diario">Premium Diario</option><option value="Exclusiva Diaria">Exclusiva Diaria</option><option value="Reto de 10 días para $10K">Reto de 10 días para $10K</option></select><button type="button" id="cargarRefunds">CARGAR COMPRAS</button></div>
+    <h2>REEMBOLSOS DE PAQUETES DIARIOS</h2>
+    <p>Solo aplica a Premium Diario y Exclusiva Diaria. Cuando el pick del día resulte perdido, selecciona el paquete y la fecha de compra; al pulsar el único botón de reembolso, se devolverá el pago a todos los clientes que compraron ese paquete ese día.</p>
+    <div class="refund-controls"><label for="refundPackage">Paquete</label><select id="refundPackage"><option value="Premium Diario">Premium Diario</option><option value="Exclusiva Diaria">Exclusiva Diaria</option></select><label for="refundDate">Fecha de compra (hora Central)</label><input id="refundDate" type="date"><button type="button" id="refundAll" class="refund-action" disabled>REEMBOLSAR A TODOS</button></div>
     <p id="refundStatus" role="status" aria-live="polite"></p>
-    <div class="tabla-scroll"><table><thead><tr><th>Nombre</th><th>Correo</th><th>Paquete</th><th>Pagado</th><th>Fecha</th><th>Acción</th></tr></thead><tbody id="refundRows"></tbody></table></div>
+    <div class="tabla-scroll"><table><thead><tr><th>Nombre</th><th>Correo</th><th>Paquete</th><th>Pagado</th><th>Fecha</th><th>Estado</th></tr></thead><tbody id="refundRows"></tbody></table></div>
   </section>
   <section id="supportAdmin" hidden><h2>MENSAJES DE SOPORTE</h2><p>Los mensajes enviados desde el portal de clientes aparecen aquí.</p><button type="button" id="refreshSupport">ACTUALIZAR MENSAJES</button><p id="supportAdminStatus" role="status" aria-live="polite"></p><div id="supportAdminList"></div></section>
   <section id="challengeCycleAdmin" hidden>
@@ -255,30 +255,52 @@ async function refundRequest(method, body, query="") {
   if(!response.ok)throw new Error(data.error||"No se pudo procesar el reembolso.");
   return data;
 }
-const refundStatus=document.getElementById("refundStatus"),refundRows=document.getElementById("refundRows"),refundPackage=document.getElementById("refundPackage");
+const refundStatus=document.getElementById("refundStatus"),refundRows=document.getElementById("refundRows"),refundPackage=document.getElementById("refundPackage"),refundDate=document.getElementById("refundDate"),refundAll=document.getElementById("refundAll");
+let comprasReembolso=[];
+function fechaHoyCentral(){const p=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());return `${p.find(x=>x.type==="year").value}-${p.find(x=>x.type==="month").value}-${p.find(x=>x.type==="day").value}`;}
+refundDate.value=fechaHoyCentral();
+function montoCompras(compras){return new Intl.NumberFormat("es",{style:"currency",currency:"USD"}).format(compras.reduce((s,c)=>s+(Number(c.cantidad_pagada_dolar)||0),0));}
 async function cargarRefunds(){
-  const button=document.getElementById("cargarRefunds");button.disabled=true;refundRows.replaceChildren();refundStatus.textContent="Buscando compras…";
+  refundAll.disabled=true;refundRows.replaceChildren();comprasReembolso=[];refundStatus.textContent="Buscando compras de ese día…";
   try{
-    const data=await refundRequest("GET",undefined,"?paquete="+encodeURIComponent(refundPackage.value));
-    if(!data.compras.length){refundStatus.textContent="No hay compras recientes de este paquete.";return;}
-    for(const compra of data.compras){
-      const tr=document.createElement("tr");
+    if(!refundDate.value)throw new Error("Selecciona la fecha de compra.");
+    const query="?paquete="+encodeURIComponent(refundPackage.value)+"&fecha="+encodeURIComponent(refundDate.value);
+    const data=await refundRequest("GET",undefined,query);
+    comprasReembolso=data.compras||[];
+    if(!comprasReembolso.length){refundStatus.textContent="No hay compras de ese paquete en esa fecha.";return;}
+    for(const compra of comprasReembolso){
+      const tr=document.createElement("tr");tr.dataset.purchaseId=String(compra.id);
       for(const value of [compra.nombre||"—",compra.correo||"—",compra.paquete||"—",new Intl.NumberFormat("es",{style:"currency",currency:"USD"}).format(Number(compra.cantidad_pagada_dolar)||0),new Intl.DateTimeFormat("es",{timeZone:"America/Chicago",dateStyle:"medium",timeStyle:"short"}).format(new Date(compra.fecha_compra))]){
         const td=document.createElement("td");td.textContent=value;tr.append(td);
       }
-      const action=document.createElement("td"),refund=document.createElement("button");refund.className="refund-action";refund.type="button";refund.textContent="REEMBOLSAR";refund.dataset.purchaseId=String(compra.id);
-      refund.addEventListener("click",async()=>{
-        const amount=new Intl.NumberFormat("es",{style:"currency",currency:"USD"}).format(Number(compra.cantidad_pagada_dolar)||0);
-        if(!window.confirm(`¿Confirmas que la jugada de ${compra.paquete} perdió y quieres reembolsar ${amount} a ${compra.correo}?`))return;
-        refund.disabled=true;refund.textContent="PROCESANDO…";
-        try{const result=await refundRequest("POST",{purchase_id:String(compra.id),paquete:compra.paquete});refund.textContent=result.refund_status==="succeeded"?"REEMBOLSADO":"REEMBOLSO SOLICITADO";refundStatus.textContent=`Stripe recibió el reembolso de ${amount}.${result.access_revoked?" El acceso de esta compra quedó cerrado.":" Revisa el acceso del cliente en Compras."}`;}
-        catch(error){refund.disabled=false;refund.textContent="REEMBOLSAR";refundStatus.textContent=error.message;}
-      });
-      action.append(refund);tr.append(action);refundRows.append(tr);
+      const status=document.createElement("td");status.textContent="Pendiente";tr.append(status);refundRows.append(tr);
     }
-    refundStatus.textContent=`${data.compras.length} compra(s) disponible(s). Se muestran compras recientes.`;
+    refundStatus.textContent=`${comprasReembolso.length} compra(s) del ${refundDate.value} · Total: ${montoCompras(comprasReembolso)}. Al confirmar, se reembolsarán todas.`;
+    refundAll.textContent=`REEMBOLSAR A TODOS (${comprasReembolso.length})`;refundAll.disabled=false;
   }catch(error){refundStatus.textContent=error.message;}
-  finally{button.disabled=false;}
+}
+async function reembolsarTodos(){
+  const compras=[...comprasReembolso];if(!compras.length)return;
+  const paquete=refundPackage.value,fecha=refundDate.value,total=montoCompras(compras);
+  if(!window.confirm(`¿Confirmas reembolsar ${total} a los ${compras.length} clientes que compraron ${paquete} el ${fecha} (hora Central)? Stripe devolverá cada pago a su método original.`))return;
+  refundAll.disabled=true;refundAll.textContent="PROCESANDO REEMBOLSOS…";refundPackage.disabled=true;refundDate.disabled=true;
+  let cursor=0,correctos=0,errores=0;const completadas=new Set();
+  const workers=Array.from({length:Math.min(4,compras.length)},async()=>{
+    while(cursor<compras.length){
+      const compra=compras[cursor++],row=Array.from(refundRows.rows).find(item=>item.dataset.purchaseId===String(compra.id)),status=row?.lastElementChild;
+      if(status)status.textContent="Procesando…";
+      try{
+        const result=await refundRequest("POST",{purchase_id:String(compra.id),paquete,fecha});
+        if(status)status.textContent=result.refund_status==="succeeded"?"Reembolsado":"Reembolso solicitado";
+        correctos++;completadas.add(String(compra.id));
+      }catch(error){if(status){status.textContent="No procesado";status.title=error.message;}errores++;}
+    }
+  });
+  await Promise.all(workers);
+  comprasReembolso=compras.filter(compra=>!completadas.has(String(compra.id)));
+  refundStatus.textContent=errores?`Terminó con ${correctos} reembolsado(s) y ${errores} pendiente(s) o con error. Revisa los estados de cada cliente antes de volver a intentarlo.`:`Stripe confirmó los ${correctos} reembolsos por un total de ${total}.`;
+  refundAll.textContent=errores?`REINTENTAR PENDIENTES (${comprasReembolso.length})`:"REEMBOLSO COMPLETADO";refundAll.disabled=!errores;
+  refundPackage.disabled=false;refundDate.disabled=false;
 }
 document.getElementById("tabReto").addEventListener("click",()=>{
   form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=true;descuentoPanel.hidden=true;challengeCyclePanel.hidden=false;
@@ -326,8 +348,9 @@ toggleChallengeCycle.addEventListener("click",async()=>{
   finally{toggleChallengeCycle.disabled=false;}
 });
 document.querySelectorAll("#secciones button").forEach(button=>button.addEventListener("click",()=>{if(button.id!=="tabReto")challengeCyclePanel.hidden=true;}));
-document.getElementById("cargarRefunds").addEventListener("click",cargarRefunds);
-document.getElementById("refundPackage").addEventListener("change",cargarRefunds);
+refundAll.addEventListener("click",reembolsarTodos);
+refundPackage.addEventListener("change",cargarRefunds);
+refundDate.addEventListener("change",cargarRefunds);
 document.getElementById("tabClientes").addEventListener("click",()=>{
   form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=false;document.getElementById("supportAdmin").hidden=true;historial.hidden=true;document.getElementById("editorResultados").hidden=true;
   document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabClientes")));cargarCompras(0);
