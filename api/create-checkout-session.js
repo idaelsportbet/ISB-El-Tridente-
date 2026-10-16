@@ -23,9 +23,10 @@ export default async function handler(req, res) {
   "Económica": "price_1UDCuyDLF0zUmGGzmkJlRLw8"
 };
 
+    const paqueteChampions = paquete === "Champions League Completa";
     const priceId = precios[paquete];
 
-    if (!priceId) {
+    if (!priceId && !paqueteChampions) {
       return res.status(400).json({
         error: `Paquete no reconocido: ${paquete}`
       });
@@ -35,6 +36,10 @@ export default async function handler(req, res) {
       return res.status(500).json({
         error: "STRIPE_SECRET_KEY no está configurada"
       });
+    }
+
+    if (paqueteChampions && Date.now() >= Date.parse("2027-06-06T05:00:00.000Z")) {
+      return res.status(410).json({ error: "La temporada 2026/27 de Champions League ya terminó." });
     }
 
     const params = new URLSearchParams();
@@ -60,20 +65,31 @@ export default async function handler(req, res) {
     // All configured prices are one-time purchases. Monthly access is granted by the webhook.
     params.append("mode", "payment");
     if (promocion) {
-      const priceResponse = await fetch(`https://api.stripe.com/v1/prices/${encodeURIComponent(priceId)}`, {
-        headers: { Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}` },
-        signal: AbortSignal.timeout(5000)
-      });
-      const price = await priceResponse.json();
-      if (!priceResponse.ok || !Number.isInteger(price.unit_amount) || !price.product || price.recurring) {
+      const price = paqueteChampions
+        ? { unit_amount: 20000, currency: "usd", product: null, recurring: null }
+        : await (async () => {
+            const priceResponse = await fetch(`https://api.stripe.com/v1/prices/${encodeURIComponent(priceId)}`, {
+              headers: { Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}` },
+              signal: AbortSignal.timeout(5000)
+            });
+            const data = await priceResponse.json();
+            if (!priceResponse.ok || !Number.isInteger(data.unit_amount) || !data.product || data.recurring) return null;
+            return data;
+          })();
+      if (!price || !Number.isInteger(price.unit_amount) || (!paqueteChampions && (!price.product || price.recurring))) {
         return res.status(502).json({ error: "No se pudo calcular el precio promocional. Inténtalo de nuevo." });
       }
       const discountedAmount = Math.round(price.unit_amount * 0.7);
       params.append("line_items[0][price_data][currency]", price.currency);
-      params.append("line_items[0][price_data][product]", price.product);
+      if (price.product) params.append("line_items[0][price_data][product]", price.product);
+      else params.append("line_items[0][price_data][product_data][name]", paquete);
       params.append("line_items[0][price_data][unit_amount]", String(discountedAmount));
       params.append("metadata[descuento_porcentaje]", "30");
       params.append("metadata[precio_original_centavos]", String(price.unit_amount));
+    } else if (paqueteChampions) {
+      params.append("line_items[0][price_data][currency]", "usd");
+      params.append("line_items[0][price_data][product_data][name]", paquete);
+      params.append("line_items[0][price_data][unit_amount]", "20000");
     } else {
       params.append("line_items[0][price]", priceId);
     }
