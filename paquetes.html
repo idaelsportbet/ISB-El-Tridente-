@@ -3223,19 +3223,17 @@ const descuentoBase = {
   "Pack Mensual": 15000
 };
 let descuentoActivo = false;
-let descuentoCargado;
 function formatoUSD(cents){
   const amount=(cents/100).toFixed(2).replace(/\.00$/," ").trim().replace(/(\.\d)0$/,"$1");
   return `$${amount}`;
 }
 async function cargarDescuento(){
-  if(!descuentoCargado){
-    descuentoCargado=fetch("/api/package-discount",{cache:"no-store"})
-      .then(async response=>{if(!response.ok)throw new Error("No se pudo cargar la promoción.");return response.json();})
-      .then(data=>data.active===true)
-      .catch(()=>false);
-  }
-  descuentoActivo=await descuentoCargado;
+  try{
+    const response=await fetch("/api/package-discount",{cache:"no-store"});
+    if(!response.ok)throw new Error("No se pudo cargar la promoción.");
+    const data=await response.json();
+    descuentoActivo=data.active===true;
+  }catch{descuentoActivo=false;}
   document.querySelectorAll(".package-card[data-paquete]").forEach(card=>{
     const name=card.dataset.paquete;
     const cents=descuentoBase[name];
@@ -3244,6 +3242,7 @@ async function cargarDescuento(){
     if(!row||!price||!cents)return;
     row.querySelector(".price-before")?.remove();
     card.querySelector(".package-discount-badge")?.remove();
+    price.textContent=formatoUSD(descuentoActivo?Math.round(cents*.7):cents);
     if(!descuentoActivo)return;
     const before=document.createElement("span");before.className="price-before";before.textContent=formatoUSD(cents);
     price.textContent=formatoUSD(Math.round(cents*.7));
