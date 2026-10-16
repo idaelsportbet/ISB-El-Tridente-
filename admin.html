@@ -86,7 +86,7 @@
   .admin-app{display:block!important}.sidebar{display:none!important}.topbar{height:auto!important;min-height:64px;padding:8px 20px!important}.admin-brand-mini{display:flex;align-items:center;gap:8px}.top-nav{display:flex;min-width:0}.admin-profile{width:auto;align-self:center}.admin-menu{top:calc(100% + 8px)}
   @media(max-width:700px){.topbar{display:grid!important;grid-template-columns:minmax(0,1fr) auto;gap:7px 8px}.top-nav{grid-column:1/-1;grid-row:2;width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;overflow:visible}.topbar-label{display:none}.admin-menu{right:8px}.top-nav .nav-item{width:100%;min-height:44px;justify-content:flex-start;padding:9px 10px;font-size:12px}.admin-brand-mini{font-size:17px}.admin-brand-mini span{font-size:8px}.support-reply{grid-template-columns:1fr}.support-reply button{width:100%}}
   @media(max-width:420px){.topbar{padding:8px 7px!important}.top-nav .nav-item{padding:8px 8px;font-size:11px}.top-nav .nav-item .nav-icon{display:none}}
-  #descuentoPanel{max-width:900px;margin:20px auto;padding:24px;border:1px solid #a9823966;border-radius:14px;background:rgba(2,7,5,.9)}#descuentoPanel h1{color:#edc560;font-family:Georgia,serif}#descuentoPanel>p{color:#dedbd0;line-height:1.6}.discount-status-card{display:grid;gap:18px;max-width:560px;margin-top:24px;padding:22px;border:1px solid #b4934b77;border-radius:12px;background:rgba(4,8,6,.88)}#descuentoEstado{color:#f3d37b;font-weight:700}#alternarDescuento{max-width:440px;background:linear-gradient(110deg,#ffe18b,#c49330 45%,#f2ce70);border-color:#fff0b4;color:#120e04;letter-spacing:1px}#alternarDescuento.is-active{background:linear-gradient(110deg,#17221a,#080b09);border-color:#d9b85d;color:#f3d37b}
+  .refund-controls{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin:16px 0}.refund-controls label{display:grid;gap:6px}.refund-controls select{min-width:240px;padding:12px;background:#080b09;color:#f3d37b;border:1px solid #bd913c88;border-radius:8px}.refund-controls button,.refund-action{background:linear-gradient(110deg,#ffe18b,#c49330 45%,#f2ce70);border:1px solid #fff0b4;color:#120e04;font-weight:900;padding:12px 16px;border-radius:8px;cursor:pointer}.refund-action:disabled{opacity:.6;cursor:wait}\n  #descuentoPanel{max-width:900px;margin:20px auto;padding:24px;border:1px solid #a9823966;border-radius:14px;background:rgba(2,7,5,.9)}#descuentoPanel h1{color:#edc560;font-family:Georgia,serif}#descuentoPanel>p{color:#dedbd0;line-height:1.6}.discount-status-card{display:grid;gap:18px;max-width:560px;margin-top:24px;padding:22px;border:1px solid #b4934b77;border-radius:12px;background:rgba(4,8,6,.88)}#descuentoEstado{color:#f3d37b;font-weight:700}#alternarDescuento{max-width:440px;background:linear-gradient(110deg,#ffe18b,#c49330 45%,#f2ce70);border-color:#fff0b4;color:#120e04;letter-spacing:1px}#alternarDescuento.is-active{background:linear-gradient(110deg,#17221a,#080b09);border-color:#d9b85d;color:#f3d37b}
 </style></head>
 <body><div class="admin-app">
   <div class="admin-stage">
@@ -97,7 +97,8 @@
       <button type="button" class="nav-item" id="tabClientes" aria-pressed="false"><span class="nav-icon">♧</span><span>Comunidad</span></button>
       <button type="button" class="nav-item" id="tabSoporte" aria-pressed="false"><span class="nav-icon">✉</span><span>Soporte</span></button>
       <button type="button" class="nav-item" id="tabDescuento" aria-pressed="false"><span class="nav-icon">%</span><span>Descuentos</span></button>
-    </nav><button id="instalar" type="button" hidden>INSTALAR ISB ADMIN</button><button id="adminMenuToggle" class="admin-profile" type="button" aria-expanded="false" aria-controls="adminMenu"><span class="profile-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 21c.5-4.1 2.7-6.2 6.5-6.2s6 2.1 6.5 6.2"/></svg></span><span><strong>ADMIN</strong><small>ISB EL TRIDENTE</small></span><span class="profile-chevron" aria-hidden="true">⌄</span></button><div id="adminMenu" class="admin-menu" hidden><p class="admin-menu-title">PANELES DE ADMINISTRACIÓN</p><button type="button" class="nav-item" data-panel="tabPick">⌂ &nbsp; Publicar Pick</button><button type="button" class="nav-item" data-panel="tabPublicados">▤ &nbsp; Mis Picks</button><button type="button" class="nav-item" data-panel="tabResultados">▥ &nbsp; Estadísticas</button><button type="button" class="nav-item" data-panel="tabClientes">♧ &nbsp; Comunidad</button><button type="button" class="nav-item" data-panel="tabSoporte">✉ &nbsp; Soporte</button><button type="button" class="nav-item" data-panel="tabDescuento">% &nbsp; Descuentos</button></div></header>
+      <button type="button" class="nav-item" id="tabRefund" aria-pressed="false"><span class="nav-icon">↩</span><span>Reembolsos</span></button>
+    </nav><button id="instalar" type="button" hidden>INSTALAR ISB ADMIN</button><button id="adminMenuToggle" class="admin-profile" type="button" aria-expanded="false" aria-controls="adminMenu"><span class="profile-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 21c.5-4.1 2.7-6.2 6.5-6.2s6 2.1 6.5 6.2"/></svg></span><span><strong>ADMIN</strong><small>ISB EL TRIDENTE</small></span><span class="profile-chevron" aria-hidden="true">⌄</span></button><div id="adminMenu" class="admin-menu" hidden><p class="admin-menu-title">PANELES DE ADMINISTRACIÓN</p><button type="button" class="nav-item" data-panel="tabPick">⌂ &nbsp; Publicar Pick</button><button type="button" class="nav-item" data-panel="tabPublicados">▤ &nbsp; Mis Picks</button><button type="button" class="nav-item" data-panel="tabResultados">▥ &nbsp; Estadísticas</button><button type="button" class="nav-item" data-panel="tabClientes">♧ &nbsp; Comunidad</button><button type="button" class="nav-item" data-panel="tabSoporte">✉ &nbsp; Soporte</button><button type="button" class="nav-item" data-panel="tabDescuento">% &nbsp; Descuentos</button><button type="button" class="nav-item" data-panel="tabRefund">↩ &nbsp; Reembolsos</button></div></header>
     <main>
   <p id="estado" role="status" aria-live="polite">Comprobando tu acceso…</p><a id="adminLoginButton" class="admin-login-button" href="/index.html?login=admin" hidden>INICIAR SESIÓN</a>
   <section id="clientes" hidden>
@@ -106,6 +107,13 @@
     <p id="comprasEstado" role="status" aria-live="polite"></p>
     <div class="tabla-scroll"><table><thead><tr><th>Usuario</th><th>Nombre</th><th>Correo</th><th>Paquete</th><th>Pagado (USD)</th><th>Compra</th><th>Vencimiento</th><th>Acceso</th></tr></thead><tbody id="comprasFilas"></tbody></table></div>
     <div class="paginas"><button type="button" id="anteriorCompras" disabled>ANTERIOR</button><button type="button" id="siguienteCompras" disabled>SIGUIENTE</button></div>
+  </section>
+  <section id="refundAdmin" hidden>
+    <h2>REEMBOLSOS POR PAQUETE</h2>
+    <p>Elige el paquete y la compra del cliente. Confirma que la jugada perdió antes de enviar el reembolso completo del pago del paquete.</p>
+    <div class="refund-controls"><label for="refundPackage">Paquete</label><select id="refundPackage"><option value="Premium Diario">Premium Diario</option><option value="Exclusiva Diaria">Exclusiva Diaria</option><option value="Reto de 10 días para $10K">Reto de 10 días para $10K</option></select><button type="button" id="cargarRefunds">CARGAR COMPRAS</button></div>
+    <p id="refundStatus" role="status" aria-live="polite"></p>
+    <div class="tabla-scroll"><table><thead><tr><th>Nombre</th><th>Correo</th><th>Paquete</th><th>Pagado</th><th>Fecha</th><th>Acción</th></tr></thead><tbody id="refundRows"></tbody></table></div>
   </section>
   <section id="supportAdmin" hidden><h2>MENSAJES DE SOPORTE</h2><p>Los mensajes enviados desde el portal de clientes aparecen aquí.</p><button type="button" id="refreshSupport">ACTUALIZAR MENSAJES</button><p id="supportAdminStatus" role="status" aria-live="polite"></p><div id="supportAdminList"></div></section>
   <section id="descuentoPanel" hidden>
@@ -133,6 +141,7 @@
       <label><input type="checkbox" name="paquete" value="Exclusiva Semanal"> Exclusiva Semanal</label>
       <label><input type="checkbox" name="paquete" value="Pack Mensual"> Pack Mensual</label>
       <label><input type="checkbox" name="paquete" value="Económica"> Económica</label>
+      <label><input type="checkbox" name="paquete" value="Reto de 10 días para $10K"> Reto de 10 días para $10K</label>
       <label><input type="checkbox" name="paquete" value="Champions League Completa"> Champions League Completa</label>
     </fieldset>
     <button type="submit" class="publish-button"><span aria-hidden="true">➤</span> PUBLICAR PICK</button>
@@ -232,8 +241,48 @@ async function cargarCompras(pagina=0){
   } catch(error){avisoCompras.textContent=error.message;}
   finally {cargandoCompras=false;document.getElementById("actualizarCompras").disabled=false;}
 }
+async function refundRequest(method, body, query="") {
+  const {data:{session}}=await client.auth.getSession();
+  if(!session)throw new Error("Tu sesión venció. Inicia sesión de nuevo.");
+  const response=await fetch("/api/admin-refunds"+query,{method,headers:{Authorization:`Bearer ${session.access_token}`,"Content-Type":"application/json"},...(body?{body:JSON.stringify(body)}:{})});
+  const data=await response.json();
+  if(!response.ok)throw new Error(data.error||"No se pudo procesar el reembolso.");
+  return data;
+}
+const refundStatus=document.getElementById("refundStatus"),refundRows=document.getElementById("refundRows"),refundPackage=document.getElementById("refundPackage");
+async function cargarRefunds(){
+  const button=document.getElementById("cargarRefunds");button.disabled=true;refundRows.replaceChildren();refundStatus.textContent="Buscando compras…";
+  try{
+    const data=await refundRequest("GET",undefined,"?paquete="+encodeURIComponent(refundPackage.value));
+    if(!data.compras.length){refundStatus.textContent="No hay compras recientes de este paquete.";return;}
+    for(const compra of data.compras){
+      const tr=document.createElement("tr");
+      for(const value of [compra.nombre||"—",compra.correo||"—",compra.paquete||"—",new Intl.NumberFormat("es",{style:"currency",currency:"USD"}).format(Number(compra.cantidad_pagada_dolar)||0),new Intl.DateTimeFormat("es",{timeZone:"America/Chicago",dateStyle:"medium",timeStyle:"short"}).format(new Date(compra.fecha_compra))]){
+        const td=document.createElement("td");td.textContent=value;tr.append(td);
+      }
+      const action=document.createElement("td"),refund=document.createElement("button");refund.className="refund-action";refund.type="button";refund.textContent="REEMBOLSAR";refund.dataset.purchaseId=String(compra.id);
+      refund.addEventListener("click",async()=>{
+        const amount=new Intl.NumberFormat("es",{style:"currency",currency:"USD"}).format(Number(compra.cantidad_pagada_dolar)||0);
+        if(!window.confirm(`¿Confirmas que la jugada de ${compra.paquete} perdió y quieres reembolsar ${amount} a ${compra.correo}?`))return;
+        refund.disabled=true;refund.textContent="PROCESANDO…";
+        try{const result=await refundRequest("POST",{purchase_id:String(compra.id),paquete:compra.paquete});refund.textContent=result.refund_status==="succeeded"?"REEMBOLSADO":"REEMBOLSO SOLICITADO";refundStatus.textContent=`Stripe recibió el reembolso de ${amount}.${result.access_revoked?" El acceso de esta compra quedó cerrado.":" Revisa el acceso del cliente en Compras."}`;}
+        catch(error){refund.disabled=false;refund.textContent="REEMBOLSAR";refundStatus.textContent=error.message;}
+      });
+      action.append(refund);tr.append(action);refundRows.append(tr);
+    }
+    refundStatus.textContent=`${data.compras.length} compra(s) disponible(s). Se muestran compras recientes.`;
+  }catch(error){refundStatus.textContent=error.message;}
+  finally{button.disabled=false;}
+}
+document.getElementById("tabRefund").addEventListener("click",()=>{
+  form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=true;descuentoPanel.hidden=true;document.getElementById("refundAdmin").hidden=false;
+  document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabRefund")));
+  cargarRefunds();
+});
+document.getElementById("cargarRefunds").addEventListener("click",cargarRefunds);
+document.getElementById("refundPackage").addEventListener("change",cargarRefunds);
 document.getElementById("tabClientes").addEventListener("click",()=>{
-  form.hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=false;document.getElementById("supportAdmin").hidden=true;historial.hidden=true;document.getElementById("editorResultados").hidden=true;
+  form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=false;document.getElementById("supportAdmin").hidden=true;historial.hidden=true;document.getElementById("editorResultados").hidden=true;
   document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabClientes")));cargarCompras(0);
 });
 document.getElementById("tabPick").addEventListener("click",()=>{
@@ -259,7 +308,7 @@ async function cargarSoporteAdmin(){
     supportList.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",async()=>{b.disabled=true;try{await supportRequest("PATCH",{accion:"cerrar",ticket_id:b.dataset.close});await cargarSoporteAdmin();}catch(error){supportStatus.textContent=error.message;b.disabled=false;}}));
   }catch(error){supportStatus.textContent=error.message;}finally{b.disabled=false;}
 }
-document.getElementById("tabSoporte").addEventListener("click",()=>{form.hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;historial.hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("supportAdmin").hidden=false;document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabSoporte")));cargarSoporteAdmin();});
+document.getElementById("tabSoporte").addEventListener("click",()=>{form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;historial.hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("supportAdmin").hidden=false;document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabSoporte")));cargarSoporteAdmin();});
 const descuentoPanel=document.getElementById("descuentoPanel"), descuentoEstado=document.getElementById("descuentoEstado"), alternarDescuento=document.getElementById("alternarDescuento");
 let descuentoHabilitado=false;
 async function peticionDescuento(method,body){
@@ -275,7 +324,7 @@ function mostrarEstadoDescuento(active){
   alternarDescuento.classList.toggle("is-active",descuentoHabilitado);
 }
 document.getElementById("tabDescuento").addEventListener("click",async()=>{
-  form.hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=true;descuentoPanel.hidden=false;
+  form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=true;descuentoPanel.hidden=false;
   document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabDescuento")));
   alternarDescuento.disabled=true;descuentoEstado.textContent="Consultando promoción…";
   try{const data=await peticionDescuento("GET");mostrarEstadoDescuento(data.active);}catch(error){descuentoEstado.textContent=error.message;}
@@ -305,7 +354,7 @@ const historial=document.createElement("section");historial.id="historial";histo
 const paquetesPanel=["Premium Diario","Premium Semanal","Exclusiva Diaria","Exclusiva Semanal","Pack Mensual","Económica"];
 const picksEditables=new Map();function tarjetaPublicado(p){picksEditables.set(String(p.id),p);const titulo=String(p.titulo??"");const cuentaInstagram=titulo.match(/\s+(@[a-zA-Z0-9._]{2,30})\s*$/)?.[1];const tituloLimpio=cuentaInstagram?titulo.replace(/\s+@[a-zA-Z0-9._]{2,30}\s*$/," ").trim():titulo;const descripcion=String(p.descripcion??"");const lineaInstagram=cuentaInstagram&&!descripcion.includes("📸 "+cuentaInstagram)?window.renderPickDescription("📸 "+cuentaInstagram):"";return '<article class="pick-history-card" data-pick-id="'+escapar(p.id)+'" style="text-align:center;padding:22px;border:1px solid #ad8736;border-radius:12px;margin:14px 0;background:linear-gradient(#031009bf,#031009d4),url(hero.jpeg) center/cover"><h3 style="color:#efc766">'+escapar(p.paquete)+'</h3><p>'+escapar(p.fecha_pick)+'</p><h2>'+escapar(tituloLimpio)+'</h2>'+(p.imagen_url?'<img src="'+escapar(p.imagen_url)+'" alt="Imagen del pick" style="max-width:100%">':"")+window.renderPickDescription(descripcion)+lineaInstagram+'<div style="display:flex;justify-content:center;gap:10px;margin-top:18px"><button type="button" data-accion-pick="editar" style="width:auto;padding:9px 14px">EDITAR PICK</button>'+(p.activo?'<button type="button" data-accion-pick="borrar" style="width:auto;padding:9px 14px">BORRAR PICK</button>':'<button type="button" data-accion-pick="restaurar" style="width:auto;padding:9px 14px">RESTAURAR PICK</button>')+'</div></article>';}
 function conectarAccionesPick(contenedor,picks,alActualizar){contenedor.querySelectorAll(".pick-history-card").forEach((card,i)=>{const p=picks[i];card.querySelector("[data-accion-pick=editar]").onclick=async()=>{const titulo=prompt("Título del pick",p.titulo);if(titulo===null)return;const descripcion=prompt("Pick, cuota y análisis",p.descripcion);if(descripcion===null)return;const fecha_pick=prompt("Fecha del pick (AAAA-MM-DD)",p.fecha_pick);if(fecha_pick===null)return;const imagen_url=prompt("Enlace de imagen (opcional)",p.imagen_url||"");if(imagen_url===null)return;try{await request("PATCH",{accion:"editar_pick",id:p.id,paquete:p.paquete,titulo,descripcion,fecha_pick,imagen_url});alActualizar();}catch(error){alert(error.message)}};card.querySelector("[data-accion-pick=borrar]")?.addEventListener("click",async()=>{if(!confirm("¿Retirar este pick de la vista de clientes? Seguirá disponible en el historial."))return;try{await request("PATCH",{accion:"borrar_pick",id:p.id,paquete:p.paquete});alActualizar();}catch(error){alert(error.message)}});card.querySelector("[data-accion-pick=restaurar]")?.addEventListener("click",async()=>{try{await request("PATCH",{accion:"restaurar_pick",id:p.id,paquete:p.paquete});alActualizar();}catch(error){alert(error.message)}})})}async function abrirPublicados(){
-  form.hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=false;
+  form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=false;
   document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabPublicados")));
   historial.innerHTML=`<h2 style="color:#efc766">PICKS PUBLICADOS</h2><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">${paquetesPanel.map((p,i)=>`<button type="button" data-publicado="${i}" style="background:#092719;color:#efc766;border-color:#ad8736;font-size:14px;padding:16px 8px">${escapar(p)}</button>`).join("")}</div><button id="abrirHistorial" type="button" style="margin-top:18px">VER HISTORIAL</button><section id="detallePublicados" style="margin-top:20px"></section>`;
   const detalle=document.getElementById("detallePublicados");
@@ -345,7 +394,7 @@ form.addEventListener("submit", async event => {
       let volver=document.getElementById("volverEditor");
       if(!volver){volver=document.createElement("button");volver.id="volverEditor";volver.type="button";volver.textContent="← VOLVER AL ADMINISTRADOR";vista.prepend(volver);}
       volver.onclick=()=>{vista.hidden=true;form.hidden=false;document.getElementById("editorLayout").hidden=false;if(tabs)tabs.hidden=false;estado.hidden=false;};
-      form.hidden=true;document.getElementById("editorLayout").hidden=true;if(tabs)tabs.hidden=true;estado.hidden=true;vista.hidden=false;vista.scrollIntoView({behavior:"smooth",block:"start"});
+      form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;if(tabs)tabs.hidden=true;estado.hidden=true;vista.hidden=false;vista.scrollIntoView({behavior:"smooth",block:"start"});
     };
   } catch(error) {estado.textContent=error.message;button.disabled=false;}
 });

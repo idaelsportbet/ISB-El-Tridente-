@@ -1,5 +1,5 @@
 const SUPABASE_URL = "https://nfvkmxnprchvkufwvhpr.supabase.co";
-const PAQUETES = ["Premium Diario", "Premium Semanal", "Exclusiva Diaria", "Exclusiva Semanal", "Pack Mensual", "Económica", "Champions League Completa"];
+const PAQUETES = ["Premium Diario", "Premium Semanal", "Exclusiva Diaria", "Exclusiva Semanal", "Pack Mensual", "Económica", "Champions League Completa", "Reto de 10 días para $10K"];
 
 async function notificarPicks(filas, secret) {
   const key=process.env.RESEND_API_KEY, remitente=process.env.PICK_EMAIL_FROM;
