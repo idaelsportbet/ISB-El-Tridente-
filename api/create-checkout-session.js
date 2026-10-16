@@ -24,9 +24,11 @@ export default async function handler(req, res) {
 };
 
     const paqueteChampions = paquete === "Champions League Completa";
+    const paqueteReto = paquete === "Reto de 10 días para $10K";
+    const montoManualCentavos = paqueteChampions ? 20000 : paqueteReto ? 15000 : null;
     const priceId = precios[paquete];
 
-    if (!priceId && !paqueteChampions) {
+    if (!priceId && montoManualCentavos === null) {
       return res.status(400).json({
         error: `Paquete no reconocido: ${paquete}`
       });
@@ -65,8 +67,8 @@ export default async function handler(req, res) {
     // All configured prices are one-time purchases. Monthly access is granted by the webhook.
     params.append("mode", "payment");
     if (promocion) {
-      const price = paqueteChampions
-        ? { unit_amount: 20000, currency: "usd", product: null, recurring: null }
+      const price = montoManualCentavos !== null
+        ? { unit_amount: montoManualCentavos, currency: "usd", product: null, recurring: null }
         : await (async () => {
             const priceResponse = await fetch(`https://api.stripe.com/v1/prices/${encodeURIComponent(priceId)}`, {
               headers: { Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}` },
@@ -76,7 +78,7 @@ export default async function handler(req, res) {
             if (!priceResponse.ok || !Number.isInteger(data.unit_amount) || !data.product || data.recurring) return null;
             return data;
           })();
-      if (!price || !Number.isInteger(price.unit_amount) || (!paqueteChampions && (!price.product || price.recurring))) {
+      if (!price || !Number.isInteger(price.unit_amount) || (montoManualCentavos === null && (!price.product || price.recurring))) {
         return res.status(502).json({ error: "No se pudo calcular el precio promocional. Inténtalo de nuevo." });
       }
       const discountedAmount = Math.round(price.unit_amount * 0.7);
@@ -86,10 +88,10 @@ export default async function handler(req, res) {
       params.append("line_items[0][price_data][unit_amount]", String(discountedAmount));
       params.append("metadata[descuento_porcentaje]", "30");
       params.append("metadata[precio_original_centavos]", String(price.unit_amount));
-    } else if (paqueteChampions) {
+    } else if (montoManualCentavos !== null) {
       params.append("line_items[0][price_data][currency]", "usd");
       params.append("line_items[0][price_data][product_data][name]", paquete);
-      params.append("line_items[0][price_data][unit_amount]", "20000");
+      params.append("line_items[0][price_data][unit_amount]", String(montoManualCentavos));
     } else {
       params.append("line_items[0][price]", priceId);
     }
