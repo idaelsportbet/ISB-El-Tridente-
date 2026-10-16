@@ -354,6 +354,7 @@ button{
   text-shadow:0 1px 10px rgba(246,189,53,.42);
 }
 .hero-promo[hidden]{display:none!important}
+.hero-brand[hidden]{display:none!important}
 .hero-promo strong{max-width:100%;color:var(--gold-light);font-size:clamp(21px,4vw,44px);font-weight:1000;line-height:.92;letter-spacing:-.025em;text-shadow:0 1px 10px rgba(246,189,53,.48)}
 .hero-promo span{color:var(--gold);font-size:clamp(9px,1.1vw,13px);font-weight:900;letter-spacing:.24em}
 
@@ -1922,6 +1923,26 @@ Cerrar sesión
 <div class="hero-copy">
 
 
+<div class="hero-brand" id="heroBrand">
+
+<div class="hero-trident">
+🔱
+</div>
+
+<div>
+
+<div class="hero-isb">
+ISB
+</div>
+
+<div class="hero-el">
+EL TRIDENTE
+</div>
+
+</div>
+
+</div>
+
 <div class="hero-promo" id="heroPromo" hidden aria-label="30% de descuento, solo en ISB">
   <strong>30% DE<br>DESCUENTO</strong>
   <span>SOLO EN ISB</span>
@@ -3235,6 +3256,8 @@ async function cargarDescuento(){
   }catch{descuentoActivo=false;}
   const heroPromo=document.getElementById("heroPromo");
   if(heroPromo)heroPromo.hidden=!descuentoActivo;
+  const heroBrand=document.getElementById("heroBrand");
+  if(heroBrand)heroBrand.hidden=descuentoActivo;
   document.querySelectorAll(".package-card[data-paquete]").forEach(card=>{
     const name=card.dataset.paquete;
     const cents=descuentoBase[name];
