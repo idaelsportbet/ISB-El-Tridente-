@@ -8,6 +8,10 @@ function calcularVencimiento(paquete) {
     return new Date("2027-06-06T05:00:00.000Z").toISOString();
   }
 
+  if (paquete === "Reto de 10 días para $10K") {
+    return new Date(ahora.getTime() + 10 * 24 * 60 * 60 * 1000).toISOString();
+  }
+
   if (
     paquete === "Premium Diario" ||
     paquete === "Exclusiva Diaria" ||
