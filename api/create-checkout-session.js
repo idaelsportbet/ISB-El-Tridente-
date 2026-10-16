@@ -38,10 +38,45 @@ export default async function handler(req, res) {
     }
 
     const params = new URLSearchParams();
+    let promocion = false;
+
+    // The promotion is read server-side; client requests cannot choose their own price.
+    if (paquete !== "Económica" && process.env.SUPABASE_SECRET_KEY) {
+      try {
+        const query = new URLSearchParams({ select: "value", key: "eq.package_discount", limit: "1" });
+        const settingsResponse = await fetch(
+          `https://nfvkmxnprchvkufwvhpr.supabase.co/rest/v1/isb_site_settings?${query}`,
+          { headers: { apikey: process.env.SUPABASE_SECRET_KEY, Authorization: `Bearer ${process.env.SUPABASE_SECRET_KEY}` }, signal: AbortSignal.timeout(4000) }
+        );
+        if (settingsResponse.ok) {
+          const settings = await settingsResponse.json();
+          promocion = settings[0]?.value?.active === true;
+        }
+      } catch (error) {
+        console.error("No se pudo consultar la promoción; se usará el precio normal.", error);
+      }
+    }
 
     // All configured prices are one-time purchases. Monthly access is granted by the webhook.
     params.append("mode", "payment");
-    params.append("line_items[0][price]", priceId);
+    if (promocion) {
+      const priceResponse = await fetch(`https://api.stripe.com/v1/prices/${encodeURIComponent(priceId)}`, {
+        headers: { Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}` },
+        signal: AbortSignal.timeout(5000)
+      });
+      const price = await priceResponse.json();
+      if (!priceResponse.ok || !Number.isInteger(price.unit_amount) || !price.product || price.recurring) {
+        return res.status(502).json({ error: "No se pudo calcular el precio promocional. Inténtalo de nuevo." });
+      }
+      const discountedAmount = Math.round(price.unit_amount * 0.7);
+      params.append("line_items[0][price_data][currency]", price.currency);
+      params.append("line_items[0][price_data][product]", price.product);
+      params.append("line_items[0][price_data][unit_amount]", String(discountedAmount));
+      params.append("metadata[descuento_porcentaje]", "30");
+      params.append("metadata[precio_original_centavos]", String(price.unit_amount));
+    } else {
+      params.append("line_items[0][price]", priceId);
+    }
     params.append("line_items[0][quantity]", "1");
 
     params.append(
@@ -104,3 +139,4 @@ if (nombre) {
     });
   }
 }
+
