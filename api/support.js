@@ -49,7 +49,9 @@ export default async function handler(req, res) {
     if (!auth.ok) return res.status(401).json({ error: "Tu sesión venció. Inicia sesión de nuevo." });
     const user = await auth.json();
     const adminId = clean(process.env.ADMIN_USER_ID);
-    const isAdmin = adminId ? user.id === adminId : user.email?.toLowerCase() === ADMIN_EMAIL && Boolean(user.email_confirmed_at);
+    const correo = user.email?.toLowerCase();
+    const isAdmin = Boolean(user.email_confirmed_at) &&
+      [ADMIN_EMAIL, "felixyaiden@icloud.com"].includes(correo) || (adminId && user.id === adminId);
     const headers = { Prefer: "return=representation" };
 
     if (req.method === "GET") {
