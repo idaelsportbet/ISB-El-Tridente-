@@ -5,7 +5,7 @@ const FOREVER = "2099-12-31T23:59:59.999Z";
 const ADMIN_EMAILS = new Set(["idaelvargasbusiness@gmail.com", "felixyaiden@icloud.com"]);
 
 async function authenticatedAdmin(authorization, secret) {
-  if (!/^Bearer \\S+$/.test(authorization || "")) return false;
+  if (!/^Bearer \S+$/.test(authorization || "")) return false;
   const response = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
     headers: { apikey: secret, Authorization: authorization },
     signal: AbortSignal.timeout(5000)
