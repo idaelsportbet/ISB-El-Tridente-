@@ -1,260 +1,260 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Publicar picks | ISB El Tridente</title>
-  <meta name="robots" content="noindex,nofollow">
-  <meta name="theme-color" content="#090c0b">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="ISB Admin">
-  <link rel="manifest" href="admin.webmanifest">
-  <link rel="apple-touch-icon" href="admin-icon-192.png">
-  <link rel="stylesheet" href="resultados.css?v=20261010-escritura">
-  <script src="resultados-calendario.js?v=20261010-tabla" defer></script>
-  <script src="admin-resultados.js?v=20261010-escritura" defer></script>
-  <style>
-    *{box-sizing:border-box}[hidden]{display:none!important}
-    body{margin:0;background:#030303;min-height:100vh;color:#eee;font:16px system-ui;isolation:isolate}
-    body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(3,3,3,.66),rgba(3,3,3,.38),rgba(3,3,3,.66)),url('hero.jpeg') center 35%/cover no-repeat;pointer-events:none}
-    main{max-width:760px;margin:32px auto;padding:24px;border-top:3px solid #22e58b;border-radius:16px;background:rgba(5,18,11,.93);box-shadow:0 0 36px #18c77718;backdrop-filter:blur(6px)}
-    a{color:#39ef9d}h1{color:#ffd700;letter-spacing:1px;text-shadow:0 0 18px #ffd70020}
-    label{display:block;margin:18px 0 6px;color:#d9f8e7}
-    input:not([type=checkbox]),textarea,select{width:100%;padding:12px;background:#050907;border:1px solid #287c51;border-radius:8px;color:#fff;font:inherit}
-    input::placeholder,textarea::placeholder{color:#a2bfae}
-    input:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid #39ef9d;outline-offset:3px}
-    input[type=checkbox]{accent-color:#22e58b;width:18px;height:18px;vertical-align:middle}
-    textarea{min-height:100px}
-    .editor-section{margin:22px 0;padding:16px;border:1px solid #287c51;border-radius:12px;background:linear-gradient(145deg,#0d2317,#07130d)}.editor-section h2{margin:0 0 8px;color:#d9b653;font-size:18px;letter-spacing:.06em}.editor-section>small{display:block;margin-bottom:12px}.entry-card{position:relative;margin:12px 0;padding:14px;border:1px solid #9c7a2d88;border-radius:10px;background:#050907}.entry-card label{margin-top:0}.entry-grid{display:grid;grid-template-columns:minmax(140px,.7fr) minmax(0,2fr);gap:12px;align-items:end}.entry-card .remove-entry{width:auto;padding:6px 12px;margin-top:10px;background:#23130c;color:#ffd7b0;border-color:#9c5736;font-size:12px}.add-entry{width:auto;padding:10px 16px;background:#092719;color:#f2d278;border-color:#ad8736;font-size:14px}.auto-prefix{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center}.auto-prefix span{font-size:22px}.instagram-input{display:grid;grid-template-columns:28px minmax(0,1fr) 20px;gap:10px;align-items:center}.instagram-icon{display:inline-flex;width:24px;height:24px;flex:none;vertical-align:middle}.instagram-icon svg{display:block;width:100%;height:100%}.instagram-preview{display:inline-flex;align-items:center;justify-content:center;gap:7px}.instagram-preview .instagram-icon{width:19px;height:19px}.pick-preview-admin .preview-instagram{display:flex;justify-content:center;align-items:center;gap:7px}.pick-preview-admin h3,.pick-preview-admin .preview-title{font-family:Georgia,serif;color:#efc766}.pick-preview-admin .preview-title{font-size:25px}.pick-preview-admin .preview-match,.pick-preview-admin .pick-match{font-weight:500;color:#e0e8e2}.pick-preview-admin .preview-play,.pick-preview-admin .pick-play{font-weight:800;color:#fff}.pick-preview-admin .preview-odds,.pick-preview-admin .preview-instagram,.pick-preview-admin .pick-odds,.pick-preview-admin .pick-instagram{font-weight:500;color:#efc766}.pick-preview-admin .pick-arrow{color:#29e68b}.pick-preview-admin .pick-analysis-label{color:#efc766;font-size:12px;font-weight:800}.pick-preview-admin .pick-analysis{color:#d5ddd7}.isb-verified{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-left:2px;color:#2588f5;vertical-align:middle;flex:none}.isb-verified svg{display:block;width:100%;height:100%}.instagram-input .isb-verified{margin:0}
-    fieldset{margin:24px 0;border:1px solid #278451;border-radius:8px;background:#0d2317}
-    legend{color:#39ef9d;padding:0 8px}fieldset label{margin:12px}
-    button{width:100%;padding:16px;background:linear-gradient(135deg,#32ed96,#16b969);color:#032213;border:1px solid #45ffa9;border-radius:8px;font:700 16px system-ui;cursor:pointer;box-shadow:0 5px 22px #18c77725}
-    button:hover:not(:disabled){background:#49ffa9}button:disabled{opacity:.5;cursor:wait}
-    button[type=submit]{background:linear-gradient(135deg,#075b35,#034526);color:#ffd700}
-    button[type=submit]:hover:not(:disabled){background:#08663d}
-    #estado{white-space:pre-wrap;line-height:1.6;color:#97efbe}small{color:#b6c0ba}
-    @media(max-width:600px){main{margin:16px 12px;padding:20px}h1{font-size:27px}.entry-grid{grid-template-columns:1fr;gap:8px}.editor-section{padding:13px}}
-    .tabs{display:flex;gap:12px;margin:20px 0}.tabs button{background:#092719;color:#ffd700;font-size:14px}.tabs button[aria-pressed=true]{border-color:#ffd700}
-    #clientes h2{color:#ffd700}.tabla-scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:12px 8px;text-align:left;border-bottom:1px solid #287c51;white-space:nowrap}th{color:#ffd700}.activo{color:#39ef9d}.vencido{color:#ffb68e}.paginas{display:flex;gap:12px;margin-top:18px}.paginas button{font-size:14px}#comprasEstado{line-height:1.5}
-  </style>
-<link rel="stylesheet" href="tema-isb.css?v=20261015-oro-mas-amarillo"><style>
-  :root{--admin-gold:#edc560;--admin-green:#11a96a;--admin-line:#bd913c88}
-  body{background:#020504;color:#f1f2ed;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
-  body::before{opacity:.29;background:linear-gradient(90deg,rgba(0,4,3,.94),rgba(0,5,3,.72),rgba(0,4,3,.92)),url('hero.jpeg') center 35%/cover fixed no-repeat}
-  .admin-app{min-height:100vh;display:grid;grid-template-columns:272px minmax(0,1fr)}
-  .sidebar{position:sticky;top:0;height:100vh;min-height:650px;overflow:hidden;display:flex;flex-direction:column;padding:24px 10px 28px;border-right:1px solid #b08b3b66;background:linear-gradient(180deg,rgba(1,9,7,.95),rgba(1,12,8,.84)),url('hero.jpeg') 47% center/cover}
-  .brand{height:208px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;color:var(--admin-gold);text-decoration:none;text-shadow:0 0 20px #e6ba5166;font-family:Georgia,serif}
-  .brand-mark{font-size:66px;line-height:.8;transform:scaleX(.68);filter:drop-shadow(0 0 7px #c89d3b)}.brand strong{font-size:64px;line-height:.98;letter-spacing:-4px}.brand>span:last-child{font-family:system-ui,sans-serif;font-size:15px;letter-spacing:4px;font-weight:700}
-  .side-nav{display:grid;gap:8px;margin-top:22px}
-  .side-nav .nav-item{width:100%;display:flex;align-items:center;gap:18px;padding:15px 18px;border:1px solid transparent;border-radius:11px;background:transparent;color:#d5d9d5;text-align:left;font-size:15px;font-weight:500;box-shadow:none}
-  .side-nav .nav-item:hover:not(:disabled),.side-nav .nav-item[aria-pressed=true]{background:linear-gradient(105deg,#062b1bdb,#03130edb);border-color:#15c886;color:#fff;box-shadow:0 0 18px #10b87835}
-  .nav-icon{width:28px;flex:none;color:var(--admin-gold);font-size:24px;text-align:center}
-  .sidebar-caption{display:flex;flex-direction:column;gap:8px;margin:auto 0 20px;padding:18px 8px;border-top:1px solid #d7aa4c55;border-bottom:1px solid #d7aa4c55;text-align:center;color:#efd17f;font-size:13px;letter-spacing:5px}
-  .sidebar-motto{margin:14px 0 0;text-align:center;color:#ddd6db;font-size:11px;line-height:2.1;letter-spacing:5px}
-  .admin-stage{min-width:0;min-height:100vh;background:rgba(0,3,2,.39)}
-  .topbar{height:58px;position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid #bd913c55;background:#030705eF;backdrop-filter:blur(12px)}
-  .topbar-label{color:#c2b994;font-size:11px;letter-spacing:3px}.admin-profile{display:flex;align-items:center;gap:12px;color:var(--admin-gold)}.admin-profile>span:nth-last-child(2){display:grid;gap:1px}.admin-profile strong{font-size:12px;letter-spacing:1px}.admin-profile small{font-size:9px;letter-spacing:1px}.profile-bell{width:24px;height:24px;margin-right:10px;color:var(--admin-gold)}.profile-bell svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.profile-avatar{width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--admin-gold);border-radius:50%;font-size:25px}.profile-avatar svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round}.profile-chevron{font-size:20px;margin-left:8px}
-  main{width:100%;max-width:none!important;margin:0;padding:26px 30px 50px;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none}
-  #estado{margin:2px 0 12px;color:#d9e2dc;font-size:13px}.admin-login-button:not([hidden]){display:inline-flex;align-items:center;justify-content:center;min-height:46px;margin:10px 0 18px;padding:12px 24px;border:1px solid #e9c45a;border-radius:10px;background:linear-gradient(135deg,#f4d67c,#c9972e);color:#071009;font-weight:800;letter-spacing:1px;text-decoration:none;box-shadow:0 0 18px #dfbd4d33}.admin-login-button:focus-visible{outline:3px solid #2ce697;outline-offset:3px}
-  .editor-layout{max-width:1560px;margin:0 auto}
-  .editor-heading{margin:2px 0 20px;padding:0 8px}.editor-heading h1{margin:0;color:#edc560;font-family:Georgia,serif;font-size:clamp(34px,3.4vw,54px);line-height:1.05;letter-spacing:1px;text-shadow:0 0 16px #d9a63066}.editor-heading p{margin:8px 0 0;color:#e7e0d1;font-size:11px;letter-spacing:5px}
-  #publicar{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(340px,.88fr);gap:26px;align-items:start}
-  .editor-fields{min-width:0}.editor-fields>label,.editor-section h2,.editor-fields legend{color:#e9c565;font-size:14px;font-weight:750;letter-spacing:1.7px;text-transform:uppercase}.editor-fields>label{margin:18px 0 7px}.editor-fields>small{display:block;margin-top:6px}.editor-fields input:not([type=checkbox]),.editor-fields textarea,.editor-fields select{background:rgba(6,8,7,.9);border-color:#9b783b;color:#f4f1e9}.editor-fields input::placeholder,.editor-fields textarea::placeholder{color:#9f9c91}.editor-fields input:focus-visible,.editor-fields textarea:focus-visible,.editor-fields select:focus-visible{outline-color:#24d994}
-  .editor-section{margin:19px 0;padding:13px;border-color:#a9823966;border-radius:10px;background:rgba(4,8,6,.74)}.editor-section h2{margin:0 0 7px}.editor-section>small{margin-bottom:10px}.entry-card{background:rgba(5,7,6,.93);border-color:#b4934b77}.add-entry{background:#071a12;color:var(--admin-gold);border-color:#b89547}.entry-card label{color:#e7c768}
-  .editor-fields fieldset{background:rgba(5,8,6,.82);border-color:#92753f}.editor-fields legend{color:#e9c565}.editor-fields fieldset label{display:inline-flex;align-items:center;gap:7px;color:#e8e5db}
-  .publish-button{margin-top:12px;background:linear-gradient(110deg,#ffe18b,#c49330 45%,#f2ce70);border:1px solid #fff0b4;color:#120e04;box-shadow:0 4px 22px #d5a44436;font-weight:850;letter-spacing:2px}.publish-button:hover:not(:disabled){background:linear-gradient(110deg,#fff0ad,#d5a544 45%,#ffe18b)}
-  .preview-column{position:sticky;top:78px;min-width:0}.pick-preview-admin{position:relative;overflow:hidden;min-height:560px;padding:22px 18px;border:1px solid #e4c36d;border-radius:16px;background:linear-gradient(155deg,rgba(2,13,8,.88),rgba(0,5,3,.88)),url('hero.jpeg') center/cover;box-shadow:0 0 30px #d2a43721}.pick-preview-admin h3{margin:0;color:#f0ce75;font-size:16px;letter-spacing:2px}.pick-preview-admin .preview-subtitle{margin:4px 0 18px;color:#d5d4ca;font-size:10px;letter-spacing:3px}.pick-preview-admin #contenidoPrevia{text-align:center;min-height:450px;padding:28px 20px;border:1px solid #c7a45166;border-radius:14px;background:linear-gradient(180deg,#020504bb,#020604bd),url('hero.jpeg') center/cover}.pick-preview-admin #contenidoPrevia>*{position:relative}.pick-preview-admin .preview-title{font-size:clamp(22px,2vw,30px);line-height:1.15}.pick-preview-admin .preview-match{margin-top:13px}.pick-preview-admin .preview-play{margin:14px 0;font-size:18px}.pick-preview-admin .preview-odds{margin-top:24px;font-size:23px}
-  .pick-instagram{display:flex;justify-content:center;align-items:center;gap:7px;margin-top:14px;color:#efc766;font-size:14px;font-weight:600}.pick-instagram-logo{display:inline-flex;width:18px;height:18px;flex:none}.pick-instagram-logo svg{display:block;width:100%;height:100%}
-  #clientes{max-width:1500px;margin:18px auto;padding:24px;border:1px solid #a9823966;border-radius:14px;background:rgba(2,7,5,.86)}#clientes h2{color:var(--admin-gold)}#clientes button{width:auto}.tabla-scroll{overflow-x:auto}table{min-width:820px}
-  body:has(#editorResultados:not([hidden])) #editorLayout{display:none}\n  #editorResultados{max-width:1500px!important;margin:20px auto;padding:22px;border:1px solid #a9823966;border-radius:14px;background:rgba(2,7,5,.9)}
-  .tabs button{background:#071a12;color:#e9c565}.tabs button[aria-pressed=true]{border-color:#d5b14f;background:linear-gradient(100deg,#082b1c,#06140e)}
-  /* Navegación superior accesible en escritorio y móvil. */
-  .admin-app{display:block!important}.sidebar{display:none!important}
-  .topbar{height:auto!important;min-height:66px;flex-wrap:wrap;gap:10px;padding:8px 20px!important}
-  .admin-brand-mini{display:flex;align-items:center;gap:8px;color:var(--admin-gold);text-decoration:none;font-family:Georgia,serif;font-weight:800;font-size:20px;white-space:nowrap}.admin-brand-mini span{font:700 9px system-ui;letter-spacing:2px}
-  .top-nav{display:flex;align-items:center;gap:4px;min-width:0;flex:1;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none}.top-nav::-webkit-scrollbar{display:none}
-  .top-nav .nav-item{width:auto;flex:0 0 auto;display:flex;align-items:center;gap:7px;padding:10px 11px;border:1px solid transparent;border-radius:9px;background:transparent;color:#d5d9d5;font-size:13px;white-space:nowrap;box-shadow:none}
-  .top-nav .nav-item .nav-icon{width:auto;font-size:16px}.top-nav .nav-item:hover:not(:disabled),.top-nav .nav-item[aria-pressed=true]{background:linear-gradient(105deg,#062b1bdb,#03130edb);border-color:#15c886;color:#fff;box-shadow:0 0 14px #10b8782b}
-  .admin-profile{position:relative;border:0;background:transparent;cursor:pointer}.admin-menu{position:absolute;right:12px;top:calc(100% + 8px);z-index:30;width:min(300px,calc(100vw - 24px));padding:12px;border:1px solid #bd913c;background:#030705f5;border-radius:12px;box-shadow:0 12px 34px #000c;backdrop-filter:blur(12px)}
-  .admin-menu-title{margin:3px 8px 8px;color:var(--admin-gold);font-size:11px;letter-spacing:2px}.admin-menu .nav-item{width:100%;display:flex;align-items:center;gap:12px;padding:12px;border:1px solid transparent;border-radius:8px;background:transparent;color:#eee;text-align:left}.admin-menu .nav-item[aria-pressed=true]{border-color:#15c886;background:#062b1b;color:#fff}
-  #supportAdmin{max-width:1100px;margin:18px auto;padding:22px;border:1px solid #a9823966;border-radius:14px;background:rgba(2,7,5,.9)}#supportAdmin h2,#supportAdmin h3{color:var(--admin-gold)}.support-ticket{margin:14px 0;padding:16px;border:1px solid #9b783b88;border-radius:12px;background:#080d09}.support-ticket-header{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.support-ticket-messages{display:grid;gap:10px;margin:14px 0}.support-message{padding:10px 12px;border-radius:9px;background:#101711;white-space:pre-wrap;overflow-wrap:anywhere}.support-message.admin{border-left:3px solid #22d58a}.support-message.customer{border-left:3px solid #d6b85d}.support-reply{display:grid;grid-template-columns:minmax(120px,.4fr) minmax(0,1fr) auto;gap:8px;align-items:end}.support-reply textarea{min-height:72px}.support-reply button{width:auto;padding:12px}.support-ticket small{display:block;margin-top:4px;color:#c8c3b7}
-  @media(max-width:700px){.topbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px 8px;padding:8px 10px!important}.admin-brand-mini{font-size:17px}.admin-brand-mini span{font-size:8px}.topbar-label{display:none}.top-nav{grid-column:1/-1;grid-row:2;width:100%;max-width:100%;padding:2px 0}.top-nav .nav-item{width:100%;min-height:44px;justify-content:flex-start;padding:9px 10px;font-size:12px}.top-nav .nav-item .nav-icon{font-size:14px}.admin-profile{justify-self:end}.admin-menu{right:8px}.support-reply{grid-template-columns:1fr}.support-reply button{width:100%}}
-  @media(max-width:420px){.topbar{padding-inline:7px!important}.top-nav .nav-item{padding:8px 8px;font-size:11px}.top-nav .nav-item .nav-icon{display:none}.support-ticket{padding:12px}}
-  @media(max-width:1150px){#publicar{grid-template-columns:minmax(0,1fr) minmax(290px,.8fr);gap:16px}main{padding:24px 18px}.pick-preview-admin{min-height:450px}.pick-preview-admin #contenidoPrevia{min-height:350px}}
-  @media(max-width:1100px){#publicar{grid-template-columns:1fr}.preview-column{position:static}.pick-preview-admin{min-height:0}.pick-preview-admin #contenidoPrevia{min-height:280px}.editor-fields{order:1}}
-  @media(max-width:820px){.admin-app{grid-template-columns:82px minmax(0,1fr)}.sidebar{padding:16px 7px}.brand{height:128px}.brand-mark{font-size:39px}.brand strong{font-size:40px}.brand>span:last-child{font-size:8px;letter-spacing:2px}.side-nav .nav-item{justify-content:center;padding:13px 6px}.side-nav .nav-item>span:last-child{display:none}.nav-icon{font-size:22px}.sidebar-caption,.sidebar-motto{font-size:8px;letter-spacing:2px}.topbar{padding:0 16px}.topbar-label{font-size:9px;letter-spacing:1.5px}main{padding:20px 14px}.editor-heading h1{font-size:35px}.editor-heading p{letter-spacing:2px;font-size:9px}}
-  @media(max-width:520px){.admin-app{grid-template-columns:62px minmax(0,1fr)}.sidebar{padding:12px 4px}.brand{height:100px}.brand-mark{font-size:31px}.brand strong{font-size:32px}.brand>span:last-child{font-size:6px;letter-spacing:1px}.side-nav{gap:6px;margin-top:12px}.side-nav .nav-item{padding:12px 3px}.nav-icon{font-size:19px}.sidebar-caption{gap:5px;padding:12px 0;font-size:7px;letter-spacing:1px}.sidebar-motto{font-size:7px;letter-spacing:1px}.topbar{height:52px;padding:0 10px}.profile-bell{display:none}.profile-avatar{width:32px;height:32px}.admin-profile{gap:7px}.admin-profile strong{font-size:10px}.admin-profile small{font-size:7px}.profile-chevron{margin-left:2px}main{padding:16px 10px}.editor-heading{padding:0 2px}.editor-heading h1{font-size:30px}.editor-section{padding:11px}.editor-fields fieldset label{display:flex;margin:10px 4px}.entry-grid{grid-template-columns:minmax(105px,.75fr) minmax(0,2fr)}.preview-column{top:auto}}
-  .admin-app{display:block!important}.sidebar{display:none!important}.topbar{height:auto!important;min-height:64px;padding:8px 20px!important}.admin-brand-mini{display:flex;align-items:center;gap:8px}.top-nav{display:flex;min-width:0}.admin-profile{width:auto;align-self:center}.admin-menu{top:calc(100% + 8px)}
-  @media(max-width:700px){.topbar{display:grid!important;grid-template-columns:minmax(0,1fr) auto;gap:7px 8px}.top-nav{grid-column:1/-1;grid-row:2;width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;overflow:visible}.topbar-label{display:none}.admin-menu{right:8px}.top-nav .nav-item{width:100%;min-height:44px;justify-content:flex-start;padding:9px 10px;font-size:12px}.admin-brand-mini{font-size:17px}.admin-brand-mini span{font-size:8px}.support-reply{grid-template-columns:1fr}.support-reply button{width:100%}}
-  @media(max-width:420px){.topbar{padding:8px 7px!important}.top-nav .nav-item{padding:8px 8px;font-size:11px}.top-nav .nav-item .nav-icon{display:none}}
-  .refund-controls{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin:16px 0}.refund-controls label{display:grid;gap:6px}.refund-controls select,.refund-controls input{min-width:240px;padding:12px;background:#080b09;color:#f3d37b;border:1px solid #bd913c88;border-radius:8px}.refund-controls button,.refund-action{background:linear-gradient(110deg,#ffe18b,#c49330 45%,#f2ce70);border:1px solid #fff0b4;color:#120e04;font-weight:900;padding:12px 16px;border-radius:8px;cursor:pointer}.refund-action:disabled{opacity:.6;cursor:wait}\n  #descuentoPanel{max-width:900px;margin:20px auto;padding:24px;border:1px solid #a9823966;border-radius:14px;background:rgba(2,7,5,.9)}#descuentoPanel h1{color:#edc560;font-family:Georgia,serif}#descuentoPanel>p{color:#dedbd0;line-height:1.6}.discount-status-card{display:grid;gap:18px;max-width:560px;margin-top:24px;padding:22px;border:1px solid #b4934b77;border-radius:12px;background:rgba(4,8,6,.88)}#descuentoEstado{color:#f3d37b;font-weight:700}#alternarDescuento{max-width:440px;background:linear-gradient(110deg,#ffe18b,#c49330 45%,#f2ce70);border-color:#fff0b4;color:#120e04;letter-spacing:1px}#alternarDescuento.is-active{background:linear-gradient(110deg,#17221a,#080b09);border-color:#d9b85d;color:#f3d37b}
-</style></head>
-<body><div class="admin-app">
-  <div class="admin-stage">
-    <header class="topbar"><a class="admin-brand-mini" href="/admin" aria-label="ISB El Tridente, administrador">♆ ISB <span>EL TRIDENTE</span></a><div class="topbar-label">PANEL DE ADMINISTRACIÓN</div><nav id="secciones" class="top-nav" aria-label="Secciones del administrador" hidden>
-      <button type="button" class="nav-item" id="tabPick" aria-pressed="true"><span class="nav-icon">⌂</span><span>Publicar Pick</span></button>
-      <button type="button" class="nav-item" id="tabPublicados" aria-pressed="false"><span class="nav-icon">▤</span><span>Mis Picks</span></button>
-      <button type="button" class="nav-item" id="tabResultados" aria-pressed="false"><span class="nav-icon">▥</span><span>Estadísticas</span></button>
-      <button type="button" class="nav-item" id="tabClientes" aria-pressed="false"><span class="nav-icon">♧</span><span>Comunidad</span></button>
-      <button type="button" class="nav-item" id="tabSoporte" aria-pressed="false"><span class="nav-icon">✉</span><span>Soporte</span></button>
-      <button type="button" class="nav-item" id="tabDescuento" aria-pressed="false"><span class="nav-icon">%</span><span>Descuentos</span></button>
-      <button type="button" class="nav-item" id="tabRefund" aria-pressed="false"><span class="nav-icon">↩</span><span>Reembolsos</span></button>
-      <button type="button" class="nav-item" id="tabReto" aria-pressed="false"><span class="nav-icon">♧</span><span>Reto 10 días</span></button>
-    </nav><button id="instalar" type="button" hidden>INSTALAR ISB ADMIN</button><button id="adminMenuToggle" class="admin-profile" type="button" aria-expanded="false" aria-controls="adminMenu"><span class="profile-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 21c.5-4.1 2.7-6.2 6.5-6.2s6 2.1 6.5 6.2"/></svg></span><span><strong>ADMIN</strong><small>ISB EL TRIDENTE</small></span><span class="profile-chevron" aria-hidden="true">⌄</span></button><div id="adminMenu" class="admin-menu" hidden><p class="admin-menu-title">PANELES DE ADMINISTRACIÓN</p><button type="button" class="nav-item" data-panel="tabPick">⌂ &nbsp; Publicar Pick</button><button type="button" class="nav-item" data-panel="tabPublicados">▤ &nbsp; Mis Picks</button><button type="button" class="nav-item" data-panel="tabResultados">▥ &nbsp; Estadísticas</button><button type="button" class="nav-item" data-panel="tabClientes">♧ &nbsp; Comunidad</button><button type="button" class="nav-item" data-panel="tabSoporte">✉ &nbsp; Soporte</button><button type="button" class="nav-item" data-panel="tabDescuento">% &nbsp; Descuentos</button><button type="button" class="nav-item" data-panel="tabRefund">↩ &nbsp; Reembolsos</button><button type="button" class="nav-item" data-panel="tabReto">♧ &nbsp; Reto 10 días</button></div></header>
-    <main>
-  <p id="estado" role="status" aria-live="polite">Comprobando tu acceso…</p><a id="adminLoginButton" class="admin-login-button" href="/index.html?login=admin" hidden>INICIAR SESIÓN</a>
-  <section id="clientes" hidden>
-    <h2>Clientes y compras</h2>
-    <button type="button" id="actualizarCompras">ACTUALIZAR COMPRAS</button>
-    <p id="comprasEstado" role="status" aria-live="polite"></p>
-    <div class="tabla-scroll"><table><thead><tr><th>Usuario</th><th>Nombre</th><th>Correo</th><th>Paquete</th><th>Pagado (USD)</th><th>Compra</th><th>Vencimiento</th><th>Acceso</th></tr></thead><tbody id="comprasFilas"></tbody></table></div>
-    <div class="paginas"><button type="button" id="anteriorCompras" disabled>ANTERIOR</button><button type="button" id="siguienteCompras" disabled>SIGUIENTE</button></div>
-  </section>
-  <section id="refundAdmin" hidden>
-    <h2>REEMBOLSOS DE PAQUETES DIARIOS</h2>
-    <p>Solo aplica a Premium Diario y Exclusiva Diaria. Cuando el pick del día resulte perdido, selecciona el paquete y la fecha de compra; al pulsar el único botón de reembolso, se devolverá el pago a todos los clientes que compraron ese paquete ese día.</p>
-    <div class="refund-controls"><label for="refundPackage">Paquete</label><select id="refundPackage"><option value="Premium Diario">Premium Diario</option><option value="Exclusiva Diaria">Exclusiva Diaria</option></select><label for="refundDate">Fecha de compra (hora Central)</label><input id="refundDate" type="date"><button type="button" id="refundAll" class="refund-action" disabled>REEMBOLSAR A TODOS</button></div>
-    <p id="refundStatus" role="status" aria-live="polite"></p>
-    <div class="tabla-scroll"><table><thead><tr><th>Nombre</th><th>Correo</th><th>Paquete</th><th>Pagado</th><th>Fecha</th><th>Estado</th></tr></thead><tbody id="refundRows"></tbody></table></div>
-  </section>
-  <section id="supportAdmin" hidden><h2>MENSAJES DE SOPORTE</h2><p>Los mensajes enviados desde el portal de clientes aparecen aquí.</p><button type="button" id="refreshSupport">ACTUALIZAR MENSAJES</button><p id="supportAdminStatus" role="status" aria-live="polite"></p><div id="supportAdminList"></div></section>
-  <section id="challengeCycleAdmin" hidden>
-    <h2>RETO DE 10 DÍAS PARA $10K</h2>
-    <p>El acceso del cliente permanece activo después de un pago único mientras el reto esté abierto. Al finalizarlo, se cierran las compras y el acceso de ese ciclo; al abrir uno nuevo, los clientes anteriores vuelven a comprar para entrar.</p>
-    <div class="discount-status-card"><span id="challengeCycleStatus" role="status" aria-live="polite">Consultando el reto…</span><button id="toggleChallengeCycle" type="button" disabled>CONSULTANDO…</button></div>
-  </section>
-  <section id="descuentoPanel" hidden>
-    <h1>DESCUENTO PARA CLIENTES DE ISB</h1>
-    <p>Al activarla, la promoción será del 30% en todos los paquetes, excepto el paquete Económica.</p>
-    <div class="discount-status-card"><span id="descuentoEstado" role="status" aria-live="polite">Consultando promoción…</span><button id="alternarDescuento" type="button" disabled>ACTIVAR DESCUENTO DEL 30%</button></div>
-  </section>
-  <section id="editorLayout" class="editor-layout" hidden>
-    <header class="editor-heading"><div><h1>PUBLICAR PICK</h1><p>COMPARTE TU ANÁLISIS Y POTENCIA A LA COMUNIDAD</p><p id="instrucciones" hidden>Escribe el pick y selecciona todos los paquetes que deben recibirlo.</p></div></header>
-  <form id="publicar" hidden>
-    <div class="editor-fields">
-    <label for="titulo">Título del pick</label><div class="auto-prefix"><span aria-hidden="true">📍</span><input id="titulo" required maxlength="150" placeholder="Ej. Selección destacada de hoy"></div><small>El pin se agrega automáticamente al publicar.</small>
-    <section class="editor-section" aria-labelledby="partidosTitulo"><h2 id="partidosTitulo">PARTIDOS</h2><small>Elige el deporte y escribe el enfrentamiento completo.</small><div id="partidos"></div><button class="add-entry" id="agregarPartido" type="button">+ AGREGAR PARTIDO</button></section>
-    <section class="editor-section" aria-labelledby="jugadasTitulo"><h2 id="jugadasTitulo">JUGADAS</h2><small>La flecha verde se agrega automáticamente a cada jugada.</small><div id="jugadas"></div><button class="add-entry" id="agregarJugada" type="button">+ AGREGAR JUGADA</button></section>
-    <section class="editor-section"><h2>CUOTA</h2><label for="cuota">Cuota</label><div class="auto-prefix"><span aria-hidden="true">🔥</span><input id="cuota" type="text" inputmode="text" autocapitalize="off" autocomplete="off" spellcheck="false" required maxlength="20" placeholder="+110" aria-label="Cuota; puedes escribir signo más o menos"></div><small>El fuego se agrega automáticamente. Usa el teclado de texto para escribir + o −.</small></section>
-    <section class="editor-section"><h2><span class="instagram-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><defs><linearGradient id="instagramGradientAdmin" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#feda75"/><stop offset=".5" stop-color="#d62976"/><stop offset="1" stop-color="#4f5bd5"/></linearGradient></defs><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="url(#instagramGradientAdmin)" stroke-width="2.2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="url(#instagramGradientAdmin)" stroke-width="2.2"/><circle cx="17.6" cy="6.6" r="1.25" fill="#d62976"/></svg></span> INSTAGRAM</h2><label for="instagram">Tu marca de Instagram</label><div class="instagram-input"><span class="instagram-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><defs><linearGradient id="instagramGradientField" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#feda75"/><stop offset=".5" stop-color="#d62976"/><stop offset="1" stop-color="#4f5bd5"/></linearGradient></defs><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="url(#instagramGradientField)" stroke-width="2.2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="url(#instagramGradientField)" stroke-width="2.2"/><circle cx="17.6" cy="6.6" r="1.25" fill="#d62976"/></svg></span><input id="instagram" maxlength="60" value="@idael_sportbet_oficial" placeholder="@tu_usuario"><span class="isb-verified" role="img" aria-label="Insignia ISB"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.2 14.3 3l3-.2 1.3 2.7 2.7 1.3-.2 3 1.8 2.2-1.8 2.3.2 3-2.7 1.3-1.3 2.7-3-.2L12 23l-2.3-1.9-3 .2-1.3-2.7-2.7-1.3.2-3L1.1 12l1.8-2.2-.2-3 2.7-1.3 1.3-2.7 3 .2L12 1.2Z"/><path fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="m7.4 12.2 3 3 6.3-6.5"/></svg></span></div><small>Se incluirá automáticamente en el pick publicado.</small></section>
-    <label for="analisis">Análisis (opcional)</label><textarea id="analisis" maxlength="5000" placeholder="Escribe aquí el análisis, si deseas incluirlo"></textarea>
-    <label for="fecha">Fecha del pick</label><input id="fecha" type="date" required><small>Fecha según el horario Central de EE. UU.</small>
-    <label for="imagen">Enlace de imagen (opcional)</label><input id="imagen" type="url" placeholder="https://…">
-    <label for="juego">Enlace para ver el juego (opcional)</label><input id="juego" type="url" maxlength="2048" placeholder="https://…"><small>Pega el enlace del partido concreto para abrir ese juego. El botón aparece solo si agregas un enlace.</small>
-    <fieldset><legend>Paquetes que recibirán este pick</legend>
-      <label><input type="checkbox" name="paquete" value="Premium Diario"> Premium Diario</label>
-      <label><input type="checkbox" name="paquete" value="Premium Semanal"> Premium Semanal</label>
-      <label><input type="checkbox" name="paquete" value="Exclusiva Diaria"> Exclusiva Diaria</label>
-      <label><input type="checkbox" name="paquete" value="Exclusiva Semanal"> Exclusiva Semanal</label>
-      <label><input type="checkbox" name="paquete" value="Pack Mensual"> Pack Mensual</label>
-      <label><input type="checkbox" name="paquete" value="Económica"> Económica</label>
-      <label><input type="checkbox" name="paquete" value="Reto de 10 días para $10K"> Reto de 10 días para $10K</label>
-      <label><input type="checkbox" name="paquete" value="Champions League Completa"> Champions League Completa</label>
-    </fieldset>
-    <button type="submit" class="publish-button"><span aria-hidden="true">➤</span> PUBLICAR PICK</button>
-    <button id="verPublicado" type="button" hidden style="margin-top:12px">VER PICK PUBLICADO</button><section id="pickPublicado" hidden style="margin-top:20px"></section><button id="nuevo" type="button" hidden style="margin-top:12px">PUBLICAR OTRO PICK</button>
-    <p><small>Se mostrará en la web a quienes tengan acceso activo. Los avisos por correo a clientes con acceso activo requieren conectar el servicio de correo.</small></p>
-    </div>
-    <aside class="preview-column"><section class="pick-preview-admin" id="vistaPreviaAdmin" aria-live="polite"><h3>▶ VISTA PREVIA DEL PICK</h3><p class="preview-subtitle">ASÍ SE VERÁ EN LA COMUNIDAD</p><div id="contenidoPrevia"></div></section></aside>
-  </form>
-  </section>
-</main></div></div>
-</main></div></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="pick-render.js?v=20261010-pick-semantico"></script>
-<script>
-const client = supabase.createClient("https://nfvkmxnprchvkufwvhpr.supabase.co", "sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1");
-const escapar = valor => {const nodo=document.createElement("span");nodo.textContent=String(valor ?? "");return nodo.innerHTML.replace(/"/g,"&quot;");};
-const form = document.getElementById("publicar"), estado = document.getElementById("estado");
-const deportes=[{nombre:"Fútbol",icono:"⚽"},{nombre:"MLB",icono:"⚾"},{nombre:"NBA",icono:"🏀"},{nombre:"NHL",icono:"🏒"},{nombre:"NFL",icono:"🏈"},{nombre:"UFC",icono:"🥊"}];
-const partidosEl=document.getElementById("partidos"), jugadasEl=document.getElementById("jugadas");
-function renumerar(contenedor,prefijo){[...contenedor.children].forEach((card,i)=>{const label=card.querySelector("label[data-label]");if(label){label.textContent=prefijo+(i+1);card.querySelector("[data-enfrentamiento]")?.setAttribute("aria-label",`Enfrentamiento del partido ${i+1}`)}const input=card.querySelector("[data-texto-jugada]");if(input){input.placeholder=`Escribe la jugada ${i+1}…`;input.setAttribute("aria-label",`Jugada ${i+1}`)}})}
-function agregarPartido(deporte="Fútbol",enfrentamiento=""){
-  const card=document.createElement("div");card.className="entry-card";card.dataset.partido="";
-  const grid=document.createElement("div");grid.className="entry-grid";const col1=document.createElement("div"),col2=document.createElement("div");
-  const ld=document.createElement("label");ld.dataset.label="";const select=document.createElement("select");select.dataset.deporte="";
-  for(const d of deportes){const op=document.createElement("option");op.value=d.nombre;op.textContent=`${d.icono} ${d.nombre}`;op.selected=d.nombre===deporte;select.append(op)}
-  const lj=document.createElement("label");lj.textContent="Enfrentamiento";const input=document.createElement("input");input.type="text";input.required=true;input.maxLength=240;input.dataset.enfrentamiento="";input.setAttribute("aria-label",`Enfrentamiento del partido ${partidosEl.children.length+1}`);input.placeholder="Ej. Real Madrid vs Villarreal";input.value=enfrentamiento;
-  col1.append(ld,select);col2.append(lj,input);grid.append(col1,col2);card.append(grid);
-  if(partidosEl.children.length){const remove=document.createElement("button");remove.type="button";remove.className="remove-entry";remove.textContent="Quitar partido";remove.addEventListener("click",()=>{card.remove();renumerar(partidosEl,"Deporte · Partido ");actualizarPrevia()});card.append(remove)}
-  partidosEl.append(card);input.addEventListener("input",actualizarPrevia);select.addEventListener("change",actualizarPrevia);renumerar(partidosEl,"Deporte · Partido ");actualizarPrevia();
-}
-function agregarJugada(texto=""){
-  const card=document.createElement("div");card.className="entry-card";card.dataset.jugada="";const label=document.createElement("label");label.dataset.label="";
-  const input=document.createElement("input");input.type="text";input.required=true;input.maxLength=500;input.dataset.textoJugada="";input.setAttribute("aria-label",`Jugada ${jugadasEl.children.length+1}`);input.value=texto;card.append(label,input);
-  if(jugadasEl.children.length){const remove=document.createElement("button");remove.type="button";remove.className="remove-entry";remove.textContent="Quitar jugada";remove.addEventListener("click",()=>{card.remove();renumerar(jugadasEl,"Jugada ");actualizarPrevia()});card.append(remove)}
-  jugadasEl.append(card);input.addEventListener("input",actualizarPrevia);renumerar(jugadasEl,"Jugada ");actualizarPrevia();
-}
-function actualizarPrevia(){
-  const destino=document.getElementById("contenidoPrevia");if(!destino)return;destino.replaceChildren();
-  const titulo=document.createElement("h2");titulo.className="preview-title";titulo.textContent=`📍 ${document.getElementById("titulo").value||"Título del pick"}`;destino.append(titulo);
-  for(const c of partidosEl.children){const texto=c.querySelector("[data-enfrentamiento]").value;if(texto){const p=document.createElement("p");p.className="preview-match";p.textContent=`${deportes.find(d=>d.nombre===c.querySelector("[data-deporte]").value)?.icono||"🏟️"} ${texto}`;destino.append(p)}}
-  for(const c of jugadasEl.children){const texto=c.querySelector("[data-texto-jugada]").value;if(texto){const p=document.createElement("p");p.className="preview-play";const arrow=document.createElement("span");arrow.textContent="→";arrow.style.color="#29e68b";p.append(arrow,document.createTextNode(` ${texto}`));destino.append(p)}}
-  const cuota=document.getElementById("cuota").value;if(cuota){const p=document.createElement("p");p.className="preview-odds";p.textContent=`🔥 ${cuota}`;destino.append(p)}
-  const insta=document.getElementById("instagram").value.trim();if(insta){const p=document.createElement("p");p.className="preview-instagram instagram-preview";p.innerHTML=`<span class="instagram-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><defs><linearGradient id="instagramGradientPreview" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#feda75"/><stop offset=".5" stop-color="#d62976"/><stop offset="1" stop-color="#4f5bd5"/></linearGradient></defs><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="url(#instagramGradientPreview)" stroke-width="2.2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="url(#instagramGradientPreview)" stroke-width="2.2"/><circle cx="17.6" cy="6.6" r="1.25" fill="#d62976"/></svg></span><span>${insta.startsWith("@")?insta:"@"+insta}</span><span class="isb-verified" role="img" aria-label="Insignia ISB"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.2 14.3 3l3-.2 1.3 2.7 2.7 1.3-.2 3 1.8 2.2-1.8 2.3.2 3-2.7 1.3-1.3 2.7-3-.2L12 23l-2.3-1.9-3 .2-1.3-2.7-2.7-1.3.2-3L1.1 12l1.8-2.2-.2-3 2.7-1.3 1.3-2.7 3 .2L12 1.2Z"/><path fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="m7.4 12.2 3 3 6.3-6.5"/></svg></span>`;destino.append(p)}
-  const analisis=document.getElementById("analisis").value.trim();if(analisis){const p=document.createElement("p");p.textContent=`Análisis: ${analisis}`;destino.append(p)}
-}
-agregarPartido();agregarJugada();document.getElementById("agregarPartido").addEventListener("click",()=>agregarPartido());document.getElementById("agregarJugada").addEventListener("click",()=>agregarJugada());
-for(const id of ["titulo","cuota","instagram","analisis"])document.getElementById(id).addEventListener("input",actualizarPrevia);
-const partes = new Intl.DateTimeFormat("en-US", {timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
-const fecha = Object.fromEntries(partes.map(p => [p.type,p.value]));
-document.getElementById("fecha").value = `${fecha.year}-${fecha.month}-${fecha.day}`;
-async function request(method, body, query="") {
-  const {data:{session}} = await client.auth.getSession();
-  if (!session) throw new Error("Inicia sesión desde Inicio con tu cuenta de administrador y vuelve a este panel.");
-  const response = await fetch("/api/admin-picks"+query, {method,headers:{Authorization:`Bearer ${session.access_token}`,"Content-Type":"application/json"}, ...(body ? {body:JSON.stringify(body)} : {})});
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.error || "No se pudo conectar con el panel.");
-  return data;
-}
-let accesoAutorizado=false, solicitudInstalacion;
-const instalar=document.getElementById("instalar");
-window.addEventListener("beforeinstallprompt",event=>{
-  event.preventDefault();solicitudInstalacion=event;
-  instalar.hidden=!accesoAutorizado;
-});
-instalar.addEventListener("click",async()=>{
-  if(!solicitudInstalacion)return;
-  await solicitudInstalacion.prompt();solicitudInstalacion=null;instalar.hidden=true;
-});
-if("serviceWorker" in navigator) navigator.serviceWorker.register("/admin-sw.js").catch(()=>{});
-request("GET").then(() => {
-  accesoAutorizado=true;form.hidden=false;document.getElementById("editorLayout").hidden=false;document.getElementById("instrucciones").hidden=false;
-  document.getElementById("secciones").hidden=false;
-  instalar.hidden=!solicitudInstalacion;estado.textContent="Acceso de administrador confirmado.";
-  if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !navigator.standalone) {
-    estado.textContent+=" En Safari: Compartir → Añadir a pantalla de inicio para instalar ISB Admin.";
-  }
-}).catch(error => {estado.textContent=error.message;document.getElementById("adminLoginButton").hidden=false;});
-let paginaCompras=0, cargandoCompras=false;
-const avisoCompras=document.getElementById("comprasEstado"), tablaCompras=document.getElementById("comprasFilas");
-const anterior=document.getElementById("anteriorCompras"), siguiente=document.getElementById("siguienteCompras");
-async function cargarCompras(pagina=0){
-  if(cargandoCompras)return;
-  cargandoCompras=true;anterior.disabled=true;siguiente.disabled=true;
-  document.getElementById("actualizarCompras").disabled=true;avisoCompras.textContent="Cargando compras…";tablaCompras.replaceChildren();
-  try {
-    const data=await request("GET",undefined,`?vista=compras&pagina=${pagina}`);paginaCompras=data.pagina;
-    const formato=new Intl.DateTimeFormat("es",{timeZone:"America/Chicago",dateStyle:"medium",timeStyle:"short"});
-    const fechaTexto=valor=>valor&&Number.isFinite(Date.parse(valor))?formato.format(new Date(valor)):"—";
-    for(const compra of data.compras){
-      const activo=Date.parse(compra.vencimiento)>Date.now();
-      const fila=document.createElement("tr");
-      const valores=[compra.usuario||"No registrado",compra.nombre||"—",compra.correo||"—",compra.paquete||"—",new Intl.NumberFormat("es",{style:"currency",currency:"USD"}).format(Number(compra.cantidad_pagada_dolar)||0),fechaTexto(compra.fecha_compra),fechaTexto(compra.vencimiento),activo?"Activo":"Vencido"];
-      valores.forEach((valor,index)=>{const celda=document.createElement("td");celda.textContent=valor;if(index===7)celda.className=activo?"activo":"vencido";fila.append(celda)});
-      tablaCompras.append(fila);
-    }
-    avisoCompras.textContent=data.compras.length?`Página ${paginaCompras+1} · ${data.compras.length} compras · Fechas en horario Central.`:"No hay compras registradas en esta página.";
-    anterior.disabled=paginaCompras===0;siguiente.disabled=!data.hayMas;
-  } catch(error){avisoCompras.textContent=error.message;}
-  finally {cargandoCompras=false;document.getElementById("actualizarCompras").disabled=false;}
-}
-async function refundRequest(method, body, query="") {
-  const {data:{session}}=await client.auth.getSession();
-  if(!session)throw new Error("Tu sesión venció. Inicia sesión de nuevo.");
-  const response=await fetch("/api/admin-refunds"+query,{method,headers:{Authorization:`Bearer ${session.access_token}`,"Content-Type":"application/json"},...(body?{body:JSON.stringify(body)}:{})});
-  const data=await response.json();
-  if(!response.ok)throw new Error(data.error||"No se pudo procesar el reembolso.");
-  return data;
-}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Publicar picks | ISB El Tridente</title>
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#090c0b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ISB Admin">
+  <link rel="manifest" href="admin.webmanifest">
+  <link rel="apple-touch-icon" href="admin-icon-192.png">
+  <link rel="stylesheet" href="resultados.css?v=20261010-escritura">
+  <script src="resultados-calendario.js?v=20261010-tabla" defer></script>
+  <script src="admin-resultados.js?v=20261010-escritura" defer></script>
+  <style>
+    *{box-sizing:border-box}[hidden]{display:none!important}
+    body{margin:0;background:#030303;min-height:100vh;color:#eee;font:16px system-ui;isolation:isolate}
+    body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(3,3,3,.66),rgba(3,3,3,.38),rgba(3,3,3,.66)),url('hero.jpeg') center 35%/cover no-repeat;pointer-events:none}
+    main{max-width:760px;margin:32px auto;padding:24px;border-top:3px solid #22e58b;border-radius:16px;background:rgba(5,18,11,.93);box-shadow:0 0 36px #18c77718;backdrop-filter:blur(6px)}
+    a{color:#39ef9d}h1{color:#ffd700;letter-spacing:1px;text-shadow:0 0 18px #ffd70020}
+    label{display:block;margin:18px 0 6px;color:#d9f8e7}
+    input:not([type=checkbox]),textarea,select{width:100%;padding:12px;background:#050907;border:1px solid #287c51;border-radius:8px;color:#fff;font:inherit}
+    input::placeholder,textarea::placeholder{color:#a2bfae}
+    input:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid #39ef9d;outline-offset:3px}
+    input[type=checkbox]{accent-color:#22e58b;width:18px;height:18px;vertical-align:middle}
+    textarea{min-height:100px}
+    .editor-section{margin:22px 0;padding:16px;border:1px solid #287c51;border-radius:12px;background:linear-gradient(145deg,#0d2317,#07130d)}.editor-section h2{margin:0 0 8px;color:#d9b653;font-size:18px;letter-spacing:.06em}.editor-section>small{display:block;margin-bottom:12px}.entry-card{position:relative;margin:12px 0;padding:14px;border:1px solid #9c7a2d88;border-radius:10px;background:#050907}.entry-card label{margin-top:0}.entry-grid{display:grid;grid-template-columns:minmax(140px,.7fr) minmax(0,2fr);gap:12px;align-items:end}.entry-card .remove-entry{width:auto;padding:6px 12px;margin-top:10px;background:#23130c;color:#ffd7b0;border-color:#9c5736;font-size:12px}.add-entry{width:auto;padding:10px 16px;background:#092719;color:#f2d278;border-color:#ad8736;font-size:14px}.auto-prefix{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center}.auto-prefix span{font-size:22px}.instagram-input{display:grid;grid-template-columns:28px minmax(0,1fr) 20px;gap:10px;align-items:center}.instagram-icon{display:inline-flex;width:24px;height:24px;flex:none;vertical-align:middle}.instagram-icon svg{display:block;width:100%;height:100%}.instagram-preview{display:inline-flex;align-items:center;justify-content:center;gap:7px}.instagram-preview .instagram-icon{width:19px;height:19px}.pick-preview-admin .preview-instagram{display:flex;justify-content:center;align-items:center;gap:7px}.pick-preview-admin h3,.pick-preview-admin .preview-title{font-family:Georgia,serif;color:#efc766}.pick-preview-admin .preview-title{font-size:25px}.pick-preview-admin .preview-match,.pick-preview-admin .pick-match{font-weight:500;color:#e0e8e2}.pick-preview-admin .preview-play,.pick-preview-admin .pick-play{font-weight:800;color:#fff}.pick-preview-admin .preview-odds,.pick-preview-admin .preview-instagram,.pick-preview-admin .pick-odds,.pick-preview-admin .pick-instagram{font-weight:500;color:#efc766}.pick-preview-admin .pick-arrow{color:#29e68b}.pick-preview-admin .pick-analysis-label{color:#efc766;font-size:12px;font-weight:800}.pick-preview-admin .pick-analysis{color:#d5ddd7}.isb-verified{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-left:2px;color:#2588f5;vertical-align:middle;flex:none}.isb-verified svg{display:block;width:100%;height:100%}.instagram-input .isb-verified{margin:0}
+    fieldset{margin:24px 0;border:1px solid #278451;border-radius:8px;background:#0d2317}
+    legend{color:#39ef9d;padding:0 8px}fieldset label{margin:12px}
+    button{width:100%;padding:16px;background:linear-gradient(135deg,#32ed96,#16b969);color:#032213;border:1px solid #45ffa9;border-radius:8px;font:700 16px system-ui;cursor:pointer;box-shadow:0 5px 22px #18c77725}
+    button:hover:not(:disabled){background:#49ffa9}button:disabled{opacity:.5;cursor:wait}
+    button[type=submit]{background:linear-gradient(135deg,#075b35,#034526);color:#ffd700}
+    button[type=submit]:hover:not(:disabled){background:#08663d}
+    #estado{white-space:pre-wrap;line-height:1.6;color:#97efbe}small{color:#b6c0ba}
+    @media(max-width:600px){main{margin:16px 12px;padding:20px}h1{font-size:27px}.entry-grid{grid-template-columns:1fr;gap:8px}.editor-section{padding:13px}}
+    .tabs{display:flex;gap:12px;margin:20px 0}.tabs button{background:#092719;color:#ffd700;font-size:14px}.tabs button[aria-pressed=true]{border-color:#ffd700}
+    #clientes h2{color:#ffd700}.tabla-scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:12px 8px;text-align:left;border-bottom:1px solid #287c51;white-space:nowrap}th{color:#ffd700}.activo{color:#39ef9d}.vencido{color:#ffb68e}.paginas{display:flex;gap:12px;margin-top:18px}.paginas button{font-size:14px}#comprasEstado{line-height:1.5}
+  </style>
+<link rel="stylesheet" href="tema-isb.css?v=20261015-oro-mas-amarillo"><style>
+  :root{--admin-gold:#edc560;--admin-green:#11a96a;--admin-line:#bd913c88}
+  body{background:#020504;color:#f1f2ed;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+  body::before{opacity:.29;background:linear-gradient(90deg,rgba(0,4,3,.94),rgba(0,5,3,.72),rgba(0,4,3,.92)),url('hero.jpeg') center 35%/cover fixed no-repeat}
+  .admin-app{min-height:100vh;display:grid;grid-template-columns:272px minmax(0,1fr)}
+  .sidebar{position:sticky;top:0;height:100vh;min-height:650px;overflow:hidden;display:flex;flex-direction:column;padding:24px 10px 28px;border-right:1px solid #b08b3b66;background:linear-gradient(180deg,rgba(1,9,7,.95),rgba(1,12,8,.84)),url('hero.jpeg') 47% center/cover}
+  .brand{height:208px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;color:var(--admin-gold);text-decoration:none;text-shadow:0 0 20px #e6ba5166;font-family:Georgia,serif}
+  .brand-mark{font-size:66px;line-height:.8;transform:scaleX(.68);filter:drop-shadow(0 0 7px #c89d3b)}.brand strong{font-size:64px;line-height:.98;letter-spacing:-4px}.brand>span:last-child{font-family:system-ui,sans-serif;font-size:15px;letter-spacing:4px;font-weight:700}
+  .side-nav{display:grid;gap:8px;margin-top:22px}
+  .side-nav .nav-item{width:100%;display:flex;align-items:center;gap:18px;padding:15px 18px;border:1px solid transparent;border-radius:11px;background:transparent;color:#d5d9d5;text-align:left;font-size:15px;font-weight:500;box-shadow:none}
+  .side-nav .nav-item:hover:not(:disabled),.side-nav .nav-item[aria-pressed=true]{background:linear-gradient(105deg,#062b1bdb,#03130edb);border-color:#15c886;color:#fff;box-shadow:0 0 18px #10b87835}
+  .nav-icon{width:28px;flex:none;color:var(--admin-gold);font-size:24px;text-align:center}
+  .sidebar-caption{display:flex;flex-direction:column;gap:8px;margin:auto 0 20px;padding:18px 8px;border-top:1px solid #d7aa4c55;border-bottom:1px solid #d7aa4c55;text-align:center;color:#efd17f;font-size:13px;letter-spacing:5px}
+  .sidebar-motto{margin:14px 0 0;text-align:center;color:#ddd6db;font-size:11px;line-height:2.1;letter-spacing:5px}
+  .admin-stage{min-width:0;min-height:100vh;background:rgba(0,3,2,.39)}
+  .topbar{height:58px;position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid #bd913c55;background:#030705eF;backdrop-filter:blur(12px)}
+  .topbar-label{color:#c2b994;font-size:11px;letter-spacing:3px}.admin-profile{display:flex;align-items:center;gap:12px;color:var(--admin-gold)}.admin-profile>span:nth-last-child(2){display:grid;gap:1px}.admin-profile strong{font-size:12px;letter-spacing:1px}.admin-profile small{font-size:9px;letter-spacing:1px}.profile-bell{width:24px;height:24px;margin-right:10px;color:var(--admin-gold)}.profile-bell svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.profile-avatar{width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--admin-gold);border-radius:50%;font-size:25px}.profile-avatar svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round}.profile-chevron{font-size:20px;margin-left:8px}
+  main{width:100%;max-width:none!important;margin:0;padding:26px 30px 50px;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none}
+  #estado{margin:2px 0 12px;color:#d9e2dc;font-size:13px}.admin-login-button:not([hidden]){display:inline-flex;align-items:center;justify-content:center;min-height:46px;margin:10px 0 18px;padding:12px 24px;border:1px solid #e9c45a;border-radius:10px;background:linear-gradient(135deg,#f4d67c,#c9972e);color:#071009;font-weight:800;letter-spacing:1px;text-decoration:none;box-shadow:0 0 18px #dfbd4d33}.admin-login-button:focus-visible{outline:3px solid #2ce697;outline-offset:3px}
+  .editor-layout{max-width:1560px;margin:0 auto}
+  .editor-heading{margin:2px 0 20px;padding:0 8px}.editor-heading h1{margin:0;color:#edc560;font-family:Georgia,serif;font-size:clamp(34px,3.4vw,54px);line-height:1.05;letter-spacing:1px;text-shadow:0 0 16px #d9a63066}.editor-heading p{margin:8px 0 0;color:#e7e0d1;font-size:11px;letter-spacing:5px}
+  #publicar{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(340px,.88fr);gap:26px;align-items:start}
+  .editor-fields{min-width:0}.editor-fields>label,.editor-section h2,.editor-fields legend{color:#e9c565;font-size:14px;font-weight:750;letter-spacing:1.7px;text-transform:uppercase}.editor-fields>label{margin:18px 0 7px}.editor-fields>small{display:block;margin-top:6px}.editor-fields input:not([type=checkbox]),.editor-fields textarea,.editor-fields select{background:rgba(6,8,7,.9);border-color:#9b783b;color:#f4f1e9}.editor-fields input::placeholder,.editor-fields textarea::placeholder{color:#9f9c91}.editor-fields input:focus-visible,.editor-fields textarea:focus-visible,.editor-fields select:focus-visible{outline-color:#24d994}
+  .editor-section{margin:19px 0;padding:13px;border-color:#a9823966;border-radius:10px;background:rgba(4,8,6,.74)}.editor-section h2{margin:0 0 7px}.editor-section>small{margin-bottom:10px}.entry-card{background:rgba(5,7,6,.93);border-color:#b4934b77}.add-entry{background:#071a12;color:var(--admin-gold);border-color:#b89547}.entry-card label{color:#e7c768}
+  .editor-fields fieldset{background:rgba(5,8,6,.82);border-color:#92753f}.editor-fields legend{color:#e9c565}.editor-fields fieldset label{display:inline-flex;align-items:center;gap:7px;color:#e8e5db}
+  .publish-button{margin-top:12px;background:linear-gradient(110deg,#ffe18b,#c49330 45%,#f2ce70);border:1px solid #fff0b4;color:#120e04;box-shadow:0 4px 22px #d5a44436;font-weight:850;letter-spacing:2px}.publish-button:hover:not(:disabled){background:linear-gradient(110deg,#fff0ad,#d5a544 45%,#ffe18b)}
+  .preview-column{position:sticky;top:78px;min-width:0}.pick-preview-admin{position:relative;overflow:hidden;min-height:560px;padding:22px 18px;border:1px solid #e4c36d;border-radius:16px;background:linear-gradient(155deg,rgba(2,13,8,.88),rgba(0,5,3,.88)),url('hero.jpeg') center/cover;box-shadow:0 0 30px #d2a43721}.pick-preview-admin h3{margin:0;color:#f0ce75;font-size:16px;letter-spacing:2px}.pick-preview-admin .preview-subtitle{margin:4px 0 18px;color:#d5d4ca;font-size:10px;letter-spacing:3px}.pick-preview-admin #contenidoPrevia{text-align:center;min-height:450px;padding:28px 20px;border:1px solid #c7a45166;border-radius:14px;background:linear-gradient(180deg,#020504bb,#020604bd),url('hero.jpeg') center/cover}.pick-preview-admin #contenidoPrevia>*{position:relative}.pick-preview-admin .preview-title{font-size:clamp(22px,2vw,30px);line-height:1.15}.pick-preview-admin .preview-match{margin-top:13px}.pick-preview-admin .preview-play{margin:14px 0;font-size:18px}.pick-preview-admin .preview-odds{margin-top:24px;font-size:23px}
+  .pick-instagram{display:flex;justify-content:center;align-items:center;gap:7px;margin-top:14px;color:#efc766;font-size:14px;font-weight:600}.pick-instagram-logo{display:inline-flex;width:18px;height:18px;flex:none}.pick-instagram-logo svg{display:block;width:100%;height:100%}
+  #clientes{max-width:1500px;margin:18px auto;padding:24px;border:1px solid #a9823966;border-radius:14px;background:rgba(2,7,5,.86)}#clientes h2{color:var(--admin-gold)}#clientes button{width:auto}.tabla-scroll{overflow-x:auto}table{min-width:820px}
+  body:has(#editorResultados:not([hidden])) #editorLayout{display:none}\n  #editorResultados{max-width:1500px!important;margin:20px auto;padding:22px;border:1px solid #a9823966;border-radius:14px;background:rgba(2,7,5,.9)}
+  .tabs button{background:#071a12;color:#e9c565}.tabs button[aria-pressed=true]{border-color:#d5b14f;background:linear-gradient(100deg,#082b1c,#06140e)}
+  /* Navegación superior accesible en escritorio y móvil. */
+  .admin-app{display:block!important}.sidebar{display:none!important}
+  .topbar{height:auto!important;min-height:66px;flex-wrap:wrap;gap:10px;padding:8px 20px!important}
+  .admin-brand-mini{display:flex;align-items:center;gap:8px;color:var(--admin-gold);text-decoration:none;font-family:Georgia,serif;font-weight:800;font-size:20px;white-space:nowrap}.admin-brand-mini span{font:700 9px system-ui;letter-spacing:2px}
+  .top-nav{display:flex;align-items:center;gap:4px;min-width:0;flex:1;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none}.top-nav::-webkit-scrollbar{display:none}
+  .top-nav .nav-item{width:auto;flex:0 0 auto;display:flex;align-items:center;gap:7px;padding:10px 11px;border:1px solid transparent;border-radius:9px;background:transparent;color:#d5d9d5;font-size:13px;white-space:nowrap;box-shadow:none}
+  .top-nav .nav-item .nav-icon{width:auto;font-size:16px}.top-nav .nav-item:hover:not(:disabled),.top-nav .nav-item[aria-pressed=true]{background:linear-gradient(105deg,#062b1bdb,#03130edb);border-color:#15c886;color:#fff;box-shadow:0 0 14px #10b8782b}
+  .admin-profile{position:relative;border:0;background:transparent;cursor:pointer}.admin-menu{position:absolute;right:12px;top:calc(100% + 8px);z-index:30;width:min(300px,calc(100vw - 24px));padding:12px;border:1px solid #bd913c;background:#030705f5;border-radius:12px;box-shadow:0 12px 34px #000c;backdrop-filter:blur(12px)}
+  .admin-menu-title{margin:3px 8px 8px;color:var(--admin-gold);font-size:11px;letter-spacing:2px}.admin-menu .nav-item{width:100%;display:flex;align-items:center;gap:12px;padding:12px;border:1px solid transparent;border-radius:8px;background:transparent;color:#eee;text-align:left}.admin-menu .nav-item[aria-pressed=true]{border-color:#15c886;background:#062b1b;color:#fff}
+  #supportAdmin{max-width:1100px;margin:18px auto;padding:22px;border:1px solid #a9823966;border-radius:14px;background:rgba(2,7,5,.9)}#supportAdmin h2,#supportAdmin h3{color:var(--admin-gold)}.support-ticket{margin:14px 0;padding:16px;border:1px solid #9b783b88;border-radius:12px;background:#080d09}.support-ticket-header{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.support-ticket-messages{display:grid;gap:10px;margin:14px 0}.support-message{padding:10px 12px;border-radius:9px;background:#101711;white-space:pre-wrap;overflow-wrap:anywhere}.support-message.admin{border-left:3px solid #22d58a}.support-message.customer{border-left:3px solid #d6b85d}.support-reply{display:grid;grid-template-columns:minmax(120px,.4fr) minmax(0,1fr) auto;gap:8px;align-items:end}.support-reply textarea{min-height:72px}.support-reply button{width:auto;padding:12px}.support-ticket small{display:block;margin-top:4px;color:#c8c3b7}
+  @media(max-width:700px){.topbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px 8px;padding:8px 10px!important}.admin-brand-mini{font-size:17px}.admin-brand-mini span{font-size:8px}.topbar-label{display:none}.top-nav{grid-column:1/-1;grid-row:2;width:100%;max-width:100%;padding:2px 0}.top-nav .nav-item{width:100%;min-height:44px;justify-content:flex-start;padding:9px 10px;font-size:12px}.top-nav .nav-item .nav-icon{font-size:14px}.admin-profile{justify-self:end}.admin-menu{right:8px}.support-reply{grid-template-columns:1fr}.support-reply button{width:100%}}
+  @media(max-width:420px){.topbar{padding-inline:7px!important}.top-nav .nav-item{padding:8px 8px;font-size:11px}.top-nav .nav-item .nav-icon{display:none}.support-ticket{padding:12px}}
+  @media(max-width:1150px){#publicar{grid-template-columns:minmax(0,1fr) minmax(290px,.8fr);gap:16px}main{padding:24px 18px}.pick-preview-admin{min-height:450px}.pick-preview-admin #contenidoPrevia{min-height:350px}}
+  @media(max-width:1100px){#publicar{grid-template-columns:1fr}.preview-column{position:static}.pick-preview-admin{min-height:0}.pick-preview-admin #contenidoPrevia{min-height:280px}.editor-fields{order:1}}
+  @media(max-width:820px){.admin-app{grid-template-columns:82px minmax(0,1fr)}.sidebar{padding:16px 7px}.brand{height:128px}.brand-mark{font-size:39px}.brand strong{font-size:40px}.brand>span:last-child{font-size:8px;letter-spacing:2px}.side-nav .nav-item{justify-content:center;padding:13px 6px}.side-nav .nav-item>span:last-child{display:none}.nav-icon{font-size:22px}.sidebar-caption,.sidebar-motto{font-size:8px;letter-spacing:2px}.topbar{padding:0 16px}.topbar-label{font-size:9px;letter-spacing:1.5px}main{padding:20px 14px}.editor-heading h1{font-size:35px}.editor-heading p{letter-spacing:2px;font-size:9px}}
+  @media(max-width:520px){.admin-app{grid-template-columns:62px minmax(0,1fr)}.sidebar{padding:12px 4px}.brand{height:100px}.brand-mark{font-size:31px}.brand strong{font-size:32px}.brand>span:last-child{font-size:6px;letter-spacing:1px}.side-nav{gap:6px;margin-top:12px}.side-nav .nav-item{padding:12px 3px}.nav-icon{font-size:19px}.sidebar-caption{gap:5px;padding:12px 0;font-size:7px;letter-spacing:1px}.sidebar-motto{font-size:7px;letter-spacing:1px}.topbar{height:52px;padding:0 10px}.profile-bell{display:none}.profile-avatar{width:32px;height:32px}.admin-profile{gap:7px}.admin-profile strong{font-size:10px}.admin-profile small{font-size:7px}.profile-chevron{margin-left:2px}main{padding:16px 10px}.editor-heading{padding:0 2px}.editor-heading h1{font-size:30px}.editor-section{padding:11px}.editor-fields fieldset label{display:flex;margin:10px 4px}.entry-grid{grid-template-columns:minmax(105px,.75fr) minmax(0,2fr)}.preview-column{top:auto}}
+  .admin-app{display:block!important}.sidebar{display:none!important}.topbar{height:auto!important;min-height:64px;padding:8px 20px!important}.admin-brand-mini{display:flex;align-items:center;gap:8px}.top-nav{display:flex;min-width:0}.admin-profile{width:auto;align-self:center}.admin-menu{top:calc(100% + 8px)}
+  @media(max-width:700px){.topbar{display:grid!important;grid-template-columns:minmax(0,1fr) auto;gap:7px 8px}.top-nav{grid-column:1/-1;grid-row:2;width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;overflow:visible}.topbar-label{display:none}.admin-menu{right:8px}.top-nav .nav-item{width:100%;min-height:44px;justify-content:flex-start;padding:9px 10px;font-size:12px}.admin-brand-mini{font-size:17px}.admin-brand-mini span{font-size:8px}.support-reply{grid-template-columns:1fr}.support-reply button{width:100%}}
+  @media(max-width:420px){.topbar{padding:8px 7px!important}.top-nav .nav-item{padding:8px 8px;font-size:11px}.top-nav .nav-item .nav-icon{display:none}}
+  .refund-controls{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin:16px 0}.refund-controls label{display:grid;gap:6px}.refund-controls select,.refund-controls input{min-width:240px;padding:12px;background:#080b09;color:#f3d37b;border:1px solid #bd913c88;border-radius:8px}.refund-controls button,.refund-action{background:linear-gradient(110deg,#ffe18b,#c49330 45%,#f2ce70);border:1px solid #fff0b4;color:#120e04;font-weight:900;padding:12px 16px;border-radius:8px;cursor:pointer}.refund-action:disabled{opacity:.6;cursor:wait}\n  #descuentoPanel{max-width:900px;margin:20px auto;padding:24px;border:1px solid #a9823966;border-radius:14px;background:rgba(2,7,5,.9)}#descuentoPanel h1{color:#edc560;font-family:Georgia,serif}#descuentoPanel>p{color:#dedbd0;line-height:1.6}.discount-status-card{display:grid;gap:18px;max-width:560px;margin-top:24px;padding:22px;border:1px solid #b4934b77;border-radius:12px;background:rgba(4,8,6,.88)}#descuentoEstado{color:#f3d37b;font-weight:700}#alternarDescuento{max-width:440px;background:linear-gradient(110deg,#ffe18b,#c49330 45%,#f2ce70);border-color:#fff0b4;color:#120e04;letter-spacing:1px}#alternarDescuento.is-active{background:linear-gradient(110deg,#17221a,#080b09);border-color:#d9b85d;color:#f3d37b}
+</style></head>
+<body><div class="admin-app">
+  <div class="admin-stage">
+    <header class="topbar"><a class="admin-brand-mini" href="/admin" aria-label="ISB El Tridente, administrador">♆ ISB <span>EL TRIDENTE</span></a><div class="topbar-label">PANEL DE ADMINISTRACIÓN</div><nav id="secciones" class="top-nav" aria-label="Secciones del administrador" hidden>
+      <button type="button" class="nav-item" id="tabPick" aria-pressed="true"><span class="nav-icon">⌂</span><span>Publicar Pick</span></button>
+      <button type="button" class="nav-item" id="tabPublicados" aria-pressed="false"><span class="nav-icon">▤</span><span>Mis Picks</span></button>
+      <button type="button" class="nav-item" id="tabResultados" aria-pressed="false"><span class="nav-icon">▥</span><span>Estadísticas</span></button>
+      <button type="button" class="nav-item" id="tabClientes" aria-pressed="false"><span class="nav-icon">♧</span><span>Comunidad</span></button>
+      <button type="button" class="nav-item" id="tabSoporte" aria-pressed="false"><span class="nav-icon">✉</span><span>Soporte</span></button>
+      <button type="button" class="nav-item" id="tabDescuento" aria-pressed="false"><span class="nav-icon">%</span><span>Descuentos</span></button>
+      <button type="button" class="nav-item" id="tabRefund" aria-pressed="false"><span class="nav-icon">↩</span><span>Reembolsos</span></button>
+      <button type="button" class="nav-item" id="tabReto" aria-pressed="false"><span class="nav-icon">♧</span><span>Reto 10 días</span></button>
+    </nav><button id="instalar" type="button" hidden>INSTALAR ISB ADMIN</button><button id="adminMenuToggle" class="admin-profile" type="button" aria-expanded="false" aria-controls="adminMenu"><span class="profile-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 21c.5-4.1 2.7-6.2 6.5-6.2s6 2.1 6.5 6.2"/></svg></span><span><strong>ADMIN</strong><small>ISB EL TRIDENTE</small></span><span class="profile-chevron" aria-hidden="true">⌄</span></button><div id="adminMenu" class="admin-menu" hidden><p class="admin-menu-title">PANELES DE ADMINISTRACIÓN</p><button type="button" class="nav-item" data-panel="tabPick">⌂ &nbsp; Publicar Pick</button><button type="button" class="nav-item" data-panel="tabPublicados">▤ &nbsp; Mis Picks</button><button type="button" class="nav-item" data-panel="tabResultados">▥ &nbsp; Estadísticas</button><button type="button" class="nav-item" data-panel="tabClientes">♧ &nbsp; Comunidad</button><button type="button" class="nav-item" data-panel="tabSoporte">✉ &nbsp; Soporte</button><button type="button" class="nav-item" data-panel="tabDescuento">% &nbsp; Descuentos</button><button type="button" class="nav-item" data-panel="tabRefund">↩ &nbsp; Reembolsos</button><button type="button" class="nav-item" data-panel="tabReto">♧ &nbsp; Reto 10 días</button></div></header>
+    <main>
+  <p id="estado" role="status" aria-live="polite">Comprobando tu acceso…</p><a id="adminLoginButton" class="admin-login-button" href="/index.html?login=admin" hidden>INICIAR SESIÓN</a>
+  <section id="clientes" hidden>
+    <h2>Clientes y compras</h2>
+    <button type="button" id="actualizarCompras">ACTUALIZAR COMPRAS</button>
+    <p id="comprasEstado" role="status" aria-live="polite"></p>
+    <div class="tabla-scroll"><table><thead><tr><th>Usuario</th><th>Nombre</th><th>Correo</th><th>Paquete</th><th>Pagado (USD)</th><th>Compra</th><th>Vencimiento</th><th>Acceso</th></tr></thead><tbody id="comprasFilas"></tbody></table></div>
+    <div class="paginas"><button type="button" id="anteriorCompras" disabled>ANTERIOR</button><button type="button" id="siguienteCompras" disabled>SIGUIENTE</button></div>
+  </section>
+  <section id="refundAdmin" hidden>
+    <h2>REEMBOLSOS DE PAQUETES DIARIOS</h2>
+    <p>Solo aplica a Premium Diario y Exclusiva Diaria. Cuando el pick del día resulte perdido, selecciona el paquete y la fecha de compra; al pulsar el único botón de reembolso, se devolverá el pago a todos los clientes que compraron ese paquete ese día.</p>
+    <div class="refund-controls"><label for="refundPackage">Paquete</label><select id="refundPackage"><option value="Premium Diario">Premium Diario</option><option value="Exclusiva Diaria">Exclusiva Diaria</option></select><label for="refundDate">Fecha de compra (hora Central)</label><input id="refundDate" type="date"><button type="button" id="refundAll" class="refund-action" disabled>REEMBOLSAR A TODOS</button></div>
+    <p id="refundStatus" role="status" aria-live="polite"></p>
+    <div class="tabla-scroll"><table><thead><tr><th>Nombre</th><th>Correo</th><th>Paquete</th><th>Pagado</th><th>Fecha</th><th>Estado</th></tr></thead><tbody id="refundRows"></tbody></table></div>
+  </section>
+  <section id="supportAdmin" hidden><h2>MENSAJES DE SOPORTE</h2><p>Los mensajes enviados desde el portal de clientes aparecen aquí.</p><button type="button" id="refreshSupport">ACTUALIZAR MENSAJES</button><p id="supportAdminStatus" role="status" aria-live="polite"></p><div id="supportAdminList"></div></section>
+  <section id="challengeCycleAdmin" hidden>
+    <h2>RETO DE 10 DÍAS PARA $10K</h2>
+    <p>El acceso del cliente permanece activo después de un pago único mientras el reto esté abierto. Al finalizarlo, se cierran las compras y el acceso de ese ciclo; al abrir uno nuevo, los clientes anteriores vuelven a comprar para entrar.</p>
+    <div class="discount-status-card"><span id="challengeCycleStatus" role="status" aria-live="polite">Consultando el reto…</span><button id="toggleChallengeCycle" type="button" disabled>CONSULTANDO…</button></div>
+  </section>
+  <section id="descuentoPanel" hidden>
+    <h1>DESCUENTO PARA CLIENTES DE ISB</h1>
+    <p>Al activarla, la promoción será del 30% en todos los paquetes, excepto el paquete Económica.</p>
+    <div class="discount-status-card"><span id="descuentoEstado" role="status" aria-live="polite">Consultando promoción…</span><button id="alternarDescuento" type="button" disabled>ACTIVAR DESCUENTO DEL 30%</button></div>
+  </section>
+  <section id="editorLayout" class="editor-layout" hidden>
+    <header class="editor-heading"><div><h1>PUBLICAR PICK</h1><p>COMPARTE TU ANÁLISIS Y POTENCIA A LA COMUNIDAD</p><p id="instrucciones" hidden>Escribe el pick y selecciona todos los paquetes que deben recibirlo.</p></div></header>
+  <form id="publicar" hidden>
+    <div class="editor-fields">
+    <label for="titulo">Título del pick</label><div class="auto-prefix"><span aria-hidden="true">📍</span><input id="titulo" required maxlength="150" placeholder="Ej. Selección destacada de hoy"></div><small>El pin se agrega automáticamente al publicar.</small>
+    <section class="editor-section" aria-labelledby="partidosTitulo"><h2 id="partidosTitulo">PARTIDOS</h2><small>Elige el deporte y escribe el enfrentamiento completo.</small><div id="partidos"></div><button class="add-entry" id="agregarPartido" type="button">+ AGREGAR PARTIDO</button></section>
+    <section class="editor-section" aria-labelledby="jugadasTitulo"><h2 id="jugadasTitulo">JUGADAS</h2><small>La flecha verde se agrega automáticamente a cada jugada.</small><div id="jugadas"></div><button class="add-entry" id="agregarJugada" type="button">+ AGREGAR JUGADA</button></section>
+    <section class="editor-section"><h2>CUOTA</h2><label for="cuota">Cuota</label><div class="auto-prefix"><span aria-hidden="true">🔥</span><input id="cuota" type="text" inputmode="text" autocapitalize="off" autocomplete="off" spellcheck="false" required maxlength="20" placeholder="+110" aria-label="Cuota; puedes escribir signo más o menos"></div><small>El fuego se agrega automáticamente. Usa el teclado de texto para escribir + o −.</small></section>
+    <section class="editor-section"><h2><span class="instagram-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><defs><linearGradient id="instagramGradientAdmin" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#feda75"/><stop offset=".5" stop-color="#d62976"/><stop offset="1" stop-color="#4f5bd5"/></linearGradient></defs><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="url(#instagramGradientAdmin)" stroke-width="2.2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="url(#instagramGradientAdmin)" stroke-width="2.2"/><circle cx="17.6" cy="6.6" r="1.25" fill="#d62976"/></svg></span> INSTAGRAM</h2><label for="instagram">Tu marca de Instagram</label><div class="instagram-input"><span class="instagram-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><defs><linearGradient id="instagramGradientField" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#feda75"/><stop offset=".5" stop-color="#d62976"/><stop offset="1" stop-color="#4f5bd5"/></linearGradient></defs><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="url(#instagramGradientField)" stroke-width="2.2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="url(#instagramGradientField)" stroke-width="2.2"/><circle cx="17.6" cy="6.6" r="1.25" fill="#d62976"/></svg></span><input id="instagram" maxlength="60" value="@idael_sportbet_oficial" placeholder="@tu_usuario"><span class="isb-verified" role="img" aria-label="Insignia ISB"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.2 14.3 3l3-.2 1.3 2.7 2.7 1.3-.2 3 1.8 2.2-1.8 2.3.2 3-2.7 1.3-1.3 2.7-3-.2L12 23l-2.3-1.9-3 .2-1.3-2.7-2.7-1.3.2-3L1.1 12l1.8-2.2-.2-3 2.7-1.3 1.3-2.7 3 .2L12 1.2Z"/><path fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="m7.4 12.2 3 3 6.3-6.5"/></svg></span></div><small>Se incluirá automáticamente en el pick publicado.</small></section>
+    <label for="analisis">Análisis (opcional)</label><textarea id="analisis" maxlength="5000" placeholder="Escribe aquí el análisis, si deseas incluirlo"></textarea>
+    <label for="fecha">Fecha del pick</label><input id="fecha" type="date" required><small>Fecha según el horario Central de EE. UU.</small>
+    <label for="imagen">Enlace de imagen (opcional)</label><input id="imagen" type="url" placeholder="https://…">
+    <label for="juego">Enlace para ver el juego (opcional)</label><input id="juego" type="url" maxlength="2048" placeholder="https://…"><small>Pega el enlace del partido concreto para abrir ese juego. El botón aparece solo si agregas un enlace.</small>
+    <fieldset><legend>Paquetes que recibirán este pick</legend>
+      <label><input type="checkbox" name="paquete" value="Premium Diario"> Premium Diario</label>
+      <label><input type="checkbox" name="paquete" value="Premium Semanal"> Premium Semanal</label>
+      <label><input type="checkbox" name="paquete" value="Exclusiva Diaria"> Exclusiva Diaria</label>
+      <label><input type="checkbox" name="paquete" value="Exclusiva Semanal"> Exclusiva Semanal</label>
+      <label><input type="checkbox" name="paquete" value="Pack Mensual"> Pack Mensual</label>
+      <label><input type="checkbox" name="paquete" value="Económica"> Económica</label>
+      <label><input type="checkbox" name="paquete" value="Reto de 10 días para $10K"> Reto de 10 días para $10K</label>
+      <label><input type="checkbox" name="paquete" value="Champions League Completa"> Champions League Completa</label>
+    </fieldset>
+    <button type="submit" class="publish-button"><span aria-hidden="true">➤</span> PUBLICAR PICK</button>
+    <button id="verPublicado" type="button" hidden style="margin-top:12px">VER PICK PUBLICADO</button><section id="pickPublicado" hidden style="margin-top:20px"></section><button id="nuevo" type="button" hidden style="margin-top:12px">PUBLICAR OTRO PICK</button>
+    <p><small>Se mostrará en la web a quienes tengan acceso activo. Los avisos por correo a clientes con acceso activo requieren conectar el servicio de correo.</small></p>
+    </div>
+    <aside class="preview-column"><section class="pick-preview-admin" id="vistaPreviaAdmin" aria-live="polite"><h3>▶ VISTA PREVIA DEL PICK</h3><p class="preview-subtitle">ASÍ SE VERÁ EN LA COMUNIDAD</p><div id="contenidoPrevia"></div></section></aside>
+  </form>
+  </section>
+</main></div></div>
+</main></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="pick-render.js?v=20261010-pick-semantico"></script>
+<script>
+const client = supabase.createClient("https://nfvkmxnprchvkufwvhpr.supabase.co", "sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1");
+const escapar = valor => {const nodo=document.createElement("span");nodo.textContent=String(valor ?? "");return nodo.innerHTML.replace(/"/g,"&quot;");};
+const form = document.getElementById("publicar"), estado = document.getElementById("estado");
+const deportes=[{nombre:"Fútbol",icono:"⚽"},{nombre:"MLB",icono:"⚾"},{nombre:"NBA",icono:"🏀"},{nombre:"NHL",icono:"🏒"},{nombre:"NFL",icono:"🏈"},{nombre:"UFC",icono:"🥊"}];
+const partidosEl=document.getElementById("partidos"), jugadasEl=document.getElementById("jugadas");
+function renumerar(contenedor,prefijo){[...contenedor.children].forEach((card,i)=>{const label=card.querySelector("label[data-label]");if(label){label.textContent=prefijo+(i+1);card.querySelector("[data-enfrentamiento]")?.setAttribute("aria-label",`Enfrentamiento del partido ${i+1}`)}const input=card.querySelector("[data-texto-jugada]");if(input){input.placeholder=`Escribe la jugada ${i+1}…`;input.setAttribute("aria-label",`Jugada ${i+1}`)}})}
+function agregarPartido(deporte="Fútbol",enfrentamiento=""){
+  const card=document.createElement("div");card.className="entry-card";card.dataset.partido="";
+  const grid=document.createElement("div");grid.className="entry-grid";const col1=document.createElement("div"),col2=document.createElement("div");
+  const ld=document.createElement("label");ld.dataset.label="";const select=document.createElement("select");select.dataset.deporte="";
+  for(const d of deportes){const op=document.createElement("option");op.value=d.nombre;op.textContent=`${d.icono} ${d.nombre}`;op.selected=d.nombre===deporte;select.append(op)}
+  const lj=document.createElement("label");lj.textContent="Enfrentamiento";const input=document.createElement("input");input.type="text";input.required=true;input.maxLength=240;input.dataset.enfrentamiento="";input.setAttribute("aria-label",`Enfrentamiento del partido ${partidosEl.children.length+1}`);input.placeholder="Ej. Real Madrid vs Villarreal";input.value=enfrentamiento;
+  col1.append(ld,select);col2.append(lj,input);grid.append(col1,col2);card.append(grid);
+  if(partidosEl.children.length){const remove=document.createElement("button");remove.type="button";remove.className="remove-entry";remove.textContent="Quitar partido";remove.addEventListener("click",()=>{card.remove();renumerar(partidosEl,"Deporte · Partido ");actualizarPrevia()});card.append(remove)}
+  partidosEl.append(card);input.addEventListener("input",actualizarPrevia);select.addEventListener("change",actualizarPrevia);renumerar(partidosEl,"Deporte · Partido ");actualizarPrevia();
+}
+function agregarJugada(texto=""){
+  const card=document.createElement("div");card.className="entry-card";card.dataset.jugada="";const label=document.createElement("label");label.dataset.label="";
+  const input=document.createElement("input");input.type="text";input.required=true;input.maxLength=500;input.dataset.textoJugada="";input.setAttribute("aria-label",`Jugada ${jugadasEl.children.length+1}`);input.value=texto;card.append(label,input);
+  if(jugadasEl.children.length){const remove=document.createElement("button");remove.type="button";remove.className="remove-entry";remove.textContent="Quitar jugada";remove.addEventListener("click",()=>{card.remove();renumerar(jugadasEl,"Jugada ");actualizarPrevia()});card.append(remove)}
+  jugadasEl.append(card);input.addEventListener("input",actualizarPrevia);renumerar(jugadasEl,"Jugada ");actualizarPrevia();
+}
+function actualizarPrevia(){
+  const destino=document.getElementById("contenidoPrevia");if(!destino)return;destino.replaceChildren();
+  const titulo=document.createElement("h2");titulo.className="preview-title";titulo.textContent=`📍 ${document.getElementById("titulo").value||"Título del pick"}`;destino.append(titulo);
+  for(const c of partidosEl.children){const texto=c.querySelector("[data-enfrentamiento]").value;if(texto){const p=document.createElement("p");p.className="preview-match";p.textContent=`${deportes.find(d=>d.nombre===c.querySelector("[data-deporte]").value)?.icono||"🏟️"} ${texto}`;destino.append(p)}}
+  for(const c of jugadasEl.children){const texto=c.querySelector("[data-texto-jugada]").value;if(texto){const p=document.createElement("p");p.className="preview-play";const arrow=document.createElement("span");arrow.textContent="→";arrow.style.color="#29e68b";p.append(arrow,document.createTextNode(` ${texto}`));destino.append(p)}}
+  const cuota=document.getElementById("cuota").value;if(cuota){const p=document.createElement("p");p.className="preview-odds";p.textContent=`🔥 ${cuota}`;destino.append(p)}
+  const insta=document.getElementById("instagram").value.trim();if(insta){const p=document.createElement("p");p.className="preview-instagram instagram-preview";p.innerHTML=`<span class="instagram-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><defs><linearGradient id="instagramGradientPreview" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#feda75"/><stop offset=".5" stop-color="#d62976"/><stop offset="1" stop-color="#4f5bd5"/></linearGradient></defs><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="url(#instagramGradientPreview)" stroke-width="2.2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="url(#instagramGradientPreview)" stroke-width="2.2"/><circle cx="17.6" cy="6.6" r="1.25" fill="#d62976"/></svg></span><span>${insta.startsWith("@")?insta:"@"+insta}</span><span class="isb-verified" role="img" aria-label="Insignia ISB"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.2 14.3 3l3-.2 1.3 2.7 2.7 1.3-.2 3 1.8 2.2-1.8 2.3.2 3-2.7 1.3-1.3 2.7-3-.2L12 23l-2.3-1.9-3 .2-1.3-2.7-2.7-1.3.2-3L1.1 12l1.8-2.2-.2-3 2.7-1.3 1.3-2.7 3 .2L12 1.2Z"/><path fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="m7.4 12.2 3 3 6.3-6.5"/></svg></span>`;destino.append(p)}
+  const analisis=document.getElementById("analisis").value.trim();if(analisis){const p=document.createElement("p");p.textContent=`Análisis: ${analisis}`;destino.append(p)}
+}
+agregarPartido();agregarJugada();document.getElementById("agregarPartido").addEventListener("click",()=>agregarPartido());document.getElementById("agregarJugada").addEventListener("click",()=>agregarJugada());
+for(const id of ["titulo","cuota","instagram","analisis"])document.getElementById(id).addEventListener("input",actualizarPrevia);
+const partes = new Intl.DateTimeFormat("en-US", {timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
+const fecha = Object.fromEntries(partes.map(p => [p.type,p.value]));
+document.getElementById("fecha").value = `${fecha.year}-${fecha.month}-${fecha.day}`;
+async function request(method, body, query="") {
+  const {data:{session}} = await client.auth.getSession();
+  if (!session) throw new Error("Inicia sesión desde Inicio con tu cuenta de administrador y vuelve a este panel.");
+  const response = await fetch("/api/admin-picks"+query, {method,headers:{Authorization:`Bearer ${session.access_token}`,"Content-Type":"application/json"}, ...(body ? {body:JSON.stringify(body)} : {})});
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || "No se pudo conectar con el panel.");
+  return data;
+}
+let accesoAutorizado=false, solicitudInstalacion;
+const instalar=document.getElementById("instalar");
+window.addEventListener("beforeinstallprompt",event=>{
+  event.preventDefault();solicitudInstalacion=event;
+  instalar.hidden=!accesoAutorizado;
+});
+instalar.addEventListener("click",async()=>{
+  if(!solicitudInstalacion)return;
+  await solicitudInstalacion.prompt();solicitudInstalacion=null;instalar.hidden=true;
+});
+if("serviceWorker" in navigator) navigator.serviceWorker.register("/admin-sw.js").catch(()=>{});
+request("GET").then(() => {
+  accesoAutorizado=true;form.hidden=false;document.getElementById("editorLayout").hidden=false;document.getElementById("instrucciones").hidden=false;
+  document.getElementById("secciones").hidden=false;
+  instalar.hidden=!solicitudInstalacion;estado.textContent="Acceso de administrador confirmado.";
+  if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !navigator.standalone) {
+    estado.textContent+=" En Safari: Compartir → Añadir a pantalla de inicio para instalar ISB Admin.";
+  }
+}).catch(error => {estado.textContent=error.message;document.getElementById("adminLoginButton").hidden=false;});
+let paginaCompras=0, cargandoCompras=false;
+const avisoCompras=document.getElementById("comprasEstado"), tablaCompras=document.getElementById("comprasFilas");
+const anterior=document.getElementById("anteriorCompras"), siguiente=document.getElementById("siguienteCompras");
+async function cargarCompras(pagina=0){
+  if(cargandoCompras)return;
+  cargandoCompras=true;anterior.disabled=true;siguiente.disabled=true;
+  document.getElementById("actualizarCompras").disabled=true;avisoCompras.textContent="Cargando compras…";tablaCompras.replaceChildren();
+  try {
+    const data=await request("GET",undefined,`?vista=compras&pagina=${pagina}`);paginaCompras=data.pagina;
+    const formato=new Intl.DateTimeFormat("es",{timeZone:"America/Chicago",dateStyle:"medium",timeStyle:"short"});
+    const fechaTexto=valor=>valor&&Number.isFinite(Date.parse(valor))?formato.format(new Date(valor)):"—";
+    for(const compra of data.compras){
+      const activo=Date.parse(compra.vencimiento)>Date.now();
+      const fila=document.createElement("tr");
+      const valores=[compra.usuario||"No registrado",compra.nombre||"—",compra.correo||"—",compra.paquete||"—",new Intl.NumberFormat("es",{style:"currency",currency:"USD"}).format(Number(compra.cantidad_pagada_dolar)||0),fechaTexto(compra.fecha_compra),fechaTexto(compra.vencimiento),activo?"Activo":"Vencido"];
+      valores.forEach((valor,index)=>{const celda=document.createElement("td");celda.textContent=valor;if(index===7)celda.className=activo?"activo":"vencido";fila.append(celda)});
+      tablaCompras.append(fila);
+    }
+    avisoCompras.textContent=data.compras.length?`Página ${paginaCompras+1} · ${data.compras.length} compras · Fechas en horario Central.`:"No hay compras registradas en esta página.";
+    anterior.disabled=paginaCompras===0;siguiente.disabled=!data.hayMas;
+  } catch(error){avisoCompras.textContent=error.message;}
+  finally {cargandoCompras=false;document.getElementById("actualizarCompras").disabled=false;}
+}
+async function refundRequest(method, body, query="") {
+  const {data:{session}}=await client.auth.getSession();
+  if(!session)throw new Error("Tu sesión venció. Inicia sesión de nuevo.");
+  const response=await fetch("/api/admin-refunds"+query,{method,headers:{Authorization:`Bearer ${session.access_token}`,"Content-Type":"application/json"},...(body?{body:JSON.stringify(body)}:{})});
+  const data=await response.json();
+  if(!response.ok)throw new Error(data.error||"No se pudo procesar el reembolso.");
+  return data;
+}
 const refundStatus=document.getElementById("refundStatus"),refundRows=document.getElementById("refundRows"),refundPackage=document.getElementById("refundPackage"),refundDate=document.getElementById("refundDate"),refundAll=document.getElementById("refundAll");
 let comprasReembolso=[];
 function fechaHoyCentral(){const p=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());return `${p.find(x=>x.type==="year").value}-${p.find(x=>x.type==="month").value}-${p.find(x=>x.type==="day").value}`;}
@@ -302,176 +302,176 @@ async function reembolsarTodos(){
   refundAll.textContent=errores?`REINTENTAR PENDIENTES (${comprasReembolso.length})`:"REEMBOLSO COMPLETADO";refundAll.disabled=!errores;
   refundPackage.disabled=false;refundDate.disabled=false;
 }
-document.getElementById("tabReto").addEventListener("click",()=>{
-  form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=true;descuentoPanel.hidden=true;challengeCyclePanel.hidden=false;
-  document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabReto")));
-  cargarCicloReto();
-});
-document.getElementById("tabRefund").addEventListener("click",()=>{
-  form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=true;descuentoPanel.hidden=true;document.getElementById("refundAdmin").hidden=false;
-  document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabRefund")));
-  cargarRefunds();
-});
-const challengeCyclePanel=document.getElementById("challengeCycleAdmin");
-const challengeCycleStatus=document.getElementById("challengeCycleStatus");
-const toggleChallengeCycle=document.getElementById("toggleChallengeCycle");
-let challengeCycleActive=true;
-async function requestChallengeCycle(method="GET",body){
-  const {data:{session}}=await client.auth.getSession();
-  if(!session)throw new Error("Inicia sesión con una cuenta autorizada para administrar el reto.");
-  const r=await fetch("/api/challenge-cycle"+(method==="GET"?"?vista=admin":""),{method,headers:{Authorization:`Bearer ${session.access_token}`,"Content-Type":"application/json"},...(body?{body:JSON.stringify(body)}:{})});
-  const data=await r.json();if(!r.ok)throw new Error(data.error||"No se pudo actualizar el reto.");return data;
-}
-function mostrarEstadoReto(active){
-  challengeCycleActive=active;
-  challengeCycleStatus.textContent=active
-    ?"RETO ABIERTO · El pago único mantiene el acceso hasta que lo finalices desde aquí."
-    :"RETO FINALIZADO · Las compras y los accesos del ciclo anterior están cerrados.";
-  toggleChallengeCycle.textContent=active?"FINALIZAR RETO Y CERRAR ACCESOS":"ABRIR NUEVO RETO Y COBROS";
-  toggleChallengeCycle.classList.toggle("is-active",!active);
-}
-async function cargarCicloReto(){
-  toggleChallengeCycle.disabled=true;challengeCycleStatus.textContent="Consultando el reto…";
-  try{const data=await requestChallengeCycle();mostrarEstadoReto(data.active);}
-  catch(error){challengeCycleStatus.textContent=error.message;}
-  finally{toggleChallengeCycle.disabled=false;}
-}
-toggleChallengeCycle.addEventListener("click",async()=>{
-  const nextActive=!challengeCycleActive;
-  const message=nextActive
-    ?"Abrirás un nuevo ciclo y permitirás nuevos pagos únicos de $50. Las compras del ciclo anterior seguirán cerradas. ¿Continuar?"
-    :"Esto cerrará las nuevas compras y quitará el acceso de las compras activas de este reto. ¿Finalizarlo ahora?";
-  if(!window.confirm(message))return;
-  toggleChallengeCycle.disabled=true;challengeCycleStatus.textContent="Guardando cambio…";
-  try{const data=await requestChallengeCycle("POST",{active:nextActive});mostrarEstadoReto(data.active);}
-  catch(error){challengeCycleStatus.textContent=error.message;}
-  finally{toggleChallengeCycle.disabled=false;}
-});
-document.querySelectorAll("#secciones button").forEach(button=>button.addEventListener("click",()=>{if(button.id!=="tabReto")challengeCyclePanel.hidden=true;}));
-refundAll.addEventListener("click",reembolsarTodos);
-refundPackage.addEventListener("change",cargarRefunds);
-refundDate.addEventListener("change",cargarRefunds);
-document.getElementById("tabClientes").addEventListener("click",()=>{
-  form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=false;document.getElementById("supportAdmin").hidden=true;historial.hidden=true;document.getElementById("editorResultados").hidden=true;
-  document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabClientes")));cargarCompras(0);
-});
-document.getElementById("tabPick").addEventListener("click",()=>{
-  form.hidden=false;document.getElementById("editorLayout").hidden=false;document.getElementById("instrucciones").hidden=false;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;
-  document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabPick")));
-});
-const adminMenuToggle=document.getElementById("adminMenuToggle"),adminMenu=document.getElementById("adminMenu");
-adminMenuToggle.addEventListener("click",()=>{adminMenu.hidden=!adminMenu.hidden;adminMenuToggle.setAttribute("aria-expanded",String(!adminMenu.hidden));});
-adminMenu.querySelectorAll("[data-panel]").forEach(b=>b.addEventListener("click",()=>{adminMenu.hidden=true;adminMenuToggle.setAttribute("aria-expanded","false");document.getElementById(b.dataset.panel)?.click();}));
-document.addEventListener("click",e=>{if(!adminMenu.hidden&&!adminMenu.contains(e.target)&&!adminMenuToggle.contains(e.target)){adminMenu.hidden=true;adminMenuToggle.setAttribute("aria-expanded","false");}});
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){adminMenu.hidden=true;adminMenuToggle.setAttribute("aria-expanded","false");}});
-async function supportRequest(method,body,query=""){
-  const {data:{session}}=await client.auth.getSession();if(!session)throw new Error("Tu sesión venció. Inicia sesión nuevamente.");
-  const r=await fetch("/api/support"+query,{method,headers:{Authorization:`Bearer ${session.access_token}`,"Content-Type":"application/json"},...(body?{body:JSON.stringify(body)}:{})});
-  const data=await r.json();if(!r.ok)throw new Error(data.error||"No se pudo completar la acción.");return data;
-}
-const supportList=document.getElementById("supportAdminList"),supportStatus=document.getElementById("supportAdminStatus");
-async function cargarSoporteAdmin(){
-  const b=document.getElementById("refreshSupport");b.disabled=true;supportStatus.textContent="Cargando mensajes…";supportList.replaceChildren();
-  try{const data=await supportRequest("GET",undefined,"?vista=admin");supportStatus.textContent=data.tickets.length?`${data.tickets.length} conversación(es).`:"Todavía no hay mensajes de soporte.";
-    supportList.innerHTML=data.tickets.map(t=>`<article class="support-ticket" data-ticket="${escapar(t.id)}"><header class="support-ticket-header"><div><h3>${escapar(t.subject||"Consulta de soporte")}</h3><small>${escapar(t.customer_name||"Cliente")} · ${escapar(t.customer_email)} · ${escapar(t.customer_phone||"Sin teléfono")}</small></div><small>${escapar(t.status||"abierto")} · ${escapar(t.preferred_channel||"portal")}</small></header><div class="support-ticket-messages">${(t.messages||[]).map(m=>`<div class="support-message ${m.author_role==="admin"?"admin":"customer"}"><strong>${m.author_role==="admin"?"ISB Soporte":"Cliente"} · ${escapar(m.channel||"portal")}</strong><div>${escapar(m.body)}</div><small>${escapar(m.created_at||"")}</small></div>`).join("")}</div><form class="support-reply" data-reply="${escapar(t.id)}"><label>Responder por<select name="channel"><option value="portal">Mensaje en la página</option><option value="email">Correo electrónico</option><option value="whatsapp">WhatsApp</option></select></label><label>Respuesta<textarea name="body" maxlength="4000" required placeholder="Escribe tu respuesta…"></textarea></label><button type="submit">RESPONDER</button></form><p class="support-reply-status" role="status"></p>${t.status==="closed"?"":`<button type="button" class="close-support" data-close="${escapar(t.id)}">MARCAR RESUELTO</button>`}</article>`).join("");
-    supportList.querySelectorAll("form[data-reply]").forEach(f=>f.addEventListener("submit",async e=>{e.preventDefault();const button=f.querySelector("button"),status=f.closest(".support-ticket").querySelector(".support-reply-status"),body=f.elements.body.value.trim(),channel=f.elements.channel.value;button.disabled=true;status.textContent="Enviando…";try{const answer=await supportRequest("PATCH",{accion:"respuesta",ticket_id:f.dataset.reply,body,channel});if(answer.whatsapp_url){status.innerHTML=`<a href="${escapar(answer.whatsapp_url)}" target="_blank" rel="noopener">ABRIR WHATSAPP PARA ENVIAR</a>`;}else{status.textContent=channel==="email"?"Correo enviado.":"Respuesta guardada en la conversación.";f.elements.body.value="";setTimeout(cargarSoporteAdmin,800);}}catch(error){status.textContent=error.message;button.disabled=false;}}));
-    supportList.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",async()=>{b.disabled=true;try{await supportRequest("PATCH",{accion:"cerrar",ticket_id:b.dataset.close});await cargarSoporteAdmin();}catch(error){supportStatus.textContent=error.message;b.disabled=false;}}));
-  }catch(error){supportStatus.textContent=error.message;}finally{b.disabled=false;}
-}
-document.getElementById("tabSoporte").addEventListener("click",()=>{form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;historial.hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("supportAdmin").hidden=false;document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabSoporte")));cargarSoporteAdmin();});
-const descuentoPanel=document.getElementById("descuentoPanel"), descuentoEstado=document.getElementById("descuentoEstado"), alternarDescuento=document.getElementById("alternarDescuento");
-let descuentoHabilitado=false;
-async function peticionDescuento(method,body){
-  const {data:{session}}=await client.auth.getSession();
-  if(!session)throw new Error("Tu sesión venció. Inicia sesión nuevamente.");
-  const response=await fetch("/api/package-discount",{method,headers:{Authorization:`Bearer ${session.access_token}`,"Content-Type":"application/json"},...(body?{body:JSON.stringify(body)}:{})});
-  const data=await response.json();if(!response.ok)throw new Error(data.error||"No se pudo consultar la promoción.");return data;
-}
-function mostrarEstadoDescuento(active){
-  descuentoHabilitado=active===true;
-  descuentoEstado.textContent=descuentoHabilitado?"Promoción activa del 30% para clientes de ISB. Económica queda excluida.":"Promoción apagada. Al activarla, será del 30% en todos los paquetes, excepto Económica.";
-  alternarDescuento.textContent=descuentoHabilitado?"DESACTIVAR DESCUENTO DEL 30%":"ACTIVAR DESCUENTO DEL 30%";
-  alternarDescuento.classList.toggle("is-active",descuentoHabilitado);
-}
-document.getElementById("tabDescuento").addEventListener("click",async()=>{
-  form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=true;descuentoPanel.hidden=false;
-  document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabDescuento")));
-  alternarDescuento.disabled=true;descuentoEstado.textContent="Consultando promoción…";
-  try{const data=await peticionDescuento("GET");mostrarEstadoDescuento(data.active);}catch(error){descuentoEstado.textContent=error.message;}
-  finally{alternarDescuento.disabled=false;}
-});
-alternarDescuento.addEventListener("click",async()=>{
-  alternarDescuento.disabled=true;descuentoEstado.textContent="Guardando cambio…";
-  try{const data=await peticionDescuento("POST",{active:!descuentoHabilitado});mostrarEstadoDescuento(data.active);}
-  catch(error){descuentoEstado.textContent=error.message;}
-  finally{alternarDescuento.disabled=false;}
-});
-document.getElementById("refreshSupport").addEventListener("click",cargarSoporteAdmin);
-document.getElementById("actualizarCompras").addEventListener("click",()=>cargarCompras(paginaCompras));
-anterior.addEventListener("click",()=>cargarCompras(paginaCompras-1));siguiente.addEventListener("click",()=>cargarCompras(paginaCompras+1));
-document.getElementById("nuevo").addEventListener("click", () => {
-  form.querySelectorAll("input,textarea,select,.add-entry,.remove-entry").forEach(input=>input.disabled=false);
-  document.getElementById("titulo").value="";
-  document.getElementById("analisis").value="";document.getElementById("cuota").value="";document.getElementById("instagram").value="@idael_sportbet_oficial";
-  partidosEl.replaceChildren();jugadasEl.replaceChildren();agregarPartido();agregarJugada();
-  document.getElementById("imagen").value="";
-  document.getElementById("juego").value="";
-  const button=form.querySelector('button[type="submit"]');button.disabled=false;button.textContent="PUBLICAR PICK";
-  document.getElementById("verPublicado").hidden=true;document.getElementById("pickPublicado").hidden=true;document.getElementById("nuevo").hidden=true;estado.textContent="Listo para publicar otro pick.";
-  document.getElementById("titulo").focus();
-});
-const historial=document.createElement("section");historial.id="historial";historial.hidden=true;document.querySelector("main").append(historial);
-const paquetesPanel=["Premium Diario","Premium Semanal","Exclusiva Diaria","Exclusiva Semanal","Pack Mensual","Económica"];
-const picksEditables=new Map();function tarjetaPublicado(p){picksEditables.set(String(p.id),p);const titulo=String(p.titulo??"");const cuentaInstagram=titulo.match(/\s+(@[a-zA-Z0-9._]{2,30})\s*$/)?.[1];const tituloLimpio=cuentaInstagram?titulo.replace(/\s+@[a-zA-Z0-9._]{2,30}\s*$/," ").trim():titulo;const descripcion=String(p.descripcion??"");const lineaInstagram=cuentaInstagram&&!descripcion.includes("📸 "+cuentaInstagram)?window.renderPickDescription("📸 "+cuentaInstagram):"";return '<article class="pick-history-card" data-pick-id="'+escapar(p.id)+'" style="text-align:center;padding:22px;border:1px solid #ad8736;border-radius:12px;margin:14px 0;background:linear-gradient(#031009bf,#031009d4),url(hero.jpeg) center/cover"><h3 style="color:#efc766">'+escapar(p.paquete)+'</h3><p>'+escapar(p.fecha_pick)+'</p><h2>'+escapar(tituloLimpio)+'</h2>'+(p.imagen_url?'<img src="'+escapar(p.imagen_url)+'" alt="Imagen del pick" style="max-width:100%">':"")+window.renderPickDescription(descripcion)+lineaInstagram+'<div style="display:flex;justify-content:center;gap:10px;margin-top:18px"><button type="button" data-accion-pick="editar" style="width:auto;padding:9px 14px">EDITAR PICK</button>'+(p.activo?'<button type="button" data-accion-pick="borrar" style="width:auto;padding:9px 14px">BORRAR PICK</button>':'<button type="button" data-accion-pick="restaurar" style="width:auto;padding:9px 14px">RESTAURAR PICK</button>')+'</div></article>';}
-function conectarAccionesPick(contenedor,picks,alActualizar){contenedor.querySelectorAll(".pick-history-card").forEach((card,i)=>{const p=picks[i];card.querySelector("[data-accion-pick=editar]").onclick=async()=>{const titulo=prompt("Título del pick",p.titulo);if(titulo===null)return;const descripcion=prompt("Pick, cuota y análisis",p.descripcion);if(descripcion===null)return;const fecha_pick=prompt("Fecha del pick (AAAA-MM-DD)",p.fecha_pick);if(fecha_pick===null)return;const imagen_url=prompt("Enlace de imagen (opcional)",p.imagen_url||"");if(imagen_url===null)return;try{await request("PATCH",{accion:"editar_pick",id:p.id,paquete:p.paquete,titulo,descripcion,fecha_pick,imagen_url});alActualizar();}catch(error){alert(error.message)}};card.querySelector("[data-accion-pick=borrar]")?.addEventListener("click",async()=>{if(!confirm("¿Retirar este pick de la vista de clientes? Seguirá disponible en el historial."))return;try{await request("PATCH",{accion:"borrar_pick",id:p.id,paquete:p.paquete});alActualizar();}catch(error){alert(error.message)}});card.querySelector("[data-accion-pick=restaurar]")?.addEventListener("click",async()=>{try{await request("PATCH",{accion:"restaurar_pick",id:p.id,paquete:p.paquete});alActualizar();}catch(error){alert(error.message)}})})}async function abrirPublicados(){
-  form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=false;
-  document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabPublicados")));
-  historial.innerHTML=`<h2 style="color:#efc766">PICKS PUBLICADOS</h2><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">${paquetesPanel.map((p,i)=>`<button type="button" data-publicado="${i}" style="background:#092719;color:#efc766;border-color:#ad8736;font-size:14px;padding:16px 8px">${escapar(p)}</button>`).join("")}</div><button id="abrirHistorial" type="button" style="margin-top:18px">VER HISTORIAL</button><section id="detallePublicados" style="margin-top:20px"></section>`;
-  const detalle=document.getElementById("detallePublicados");
-  historial.querySelectorAll("[data-publicado]").forEach(b=>b.addEventListener("click",async()=>{
-    detalle.textContent="Cargando pick…";
-    try{const paquete=paquetesPanel[Number(b.dataset.publicado)];const datos=await request("GET",undefined,`?vista=picks&paquete=${encodeURIComponent(paquete)}`);detalle.innerHTML=datos.picks[0]?tarjetaPublicado(datos.picks[0]):"<p>Todavía no hay un pick publicado para este paquete.</p>";if(datos.picks.length)conectarAccionesPick(detalle,datos.picks,()=>b.click());}catch(error){detalle.textContent=error.message;}
-  }));
-  document.getElementById("abrirHistorial").onclick=()=>abrirHistorial(0);
-}
-async function abrirHistorial(pagina){
-  historial.innerHTML="Cargando historial…";
-  try{const datos=await request("GET",undefined,`?vista=picks&historial=1&pagina=${pagina}`);historial.innerHTML=`<h2 style="color:#efc766">HISTORIAL DE PICKS</h2><p>De los más antiguos a los más nuevos.</p><button id="volverPublicados" type="button">← VOLVER A PAQUETES</button>${datos.picks.length?datos.picks.map(tarjetaPublicado).join(""):"<p>Todavía no hay picks publicados.</p>"}<div style="display:flex;gap:12px;margin-top:18px"><button id="histAnterior" type="button" ${pagina===0?"disabled":""}>ANTERIOR</button><button id="histSiguiente" type="button" ${!datos.hayMas?"disabled":""}>SIGUIENTE</button></div>`;historial.querySelectorAll("[data-accion-pick]").forEach(b=>b.remove());document.getElementById("volverPublicados").onclick=abrirPublicados;document.getElementById("histAnterior").onclick=()=>abrirHistorial(pagina-1);document.getElementById("histSiguiente").onclick=()=>abrirHistorial(pagina+1);}catch(error){historial.textContent=error.message;}
-}
-document.getElementById("tabPublicados").addEventListener("click",abrirPublicados);
-for(const id of ["tabPick","tabClientes","tabSoporte"])document.getElementById(id).addEventListener("click",()=>historial.hidden=true);
-form.addEventListener("submit", async event => {
-  event.preventDefault();
-  const paquetes = [...form.querySelectorAll('input[name="paquete"]:checked')].map(input=>input.value);
-  if (!paquetes.length) {estado.textContent="Selecciona al menos un paquete.";return;}
-  const button = form.querySelector('button[type="submit"]'); button.disabled=true;estado.textContent="Publicando…";
-  try {
-    const partidos=[...partidosEl.children].map(c=>({deporte:c.querySelector("[data-deporte]").value,enfrentamiento:c.querySelector("[data-enfrentamiento]").value.trim()}));
-    const jugadas=[...jugadasEl.children].map(c=>c.querySelector("[data-texto-jugada]").value.trim());
-    const data = await request("POST", {titulo:document.getElementById("titulo").value,partidos,jugadas,cuota:document.getElementById("cuota").value.trim(),instagram:document.getElementById("instagram").value.trim(),analisis:document.getElementById("analisis").value.trim(),fecha_pick:document.getElementById("fecha").value,imagen_url:document.getElementById("imagen").value.trim(),juego_url:document.getElementById("juego").value.trim(),paquetes});
-    estado.textContent=`Pick publicado para ${data.publicados} paquete(s).`;
-    if(data.notificaciones?.estado === "enviados")estado.textContent+=` Avisos enviados al servicio de correo: ${data.notificaciones.enviados}.`;
-    else if(data.notificaciones?.estado === "sin_configurar")estado.textContent+=" Los avisos por correo aún no están activados: falta configurar el remitente.";
-    else estado.textContent+=" El pick está guardado, pero los avisos por correo no se completaron. No vuelvas a publicar el pick para reintentar el correo.";button.textContent="PUBLICADO";
-    form.querySelectorAll("input,textarea,select,.add-entry,.remove-entry").forEach(input=>input.disabled=true);
-    document.getElementById("nuevo").hidden=false;
-    const vista = document.getElementById("pickPublicado"), ver = document.getElementById("verPublicado");
-    vista.innerHTML = (data.picks || []).map(p => `<article style="padding:22px;margin:14px 0;border:1px solid #ad8736;border-radius:12px;background:linear-gradient(#031009bf,#031009d4),url(hero.jpeg) center/cover"><h3 style="color:#efc766">${escapar(p.paquete)}</h3><p>${escapar(p.fecha_pick)}</p><h2 style="color:#efc766">${escapar(p.titulo)}</h2>${p.imagen_url ? `<img src="${escapar(p.imagen_url)}" alt="Imagen del pick" style="max-width:100%">` : ""}${window.renderPickDescription(p.descripcion)}</article>`).join("");
-    ver.hidden = !data.picks?.length;
-    ver.onclick = () => {
-      const tabs=document.querySelector(".tabs");
-      document.querySelector("main").append(vista);
-      let volver=document.getElementById("volverEditor");
-      if(!volver){volver=document.createElement("button");volver.id="volverEditor";volver.type="button";volver.textContent="← VOLVER AL ADMINISTRADOR";vista.prepend(volver);}
-      volver.onclick=()=>{vista.hidden=true;form.hidden=false;document.getElementById("editorLayout").hidden=false;if(tabs)tabs.hidden=false;estado.hidden=false;};
-      form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;if(tabs)tabs.hidden=true;estado.hidden=true;vista.hidden=false;vista.scrollIntoView({behavior:"smooth",block:"start"});
-    };
-  } catch(error) {estado.textContent=error.message;button.disabled=false;}
-});
-</script></body></html>
-
-
-
-
-
-
+document.getElementById("tabReto").addEventListener("click",()=>{
+  form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=true;descuentoPanel.hidden=true;challengeCyclePanel.hidden=false;
+  document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabReto")));
+  cargarCicloReto();
+});
+document.getElementById("tabRefund").addEventListener("click",()=>{
+  form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=true;descuentoPanel.hidden=true;document.getElementById("refundAdmin").hidden=false;
+  document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabRefund")));
+  cargarRefunds();
+});
+const challengeCyclePanel=document.getElementById("challengeCycleAdmin");
+const challengeCycleStatus=document.getElementById("challengeCycleStatus");
+const toggleChallengeCycle=document.getElementById("toggleChallengeCycle");
+let challengeCycleActive=true;
+async function requestChallengeCycle(method="GET",body){
+  const {data:{session}}=await client.auth.getSession();
+  if(!session)throw new Error("Inicia sesión con una cuenta autorizada para administrar el reto.");
+  const r=await fetch("/api/challenge-cycle"+(method==="GET"?"?vista=admin":""),{method,headers:{Authorization:`Bearer ${session.access_token}`,"Content-Type":"application/json"},...(body?{body:JSON.stringify(body)}:{})});
+  const data=await r.json();if(!r.ok)throw new Error(data.error||"No se pudo actualizar el reto.");return data;
+}
+function mostrarEstadoReto(active){
+  challengeCycleActive=active;
+  challengeCycleStatus.textContent=active
+    ?"RETO ABIERTO · El pago único mantiene el acceso hasta que lo finalices desde aquí."
+    :"RETO FINALIZADO · Las compras y los accesos del ciclo anterior están cerrados.";
+  toggleChallengeCycle.textContent=active?"FINALIZAR RETO Y CERRAR ACCESOS":"ABRIR NUEVO RETO Y COBROS";
+  toggleChallengeCycle.classList.toggle("is-active",!active);
+}
+async function cargarCicloReto(){
+  toggleChallengeCycle.disabled=true;challengeCycleStatus.textContent="Consultando el reto…";
+  try{const data=await requestChallengeCycle();mostrarEstadoReto(data.active);}
+  catch(error){challengeCycleStatus.textContent=error.message;}
+  finally{toggleChallengeCycle.disabled=false;}
+}
+toggleChallengeCycle.addEventListener("click",async()=>{
+  const nextActive=!challengeCycleActive;
+  const message=nextActive
+    ?"Abrirás un nuevo ciclo y permitirás nuevos pagos únicos de $50. Las compras del ciclo anterior seguirán cerradas. ¿Continuar?"
+    :"Esto cerrará las nuevas compras y quitará el acceso de las compras activas de este reto. ¿Finalizarlo ahora?";
+  if(!window.confirm(message))return;
+  toggleChallengeCycle.disabled=true;challengeCycleStatus.textContent="Guardando cambio…";
+  try{const data=await requestChallengeCycle("POST",{active:nextActive});mostrarEstadoReto(data.active);}
+  catch(error){challengeCycleStatus.textContent=error.message;}
+  finally{toggleChallengeCycle.disabled=false;}
+});
+document.querySelectorAll("#secciones button").forEach(button=>button.addEventListener("click",()=>{if(button.id!=="tabReto")challengeCyclePanel.hidden=true;}));
+refundAll.addEventListener("click",reembolsarTodos);
+refundPackage.addEventListener("change",cargarRefunds);
+refundDate.addEventListener("change",cargarRefunds);
+document.getElementById("tabClientes").addEventListener("click",()=>{
+  form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=false;document.getElementById("supportAdmin").hidden=true;historial.hidden=true;document.getElementById("editorResultados").hidden=true;
+  document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabClientes")));cargarCompras(0);
+});
+document.getElementById("tabPick").addEventListener("click",()=>{
+  form.hidden=false;document.getElementById("editorLayout").hidden=false;document.getElementById("instrucciones").hidden=false;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;
+  document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabPick")));
+});
+const adminMenuToggle=document.getElementById("adminMenuToggle"),adminMenu=document.getElementById("adminMenu");
+adminMenuToggle.addEventListener("click",()=>{adminMenu.hidden=!adminMenu.hidden;adminMenuToggle.setAttribute("aria-expanded",String(!adminMenu.hidden));});
+adminMenu.querySelectorAll("[data-panel]").forEach(b=>b.addEventListener("click",()=>{adminMenu.hidden=true;adminMenuToggle.setAttribute("aria-expanded","false");document.getElementById(b.dataset.panel)?.click();}));
+document.addEventListener("click",e=>{if(!adminMenu.hidden&&!adminMenu.contains(e.target)&&!adminMenuToggle.contains(e.target)){adminMenu.hidden=true;adminMenuToggle.setAttribute("aria-expanded","false");}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){adminMenu.hidden=true;adminMenuToggle.setAttribute("aria-expanded","false");}});
+async function supportRequest(method,body,query=""){
+  const {data:{session}}=await client.auth.getSession();if(!session)throw new Error("Tu sesión venció. Inicia sesión nuevamente.");
+  const r=await fetch("/api/support"+query,{method,headers:{Authorization:`Bearer ${session.access_token}`,"Content-Type":"application/json"},...(body?{body:JSON.stringify(body)}:{})});
+  const data=await r.json();if(!r.ok)throw new Error(data.error||"No se pudo completar la acción.");return data;
+}
+const supportList=document.getElementById("supportAdminList"),supportStatus=document.getElementById("supportAdminStatus");
+async function cargarSoporteAdmin(){
+  const b=document.getElementById("refreshSupport");b.disabled=true;supportStatus.textContent="Cargando mensajes…";supportList.replaceChildren();
+  try{const data=await supportRequest("GET",undefined,"?vista=admin");supportStatus.textContent=data.tickets.length?`${data.tickets.length} conversación(es).`:"Todavía no hay mensajes de soporte.";
+    supportList.innerHTML=data.tickets.map(t=>`<article class="support-ticket" data-ticket="${escapar(t.id)}"><header class="support-ticket-header"><div><h3>${escapar(t.subject||"Consulta de soporte")}</h3><small>${escapar(t.customer_name||"Cliente")} · ${escapar(t.customer_email)} · ${escapar(t.customer_phone||"Sin teléfono")}</small></div><small>${escapar(t.status||"abierto")} · ${escapar(t.preferred_channel||"portal")}</small></header><div class="support-ticket-messages">${(t.messages||[]).map(m=>`<div class="support-message ${m.author_role==="admin"?"admin":"customer"}"><strong>${m.author_role==="admin"?"ISB Soporte":"Cliente"} · ${escapar(m.channel||"portal")}</strong><div>${escapar(m.body)}</div><small>${escapar(m.created_at||"")}</small></div>`).join("")}</div><form class="support-reply" data-reply="${escapar(t.id)}"><label>Responder por<select name="channel"><option value="portal">Mensaje en la página</option><option value="email">Correo electrónico</option><option value="whatsapp">WhatsApp</option></select></label><label>Respuesta<textarea name="body" maxlength="4000" required placeholder="Escribe tu respuesta…"></textarea></label><button type="submit">RESPONDER</button></form><p class="support-reply-status" role="status"></p>${t.status==="closed"?"":`<button type="button" class="close-support" data-close="${escapar(t.id)}">MARCAR RESUELTO</button>`}</article>`).join("");
+    supportList.querySelectorAll("form[data-reply]").forEach(f=>f.addEventListener("submit",async e=>{e.preventDefault();const button=f.querySelector("button"),status=f.closest(".support-ticket").querySelector(".support-reply-status"),body=f.elements.body.value.trim(),channel=f.elements.channel.value;button.disabled=true;status.textContent="Enviando…";try{const answer=await supportRequest("PATCH",{accion:"respuesta",ticket_id:f.dataset.reply,body,channel});if(answer.whatsapp_url){status.innerHTML=`<a href="${escapar(answer.whatsapp_url)}" target="_blank" rel="noopener">ABRIR WHATSAPP PARA ENVIAR</a>`;}else{status.textContent=channel==="email"?"Correo enviado.":"Respuesta guardada en la conversación.";f.elements.body.value="";setTimeout(cargarSoporteAdmin,800);}}catch(error){status.textContent=error.message;button.disabled=false;}}));
+    supportList.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",async()=>{b.disabled=true;try{await supportRequest("PATCH",{accion:"cerrar",ticket_id:b.dataset.close});await cargarSoporteAdmin();}catch(error){supportStatus.textContent=error.message;b.disabled=false;}}));
+  }catch(error){supportStatus.textContent=error.message;}finally{b.disabled=false;}
+}
+document.getElementById("tabSoporte").addEventListener("click",()=>{form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;historial.hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("supportAdmin").hidden=false;document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabSoporte")));cargarSoporteAdmin();});
+const descuentoPanel=document.getElementById("descuentoPanel"), descuentoEstado=document.getElementById("descuentoEstado"), alternarDescuento=document.getElementById("alternarDescuento");
+let descuentoHabilitado=false;
+async function peticionDescuento(method,body){
+  const {data:{session}}=await client.auth.getSession();
+  if(!session)throw new Error("Tu sesión venció. Inicia sesión nuevamente.");
+  const response=await fetch("/api/package-discount",{method,headers:{Authorization:`Bearer ${session.access_token}`,"Content-Type":"application/json"},...(body?{body:JSON.stringify(body)}:{})});
+  const data=await response.json();if(!response.ok)throw new Error(data.error||"No se pudo consultar la promoción.");return data;
+}
+function mostrarEstadoDescuento(active){
+  descuentoHabilitado=active===true;
+  descuentoEstado.textContent=descuentoHabilitado?"Promoción activa del 30% para clientes de ISB. Económica queda excluida.":"Promoción apagada. Al activarla, será del 30% en todos los paquetes, excepto Económica.";
+  alternarDescuento.textContent=descuentoHabilitado?"DESACTIVAR DESCUENTO DEL 30%":"ACTIVAR DESCUENTO DEL 30%";
+  alternarDescuento.classList.toggle("is-active",descuentoHabilitado);
+}
+document.getElementById("tabDescuento").addEventListener("click",async()=>{
+  form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=true;descuentoPanel.hidden=false;
+  document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabDescuento")));
+  alternarDescuento.disabled=true;descuentoEstado.textContent="Consultando promoción…";
+  try{const data=await peticionDescuento("GET");mostrarEstadoDescuento(data.active);}catch(error){descuentoEstado.textContent=error.message;}
+  finally{alternarDescuento.disabled=false;}
+});
+alternarDescuento.addEventListener("click",async()=>{
+  alternarDescuento.disabled=true;descuentoEstado.textContent="Guardando cambio…";
+  try{const data=await peticionDescuento("POST",{active:!descuentoHabilitado});mostrarEstadoDescuento(data.active);}
+  catch(error){descuentoEstado.textContent=error.message;}
+  finally{alternarDescuento.disabled=false;}
+});
+document.getElementById("refreshSupport").addEventListener("click",cargarSoporteAdmin);
+document.getElementById("actualizarCompras").addEventListener("click",()=>cargarCompras(paginaCompras));
+anterior.addEventListener("click",()=>cargarCompras(paginaCompras-1));siguiente.addEventListener("click",()=>cargarCompras(paginaCompras+1));
+document.getElementById("nuevo").addEventListener("click", () => {
+  form.querySelectorAll("input,textarea,select,.add-entry,.remove-entry").forEach(input=>input.disabled=false);
+  document.getElementById("titulo").value="";
+  document.getElementById("analisis").value="";document.getElementById("cuota").value="";document.getElementById("instagram").value="@idael_sportbet_oficial";
+  partidosEl.replaceChildren();jugadasEl.replaceChildren();agregarPartido();agregarJugada();
+  document.getElementById("imagen").value="";
+  document.getElementById("juego").value="";
+  const button=form.querySelector('button[type="submit"]');button.disabled=false;button.textContent="PUBLICAR PICK";
+  document.getElementById("verPublicado").hidden=true;document.getElementById("pickPublicado").hidden=true;document.getElementById("nuevo").hidden=true;estado.textContent="Listo para publicar otro pick.";
+  document.getElementById("titulo").focus();
+});
+const historial=document.createElement("section");historial.id="historial";historial.hidden=true;document.querySelector("main").append(historial);
+const paquetesPanel=["Premium Diario","Premium Semanal","Exclusiva Diaria","Exclusiva Semanal","Pack Mensual","Económica"];
+const picksEditables=new Map();function tarjetaPublicado(p){picksEditables.set(String(p.id),p);const titulo=String(p.titulo??"");const cuentaInstagram=titulo.match(/\s+(@[a-zA-Z0-9._]{2,30})\s*$/)?.[1];const tituloLimpio=cuentaInstagram?titulo.replace(/\s+@[a-zA-Z0-9._]{2,30}\s*$/," ").trim():titulo;const descripcion=String(p.descripcion??"");const lineaInstagram=cuentaInstagram&&!descripcion.includes("📸 "+cuentaInstagram)?window.renderPickDescription("📸 "+cuentaInstagram):"";return '<article class="pick-history-card" data-pick-id="'+escapar(p.id)+'" style="text-align:center;padding:22px;border:1px solid #ad8736;border-radius:12px;margin:14px 0;background:linear-gradient(#031009bf,#031009d4),url(hero.jpeg) center/cover"><h3 style="color:#efc766">'+escapar(p.paquete)+'</h3><p>'+escapar(p.fecha_pick)+'</p><h2>'+escapar(tituloLimpio)+'</h2>'+(p.imagen_url?'<img src="'+escapar(p.imagen_url)+'" alt="Imagen del pick" style="max-width:100%">':"")+window.renderPickDescription(descripcion)+lineaInstagram+'<div style="display:flex;justify-content:center;gap:10px;margin-top:18px"><button type="button" data-accion-pick="editar" style="width:auto;padding:9px 14px">EDITAR PICK</button>'+(p.activo?'<button type="button" data-accion-pick="borrar" style="width:auto;padding:9px 14px">BORRAR PICK</button>':'<button type="button" data-accion-pick="restaurar" style="width:auto;padding:9px 14px">RESTAURAR PICK</button>')+'</div></article>';}
+function conectarAccionesPick(contenedor,picks,alActualizar){contenedor.querySelectorAll(".pick-history-card").forEach((card,i)=>{const p=picks[i];card.querySelector("[data-accion-pick=editar]").onclick=async()=>{const titulo=prompt("Título del pick",p.titulo);if(titulo===null)return;const descripcion=prompt("Pick, cuota y análisis",p.descripcion);if(descripcion===null)return;const fecha_pick=prompt("Fecha del pick (AAAA-MM-DD)",p.fecha_pick);if(fecha_pick===null)return;const imagen_url=prompt("Enlace de imagen (opcional)",p.imagen_url||"");if(imagen_url===null)return;try{await request("PATCH",{accion:"editar_pick",id:p.id,paquete:p.paquete,titulo,descripcion,fecha_pick,imagen_url});alActualizar();}catch(error){alert(error.message)}};card.querySelector("[data-accion-pick=borrar]")?.addEventListener("click",async()=>{if(!confirm("¿Retirar este pick de la vista de clientes? Seguirá disponible en el historial."))return;try{await request("PATCH",{accion:"borrar_pick",id:p.id,paquete:p.paquete});alActualizar();}catch(error){alert(error.message)}});card.querySelector("[data-accion-pick=restaurar]")?.addEventListener("click",async()=>{try{await request("PATCH",{accion:"restaurar_pick",id:p.id,paquete:p.paquete});alActualizar();}catch(error){alert(error.message)}})})}async function abrirPublicados(){
+  form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=false;
+  document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabPublicados")));
+  historial.innerHTML=`<h2 style="color:#efc766">PICKS PUBLICADOS</h2><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">${paquetesPanel.map((p,i)=>`<button type="button" data-publicado="${i}" style="background:#092719;color:#efc766;border-color:#ad8736;font-size:14px;padding:16px 8px">${escapar(p)}</button>`).join("")}</div><button id="abrirHistorial" type="button" style="margin-top:18px">VER HISTORIAL</button><section id="detallePublicados" style="margin-top:20px"></section>`;
+  const detalle=document.getElementById("detallePublicados");
+  historial.querySelectorAll("[data-publicado]").forEach(b=>b.addEventListener("click",async()=>{
+    detalle.textContent="Cargando pick…";
+    try{const paquete=paquetesPanel[Number(b.dataset.publicado)];const datos=await request("GET",undefined,`?vista=picks&paquete=${encodeURIComponent(paquete)}`);detalle.innerHTML=datos.picks[0]?tarjetaPublicado(datos.picks[0]):"<p>Todavía no hay un pick publicado para este paquete.</p>";if(datos.picks.length)conectarAccionesPick(detalle,datos.picks,()=>b.click());}catch(error){detalle.textContent=error.message;}
+  }));
+  document.getElementById("abrirHistorial").onclick=()=>abrirHistorial(0);
+}
+async function abrirHistorial(pagina){
+  historial.innerHTML="Cargando historial…";
+  try{const datos=await request("GET",undefined,`?vista=picks&historial=1&pagina=${pagina}`);historial.innerHTML=`<h2 style="color:#efc766">HISTORIAL DE PICKS</h2><p>De los más antiguos a los más nuevos.</p><button id="volverPublicados" type="button">← VOLVER A PAQUETES</button>${datos.picks.length?datos.picks.map(tarjetaPublicado).join(""):"<p>Todavía no hay picks publicados.</p>"}<div style="display:flex;gap:12px;margin-top:18px"><button id="histAnterior" type="button" ${pagina===0?"disabled":""}>ANTERIOR</button><button id="histSiguiente" type="button" ${!datos.hayMas?"disabled":""}>SIGUIENTE</button></div>`;historial.querySelectorAll("[data-accion-pick]").forEach(b=>b.remove());document.getElementById("volverPublicados").onclick=abrirPublicados;document.getElementById("histAnterior").onclick=()=>abrirHistorial(pagina-1);document.getElementById("histSiguiente").onclick=()=>abrirHistorial(pagina+1);}catch(error){historial.textContent=error.message;}
+}
+document.getElementById("tabPublicados").addEventListener("click",abrirPublicados);
+for(const id of ["tabPick","tabClientes","tabSoporte"])document.getElementById(id).addEventListener("click",()=>historial.hidden=true);
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+  const paquetes = [...form.querySelectorAll('input[name="paquete"]:checked')].map(input=>input.value);
+  if (!paquetes.length) {estado.textContent="Selecciona al menos un paquete.";return;}
+  const button = form.querySelector('button[type="submit"]'); button.disabled=true;estado.textContent="Publicando…";
+  try {
+    const partidos=[...partidosEl.children].map(c=>({deporte:c.querySelector("[data-deporte]").value,enfrentamiento:c.querySelector("[data-enfrentamiento]").value.trim()}));
+    const jugadas=[...jugadasEl.children].map(c=>c.querySelector("[data-texto-jugada]").value.trim());
+    const data = await request("POST", {titulo:document.getElementById("titulo").value,partidos,jugadas,cuota:document.getElementById("cuota").value.trim(),instagram:document.getElementById("instagram").value.trim(),analisis:document.getElementById("analisis").value.trim(),fecha_pick:document.getElementById("fecha").value,imagen_url:document.getElementById("imagen").value.trim(),juego_url:document.getElementById("juego").value.trim(),paquetes});
+    estado.textContent=`Pick publicado para ${data.publicados} paquete(s).`;
+    if(data.notificaciones?.estado === "enviados")estado.textContent+=` Avisos enviados al servicio de correo: ${data.notificaciones.enviados}.`;
+    else if(data.notificaciones?.estado === "sin_configurar")estado.textContent+=" Los avisos por correo aún no están activados: falta configurar el remitente.";
+    else estado.textContent+=" El pick está guardado, pero los avisos por correo no se completaron. No vuelvas a publicar el pick para reintentar el correo.";button.textContent="PUBLICADO";
+    form.querySelectorAll("input,textarea,select,.add-entry,.remove-entry").forEach(input=>input.disabled=true);
+    document.getElementById("nuevo").hidden=false;
+    const vista = document.getElementById("pickPublicado"), ver = document.getElementById("verPublicado");
+    vista.innerHTML = (data.picks || []).map(p => `<article style="padding:22px;margin:14px 0;border:1px solid #ad8736;border-radius:12px;background:linear-gradient(#031009bf,#031009d4),url(hero.jpeg) center/cover"><h3 style="color:#efc766">${escapar(p.paquete)}</h3><p>${escapar(p.fecha_pick)}</p><h2 style="color:#efc766">${escapar(p.titulo)}</h2>${p.imagen_url ? `<img src="${escapar(p.imagen_url)}" alt="Imagen del pick" style="max-width:100%">` : ""}${window.renderPickDescription(p.descripcion)}</article>`).join("");
+    ver.hidden = !data.picks?.length;
+    ver.onclick = () => {
+      const tabs=document.querySelector(".tabs");
+      document.querySelector("main").append(vista);
+      let volver=document.getElementById("volverEditor");
+      if(!volver){volver=document.createElement("button");volver.id="volverEditor";volver.type="button";volver.textContent="← VOLVER AL ADMINISTRADOR";vista.prepend(volver);}
+      volver.onclick=()=>{vista.hidden=true;form.hidden=false;document.getElementById("editorLayout").hidden=false;if(tabs)tabs.hidden=false;estado.hidden=false;};
+      form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;if(tabs)tabs.hidden=true;estado.hidden=true;vista.hidden=false;vista.scrollIntoView({behavior:"smooth",block:"start"});
+    };
+  } catch(error) {estado.textContent=error.message;button.disabled=false;}
+});
+</script></body></html>
+
+
+
+
+
+
