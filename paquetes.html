@@ -592,6 +592,7 @@ button{
 .price-before{position:relative;display:inline-block;color:#c5c1b2;font-size:.68em;font-weight:750;line-height:1;white-space:nowrap}
 .price-before::after{position:absolute;content:"";left:-6%;top:50%;width:112%;height:2px;background:#ed4b4b;transform:rotate(-18deg);transform-origin:center;pointer-events:none}
 .price-row{flex-wrap:wrap}
+.challenge-risk{position:relative;z-index:2;margin:0 0 8px;color:#f4d98e;font-size:8px;line-height:1.35;text-align:center}
 .package-discount-badge{position:relative;z-index:2;align-self:center;margin:8px auto 2px;padding:3px 8px;border:1px solid #d8b957;border-radius:999px;background:#120f08;color:#ffe18b;font-size:9px;font-weight:900;letter-spacing:.6px}
 
 .period{
@@ -2736,6 +2737,33 @@ COMPRAR AHORA
   <button class="buy-btn" onclick="abrirCompra('Champions League Completa', '$200', 'TEMPORADA')">COMPRAR AHORA</button>
 </article>
 
+<!-- RETO DE 10 DÍAS PARA $10K -->
+<article class="package-card" data-paquete="Reto de 10 días para $10K">
+  <div class="card-top">
+    <div class="card-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 19V5M4 19h17"/>
+        <path d="m7 15 4-4 3 3 6-7"/>
+        <path d="M16 7h4v4"/>
+        <circle cx="7" cy="15" r="1"/>
+      </svg>
+    </div>
+    <div>
+      <h2 class="card-title">RETO 10 DÍAS</h2>
+      <div class="card-type">META $10K · UNA JUGADA AL DÍA</div>
+    </div>
+  </div>
+  <ul class="card-features">
+    <li><span class="check">✓</span><span>Una jugada diaria con cuota positiva</span></li>
+    <li><span class="check">✓</span><span>Si gana, reinvierte saldo y ganancia en la próxima jugada</span></li>
+    <li><span class="check">✓</span><span>A +100 y con 10 aciertos seguidos: $10 llegarían a $10,240 (ejemplo, no garantía)</span></li>
+    <li><span class="check">✓</span><span>Si pierde la jugada del día, puedes solicitar el reembolso del precio pagado</span></li>
+  </ul>
+  <p class="challenge-risk">El resultado no está garantizado. Reinvertir todo el saldo puede hacerte perderlo.</p>
+  <div class="price-row"><span class="price">$150</span><span class="period">/ DÍA</span></div>
+  <button class="buy-btn" onclick="abrirCompra('Reto de 10 días para $10K', '$150', 'DÍA')">COMPRAR AHORA</button>
+</article>
+
 
 </div>
 
@@ -3269,7 +3297,8 @@ const descuentoBase = {
   "Exclusiva Diaria": 5000,
   "Exclusiva Semanal": 29900,
   "Pack Mensual": 15000,
-  "Champions League Completa": 20000
+  "Champions League Completa": 20000,
+  "Reto de 10 días para $10K": 15000
 };
 let descuentoActivo = false;
 function formatoUSD(cents){
