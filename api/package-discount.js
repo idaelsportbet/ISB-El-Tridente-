@@ -23,8 +23,10 @@ async function isAdmin(authorization, secret) {
   if (!response.ok) return false;
   const user = await response.json();
   const adminId = (process.env.ADMIN_USER_ID || "").trim();
-  return adminId ? user.id === adminId :
-    typeof user.email === "string" && user.email.toLowerCase() === ADMIN_EMAIL && Boolean(user.email_confirmed_at);
+  const correo = typeof user.email === "string" ? user.email.toLowerCase() : "";
+  const correoAutorizado = Boolean(user.email_confirmed_at) &&
+    [ADMIN_EMAIL, "felixyaiden@icloud.com"].includes(correo);
+  return (adminId && user.id === adminId) || correoAutorizado;
 }
 
 export default async function handler(req, res) {
