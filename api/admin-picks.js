@@ -132,7 +132,7 @@ function fechaActualCentral(){const p=new Intl.DateTimeFormat("en-US",{timeZone:
     }
     const { titulo, descripcion, partidos, jugadas, cuota, instagram = "", analisis = "", fecha_pick, imagen_url = "", juego_url = "", paquetes } = req.body || {};
     const estructurado = Array.isArray(partidos) || Array.isArray(jugadas) || cuota !== undefined;
-    const deportes = { "Fútbol":"⚽", MLB:"⚾", NBA:"🏀", NHL:"🏒", NFL:"🏈", "NCAA Football":"🏈", UFC:"🥊" };
+    const deportes = { "Fútbol":"⚽", MLB:"⚾", NBA:"🏀", NHL:"🏒", NFL:"🏈", NCAAF:"🏈", UFC:"🥊" };
     const partidosValidos = Array.isArray(partidos) && partidos.length > 0 && partidos.length <= 12 && partidos.every(p => p && typeof p.deporte === "string" && Object.hasOwn(deportes, p.deporte) && typeof p.enfrentamiento === "string" && p.enfrentamiento.trim().length > 2 && p.enfrentamiento.trim().length <= 240);
     const jugadasValidas = Array.isArray(jugadas) && jugadas.length > 0 && jugadas.length <= 20 && jugadas.every(j => typeof j === "string" && j.trim().length > 0 && j.trim().length <= 500);
     const cuotaValida = typeof cuota === "string" && /^[+-]?\d{1,8}(?:[.,]\d{1,4})?$/.test(cuota.trim());
