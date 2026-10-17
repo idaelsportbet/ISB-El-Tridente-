@@ -168,7 +168,7 @@
 const client = supabase.createClient("https://nfvkmxnprchvkufwvhpr.supabase.co", "sb_publishable_LkV-utNMHKyRw5GH30SF-Q_znC4MRA1");
 const escapar = valor => {const nodo=document.createElement("span");nodo.textContent=String(valor ?? "");return nodo.innerHTML.replace(/"/g,"&quot;");};
 const form = document.getElementById("publicar"), estado = document.getElementById("estado");
-const deportes=[{nombre:"Fútbol",icono:"⚽"},{nombre:"MLB",icono:"⚾"},{nombre:"NBA",icono:"🏀"},{nombre:"NHL",icono:"🏒"},{nombre:"NFL",icono:"🏈"},{nombre:"NCAA Football",icono:"🏈"},{nombre:"UFC",icono:"🥊"}];
+const deportes=[{nombre:"Fútbol",icono:"⚽"},{nombre:"MLB",icono:"⚾"},{nombre:"NBA",icono:"🏀"},{nombre:"NHL",icono:"🏒"},{nombre:"NFL",icono:"🏈"},{nombre:"NCAAF",icono:"🏈"},{nombre:"UFC",icono:"🥊"}];
 const partidosEl=document.getElementById("partidos"), jugadasEl=document.getElementById("jugadas");
 function renumerar(contenedor,prefijo){[...contenedor.children].forEach((card,i)=>{const label=card.querySelector("label[data-label]");if(label){label.textContent=prefijo+(i+1);card.querySelector("[data-enfrentamiento]")?.setAttribute("aria-label",`Enfrentamiento del partido ${i+1}`)}const input=card.querySelector("[data-texto-jugada]");if(input){input.placeholder=`Escribe la jugada ${i+1}…`;input.setAttribute("aria-label",`Jugada ${i+1}`)}})}
 function agregarPartido(deporte="Fútbol",enfrentamiento=""){
