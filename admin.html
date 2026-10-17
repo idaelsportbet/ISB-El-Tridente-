@@ -434,7 +434,7 @@ function conectarAccionesPick(contenedor,picks,alActualizar){contenedor.querySel
   const detalle=document.getElementById("detallePublicados");
   historial.querySelectorAll("[data-publicado]").forEach(b=>b.addEventListener("click",async()=>{
     detalle.textContent="Cargando pick…";
-    try{const paquete=paquetesPanel[Number(b.dataset.publicado)];const datos=await request("GET",undefined,`?vista=picks&paquete=${encodeURIComponent(paquete)}`);detalle.innerHTML=datos.picks[0]?tarjetaPublicado(datos.picks[0]):"<p>Todavía no hay un pick publicado para este paquete.</p>";if(datos.picks.length)conectarAccionesPick(detalle,datos.picks,()=>b.click());}catch(error){detalle.textContent=error.message;}
+    try{const paquete=paquetesPanel[Number(b.dataset.publicado)];const datos=await request("GET",undefined,`?vista=picks&paquete=${encodeURIComponent(paquete)}`);detalle.innerHTML=datos.picks.length?datos.picks.map(tarjetaPublicado).join(""):"<p>Todavía no hay picks publicados para este paquete hoy.</p>";if(datos.picks.length)conectarAccionesPick(detalle,datos.picks,()=>b.click());}catch(error){detalle.textContent=error.message;}
   }));
   document.getElementById("abrirHistorial").onclick=()=>abrirHistorial(0);
 }
