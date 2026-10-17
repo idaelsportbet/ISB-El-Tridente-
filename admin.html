@@ -35,7 +35,19 @@
     @media(max-width:600px){main{margin:16px 12px;padding:20px}h1{font-size:27px}.entry-grid{grid-template-columns:1fr;gap:8px}.editor-section{padding:13px}}
     .tabs{display:flex;gap:12px;margin:20px 0}.tabs button{background:#092719;color:#ffd700;font-size:14px}.tabs button[aria-pressed=true]{border-color:#ffd700}
     #clientes h2{color:#ffd700}.tabla-scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:12px 8px;text-align:left;border-bottom:1px solid #287c51;white-space:nowrap}th{color:#ffd700}.activo{color:#39ef9d}.vencido{color:#ffb68e}.paginas{display:flex;gap:12px;margin-top:18px}.paginas button{font-size:14px}#comprasEstado{line-height:1.5}
-  </style>
+  
+.pick-edit-overlay{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.84)}
+.pick-edit-dialog{width:min(620px,100%);max-height:90vh;overflow:auto;padding:22px;border:1px solid #e5be51;border-radius:14px;background:linear-gradient(145deg,#07130d,#020403);box-shadow:0 18px 60px #000;color:#f4f0e5}
+.pick-edit-dialog h2{margin:0 0 18px;color:#f0c84e;text-align:center}
+.pick-edit-dialog label{display:block;margin:14px 0 6px;color:#e8c85e;font-weight:700}
+.pick-edit-dialog input,.pick-edit-dialog textarea{display:block;width:100%;margin-top:7px;padding:11px 12px;border:1px solid #87703a;border-radius:8px;background:#080b09;color:#fff;font:inherit;box-sizing:border-box}
+.pick-edit-dialog textarea{min-height:170px;resize:vertical;line-height:1.5}
+.pick-edit-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}
+.pick-edit-actions button{width:auto;padding:11px 16px}
+.pick-edit-status{min-height:1.3em;color:#f0c84e}
+@media(max-width:600px){.pick-edit-overlay{padding:10px}.pick-edit-dialog{max-height:94vh;padding:16px}.pick-edit-actions{position:sticky;bottom:-16px;padding:12px 0 0;background:#050907;flex-wrap:wrap}.pick-edit-actions button{flex:1}}
+
+</style>
 <link rel="stylesheet" href="tema-isb.css?v=20261015-oro-mas-amarillo"><style>
   :root{--admin-gold:#edc560;--admin-green:#11a96a;--admin-line:#bd913c88}
   body{background:#020504;color:#f1f2ed;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -425,7 +437,27 @@ document.getElementById("nuevo").addEventListener("click", () => {
 const historial=document.createElement("section");historial.id="historial";historial.hidden=true;document.querySelector("main").append(historial);
 const paquetesPanel=[{label:"Premium Diario y Semanal",paquete:"Premium Diario"},{label:"Exclusiva Diaria y Semanal",paquete:"Exclusiva Diaria"},{label:"Pack Mensual",paquete:"Pack Mensual"},{label:"Económica",paquete:"Económica"},{label:"Champions League Completa",paquete:"Champions League Completa"},{label:"Reto de 10 días para $10K",paquete:"Reto de 10 días para $10K"}];
 const picksEditables=new Map();function tarjetaPublicado(p,etiqueta=p.paquete){picksEditables.set(String(p.id),p);const titulo=String(p.titulo??"");const cuentaInstagram=titulo.match(/\s+(@[a-zA-Z0-9._]{2,30})\s*$/)?.[1];const tituloLimpio=cuentaInstagram?titulo.replace(/\s+@[a-zA-Z0-9._]{2,30}\s*$/," ").trim():titulo;const descripcion=String(p.descripcion??"");const lineaInstagram=cuentaInstagram&&!descripcion.includes("📸 "+cuentaInstagram)?window.renderPickDescription("📸 "+cuentaInstagram):"";return '<article class="pick-history-card" data-pick-id="'+escapar(p.id)+'" style="text-align:center;padding:22px;border:1px solid #ad8736;border-radius:12px;margin:14px 0;background:linear-gradient(#031009bf,#031009d4),url(hero.jpeg) center/cover"><h3 style="color:#efc766">'+escapar(etiqueta)+'</h3><p>'+escapar(p.fecha_pick)+'</p><h2>'+escapar(tituloLimpio)+'</h2>'+(p.imagen_url?'<img src="'+escapar(p.imagen_url)+'" alt="Imagen del pick" style="max-width:100%">':"")+window.renderPickDescription(descripcion)+lineaInstagram+'<div style="display:flex;justify-content:center;gap:10px;margin-top:18px"><button type="button" data-accion-pick="editar" style="width:auto;padding:9px 14px">EDITAR PICK</button>'+(p.activo?'<button type="button" data-accion-pick="borrar" style="width:auto;padding:9px 14px">BORRAR PICK</button>':'<button type="button" data-accion-pick="restaurar" style="width:auto;padding:9px 14px">RESTAURAR PICK</button>')+'</div></article>';}
-function conectarAccionesPick(contenedor,picks,alActualizar){contenedor.querySelectorAll(".pick-history-card").forEach((card,i)=>{const p=picks[i];card.querySelector("[data-accion-pick=editar]").onclick=async()=>{const titulo=prompt("Título del pick",p.titulo);if(titulo===null)return;const descripcion=prompt("Pick, cuota y análisis",p.descripcion);if(descripcion===null)return;const fecha_pick=prompt("Fecha del pick (AAAA-MM-DD)",p.fecha_pick);if(fecha_pick===null)return;const imagen_url=prompt("Enlace de imagen (opcional)",p.imagen_url||"");if(imagen_url===null)return;try{await request("PATCH",{accion:"editar_pick",id:p.id,paquete:p.paquete,titulo,descripcion,fecha_pick,imagen_url});alActualizar();}catch(error){alert(error.message)}};card.querySelector("[data-accion-pick=borrar]")?.addEventListener("click",async()=>{if(!confirm("¿Borrar definitivamente este pick? Dejará de aparecer en la página y en el historial. Esta acción no se puede deshacer."))return;try{await request("PATCH",{accion:"borrar_pick",id:p.id,paquete:p.paquete});alActualizar();}catch(error){alert(error.message)}});card.querySelector("[data-accion-pick=restaurar]")?.addEventListener("click",async()=>{try{await request("PATCH",{accion:"restaurar_pick",id:p.id,paquete:p.paquete});alActualizar();}catch(error){alert(error.message)}})})}async function abrirPublicados(){
+function abrirEditorPick(p,alActualizar,botonOrigen){
+  const overlay=document.createElement("div");
+  overlay.className="pick-edit-overlay";
+  overlay.innerHTML='<section class="pick-edit-dialog" role="dialog" aria-modal="true" aria-labelledby="pickEditTitle"><h2 id="pickEditTitle">EDITAR PICK</h2><form><label>Título del pick<input name="titulo" maxlength="160" required value="'+escapar(p.titulo||"")+'"></label><label>Pick, cuota y análisis<textarea name="descripcion" maxlength="10000" required>'+escapar(p.descripcion||"")+'</textarea></label><label>Fecha del pick<input name="fecha_pick" type="date" required value="'+escapar(p.fecha_pick||"")+'"></label><label>Enlace de imagen (opcional)<input name="imagen_url" type="url" value="'+escapar(p.imagen_url||"")+'"></label><p class="pick-edit-status" role="status" aria-live="polite"></p><div class="pick-edit-actions"><button type="button" data-cancelar>Cancelar</button><button type="submit">GUARDAR CAMBIOS</button></div></form></section>';
+  document.body.append(overlay);
+  const editForm=overlay.querySelector("form"),status=overlay.querySelector(".pick-edit-status"),save=editForm.querySelector('[type="submit"]');
+  const cerrar=()=>{overlay.remove();document.removeEventListener("keydown",alTecla);botonOrigen.focus();};
+  const alTecla=e=>{if(e.key==="Escape")cerrar();};
+  overlay.querySelector("[data-cancelar]").addEventListener("click",cerrar);
+  overlay.addEventListener("click",e=>{if(e.target===overlay)cerrar();});
+  document.addEventListener("keydown",alTecla);
+  editForm.addEventListener("submit",async e=>{
+    e.preventDefault();save.disabled=true;status.textContent="Guardando cambios…";
+    try{
+      await request("PATCH",{accion:"editar_pick",id:p.id,paquete:p.paquete,titulo:editForm.elements.titulo.value.trim(),descripcion:editForm.elements.descripcion.value.trim(),fecha_pick:editForm.elements.fecha_pick.value,imagen_url:editForm.elements.imagen_url.value.trim()});
+      cerrar();alActualizar();
+    }catch(error){status.textContent=error.message||"No se pudieron guardar los cambios.";save.disabled=false;}
+  });
+  editForm.elements.titulo.focus();
+}
+function conectarAccionesPick(contenedor,picks,alActualizar){contenedor.querySelectorAll(".pick-history-card").forEach((card,i)=>{const p=picks[i],editar=card.querySelector("[data-accion-pick=editar]");editar?.addEventListener("click",()=>abrirEditorPick(p,alActualizar,editar));card.querySelector("[data-accion-pick=borrar]")?.addEventListener("click",async()=>{if(!confirm("¿Borrar definitivamente este pick? Dejará de aparecer en la página y en el historial. Esta acción no se puede deshacer."))return;try{await request("PATCH",{accion:"borrar_pick",id:p.id,paquete:p.paquete});alActualizar();}catch(error){alert(error.message)}});card.querySelector("[data-accion-pick=restaurar]")?.addEventListener("click",async()=>{try{await request("PATCH",{accion:"restaurar_pick",id:p.id,paquete:p.paquete});alActualizar();}catch(error){alert(error.message)}})})}async function abrirPublicados(){
   form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("clientes").hidden=true;document.getElementById("supportAdmin").hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("pickPublicado").hidden=true;historial.hidden=false;
   document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabPublicados")));
   historial.innerHTML=`<h2 style="color:#efc766">PICKS PUBLICADOS</h2><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">${paquetesPanel.map((p,i)=>`<button type="button" data-publicado="${i}" style="background:#092719;color:#efc766;border-color:#ad8736;font-size:14px;padding:16px 8px">${escapar(p.label)}</button>`).join("")}</div><button id="abrirHistorial" type="button" style="margin-top:18px">VER HISTORIAL</button><section id="detallePublicados" style="margin-top:20px"></section>`;
