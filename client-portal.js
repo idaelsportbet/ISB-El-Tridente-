@@ -43,7 +43,7 @@ function renderPicks(compras) {
     document.querySelectorAll("[data-paquete]").forEach(b=>b.addEventListener("click",()=>{filtroActual=compras[Number(b.dataset.paquete)].paquete;renderPicks(comprasVisibles);}));
     return;
   }
-  contenido.innerHTML = `<div class="filters"><button class="filter" type="button" data-filtro="0">← VOLVER A MIS PAQUETES</button></div>${compras.filter(c=>filtroActual === "Todos" || c.paquete===filtroActual).map(compra=>`<article class="panel"><div class="package-head"><h2 class="package-title">${escapar(compra.paquete)}</h2><span class="status">ACTIVO</span></div><div class="pick-preview" style="--marca-pick:${marcaPick(compra.paquete)}">${compra.errorPick ? `<p class="message">No se pudo cargar el pick. Actualiza la página para intentarlo de nuevo.</p>` : compra.pick ? contenidoPick(compra.pick) : `<p class="message">Todavía no se ha publicado el pick de hoy para este paquete.</p>`}</div></article>`).join("")}`;
+  contenido.innerHTML = `<div class="filters"><button class="filter" type="button" data-filtro="0">← VOLVER A MIS PAQUETES</button></div>${compras.filter(c=>filtroActual === "Todos" || c.paquete===filtroActual).map(compra=>`<article class="panel"><div class="package-head"><h2 class="package-title">${escapar(compra.paquete)}</h2><span class="status">ACTIVO</span></div><div class="pick-preview" style="--marca-pick:${marcaPick(compra.paquete)}">${compra.errorPick ? `<p class="message">No se pudo cargar el pick. Actualiza la página para intentarlo de nuevo.</p>` : compra.picks?.length ? compra.picks.map((pick,i)=>`<div${i?` style="border-top:1px solid #ad8736;padding-top:16px;margin-top:16px"`:""}>${contenidoPick(pick)}</div>`).join("") : `<p class="message">Todavía no se han publicado picks de hoy para este paquete.</p>`}</div></article>`).join("")}`;
   document.querySelectorAll("[data-filtro]").forEach(boton=>boton.addEventListener("click",()=>{filtroActual=filtros[Number(boton.dataset.filtro)];renderPicks(comprasVisibles);}));
 }
 async function cargarPortal() {
@@ -59,11 +59,13 @@ async function cargarPortal() {
     if (vistaPicks) {
       const partes = Object.fromEntries(new Intl.DateTimeFormat("en-US",{timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date()).map(p=>[p.type,p.value]));
       const hoy = `${partes.year}-${partes.month}-${partes.day}`;
-      await Promise.all(comprasVisibles.map(async compra=>{
-        const {data:picks,error} = await supabaseClient.from("picks").select("titulo,descripcion,fecha_pick,imagen_url").eq("paquete",compra.paquete).eq("fecha_pick",hoy).eq("activo",true).order("created_at",{ascending:false}).limit(1);
-        compra.pick = picks?.[0]; compra.errorPick = Boolean(error);
-      }));
       comprasVisibles = comprasVisibles.filter(c=>new Date(c.vencimiento)>new Date());
+      const paquetesCliente = [...new Map(comprasVisibles.map(compra=>[compra.paquete,compra])).values()];
+      await Promise.all(paquetesCliente.map(async compra=>{
+        const {data:picks,error} = await supabaseClient.from("picks").select("titulo,descripcion,fecha_pick,imagen_url").eq("paquete",compra.paquete).eq("fecha_pick",hoy).eq("activo",true).order("created_at",{ascending:false}).limit(3);
+        compra.picks = picks || []; compra.errorPick = Boolean(error);
+      }));
+      comprasVisibles = paquetesCliente;
       renderPicks(comprasVisibles);
     } else {
       renderCuenta(session.user,comprasVisibles);

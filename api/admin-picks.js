@@ -74,7 +74,7 @@ function fechaActualCentral(){const p=new Intl.DateTimeFormat("en-US",{timeZone:
     if (req.method === "GET" && req.query?.vista === "picks") {
       const esHistorial=req.query.historial === "1", pagina=Number(req.query.pagina || 0);
       if(!Number.isInteger(pagina)||pagina<0||pagina>10000)return res.status(400).json({error:"Página inválida."});
-      const query = new URLSearchParams({select:"id,paquete,titulo,descripcion,fecha_pick,imagen_url,activo",order:esHistorial?"fecha_pick.asc,created_at.asc":"fecha_pick.desc,created_at.desc",limit:esHistorial?"26":"1",offset:esHistorial?String(pagina*25):"0"});
+      const query = new URLSearchParams({select:"id,paquete,titulo,descripcion,fecha_pick,imagen_url,activo",order:esHistorial?"fecha_pick.asc,created_at.asc":"fecha_pick.desc,created_at.desc",limit:esHistorial?"26":"3",offset:esHistorial?String(pagina*25):"0"});
       if(!esHistorial){if(!PAQUETES.includes(req.query.paquete))return res.status(400).json({error:"Selecciona un paquete."});query.set("paquete",`eq.${req.query.paquete}`);query.set("activo","eq.true");query.set("fecha_pick",`eq.${fechaActualCentral()}`);}
       const respuesta = await fetch(`${SUPABASE_URL}/rest/v1/picks?${query}`,{headers:{apikey:secret,Authorization:`Bearer ${secret}`}});
       if(!respuesta.ok)return res.status(502).json({error:"No se pudieron cargar los picks publicados."});
@@ -172,7 +172,24 @@ function fechaActualCentral(){const p=new Intl.DateTimeFormat("en-US",{timeZone:
     // Keep the structured pick in the existing text column; no database migration is required.
     const contenido = descripcionPick + (juego_url ? `\n\nVer juego: ${new URL(juego_url).href}` : "");
     if (contenido.length > 10000) return res.status(400).json({error:"Acorta el análisis para incluir el enlace del juego."});
-    const filas = [...new Set(paquetes)].map(paquete => ({
+    const paquetesUnicos = [...new Set(paquetes)];
+    const existentesQuery = new URLSearchParams({
+      select: "paquete",
+      paquete: `in.(${paquetesUnicos.join(",")})`,
+      fecha_pick: `eq.${fecha_pick}`,
+      activo: "eq.true",
+      limit: "1000"
+    });
+    const existentesResponse = await fetch(`${SUPABASE_URL}/rest/v1/picks?${existentesQuery}`, {
+      headers: { apikey: secret, Authorization: `Bearer ${secret}` }
+    });
+    if (!existentesResponse.ok) return res.status(502).json({ error: "No se pudo comprobar cuántos picks tiene cada paquete hoy." });
+    const existentes = await existentesResponse.json();
+    const conteoPorPaquete = new Map();
+    for (const pick of existentes) conteoPorPaquete.set(pick.paquete, (conteoPorPaquete.get(pick.paquete) || 0) + 1);
+    const paqueteCompleto = paquetesUnicos.find(paquete => (conteoPorPaquete.get(paquete) || 0) >= 3);
+    if (paqueteCompleto) return res.status(409).json({ error: `Ya hay tres picks activos de ${paqueteCompleto} para hoy. No se publicó ningún paquete.` });
+    const filas = paquetesUnicos.map(paquete => ({
       titulo: tituloPick, descripcion: contenido, fecha_pick,
       imagen_url: imagen_url || null, paquete, activo: true
     }));
