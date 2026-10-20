@@ -50,6 +50,45 @@ function fechaActualCentral(){const p=new Intl.DateTimeFormat("en-US",{timeZone:
       [adminEmail, "felixyaiden@icloud.com"].includes(correo);
     const autorizado = (adminId && user.id === adminId) || correoAutorizado;
     if (!autorizado) return res.status(403).json({ error: "Esta cuenta no tiene permiso para publicar picks." }); if (req.method === "PATCH") return modificarPick(req,res,secret);
+    if (req.method === "GET" && req.query?.vista === "champions") {
+      const query = new URLSearchParams({select:"id,fecha_pick,descripcion",paquete:"eq.Champions League Completa",titulo:"eq.CHAMPIONS_CALENDAR_V1",activo:"eq.true",order:"fecha_pick.asc",limit:"1000"});
+      const fecha = req.query.fecha;
+      if (fecha) {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(fecha)) return res.status(400).json({error:"Selecciona una fecha válida."});
+        query.set("fecha_pick","eq."+fecha);
+      }
+      const response = await fetch(SUPABASE_URL+"/rest/v1/picks?"+query,{headers:{apikey:secret,Authorization:"Bearer "+secret}});
+      if (!response.ok) return res.status(502).json({error:"No se pudo cargar el calendario de Champions."});
+      const rows = await response.json();
+      return res.status(200).json({dias:rows.map(row=>{try{return {id:row.id,fecha:row.fecha_pick,partidos:JSON.parse(row.descripcion).partidos||[]};}catch{return null;}}).filter(Boolean)});
+    }
+    if (req.method === "POST" && req.body?.accion === "guardar_champions") {
+      const {fecha,partidos}=req.body||{};
+      const fechaValida=typeof fecha==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(fecha)&&Number.isFinite(Date.parse(fecha+"T00:00:00Z"))&&new Date(fecha+"T00:00:00Z").toISOString().slice(0,10)===fecha&&fecha>="2026-07-01"&&fecha<="2027-12-31";
+      const urlValida=value=>{if(value===""||value==null)return true;if(typeof value!=="string"||value.length>2048)return false;try{const u=new URL(value);return u.protocol==="https:"&&!u.username&&!u.password;}catch{return false;}};
+      const partidosValidos=Array.isArray(partidos)&&partidos.length>0&&partidos.length<=20&&partidos.every(p=>p&&typeof p.local==="string"&&p.local.trim().length>0&&p.local.trim().length<=100&&typeof p.visitante==="string"&&p.visitante.trim().length>0&&p.visitante.trim().length<=100&&typeof p.cuota==="string"&&/^[+-]?\d{1,8}(?:[.,]\d{1,4})?$/.test(p.cuota.trim())&&urlValida(p.escudo_local||"")&&urlValida(p.escudo_visitante||""));
+      if(!fechaValida||!partidosValidos)return res.status(400).json({error:"Revisa la fecha, los dos equipos, sus escudos y la cuota de cada partido."});
+      const headers={apikey:secret,Authorization:"Bearer "+secret};
+      const query=new URLSearchParams({select:"id",paquete:"eq.Champions League Completa",fecha_pick:"eq."+fecha,titulo:"eq.CHAMPIONS_CALENDAR_V1"});
+      const oldResponse=await fetch(SUPABASE_URL+"/rest/v1/picks?"+query,{headers});
+      if(!oldResponse.ok)return res.status(502).json({error:"No se pudo comprobar la jornada guardada."});
+      const oldRows=await oldResponse.json();
+      const cleanMatches=partidos.map(p=>({local:p.local.trim(),visitante:p.visitante.trim(),escudo_local:(p.escudo_local||"").trim(),escudo_visitante:(p.escudo_visitante||"").trim(),cuota:p.cuota.trim()}));
+      const row={titulo:"CHAMPIONS_CALENDAR_V1",descripcion:JSON.stringify({version:1,partidos:cleanMatches}),fecha_pick:fecha,imagen_url:null,paquete:"Champions League Completa",activo:true};
+      const inserted=await fetch(SUPABASE_URL+"/rest/v1/picks",{method:"POST",headers:{...headers,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify([row])});
+      if(!inserted.ok)return res.status(502).json({error:"No se pudieron guardar los partidos de Champions."});
+      if(oldRows.length){const del=new URLSearchParams({id:"in.("+oldRows.map(x=>x.id).join(",")+")",paquete:"eq.Champions League Completa"});const removed=await fetch(SUPABASE_URL+"/rest/v1/picks?"+del,{method:"DELETE",headers:{...headers,Prefer:"return=minimal"}});if(!removed.ok)return res.status(502).json({error:"Los partidos nuevos se guardaron, pero no se pudo limpiar una versión anterior de esa fecha."});}
+      return res.status(201).json({fecha:fecha,partidos:cleanMatches.length});
+    }
+    if (req.method === "POST" && req.body?.accion === "borrar_champions_fecha") {
+      const fecha=req.body.fecha;
+      if(typeof fecha!=="string"||!/^\d{4}-\d{2}-\d{2}$/.test(fecha)||fecha<"2026-07-01"||fecha>"2027-12-31")return res.status(400).json({error:"Selecciona una fecha válida."});
+      const query=new URLSearchParams({fecha_pick:"eq."+fecha,paquete:"eq.Champions League Completa",titulo:"eq.CHAMPIONS_CALENDAR_V1"});
+      const response=await fetch(SUPABASE_URL+"/rest/v1/picks?"+query,{method:"DELETE",headers:{apikey:secret,Authorization:"Bearer "+secret,Prefer:"return=representation"}});
+      if(!response.ok)return res.status(502).json({error:"No se pudo quitar esa fecha del calendario."});
+      return res.status(200).json({eliminados:(await response.json()).length});
+    }
+
     if (req.method === "GET" && req.query?.vista === "compras") {
       const pagina = Number(req.query.pagina || 0);
       if (!Number.isInteger(pagina) || pagina < 0 || pagina > 10000) return res.status(400).json({error:"Página inválida."});
@@ -75,7 +114,7 @@ function fechaActualCentral(){const p=new Intl.DateTimeFormat("en-US",{timeZone:
       const esHistorial=req.query.historial === "1", pagina=Number(req.query.pagina || 0);
       if(!Number.isInteger(pagina)||pagina<0||pagina>10000)return res.status(400).json({error:"Página inválida."});
       const query = new URLSearchParams({select:"id,paquete,titulo,descripcion,fecha_pick,imagen_url,activo",order:esHistorial?"fecha_pick.asc,created_at.asc":"fecha_pick.desc,created_at.desc",limit:esHistorial?"26":"3",offset:esHistorial?String(pagina*25):"0"});
-      if(!esHistorial){if(!PAQUETES.includes(req.query.paquete))return res.status(400).json({error:"Selecciona un paquete."});query.set("paquete",`eq.${req.query.paquete}`);query.set("activo","eq.true");query.set("fecha_pick",`eq.${fechaActualCentral()}`);}
+      query.set("titulo","neq.CHAMPIONS_CALENDAR_V1");if(!esHistorial){if(!PAQUETES.includes(req.query.paquete))return res.status(400).json({error:"Selecciona un paquete."});query.set("paquete",`eq.${req.query.paquete}`);query.set("activo","eq.true");query.set("fecha_pick",`eq.${fechaActualCentral()}`);}
       const respuesta = await fetch(`${SUPABASE_URL}/rest/v1/picks?${query}`,{headers:{apikey:secret,Authorization:`Bearer ${secret}`}});
       if(!respuesta.ok)return res.status(502).json({error:"No se pudieron cargar los picks publicados."});
       return res.status(200).json(await respuesta.json().then(filas=>({picks:esHistorial?filas.slice(0,25):filas,hayMas:esHistorial&&filas.length>25})));
@@ -174,7 +213,7 @@ function fechaActualCentral(){const p=new Intl.DateTimeFormat("en-US",{timeZone:
     if (contenido.length > 10000) return res.status(400).json({error:"Acorta el análisis para incluir el enlace del juego."});
     const paquetesUnicos = [...new Set(paquetes.flatMap(paquete => paquete === "Exclusiva Diaria y Semanal" ? ["Exclusiva Diaria", "Exclusiva Semanal"] : [paquete]))];
     const existentesQuery = new URLSearchParams({
-      select: "paquete",
+      select: "paquete,titulo",
       paquete: `in.(${paquetesUnicos.join(",")})`,
       fecha_pick: `eq.${fecha_pick}`,
       activo: "eq.true",
@@ -186,7 +225,7 @@ function fechaActualCentral(){const p=new Intl.DateTimeFormat("en-US",{timeZone:
     if (!existentesResponse.ok) return res.status(502).json({ error: "No se pudo comprobar cuántos picks tiene cada paquete hoy." });
     const existentes = await existentesResponse.json();
     const conteoPorPaquete = new Map();
-    for (const pick of existentes) conteoPorPaquete.set(pick.paquete, (conteoPorPaquete.get(pick.paquete) || 0) + 1);
+    for (const pick of existentes) if(pick.titulo!=="CHAMPIONS_CALENDAR_V1") conteoPorPaquete.set(pick.paquete, (conteoPorPaquete.get(pick.paquete) || 0) + 1);
     const paqueteCompleto = paquetesUnicos.find(paquete => (conteoPorPaquete.get(paquete) || 0) >= 3);
     if (paqueteCompleto) return res.status(409).json({ error: `Ya hay tres picks activos de ${paqueteCompleto} para hoy. No se publicó ningún paquete.` });
     const filas = paquetesUnicos.map(paquete => ({
