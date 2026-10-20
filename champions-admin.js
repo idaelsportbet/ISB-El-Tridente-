@@ -5,13 +5,12 @@
   const date=document.getElementById("championsAdminDate");
   const rows=document.getElementById("championsAdminMatches");
   const status=document.getElementById("championsAdminStatus");
-  const calendario=window.ISB_CHAMPIONS_FIXTURES||{};
   if(!panel||!tab)return;
   const escapeHtml=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
   const estados=["Pendiente","Ganado","Perdido","No enviado"];
   const calendarRoot=document.getElementById("championsAdminCalendar");
   let diasGuardados=[], mesActivo=null;
-  function obtenerPartidos(fecha){const guardado=diasGuardados.find(d=>d.fecha===fecha)?.partidos||[],pendientes=[...guardado],oficiales=(calendario[fecha]||[]).map(([local,visitante])=>{const i=pendientes.findIndex(p=>clave(p)===clave({local,visitante})),anterior=i>=0?pendientes.splice(i,1)[0]:{};return {...anterior,local,visitante,resultado:anterior.resultado||"Pendiente"};});return [...oficiales,...pendientes];}
+  function obtenerPartidos(fecha){return (diasGuardados.find(d=>d.fecha===fecha)?.partidos||[]).filter(p=>p&&p.manual===true);}
   function estadoFecha(partidos){const estadosDia=(partidos||[]).map(p=>estados.includes(p.resultado)?p.resultado:"Pendiente");if(!estadosDia.length||estadosDia.includes("Pendiente"))return "";const distintos=[...new Set(estadosDia)];return distintos.length===1?distintos[0]:"Mixto";}
   function guardarEnCache(fecha,partidos){diasGuardados=diasGuardados.filter(d=>d.fecha!==fecha);if(partidos?.length)diasGuardados.push({fecha,partidos});dibujarCalendario();}
   function dibujarCalendario(){
@@ -24,7 +23,6 @@
     calendarRoot.querySelectorAll("[data-admin-date]").forEach(b=>b.addEventListener("click",()=>{date.value=b.dataset.adminDate;mesActivo=new Date(Number(date.value.slice(0,4)),Number(date.value.slice(5,7))-1,1);dibujarCalendario();loadDay();}));
   }
   async function cargarCalendarioGuardado(){try{const d=await call("GET",null,"?vista=champions");diasGuardados=d.dias||[];dibujarCalendario();}catch(e){status.textContent=e.message;}}
-  const equipoClave=v=>{let s=String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();if(s.startsWith("paris")||s==="psg")s="paris saint germain";return s;};const clave=m=>[equipoClave(m.local),equipoClave(m.visitante)].sort().join("|");
   function previewEscudo(root,url) {
     const valor=String(url||"").trim();
     if(!valor){root.innerHTML='<span class="champions-crest-preview-empty">Vista previa del escudo</span>';return;}
@@ -51,7 +49,7 @@
     const card=document.createElement("fieldset");
     card.className="champions-admin-match";
     const resultado=estados.includes(match.resultado)?match.resultado:"Pendiente",numero=rows.children.length+1;
-    card.innerHTML='<legend>PARTIDO '+numero+'</legend><input type="hidden" data-local value="'+escapeHtml(match.local||"")+'"><input type="hidden" data-visitante value="'+escapeHtml(match.visitante||"")+'"><div class="champions-admin-match-grid"><label>Enlace directo del escudo local (opcional)<input data-local-logo type="url" maxlength="2048" placeholder="https://…/escudo.png" value="'+escapeHtml(match.escudo_local||"")+'"></label><label>Enlace directo del escudo visitante (opcional)<input data-visitante-logo type="url" maxlength="2048" placeholder="https://…/escudo.png" value="'+escapeHtml(match.escudo_visitante||"")+'"></label><label>Subir escudo local desde el dispositivo<input data-local-file type="file" accept="image/png,image/jpeg,image/webp"></label><label>Subir escudo visitante desde el dispositivo<input data-visitante-file type="file" accept="image/png,image/jpeg,image/webp"></label><div class="champions-crest-preview" data-local-preview></div><div class="champions-crest-preview" data-visitante-preview></div><label>Cuota (opcional)<input data-cuota inputmode="text" maxlength="20" placeholder="+110" value="'+escapeHtml(match.cuota||"")+'"></label><label>Resultado<select data-resultado>'+estados.map(x=>'<option'+(x===resultado?' selected':'')+'>'+x+'</option>').join("")+'</select></label></div>';
+    card.innerHTML='<legend>PARTIDO '+numero+'</legend><div class="champions-admin-match-grid"><label>Equipo local<input data-local required maxlength="100" placeholder="Nombre del equipo local" value="'+escapeHtml(match.local||"")+'"></label><label>Equipo visitante<input data-visitante required maxlength="100" placeholder="Nombre del equipo visitante" value="'+escapeHtml(match.visitante||"")+'"></label><label>Enlace directo del escudo local (opcional)<input data-local-logo type="url" maxlength="2048" placeholder="https://…/escudo.png" value="'+escapeHtml(match.escudo_local||"")+'"></label><label>Enlace directo del escudo visitante (opcional)<input data-visitante-logo type="url" maxlength="2048" placeholder="https://…/escudo.png" value="'+escapeHtml(match.escudo_visitante||"")+'"></label><label>Subir escudo local desde el dispositivo<input data-local-file type="file" accept="image/png,image/jpeg,image/webp"></label><label>Subir escudo visitante desde el dispositivo<input data-visitante-file type="file" accept="image/png,image/jpeg,image/webp"></label><div class="champions-crest-preview" data-local-preview></div><div class="champions-crest-preview" data-visitante-preview></div><label>Resultado<select data-resultado>'+estados.map(x=>'<option'+(x===resultado?' selected':'')+'>'+x+'</option>').join("")+'</select></label></div><button class="add-entry champions-remove-match" type="button" data-remove-match>QUITAR PARTIDO</button>';
     const previewLocal=card.querySelector("[data-local-preview]"),previewVisitante=card.querySelector("[data-visitante-preview]");
     previewEscudo(previewLocal,match.escudo_local);previewEscudo(previewVisitante,match.escudo_visitante);
     for(const [lado,selector,preview] of [["local","[data-local-file]",previewLocal],["visitante","[data-visitante-file]",previewVisitante]]) {
@@ -69,8 +67,10 @@
         finally{fileInput.disabled=false;fileInput.value="";}
       });
     }
+    card.querySelector("[data-remove-match]").addEventListener("click",()=>{card.remove();[...rows.children].forEach((item,i)=>item.querySelector("legend").textContent="PARTIDO "+(i+1));});
     rows.append(card);
   }
+  document.getElementById("championsAdminAddMatch").addEventListener("click",()=>addMatch());
   async function call(method,body,query="") {
     const {data:{session}}=await client.auth.getSession();
     if(!session)throw new Error("La sesión venció. Inicia sesión otra vez.");
@@ -81,23 +81,16 @@
   }
   async function loadDay() {
     if(!date.value)return;
-    status.textContent="Cargando calendario oficial y partidos guardados…";
+    status.textContent="Cargando los partidos que agregaste…";
     try {
       const d=await call("GET",null,"?vista=champions&fecha="+encodeURIComponent(date.value));
-      const guardado=d.dias?.find(x=>x.fecha===date.value)?.partidos||[];
-      const pendientes=[...guardado];
-      const oficiales=(calendario[date.value]||[]).map(([local,visitante])=>{
-        const i=pendientes.findIndex(p=>clave(p)===clave({local,visitante}));
-        const anterior=i>=0?pendientes.splice(i,1)[0]:{};
-        return {...anterior,local,visitante,escudo_local:anterior.escudo_local||"",escudo_visitante:anterior.escudo_visitante||"",cuota:anterior.cuota||"",resultado:anterior.resultado||"Pendiente"};
-      });
-      const partidos=[...oficiales,...pendientes];
-      if(guardado.length)guardarEnCache(date.value,guardado);else dibujarCalendario();
+      const partidos=(d.dias?.find(x=>x.fecha===date.value)?.partidos||[]).filter(p=>p&&p.manual===true);
+      guardarEnCache(date.value,partidos);
       rows.replaceChildren();
       partidos.forEach(addMatch);
       status.textContent=partidos.length
-        ? partidos.length+" partido(s) para "+date.value+(guardado.length?" · se conservaron los escudos, cuotas y resultados guardados.":" · calendario oficial cargado; agrega escudos y guarda.")
-        : "No hay partidos oficiales confirmados para esta fecha. Puedes agregarlos manualmente.";
+        ? partidos.length+" partido(s) agregados para "+date.value+"."
+        : "No hay partidos agregados para esta fecha. Pulsa AÑADIR PARTIDO para empezar.";
     } catch(e) {status.textContent=e.message;}
   }
   function openPanel() {
@@ -107,7 +100,7 @@
     }
     panel.hidden=false;
     document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b===tab)));
-    status.textContent="Elige un día en el almanaque. Al abrirlo puedes añadir los enlaces HTTPS de los escudos, marcar el resultado y guardar.";
+    status.textContent="Elige una fecha y agrega manualmente los partidos que quieras publicar a tus clientes.";
     cargarCalendarioGuardado();
     loadDay();
   }
@@ -122,7 +115,9 @@
   });
   form.addEventListener("submit",async e=>{
     e.preventDefault();
-    const partidos=[...rows.children].map(row=>({local:row.querySelector("[data-local]").value.trim(),escudo_local:row.querySelector("[data-local-logo]").value.trim(),visitante:row.querySelector("[data-visitante]").value.trim(),escudo_visitante:row.querySelector("[data-visitante-logo]").value.trim(),cuota:row.querySelector("[data-cuota]").value.trim(),resultado:row.querySelector("[data-resultado]").value}));
+    const partidos=[...rows.children].map(row=>({manual:true,local:row.querySelector("[data-local]").value.trim(),escudo_local:row.querySelector("[data-local-logo]").value.trim(),visitante:row.querySelector("[data-visitante]").value.trim(),escudo_visitante:row.querySelector("[data-visitante-logo]").value.trim(),resultado:row.querySelector("[data-resultado]").value}));
+    if(!partidos.length){status.textContent="Agrega al menos un partido o usa QUITAR ESTA FECHA.";return;}
+    if(partidos.some(p=>!p.local||!p.visitante)){status.textContent="Escribe los dos equipos de cada partido.";return;}
     if(partidos.some(p=>[p.escudo_local,p.escudo_visitante].some(u=>{try{return ["share.google","photos.app.goo.gl"].includes(new URL(u).hostname);}catch{return false;}}))){status.textContent="Los enlaces de Google compartido no son archivos de imagen. Sube esos escudos desde tu dispositivo y vuelve a guardar.";return;}
     const save=form.querySelector('[type="submit"]');
     save.disabled=true;status.textContent="Guardando partidos, escudos y resultados…";
