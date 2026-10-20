@@ -34,15 +34,16 @@
     if(!file||!/^image\/(png|jpeg|webp)$/.test(file.type))throw new Error("Selecciona un escudo PNG, JPG o WebP.");
     if(!("createImageBitmap" in window)) {
       const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error("No se pudo leer el archivo."));reader.readAsDataURL(file);});
-      if(String(data).length>650000)throw new Error("La imagen es muy grande. Usa una imagen más pequeña.");
+      if(String(data).length>90000)throw new Error("La imagen es muy grande. Usa una imagen más pequeña.");
       return data;
     }
-    const bitmap=await createImageBitmap(file),scale=Math.min(1,480/Math.max(bitmap.width,bitmap.height)),canvas=document.createElement("canvas");
+    const bitmap=await createImageBitmap(file),scale=Math.min(1,240/Math.max(bitmap.width,bitmap.height)),canvas=document.createElement("canvas");
     canvas.width=Math.max(1,Math.round(bitmap.width*scale));canvas.height=Math.max(1,Math.round(bitmap.height*scale));
     canvas.getContext("2d").drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close?.();
-    let data=canvas.toDataURL("image/webp",.78);
-    if(data.length>650000){canvas.width=Math.round(canvas.width*.75);canvas.height=Math.round(canvas.height*.75);data=canvas.toDataURL("image/webp",.68);}
-    if(data.length>650000)throw new Error("La imagen es muy grande. Usa una imagen más pequeña.");
+    let data=canvas.toDataURL("image/webp",.72);
+    if(data.length>90000){canvas.width=Math.round(canvas.width*.75);canvas.height=Math.round(canvas.height*.75);data=canvas.toDataURL("image/webp",.62);}
+    if(data.length>90000){canvas.width=Math.round(canvas.width*.7);canvas.height=Math.round(canvas.height*.7);data=canvas.toDataURL("image/webp",.5);}
+    if(data.length>90000)throw new Error("No se pudo reducir el escudo. Elige una imagen más pequeña.");
     return data;
   }
   function addMatch(match={}) {
