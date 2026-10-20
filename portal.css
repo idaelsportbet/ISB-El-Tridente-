@@ -31,7 +31,7 @@
 .champions-fixtures h3{display:inline-block;margin-bottom:4px}
 .champions-selected-date{margin:0 0 12px;color:#d0d4cf;text-transform:capitalize}
 .champions-fixture{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px;margin:8px 0;border:1px solid #65532b;border-radius:9px;background:#020705}
-.champions-team{display:flex;align-items:center;gap:9px;min-width:0;color:#fff;font-weight:650}
+.champions-team{display:flex;align-items:center;justify-content:center;gap:9px;min-width:0;color:#fff;font-weight:650;text-align:center}
 .champions-team img,.champions-crest-placeholder{width:30px;height:30px;object-fit:contain;flex:none}
 .champions-crest-placeholder{display:grid;place-items:center;font-size:22px}
 .champions-team span:last-child{overflow-wrap:anywhere}
