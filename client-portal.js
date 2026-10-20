@@ -21,13 +21,29 @@ function renderCuenta(user, compras) {
   const usuario = user.user_metadata?.username || "No registrado";
   contenido.innerHTML = `<section class="panel" aria-labelledby="personalTitulo"><h2 id="personalTitulo" class="section-title">MI INFORMACIÓN</h2><div class="personal">${fila("NOMBRE COMPLETO",nombre)}${fila("CORREO",user.email || "—")}${fila("TELÉFONO",telefono)}${fila("NOMBRE DE USUARIO",usuario)}${fila("ID DE USUARIO",user.id || "—")}</div></section><section class="panel" aria-labelledby="paquetesTitulo"><h2 id="paquetesTitulo" class="section-title">MIS PAQUETES</h2>${compras.length ? compras.map(compra => `<article class="package"><div class="package-head"><h3 class="package-title">${escapar(compra.paquete)}</h3><span class="status">ACTIVO</span></div>${fila("TOTAL PAGADO",`$${Number(compra.cantidad_pagada_dolar || 0).toFixed(2)} USD`)}${fila("FECHA DE COMPRA",fechaBonita(compra.fecha_compra))}${fila("VENCIMIENTO",fechaBonita(compra.vencimiento))}</article>`).join("") + `<a class="button" href="mis-picks.html">VER MIS PICKS →</a>` : sinPaquetes()}</section>`;
 }
+function partidosDelPick(descripcion) {
+  return String(descripcion || '').split(/\r?\n/).filter(linea => linea.trim().startsWith('🏟️')).map(linea => {
+    const contenido = linea.trim().replace(/^🏟️\s*/, '');
+    const partes = contenido.split(' · ');
+    const deporte = (partes.shift() || '').replace(/^[^\p{L}\p{N}]+/u, '').trim();
+    const enfrentamiento = partes.join(' · ').trim();
+    const lados = enfrentamiento.split(/\s+(?:vs\.?|versus)\s+/i);
+    const fuentes = { 'Fútbol': 'football', NBA: 'basketball', Tenis: 'tennis', Cricket: 'cricket' };
+    return { deporte, fuente: fuentes[deporte] || '', enfrentamiento, local: (lados[0] || '').trim(), visitante: (lados[1] || '').trim() };
+  }).filter(partido => partido.enfrentamiento);
+}
+function marcadorPickMarkup(descripcion) {
+  const partidos = partidosDelPick(descripcion);
+  if (!partidos.length) return '';
+  return '<div class="pick-live-scores">' + partidos.map(partido => '<div class="pick-live-score" data-pick-live-score data-score-sport="' + escapar(partido.fuente) + '" data-score-home="' + escapar(partido.local) + '" data-score-away="' + escapar(partido.visitante) + '"><span class="pick-live-teams">' + escapar(partido.enfrentamiento) + '</span><span class="pick-live-state">' + (partido.fuente ? 'Cargando marcador…' : 'Marcador automático no disponible para ' + escapar(partido.deporte)) + '</span></div>').join('') + '<p class="pick-score-credit">Marcador en vivo · <a href="https://sportscore.com/" target="_blank" rel="noopener noreferrer">Datos de SportScore</a></p></div>';
+}
 function contenidoPick(pick) {
-  let descripcion = pick.descripcion || "", juego = "", imagen = "";
+  let descripcion = pick.descripcion || '', juego = '', imagen = '';
   const enlace = descripcion.match(/\n\nVer juego: (https:\/\/[^\s]+)\s*$/);
-  const urlSegura = valor => { try { const url = new URL(valor); return url.protocol === "https:" && !url.username && !url.password ? url.href : ""; } catch { return ""; } };
+  const urlSegura = valor => { try { const url = new URL(valor); return url.protocol === 'https:' && !url.username && !url.password ? url.href : ''; } catch { return ''; } };
   if (enlace && (juego = urlSegura(enlace[1]))) descripcion = descripcion.slice(0,enlace.index);
   imagen = urlSegura(pick.imagen_url);
-  return `<div class="pick-date">${escapar(pick.fecha_pick)}</div><h3 class="pick-title">${escapar(pick.titulo || "Pick de hoy")}</h3>${imagen ? `<img class="pick-image" src="${escapar(imagen)}" alt="Imagen del pick" loading="lazy">` : ""}${window.renderPickDescription(descripcion)}${juego ? `<a class="button" href="${escapar(juego)}" target="_blank" rel="noopener noreferrer">VER JUEGO</a>` : ""}`;
+  return '<div class="pick-date">' + escapar(pick.fecha_pick) + '</div><h3 class="pick-title">' + escapar(pick.titulo || 'Pick de hoy') + '</h3>' + (imagen ? '<img class="pick-image" src="' + escapar(imagen) + '" alt="Imagen del pick" loading="lazy">' : '') + window.renderPickDescription(descripcion) + marcadorPickMarkup(descripcion) + (juego ? '<a class="button" href="' + escapar(juego) + '" target="_blank" rel="noopener noreferrer">VER JUEGO</a>' : '');
 }
 function marcaPick(paquete) {
   const texto = escapar(`ISB EL TRIDENTE · ${paquete}`);
@@ -35,40 +51,21 @@ function marcaPick(paquete) {
   return escapar(`url("data:image/svg+xml,${encodeURIComponent(svg)}")`);
 }
 
-let championsScoreCache=null,championsScoreAt=0,championsScoreRequest=null,championsScoreTimer=null,championsScoreRoot=null;
-function obtenerMarcadoresChampions(){
-  if(championsScoreCache&&Date.now()-championsScoreAt<60000)return Promise.resolve(championsScoreCache);
-  if(championsScoreRequest)return championsScoreRequest;
-  championsScoreRequest=fetch("https://sportscore.com/api/widget/matches/?sport=football&limit=50&src=idaelsportbet.me")
-    .then(response=>{if(!response.ok)throw new Error("No se pudo cargar el marcador.");return response.json();})
-    .then(data=>{championsScoreCache=Array.isArray(data.matches)?data.matches:[];championsScoreAt=Date.now();return championsScoreCache;})
-    .catch(()=>{championsScoreAt=Date.now();return null;})
-    .finally(()=>{championsScoreRequest=null;});
-  return championsScoreRequest;
+let championsScoreCache={},championsScoreAt={},championsScoreRequest={},championsScoreTimer=null,championsScoreRoot=null;
+function obtenerMarcadoresChampions(sport='football'){
+  if(championsScoreCache[sport]&&Date.now()-(championsScoreAt[sport]||0)<60000)return Promise.resolve(championsScoreCache[sport]);
+  if(championsScoreRequest[sport])return championsScoreRequest[sport];
+  championsScoreRequest[sport]=fetch('https://sportscore.com/api/widget/matches/?sport='+encodeURIComponent(sport)+'&limit=50&src=idaelsportbet.me').then(response=>{if(!response.ok)throw new Error('No se pudo cargar el marcador.');return response.json();}).then(data=>{championsScoreCache[sport]=Array.isArray(data.matches)?data.matches:[];championsScoreAt[sport]=Date.now();return championsScoreCache[sport];}).catch(()=>{championsScoreAt[sport]=Date.now();return null;}).finally(()=>{championsScoreRequest[sport]=null;});
+  return championsScoreRequest[sport];
 }
-function normalizarEquipoMarcador(nombre){
-  return String(nombre||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/\\b(fc|cf|club|deportivo|the)\\b/g," ").replace(/[^a-z0-9]+/g," ").trim();
-}
-function aliasEquipoMarcador(nombre){
-  const n=normalizarEquipoMarcador(nombre),aliases={
-    psg:["paris saint germain","paris saint germain fc","paris st germain"],
-    bar:["barcelona","fc barcelona","barca"],
-    barca:["barcelona","fc barcelona","barca"],
-    vfb:["vfb stuttgart","stuttgart"],
-    atl:["atletico madrid","atletico de madrid","atletico madrid club"],
-    atletico:["atletico madrid","atletico de madrid"],
-    "atletico madrid":["atletico madrid","atletico de madrid"]
-  };
-  return aliases[n]||[n];
-}
-function buscarMarcadorEquipo(nombre,partido){
-  const buscados=aliasEquipoMarcador(nombre).filter(Boolean);
-  const normalizados=[normalizarEquipoMarcador(partido.home),normalizarEquipoMarcador(partido.away)];
-  return buscados.some(a=>normalizados.includes(a));
-}
+function normalizarEquipoMarcador(nombre){return String(nombre||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\b(fc|cf|club|deportivo|the)\b/g,' ').replace(/[^a-z0-9]+/g,' ').trim();}
+function aliasEquipoMarcador(nombre){const n=normalizarEquipoMarcador(nombre),aliases={psg:['paris saint germain','paris saint germain fc','paris st germain'],bar:['barcelona','fc barcelona','barca'],barca:['barcelona','fc barcelona','barca'],vfb:['vfb stuttgart','stuttgart'],atl:['atletico madrid','atletico de madrid','atletico madrid club'],atletico:['atletico madrid','atletico de madrid'],'atletico madrid':['atletico madrid','atletico de madrid']};return aliases[n]||[n];}
+function buscarMarcadorEquipo(nombre,partido){const buscados=aliasEquipoMarcador(nombre).filter(Boolean),normalizados=[normalizarEquipoMarcador(partido.home),normalizarEquipoMarcador(partido.away)];return buscados.some(a=>normalizados.includes(a)||normalizados.some(n=>n&&n.includes(a))||buscados.some(x=>x&&normalizados.some(n=>n&&n.includes(x))));}
+function pintarMarcador(elemento,partido){if(!partido){elemento.innerHTML='<span class="pick-live-state">Marcador en vivo aún no disponible</span>';return;}const estado=String(partido.status||'').toLowerCase(),live=estado==='live',final=estado==='finished',titulo=live?'EN VIVO · '+(partido.status_text||''):final?'FINAL':String(partido.status_text||'PRÓXIMO').toUpperCase(),score=partido.home_score==null||partido.away_score==null?'':String(partido.home_score)+' - '+String(partido.away_score),kickoff=!live&&!final&&partido.time?new Date(partido.time).toLocaleTimeString('es-US',{timeZone:'America/Chicago',hour:'numeric',minute:'2-digit'}):'';elemento.innerHTML='<span class="pick-live-state'+(live?' is-live':'')+'">'+escapar(titulo)+'</span>'+(score?'<strong class="pick-live-number">'+escapar(score)+'</strong>':'')+(kickoff?'<span class="champions-live-time">'+escapar(kickoff)+' CT</span>':'');}
+async function actualizarMarcadoresPicks(root=document){const elementos=[...root.querySelectorAll('[data-pick-live-score]')],soportados=[...new Set(elementos.map(e=>e.dataset.scoreSport).filter(Boolean))];if(!elementos.length||!soportados.length)return;await Promise.all(soportados.map(sport=>obtenerMarcadoresChampions(sport)));elementos.forEach(elemento=>{const sport=elemento.dataset.scoreSport,home=elemento.dataset.scoreHome,away=elemento.dataset.scoreAway;if(!sport){elemento.querySelector('.pick-live-state')?.replaceWith(document.createTextNode('Marcador automático no disponible para este deporte'));return;}const partidos=championsScoreCache[sport];if(!partidos){elemento.innerHTML='<span class="pick-live-state">Marcador temporalmente no disponible</span>';return;}pintarMarcador(elemento,partidos.find(p=>buscarMarcadorEquipo(home,p)&&buscarMarcadorEquipo(away,p)));});}
 function actualizarMarcadoresChampions(root){
   if(!root||!root.isConnected)return;
-  obtenerMarcadoresChampions().then(matches=>{
+  obtenerMarcadoresChampions('football').then(matches=>{
     if(!root.isConnected)return;
     root.querySelectorAll(".champions-fixture").forEach(article=>{
       const status=article.querySelector("[data-live-score]");
@@ -91,15 +88,17 @@ function iniciarActualizacionChampions(root){
   if(championsScoreTimer)return;
   championsScoreTimer=setInterval(()=>{
     if(!championsScoreRoot||!championsScoreRoot.isConnected){clearInterval(championsScoreTimer);championsScoreTimer=null;championsScoreRoot=null;return;}
-    championsScoreAt=0;actualizarMarcadoresChampions(championsScoreRoot);
+    championsScoreAt={};actualizarMarcadoresChampions(championsScoreRoot);actualizarMarcadoresPicks(document);
   },60000);
 }
-function renderChampionsCalendar(root,dias,error=false){
-  const parsed=(dias||[]).map(d=>({...d,fecha:String(d.fecha||"").slice(0,10)})).filter(d=>/^\\d{4}-\\d{2}-\\d{2}$/.test(d.fecha));
+function renderChampionsCalendar(root,dias,error=false,picks=[]){
+  const parsed=(dias||[]).map(d=>({...d,fecha:String(d.fecha||"").slice(0,10)})).filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(d.fecha));
   const porFecha=new Map(parsed.map(d=>[d.fecha,Array.isArray(d.partidos)?d.partidos.filter(p=>p&&p.manual===true):[]]));
-  const hoy=fechaCentral(),inicio=new Date(2026,6,1),fin=new Date(2027,11,1);let mes=new Date(Number(hoy.slice(0,4)),Number(hoy.slice(5,7))-1,1);
+  for(const pick of picks||[]){const fecha=String(pick.fecha_pick||'').slice(0,10);if(!/^\d{4}-\d{2}-\d{2}$/.test(fecha))continue;const lista=porFecha.get(fecha)||[];for(const partido of partidosDelPick(pick.descripcion)){if(!partido.local||!partido.visitante)continue;const clave=normalizarEquipoMarcador(partido.local)+'|'+normalizarEquipoMarcador(partido.visitante);if(!lista.some(p=>normalizarEquipoMarcador(p.local)+'|'+normalizarEquipoMarcador(p.visitante)===clave))lista.push({local:partido.local,visitante:partido.visitante,resultado:'Pendiente',autoPick:true,deporte:partido.deporte});}porFecha.set(fecha,lista);}
+
+  const hoy=fechaCentral(),inicio=new Date(2026,6,1),fin=new Date(2027,11,1);let mes=new Date(Number(hoy.slice(0,4)),Number(hoy.slice(5,7))-1,1);const fechasConJuegos=[...porFecha.entries()].filter(([,items])=>items.length).map(([fecha])=>fecha).sort();
   if(mes<inicio)mes=new Date(inicio);if(mes>fin)mes=new Date(fin);
-  let seleccionado=(parsed.find(d=>d.fecha>=hoy)||parsed[0]||{}).fecha||hoy;
+  let seleccionado=fechasConJuegos.find(fecha=>fecha>=hoy)||fechasConJuegos[0]||hoy;
   function llave(y,m,d){return y+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");}
   function dibujar(){
     const year=mes.getFullYear(),month=mes.getMonth(),nombreMes=new Intl.DateTimeFormat("es-US",{month:"long",year:"numeric"}).format(mes).toUpperCase();
@@ -107,11 +106,11 @@ function renderChampionsCalendar(root,dias,error=false){
     for(let d=1;d<=diasMes;d++){const key=llave(year,month,d),partidos=porFecha.get(key)||[],n=partidos.length,ganados=partidos.filter(p=>p.resultado==="Ganado").length,perdidos=partidos.filter(p=>p.resultado==="Perdido").length,noEnviados=partidos.filter(p=>p.resultado==="No enviado").length,claseEstado=ganados&&perdidos?" resultado-mixto":ganados?" resultado-ganado":perdidos?" resultado-perdido":noEnviados&&!partidos.some(p=>p.resultado==="Pendiente")?" resultado-noenviado":"",resumen=[ganados?'<span>✓ '+ganados+' G</span>':"",perdidos?'<span>✕ '+perdidos+' P</span>':""].filter(Boolean).join(" · ")||(noEnviados&&!partidos.some(p=>p.resultado==="Pendiente")?'<span>NO ENVIADO</span>':"");celdas.push('<button type="button" class="champions-day '+(n?"has-games ":"")+claseEstado+(key===seleccionado?" selected":"")+'" data-champions-date="'+key+'"><span>'+d+'</span>'+(n?'<small>⚽ '+n+'</small>':"")+(resumen?'<em>'+resumen+'</em>':"")+'</button>');}
     const lista=porFecha.get(seleccionado)||[],fechaTexto=new Date(seleccionado+"T12:00:00").toLocaleDateString("es-US",{timeZone:"America/Chicago",weekday:"long",year:"numeric",month:"long",day:"numeric"});
     const img=v=>{const raw=String(v||"");if(raw.length<=650000&&new RegExp("^data:image/(?:png|jpeg|webp);base64,[A-Za-z0-9+/=]+$").test(raw))return escapar(raw);try{const u=new URL(raw);return u.protocol==="https:"&&!u.username&&!u.password?escapar(u.href):"";}catch{return "";}};
-    const fixtures=lista.length?lista.map(p=>{const a=img(p.escudo_local),b=img(p.escudo_visitante),r=["Pendiente","Ganado","Perdido","No enviado"].includes(p.resultado)?p.resultado:"Pendiente",icono=r==="Ganado"?"✓ ":r==="Perdido"?"✕ ":r==="No enviado"?"— ":"";return '<article class="champions-fixture" data-score-home="'+escapar(p.local||"")+'" data-score-away="'+escapar(p.visitante||"")+'"><div class="champions-team">'+(a?'<img src="'+a+'" alt="" loading="lazy">':'<span class="champions-crest-placeholder">⚽</span>')+'<span>'+escapar(p.local||"")+'</span></div><span class="champions-vs">VS</span><div class="champions-team">'+(b?'<img src="'+b+'" alt="" loading="lazy">':'<span class="champions-crest-placeholder">⚽</span>')+'<span>'+escapar(p.visitante||"")+'</span></div><strong class="champions-result resultado-'+r.toLowerCase().replace(/[^a-z]/g,"")+'">'+icono+escapar(r)+'</strong><div class="champions-live-score" data-live-score><span class="champions-live-label">Marcador en vivo</span><span class="champions-live-unavailable">Cargando…</span></div></article>';}).join(""):'<p class="champions-no-games">No hay partidos publicados para esta fecha.</p>';
+    const fixtures=lista.length?lista.map(p=>{const a=img(p.escudo_local),b=img(p.escudo_visitante),r=["Pendiente","Ganado","Perdido","No enviado"].includes(p.resultado)?p.resultado:"Pendiente",icono=r==="Ganado"?"✓ ":r==="Perdido"?"✕ ":r==="No enviado"?"— ":"";return '<article class="champions-fixture" data-score-home="'+escapar(p.local||"")+'" data-score-away="'+escapar(p.visitante||"")+'" data-score-sport="'+escapar(({Fútbol:'football',NBA:'basketball',Tenis:'tennis',Cricket:'cricket'})[p.deporte]||'')+'"><div class="champions-team">'+(a?'<img src="'+a+'" alt="" loading="lazy">':'<span class="champions-crest-placeholder">⚽</span>')+'<span>'+escapar(p.local||"")+'</span></div><span class="champions-vs">VS</span><div class="champions-team">'+(b?'<img src="'+b+'" alt="" loading="lazy">':'<span class="champions-crest-placeholder">⚽</span>')+'<span>'+escapar(p.visitante||"")+'</span></div><strong class="champions-result resultado-'+r.toLowerCase().replace(/[^a-z]/g,"")+'">'+icono+escapar(r)+'</strong><div class="champions-live-score" data-live-score><span class="champions-live-label">Marcador en vivo</span><span class="champions-live-unavailable">Cargando…</span></div></article>';}).join(""):'<p class="champions-no-games">No hay partidos publicados para esta fecha.</p>';
     root.innerHTML='<h2 class="champions-calendar-title">CALENDARIO DE PARTIDOS</h2><div class="champions-monthbar"><button type="button" data-month="-1" aria-label="Mes anterior">‹</button><strong>'+nombreMes+'</strong><button type="button" data-month="1" aria-label="Mes siguiente">›</button></div><div class="champions-weekdays"><span>LUN</span><span>MAR</span><span>MIÉ</span><span>JUE</span><span>VIE</span><span>SÁB</span><span>DOM</span></div><div class="champions-calendar-grid">'+celdas.join("")+'</div><section class="champions-fixtures"><h3>PARTIDOS DEL DÍA</h3><p class="champions-selected-date">'+escapar(fechaTexto)+'</p>'+fixtures+'</section><p class="champions-scores-credit">Marcadores con actualización automática · <a href="https://sportscore.com/" target="_blank" rel="dofollow noopener" title="Datos deportivos por SportScore">Datos de SportScore</a></p>'+(error?'<p class="champions-no-games">No se pudo cargar el calendario. Actualiza la página para volver a intentarlo.</p>':'');
     root.querySelectorAll("[data-month]").forEach(button=>button.addEventListener("click",()=>{const next=new Date(year,month+Number(button.dataset.month),1);if(next>=inicio&&next<=fin){mes=next;dibujar();}}));
     root.querySelectorAll("[data-champions-date]").forEach(button=>button.addEventListener("click",()=>{seleccionado=button.dataset.championsDate;dibujar();}));
-    actualizarMarcadoresChampions(root);iniciarActualizacionChampions(root);
+    actualizarMarcadoresChampions(root);iniciarActualizacionChampions(root);actualizarMarcadoresPicks(document);
   }dibujar();
 }
 function renderPicks(compras) {
@@ -124,7 +123,8 @@ function renderPicks(compras) {
     return;
   }
   contenido.innerHTML = `<div class="filters"><button class="filter" type="button" data-filtro="0">← VOLVER A MIS PAQUETES</button></div>${compras.filter(c=>filtroActual === "Todos" || c.paquete===filtroActual).map(compra=>`<article class="panel"><div class="package-head"><h2 class="package-title">${escapar(compra.paquete)}</h2><span class="status">ACTIVO</span></div><div class="pick-preview" style="--marca-pick:${marcaPick(compra.paquete)}">${compra.errorPick ? `<p class="message">No se pudo cargar el pick. Actualiza la página para intentarlo de nuevo.</p>` : compra.picks?.length ? compra.picks.map((pick,i)=>`<div${i?` style="border-top:1px solid #ad8736;padding-top:16px;margin-top:16px"`:""}>${contenidoPick(pick)}</div>`).join("") : `<p class="message">Todavía no se han publicado picks de hoy para este paquete.</p>`}</div>${compra.paquete==="Champions League Completa"?'<section class="champions-calendar-wrap" data-champions-calendar></section>':""}</article>`).join("")}`;
-  contenido.querySelectorAll("[data-champions-calendar]").forEach(root=>{const compra=compras.find(c=>c.paquete==="Champions League Completa");renderChampionsCalendar(root,compra?.championsDays||[],compra?.championsCalendarError);})
+  contenido.querySelectorAll("[data-champions-calendar]").forEach(root=>{const compra=compras.find(c=>c.paquete==="Champions League Completa");renderChampionsCalendar(root,compra?.championsDays||[],compra?.championsCalendarError,compra?.picks||[]);})
+  actualizarMarcadoresPicks(contenido);
   document.querySelectorAll("[data-filtro]").forEach(boton=>boton.addEventListener("click",()=>{filtroActual=filtros[Number(boton.dataset.filtro)];renderPicks(comprasVisibles);}));
 }
 async function cargarPortal() {
