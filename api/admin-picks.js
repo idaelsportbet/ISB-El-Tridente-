@@ -120,6 +120,63 @@ function fechaActualCentral(){const p=new Intl.DateTimeFormat("en-US",{timeZone:
       return res.status(200).json(await respuesta.json().then(filas=>({picks:esHistorial?filas.slice(0,25):filas,hayMas:esHistorial&&filas.length>25})));
     }
     if (req.method === "GET") return res.status(200).json({ autorizado: true });
+    if (req.body?.accion === "activar_accesos_flores") {
+      if (correo !== adminEmail || !user.email_confirmed_at) return res.status(403).json({ error: "Solo la cuenta propietaria puede conceder este acceso." });
+      const correoDestino = "floresidael2000@gmail.com";
+      const paquetesAcceso = ["Champions League Completa", "Reto de 10 días para $10K"];
+      const solicitados = req.body.paquetes;
+      if (req.body.correo !== correoDestino || !Array.isArray(solicitados) || solicitados.length !== paquetesAcceso.length ||
+          new Set(solicitados).size !== paquetesAcceso.length || paquetesAcceso.some(paquete => !solicitados.includes(paquete))) {
+        return res.status(400).json({ error: "La solicitud debe incluir únicamente Champions League Completa y Reto de 10 días para la cuenta autorizada." });
+      }
+      const headers = { apikey: secret, Authorization: `Bearer ${secret}` };
+      let destinatario;
+      for (let pagina = 1; pagina <= 10; pagina++) {
+        const lista = await fetch(`${SUPABASE_URL}/auth/v1/admin/users?page=${pagina}&per_page=1000`, { headers });
+        if (!lista.ok) return res.status(502).json({ error: "No se pudo comprobar la cuenta de cliente." });
+        const datos = await lista.json();
+        destinatario = datos.users?.find(cuenta => cuenta.email?.toLowerCase() === correoDestino);
+        if (destinatario || !datos.users?.length || datos.users.length < 1000) break;
+      }
+      if (!destinatario?.id || destinatario.email?.toLowerCase() !== correoDestino) return res.status(404).json({ error: "No se encontró la cuenta de cliente." });
+      const filtro = new URLSearchParams({
+        select: "paquete,nombre,cantidad_pagada_dolar,vencimiento",
+        user_id: `eq.${destinatario.id}`,
+        paquete: `in.(${paquetesAcceso.join(",")})`,
+        limit: "100"
+      });
+      const consulta = await fetch(`${SUPABASE_URL}/rest/v1/compras?${filtro}`, { headers });
+      if (!consulta.ok) return res.status(502).json({ error: "No se pudo comprobar el acceso actual de la cuenta." });
+      const compras = await consulta.json();
+      const yaIndefinidos = paquetesAcceso.filter(paquete => compras.some(compra =>
+        compra.paquete === paquete && Date.parse(compra.vencimiento) > Date.parse("2098-01-01")
+      ));
+      const faltantes = paquetesAcceso.filter(paquete => !yaIndefinidos.includes(paquete));
+      if (faltantes.length) {
+        const ahora = new Date();
+        const insercion = await fetch(`${SUPABASE_URL}/rest/v1/compras`, {
+          method: "POST",
+          headers: { ...headers, "Content-Type": "application/json", Prefer: "return=minimal" },
+          body: JSON.stringify(faltantes.map(paquete => ({
+            user_id: destinatario.id,
+            nombre: `${destinatario.user_metadata?.full_name || "Cliente"} (ACCESO DE CORTESÍA)`,
+            correo: destinatario.email,
+            paquete,
+            cantidad_pagada_dolar: 0,
+            fecha_compra: ahora.toISOString(),
+            vencimiento: "2099-12-31T23:59:59.000Z"
+          })))
+        });
+        if (!insercion.ok) return res.status(502).json({ error: "No se pudo conceder el acceso solicitado." });
+      }
+      return res.status(faltantes.length ? 201 : 200).json({
+        paquetes: paquetesAcceso,
+        activados: faltantes,
+        yaIndefinidos,
+        pagado: 0,
+        vencimiento: "2099-12-31T23:59:59.000Z"
+      });
+    }
     if (req.body?.accion === "activar_prueba") {
       // Only the authenticated owner can grant a temporary, free access to an existing account.
       const headers = { apikey: secret, Authorization: `Bearer ${secret}` };
