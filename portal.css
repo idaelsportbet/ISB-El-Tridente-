@@ -31,8 +31,8 @@
 .champions-fixtures h3{display:inline-block;margin-bottom:4px}
 .champions-selected-date{margin:0 0 12px;color:#d0d4cf;text-transform:capitalize}
 .champions-fixture{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px;margin:8px 0;border:1px solid #65532b;border-radius:9px;background:#020705}
-.champions-team{display:flex;align-items:center;justify-content:center;gap:9px;min-width:0;color:#fff;font-weight:650;text-align:center}
-.champions-team img,.champions-crest-placeholder{width:30px;height:30px;object-fit:contain;flex:none}
+.champions-team{display:flex;align-items:center;justify-content:center;gap:10px;min-width:0;color:#fff;font-size:16px;font-weight:700;text-align:center}
+.champions-team img,.champions-crest-placeholder{width:42px;height:42px;object-fit:contain;flex:none}
 .champions-crest-placeholder{display:grid;place-items:center;font-size:22px}
 .champions-team span:last-child{overflow-wrap:anywhere}
 .champions-vs{color:#c6a748;font-size:11px;font-weight:800}
@@ -43,4 +43,4 @@
 .champions-result.resultado-noenviado{color:#b9c4bd}
 .champions-result.resultado-pendiente{color:#d6bc69}
 .champions-no-games{color:#b9c4bd;padding:8px 0}
-@media(max-width:600px){.champions-calendar-wrap{padding:14px 10px}.champions-day,.champions-empty-day{min-height:58px}.champions-day{font-size:13px}.champions-day em{font-size:7px}.champions-weekdays span{font-size:9px}.champions-fixture{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:6px;padding:9px}.champions-odds,.champions-result{grid-column:1/-1;text-align:center}.champions-team{font-size:12px;gap:5px}.champions-team img,.champions-crest-placeholder{width:24px;height:24px}}
+@media(max-width:600px){.champions-calendar-wrap{padding:14px 10px}.champions-day,.champions-empty-day{min-height:58px}.champions-day{font-size:13px}.champions-day em{font-size:7px}.champions-weekdays span{font-size:9px}.champions-fixture{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:6px;padding:9px}.champions-odds,.champions-result{grid-column:1/-1;text-align:center}.champions-team{font-size:14px;gap:6px}.champions-team img,.champions-crest-placeholder{width:34px;height:34px}}
