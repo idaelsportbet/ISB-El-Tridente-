@@ -10,7 +10,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
-<link rel="stylesheet" href="tema-isb.css?v=20261015-oro-mas-amarillo"></head>
+<link rel="stylesheet" href="tema-isb.css?v=20261015-oro-mas-amarillo">
+<style>
+    .tutorial-video{position:relative;width:min(100%,1000px);margin:0 auto;aspect-ratio:16/9;overflow:hidden;border:1px solid #b89547;border-radius:14px;background:#030504;box-shadow:0 14px 40px #0008}
+    .tutorial-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+    .tutorial-note,.tutorial-link{text-align:center;color:#d4d2c9;line-height:1.6}
+    .tutorial-link{margin:18px 0 0}
+  </style></head>
 <body>
   <header class="topbar">
   <a class="brand" href="index.html" aria-label="ISB Inicio">
@@ -21,7 +27,8 @@
     <nav class="nav" aria-label="Navegación principal">
      <a class="active" href="index.html">Inicio</a>
       <a href="#como">Cómo funciona</a>
-      <a href="soporte.html">Soporte</a>
+      <a href="#tutorial">Tutorial</a>
+            <a href="soporte.html">Soporte</a>
     </nav>
     <div class="header-actions">
       <button class="btn btn-ghost" data-open="login">Iniciar sesión</button>
@@ -41,7 +48,8 @@
           <div class="hero-actions">
             <button class="btn btn-gold btn-large" data-open="register">Crear cuenta</button>
             <button class="btn btn-dark btn-large" data-open="login">Iniciar sesión</button>
-          </div>
+            <a class="btn btn-ghost btn-large" href="#tutorial">Ver tutorial</a>
+                    </div>
           <p class="private-note">Los paquetes y precios se muestran únicamente después de iniciar sesión.</p>
         </div>
       </div>
@@ -87,6 +95,19 @@
   </article>
 </div>
       </div>
+    </section>
+
+    <section id="tutorial" class="section section-dark tutorial-section">
+      <div class="section-head">
+        <p class="eyebrow">ISB · EL TRIDENTE</p>
+        <h2>Tutorial para clientes</h2>
+        <p>Aprende cómo usar tu cuenta y encontrar tus paquetes y picks.</p>
+      </div>
+      <div class="tutorial-video">
+        <iframe src="https://www.youtube-nocookie.com/embed/D_d53Gz2MCQ?rel=0" title="Tutorial para clientes de ISB El Tridente" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <p class="tutorial-note">El video se reproduce aquí mismo. Si YouTube impide la reproducción por la restricción de edad del video, puedes abrirlo directamente en YouTube.</p>
+      <p class="tutorial-link"><a class="btn btn-ghost" href="https://www.youtube.com/watch?v=D_d53Gz2MCQ" target="_blank" rel="noopener noreferrer">Abrir en YouTube si hace falta</a></p>
     </section>
 
     <section id="soporte" class="section section-dark support-grid">
