@@ -123,6 +123,20 @@
     <h2>Clientes y compras</h2>
     <button type="button" id="actualizarCompras">ACTUALIZAR COMPRAS</button>
     <p id="comprasEstado" role="status" aria-live="polite"></p>
+    <section class="panel" aria-labelledby="accesoCortesiaTitulo">
+      <h3 id="accesoCortesiaTitulo">CONCEDER ACCESO DE CORTESÍA</h3>
+      <p>Elige una cuenta y los paquetes que deseas activar gratis, sin vencimiento.</p>
+      <form id="accesoCortesiaForm">
+        <label for="accesoCortesiaCorreo">Correo de la cuenta</label>
+        <input id="accesoCortesiaCorreo" type="email" value="machadofelixb@gmail.com" required autocomplete="email">
+        <fieldset><legend>Paquetes</legend>
+          <label><input type="checkbox" name="paqueteCortesia" value="Champions League Completa" checked> Champions League Completa</label>
+          <label><input type="checkbox" name="paqueteCortesia" value="Reto de 10 días para $10K" checked> Reto de 10 días para $10K</label>
+        </fieldset>
+        <button type="submit">ACTIVAR ACCESO DE CORTESÍA</button>
+        <p id="accesoCortesiaEstado" role="status" aria-live="polite"></p>
+      </form>
+    </section>
     <div class="tabla-scroll"><table><thead><tr><th>Usuario</th><th>Nombre</th><th>Correo</th><th>Paquete</th><th>Pagado (USD)</th><th>Compra</th><th>Vencimiento</th><th>Acceso</th></tr></thead><tbody id="comprasFilas"></tbody></table></div>
     <div class="paginas"><button type="button" id="anteriorCompras" disabled>ANTERIOR</button><button type="button" id="siguienteCompras" disabled>SIGUIENTE</button></div>
   </section>
@@ -544,7 +558,7 @@ form.addEventListener("submit", async event => {
     };
   } catch(error) {estado.textContent=error.message;button.disabled=false;}
 });
-</script><script src="/champions-admin.js?v=20261020-crest-fix"></script>
+</script><script src="/champions-admin.js?v=20261020-crest-fix"></script><script src="/admin-access.js?v=20261020-courtesy-access"></script>
 </body></html>
 
 
