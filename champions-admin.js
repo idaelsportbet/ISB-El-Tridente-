@@ -11,7 +11,7 @@
   const estados=["Pendiente","Ganado","Perdido","No enviado"];
   const calendarRoot=document.getElementById("championsAdminCalendar");
   let diasGuardados=[], mesActivo=null;
-  function obtenerPartidos(fecha){const guardado=diasGuardados.find(d=>d.fecha===fecha);return guardado?.partidos||((calendario[fecha]||[]).map(([local,visitante])=>({local,visitante})));}
+  function obtenerPartidos(fecha){const guardado=diasGuardados.find(d=>d.fecha===fecha)?.partidos||[],pendientes=[...guardado],oficiales=(calendario[fecha]||[]).map(([local,visitante])=>{const i=pendientes.findIndex(p=>clave(p)===clave({local,visitante})),anterior=i>=0?pendientes.splice(i,1)[0]:{};return {...anterior,local,visitante,resultado:anterior.resultado||"Pendiente"};});return [...oficiales,...pendientes];}
   function estadoFecha(partidos){const estadosDia=(partidos||[]).map(p=>estados.includes(p.resultado)?p.resultado:"Pendiente");if(!estadosDia.length||estadosDia.includes("Pendiente"))return "";const distintos=[...new Set(estadosDia)];return distintos.length===1?distintos[0]:"Mixto";}
   function guardarEnCache(fecha,partidos){diasGuardados=diasGuardados.filter(d=>d.fecha!==fecha);if(partidos?.length)diasGuardados.push({fecha,partidos});dibujarCalendario();}
   function dibujarCalendario(){
