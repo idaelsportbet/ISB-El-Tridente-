@@ -34,6 +34,27 @@ function marcaPick(paquete) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="64"><text x="24" y="38" fill="#efc766" font-family="Arial" font-size="12" font-weight="700">${texto}</text></svg>`;
   return escapar(`url("data:image/svg+xml,${encodeURIComponent(svg)}")`);
 }
+
+function renderChampionsCalendar(root,dias,error=false){
+  const parsed=(dias||[]).map(d=>({...d,fecha:String(d.fecha||"").slice(0,10)})).filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(d.fecha));
+  const porFecha=new Map(parsed.map(d=>[d.fecha,Array.isArray(d.partidos)?d.partidos:[]]));
+  const hoy=fechaCentral(),inicio=new Date(2026,6,1),fin=new Date(2027,11,1);let mes=new Date(Number(hoy.slice(0,4)),Number(hoy.slice(5,7))-1,1);
+  if(mes<inicio)mes=new Date(inicio);if(mes>fin)mes=new Date(fin);
+  let seleccionado=(parsed.find(d=>d.fecha>=hoy)||parsed[0]||{}).fecha||hoy;
+  function llave(y,m,d){return y+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");}
+  function dibujar(){
+    const year=mes.getFullYear(),month=mes.getMonth(),nombreMes=new Intl.DateTimeFormat("es-US",{month:"long",year:"numeric"}).format(mes).toUpperCase();
+    const primer=(new Date(year,month,1).getDay()+6)%7,diasMes=new Date(year,month+1,0).getDate();let celdas=Array(primer).fill('<span class="champions-empty-day"></span>');
+    for(let d=1;d<=diasMes;d++){const key=llave(year,month,d),n=(porFecha.get(key)||[]).length;celdas.push('<button type="button" class="champions-day '+(n?"has-games ":"")+(key===seleccionado?"selected":"")+'" data-champions-date="'+key+'"><span>'+d+'</span>'+(n?'<small>⚽ '+n+'</small>':"")+'</button>');}
+    const lista=porFecha.get(seleccionado)||[],fechaTexto=new Date(seleccionado+"T12:00:00").toLocaleDateString("es-US",{timeZone:"America/Chicago",weekday:"long",year:"numeric",month:"long",day:"numeric"});
+    const img=v=>{try{const u=new URL(v);return u.protocol==="https:"&&!u.username&&!u.password?escapar(u.href):"";}catch{return "";}};
+    const fixtures=lista.length?lista.map(p=>{const a=img(p.escudo_local),b=img(p.escudo_visitante);return '<article class="champions-fixture"><div class="champions-team">'+(a?'<img src="'+a+'" alt="" loading="lazy">':'<span class="champions-crest-placeholder">⚽</span>')+'<span>'+escapar(p.local||"")+'</span></div><span class="champions-vs">VS</span><div class="champions-team">'+(b?'<img src="'+b+'" alt="" loading="lazy">':'<span class="champions-crest-placeholder">⚽</span>')+'<span>'+escapar(p.visitante||"")+'</span></div><strong class="champions-odds">🔥 '+escapar(p.cuota||"")+'</strong></article>';}).join(""):'<p class="champions-no-games">No hay partidos publicados para esta fecha.</p>';
+    root.innerHTML='<h2 class="champions-calendar-title">CALENDARIO DE PARTIDOS</h2><div class="champions-monthbar"><button type="button" data-month="-1" aria-label="Mes anterior">‹</button><strong>'+nombreMes+'</strong><button type="button" data-month="1" aria-label="Mes siguiente">›</button></div><div class="champions-weekdays"><span>LUN</span><span>MAR</span><span>MIÉ</span><span>JUE</span><span>VIE</span><span>SÁB</span><span>DOM</span></div><div class="champions-calendar-grid">'+celdas.join("")+'</div><section class="champions-fixtures"><h3>PARTIDOS DEL DÍA</h3><p class="champions-selected-date">'+escapar(fechaTexto)+'</p>'+fixtures+'</section>'+(error?'<p class="champions-no-games">No se pudo cargar el calendario. Actualiza la página para volver a intentarlo.</p>':'')+'<section class="champions-tutorial"><h3>TUTORIAL PARA CLIENTES</h3><div class="champions-video"><iframe src="https://www.youtube-nocookie.com/embed/D_d53Gz2MCQ" title="Tutorial de ISB El Tridente" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div></section>';
+    root.querySelectorAll("[data-month]").forEach(button=>button.addEventListener("click",()=>{const next=new Date(year,month+Number(button.dataset.month),1);if(next>=inicio&&next<=fin){mes=next;dibujar();}}));
+    root.querySelectorAll("[data-champions-date]").forEach(button=>button.addEventListener("click",()=>{seleccionado=button.dataset.championsDate;dibujar();}));
+  }dibujar();
+}
+
 function renderPicks(compras) {
   if (!compras.length) { contenido.innerHTML = `<section class="panel">${sinPaquetes()}</section>`; return; }
   if (filtroActual !== "Todos" && !compras.some(c=>c.paquete === filtroActual)) filtroActual = "Todos";
@@ -43,7 +64,8 @@ function renderPicks(compras) {
     document.querySelectorAll("[data-paquete]").forEach(b=>b.addEventListener("click",()=>{filtroActual=compras[Number(b.dataset.paquete)].paquete;renderPicks(comprasVisibles);}));
     return;
   }
-  contenido.innerHTML = `<div class="filters"><button class="filter" type="button" data-filtro="0">← VOLVER A MIS PAQUETES</button></div>${compras.filter(c=>filtroActual === "Todos" || c.paquete===filtroActual).map(compra=>`<article class="panel"><div class="package-head"><h2 class="package-title">${escapar(compra.paquete)}</h2><span class="status">ACTIVO</span></div><div class="pick-preview" style="--marca-pick:${marcaPick(compra.paquete)}">${compra.errorPick ? `<p class="message">No se pudo cargar el pick. Actualiza la página para intentarlo de nuevo.</p>` : compra.picks?.length ? compra.picks.map((pick,i)=>`<div${i?` style="border-top:1px solid #ad8736;padding-top:16px;margin-top:16px"`:""}>${contenidoPick(pick)}</div>`).join("") : `<p class="message">Todavía no se han publicado picks de hoy para este paquete.</p>`}</div></article>`).join("")}`;
+  contenido.innerHTML = `<div class="filters"><button class="filter" type="button" data-filtro="0">← VOLVER A MIS PAQUETES</button></div>${compras.filter(c=>filtroActual === "Todos" || c.paquete===filtroActual).map(compra=>`<article class="panel"><div class="package-head"><h2 class="package-title">${escapar(compra.paquete)}</h2><span class="status">ACTIVO</span></div><div class="pick-preview" style="--marca-pick:${marcaPick(compra.paquete)}">${compra.errorPick ? `<p class="message">No se pudo cargar el pick. Actualiza la página para intentarlo de nuevo.</p>` : compra.picks?.length ? compra.picks.map((pick,i)=>`<div${i?` style="border-top:1px solid #ad8736;padding-top:16px;margin-top:16px"`:""}>${contenidoPick(pick)}</div>`).join("") : `<p class="message">Todavía no se han publicado picks de hoy para este paquete.</p>`}</div>${compra.paquete==="Champions League Completa"?'<section class="champions-calendar-wrap" data-champions-calendar></section>':""}</article>`).join("")}`;
+  contenido.querySelectorAll("[data-champions-calendar]").forEach(root=>{const compra=compras.find(c=>c.paquete==="Champions League Completa");renderChampionsCalendar(root,compra?.championsDays||[],compra?.championsCalendarError);})
   document.querySelectorAll("[data-filtro]").forEach(boton=>boton.addEventListener("click",()=>{filtroActual=filtros[Number(boton.dataset.filtro)];renderPicks(comprasVisibles);}));
 }
 async function cargarPortal() {
@@ -63,7 +85,8 @@ async function cargarPortal() {
       const paquetesCliente = [...new Map(comprasVisibles.map(compra=>[compra.paquete,compra])).values()];
       await Promise.all(paquetesCliente.map(async compra=>{
         const {data:picks,error} = await supabaseClient.from("picks").select("titulo,descripcion,fecha_pick,imagen_url").eq("paquete",compra.paquete).eq("fecha_pick",hoy).eq("activo",true).order("created_at",{ascending:false}).limit(3);
-        compra.picks = picks || []; compra.errorPick = Boolean(error);
+        compra.picks = (picks || []).filter(p=>p.titulo!=="CHAMPIONS_CALENDAR_V1"); compra.errorPick = Boolean(error);
+        if(compra.paquete==="Champions League Completa"){const {data:rows,error:calendarError}=await supabaseClient.from("picks").select("fecha_pick,descripcion").eq("paquete","Champions League Completa").eq("titulo","CHAMPIONS_CALENDAR_V1").eq("activo",true).order("fecha_pick",{ascending:true}).limit(1000);compra.championsCalendarError=Boolean(calendarError);compra.championsDays=(rows||[]).map(row=>{try{const parsed=JSON.parse(row.descripcion);return {fecha:row.fecha_pick,partidos:parsed.partidos||[]};}catch{return null;}}).filter(Boolean);}
       }));
       comprasVisibles = paquetesCliente;
       renderPicks(comprasVisibles);
