@@ -185,8 +185,11 @@ export default async function handler(req, res) {
         if (destinatario.email?.toLowerCase() !== correo || !destinatario.id) return res.status(400).json({ error: "El correo de compra no coincide con la cuenta. Revisa el correo con el que inicias sesión." });
       }
       const accesoFijo = req.body.permanente === true && ["floresidael2000@gmail.com","machadofelixb@gmail.com"].includes(destinatario.email?.toLowerCase());
-      const paquetesPrueba = req.body.todos === true ? (destinatario.email?.toLowerCase() === "machadofelixb@gmail.com" ? ["Premium Diario","Exclusiva Diaria","Pack Mensual","Económica"] : PAQUETES) : ["Premium Diario"];
-      if(accesoFijo && destinatario.email?.toLowerCase() === "machadofelixb@gmail.com") {
+      if (req.body.permanente === true && !accesoFijo) return res.status(403).json({error:"El acceso sin vencimiento no está autorizado para esta cuenta."});
+      const seleccion = req.body.paquetes_prueba;
+      if (seleccion !== undefined && (!Array.isArray(seleccion) || !seleccion.length || seleccion.length > PAQUETES.length || seleccion.some(paquete => !PAQUETES.includes(paquete)))) return res.status(400).json({error:"Selecciona paquetes válidos."});
+      const paquetesPrueba = seleccion !== undefined ? [...new Set(seleccion)] : (req.body.todos === true ? (destinatario.email?.toLowerCase() === "machadofelixb@gmail.com" ? ["Premium Diario","Exclusiva Diaria","Pack Mensual","Económica"] : PAQUETES) : ["Premium Diario"]);
+      if(accesoFijo && req.body.todos === true && seleccion === undefined && destinatario.email?.toLowerCase() === "machadofelixb@gmail.com") {
         const filtro = new URLSearchParams({user_id:`eq.${destinatario.id}`,paquete:"in.(Premium Semanal,Exclusiva Semanal)",nombre:"like.*(ACCESO DE CORTESÍA)",cantidad_pagada_dolar:"eq.0"});
         const ajuste = await fetch(`${SUPABASE_URL}/rest/v1/compras?${filtro}`,{method:"PATCH",headers:{...headers,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({vencimiento:new Date().toISOString()})});
         if(!ajuste.ok)return res.status(502).json({error:"No se pudo ajustar el acceso semanal."});
@@ -203,7 +206,7 @@ export default async function handler(req, res) {
         body: JSON.stringify(faltantes.map(paquete => ({ user_id: destinatario.id, nombre: `${destinatario.user_metadata?.full_name || "Cliente"} (${accesoFijo ? "ACCESO DE CORTESÍA" : "PRUEBA SIN COBRO"})`, correo: destinatario.email, paquete, cantidad_pagada_dolar: 0, fecha_compra: ahora.toISOString(), vencimiento: accesoFijo ? "2099-12-31T23:59:59.000Z" : new Date(ahora.getTime() + 60 * 60 * 1000).toISOString() })))
       });
       if (!resultado.ok) return res.status(502).json({ error: "No se pudo activar el paquete de prueba." });
-      return res.status(201).json({ paquete: "Premium Diario", prueba: true, duracion: "1 hora" });
+      return res.status(201).json({ paquetes: faltantes, prueba: true, duracion: accesoFijo ? "sin vencimiento" : "1 hora" });
     }
     const { titulo, descripcion, partidos, jugadas, cuota, instagram = "", analisis = "", fecha_pick, imagen_url = "", juego_url = "", paquetes } = req.body || {};
     const estructurado = Array.isArray(partidos) || Array.isArray(jugadas) || cuota !== undefined;
