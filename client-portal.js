@@ -35,9 +35,68 @@ function marcaPick(paquete) {
   return escapar(`url("data:image/svg+xml,${encodeURIComponent(svg)}")`);
 }
 
+let championsScoreCache=null,championsScoreAt=0,championsScoreRequest=null,championsScoreTimer=null,championsScoreRoot=null;
+function obtenerMarcadoresChampions(){
+  if(championsScoreCache&&Date.now()-championsScoreAt<60000)return Promise.resolve(championsScoreCache);
+  if(championsScoreRequest)return championsScoreRequest;
+  championsScoreRequest=fetch("https://sportscore.com/api/widget/matches/?sport=football&limit=50&src=idaelsportbet.me")
+    .then(response=>{if(!response.ok)throw new Error("No se pudo cargar el marcador.");return response.json();})
+    .then(data=>{championsScoreCache=Array.isArray(data.matches)?data.matches:[];championsScoreAt=Date.now();return championsScoreCache;})
+    .catch(()=>{championsScoreAt=Date.now();return null;})
+    .finally(()=>{championsScoreRequest=null;});
+  return championsScoreRequest;
+}
+function normalizarEquipoMarcador(nombre){
+  return String(nombre||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/\\b(fc|cf|club|deportivo|the)\\b/g," ").replace(/[^a-z0-9]+/g," ").trim();
+}
+function aliasEquipoMarcador(nombre){
+  const n=normalizarEquipoMarcador(nombre),aliases={
+    psg:["paris saint germain","paris saint germain fc","paris st germain"],
+    bar:["barcelona","fc barcelona","barca"],
+    barca:["barcelona","fc barcelona","barca"],
+    vfb:["vfb stuttgart","stuttgart"],
+    atl:["atletico madrid","atletico de madrid","atletico madrid club"],
+    atletico:["atletico madrid","atletico de madrid"],
+    "atletico madrid":["atletico madrid","atletico de madrid"]
+  };
+  return aliases[n]||[n];
+}
+function buscarMarcadorEquipo(nombre,partido){
+  const buscados=aliasEquipoMarcador(nombre).filter(Boolean);
+  const normalizados=[normalizarEquipoMarcador(partido.home),normalizarEquipoMarcador(partido.away)];
+  return buscados.some(a=>normalizados.includes(a));
+}
+function actualizarMarcadoresChampions(root){
+  if(!root||!root.isConnected)return;
+  obtenerMarcadoresChampions().then(matches=>{
+    if(!root.isConnected)return;
+    root.querySelectorAll(".champions-fixture").forEach(article=>{
+      const status=article.querySelector("[data-live-score]");
+      if(!status)return;
+      if(!matches){status.textContent="Marcador temporalmente no disponible";return;}
+      const home=article.dataset.scoreHome||"",away=article.dataset.scoreAway||"";
+      const partido=matches.find(m=>String(m.competition||"").toLowerCase().includes("champions")&&buscarMarcadorEquipo(home,m)&&buscarMarcadorEquipo(away,m))
+        ||matches.find(m=>buscarMarcadorEquipo(home,m)&&buscarMarcadorEquipo(away,m));
+      if(!partido){status.innerHTML='<span class="champions-live-label">Marcador en vivo</span><span class="champions-live-unavailable">Aún no disponible</span>';return;}
+      const live=String(partido.status||"").toLowerCase()==="live",final=String(partido.status||"").toLowerCase()==="finished";
+      const state=live?"EN VIVO · "+(partido.status_text||""):final?"FINAL":String(partido.status_text||"PRÓXIMO").toUpperCase();
+      const score=partido.home_score==null||partido.away_score==null?"":String(partido.home_score)+" - "+String(partido.away_score);
+      const kickoff=!live&&!final&&partido.time?new Date(partido.time).toLocaleTimeString("es-US",{timeZone:"America/Chicago",hour:"numeric",minute:"2-digit"}):"";
+      status.innerHTML='<span class="champions-live-label'+(live?" is-live":"")+'">'+escapar(state)+'</span>'+(score?'<strong class="champions-live-number">'+escapar(score)+'</strong>':"")+(kickoff?'<span class="champions-live-time">'+escapar(kickoff)+' CT</span>':"");
+    });
+  });
+}
+function iniciarActualizacionChampions(root){
+  championsScoreRoot=root;
+  if(championsScoreTimer)return;
+  championsScoreTimer=setInterval(()=>{
+    if(!championsScoreRoot||!championsScoreRoot.isConnected){clearInterval(championsScoreTimer);championsScoreTimer=null;championsScoreRoot=null;return;}
+    championsScoreAt=0;actualizarMarcadoresChampions(championsScoreRoot);
+  },60000);
+}
 function renderChampionsCalendar(root,dias,error=false){
-  const parsed=(dias||[]).map(d=>({...d,fecha:String(d.fecha||"").slice(0,10)})).filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(d.fecha));
-  const porFecha=new Map(parsed.map(d=>[d.fecha,Array.isArray(d.partidos)?d.partidos:[]]));
+  const parsed=(dias||[]).map(d=>({...d,fecha:String(d.fecha||"").slice(0,10)})).filter(d=>/^\\d{4}-\\d{2}-\\d{2}$/.test(d.fecha));
+  const porFecha=new Map(parsed.map(d=>[d.fecha,Array.isArray(d.partidos)?d.partidos.filter(p=>p&&p.manual===true):[]]));
   const hoy=fechaCentral(),inicio=new Date(2026,6,1),fin=new Date(2027,11,1);let mes=new Date(Number(hoy.slice(0,4)),Number(hoy.slice(5,7))-1,1);
   if(mes<inicio)mes=new Date(inicio);if(mes>fin)mes=new Date(fin);
   let seleccionado=(parsed.find(d=>d.fecha>=hoy)||parsed[0]||{}).fecha||hoy;
@@ -45,15 +104,16 @@ function renderChampionsCalendar(root,dias,error=false){
   function dibujar(){
     const year=mes.getFullYear(),month=mes.getMonth(),nombreMes=new Intl.DateTimeFormat("es-US",{month:"long",year:"numeric"}).format(mes).toUpperCase();
     const primer=(new Date(year,month,1).getDay()+6)%7,diasMes=new Date(year,month+1,0).getDate();let celdas=Array(primer).fill('<span class="champions-empty-day"></span>');
-    for(let d=1;d<=diasMes;d++){const key=llave(year,month,d),partidos=porFecha.get(key)||[],n=partidos.length,ganados=partidos.filter(p=>p.resultado==="Ganado").length,perdidos=partidos.filter(p=>p.resultado==="Perdido").length,noEnviados=partidos.filter(p=>p.resultado==="No enviado").length,claseEstado=ganados&&perdidos?" resultado-mixto":ganados?" resultado-ganado":perdidos?" resultado-perdido":noEnviados&&!partidos.some(p=>p.resultado==="Pendiente")?" resultado-noenviado":"",resumen=[ganados?'<span>✓ '+ganados+' G</span>':"",perdidos?'<span>✕ '+perdidos+' P</span>':""].filter(Boolean).join(" · ")||(noEnviados&&!partidos.some(p=>p.resultado==="Pendiente")?'<span>NO ENVIADO</span>':"");celdas.push('<button type="button" class="champions-day '+(n?"has-games ":"")+claseEstado+(key===seleccionado?" selected":"")+'" data-champions-date="'+key+'"><span>'+d+'</span>'+(n?'<small>⚽ '+n+'</small>':"")+(resumen?'<em>'+resumen+'</em>':"")+'</button>');}const lista=porFecha.get(seleccionado)||[],fechaTexto=new Date(seleccionado+"T12:00:00").toLocaleDateString("es-US",{timeZone:"America/Chicago",weekday:"long",year:"numeric",month:"long",day:"numeric"});
+    for(let d=1;d<=diasMes;d++){const key=llave(year,month,d),partidos=porFecha.get(key)||[],n=partidos.length,ganados=partidos.filter(p=>p.resultado==="Ganado").length,perdidos=partidos.filter(p=>p.resultado==="Perdido").length,noEnviados=partidos.filter(p=>p.resultado==="No enviado").length,claseEstado=ganados&&perdidos?" resultado-mixto":ganados?" resultado-ganado":perdidos?" resultado-perdido":noEnviados&&!partidos.some(p=>p.resultado==="Pendiente")?" resultado-noenviado":"",resumen=[ganados?'<span>✓ '+ganados+' G</span>':"",perdidos?'<span>✕ '+perdidos+' P</span>':""].filter(Boolean).join(" · ")||(noEnviados&&!partidos.some(p=>p.resultado==="Pendiente")?'<span>NO ENVIADO</span>':"");celdas.push('<button type="button" class="champions-day '+(n?"has-games ":"")+claseEstado+(key===seleccionado?" selected":"")+'" data-champions-date="'+key+'"><span>'+d+'</span>'+(n?'<small>⚽ '+n+'</small>':"")+(resumen?'<em>'+resumen+'</em>':"")+'</button>');}
+    const lista=porFecha.get(seleccionado)||[],fechaTexto=new Date(seleccionado+"T12:00:00").toLocaleDateString("es-US",{timeZone:"America/Chicago",weekday:"long",year:"numeric",month:"long",day:"numeric"});
     const img=v=>{const raw=String(v||"");if(raw.length<=650000&&new RegExp("^data:image/(?:png|jpeg|webp);base64,[A-Za-z0-9+/=]+$").test(raw))return escapar(raw);try{const u=new URL(raw);return u.protocol==="https:"&&!u.username&&!u.password?escapar(u.href):"";}catch{return "";}};
-    const fixtures=lista.length?lista.map(p=>{const a=img(p.escudo_local),b=img(p.escudo_visitante),r=["Pendiente","Ganado","Perdido","No enviado"].includes(p.resultado)?p.resultado:"Pendiente",icono=r==="Ganado"?"✓ ":r==="Perdido"?"✕ ":r==="No enviado"?"— ":"";return '<article class="champions-fixture"><div class="champions-team">'+(a?'<img src="'+a+'" alt="" loading="lazy">':'<span class="champions-crest-placeholder">⚽</span>')+'<span>'+escapar(p.local||"")+"</span></div><span class=\"champions-vs\">VS</span><div class=\"champions-team\">"+(b?'<img src="'+b+'" alt="" loading="lazy">':'<span class="champions-crest-placeholder">⚽</span>')+'<span>'+escapar(p.visitante||"")+"</span></div>"+'<strong class="champions-result resultado-'+r.toLowerCase().replace(/[^a-z]/g,"")+'">'+icono+escapar(r)+'</strong></article>';}).join(""):'<p class="champions-no-games">No hay partidos publicados para esta fecha.</p>';
-    root.innerHTML='<h2 class="champions-calendar-title">CALENDARIO DE PARTIDOS</h2><div class="champions-monthbar"><button type="button" data-month="-1" aria-label="Mes anterior">‹</button><strong>'+nombreMes+'</strong><button type="button" data-month="1" aria-label="Mes siguiente">›</button></div><div class="champions-weekdays"><span>LUN</span><span>MAR</span><span>MIÉ</span><span>JUE</span><span>VIE</span><span>SÁB</span><span>DOM</span></div><div class="champions-calendar-grid">'+celdas.join("")+'</div><section class="champions-fixtures"><h3>PARTIDOS DEL DÍA</h3><p class="champions-selected-date">'+escapar(fechaTexto)+'</p>'+fixtures+'</section>'+(error?'<p class="champions-no-games">No se pudo cargar el calendario. Actualiza la página para volver a intentarlo.</p>':'')+'';
+    const fixtures=lista.length?lista.map(p=>{const a=img(p.escudo_local),b=img(p.escudo_visitante),r=["Pendiente","Ganado","Perdido","No enviado"].includes(p.resultado)?p.resultado:"Pendiente",icono=r==="Ganado"?"✓ ":r==="Perdido"?"✕ ":r==="No enviado"?"— ":"";return '<article class="champions-fixture" data-score-home="'+escapar(p.local||"")+'" data-score-away="'+escapar(p.visitante||"")+'"><div class="champions-team">'+(a?'<img src="'+a+'" alt="" loading="lazy">':'<span class="champions-crest-placeholder">⚽</span>')+'<span>'+escapar(p.local||"")+'</span></div><span class="champions-vs">VS</span><div class="champions-team">'+(b?'<img src="'+b+'" alt="" loading="lazy">':'<span class="champions-crest-placeholder">⚽</span>')+'<span>'+escapar(p.visitante||"")+'</span></div><strong class="champions-result resultado-'+r.toLowerCase().replace(/[^a-z]/g,"")+'">'+icono+escapar(r)+'</strong><div class="champions-live-score" data-live-score><span class="champions-live-label">Marcador en vivo</span><span class="champions-live-unavailable">Cargando…</span></div></article>';}).join(""):'<p class="champions-no-games">No hay partidos publicados para esta fecha.</p>';
+    root.innerHTML='<h2 class="champions-calendar-title">CALENDARIO DE PARTIDOS</h2><div class="champions-monthbar"><button type="button" data-month="-1" aria-label="Mes anterior">‹</button><strong>'+nombreMes+'</strong><button type="button" data-month="1" aria-label="Mes siguiente">›</button></div><div class="champions-weekdays"><span>LUN</span><span>MAR</span><span>MIÉ</span><span>JUE</span><span>VIE</span><span>SÁB</span><span>DOM</span></div><div class="champions-calendar-grid">'+celdas.join("")+'</div><section class="champions-fixtures"><h3>PARTIDOS DEL DÍA</h3><p class="champions-selected-date">'+escapar(fechaTexto)+'</p>'+fixtures+'</section><p class="champions-scores-credit">Marcadores con actualización automática · <a href="https://sportscore.com/" target="_blank" rel="dofollow noopener" title="Datos deportivos por SportScore">Datos de SportScore</a></p>'+(error?'<p class="champions-no-games">No se pudo cargar el calendario. Actualiza la página para volver a intentarlo.</p>':'');
     root.querySelectorAll("[data-month]").forEach(button=>button.addEventListener("click",()=>{const next=new Date(year,month+Number(button.dataset.month),1);if(next>=inicio&&next<=fin){mes=next;dibujar();}}));
     root.querySelectorAll("[data-champions-date]").forEach(button=>button.addEventListener("click",()=>{seleccionado=button.dataset.championsDate;dibujar();}));
+    actualizarMarcadoresChampions(root);iniciarActualizacionChampions(root);
   }dibujar();
 }
-
 function renderPicks(compras) {
   if (!compras.length) { contenido.innerHTML = `<section class="panel">${sinPaquetes()}</section>`; return; }
   if (filtroActual !== "Todos" && !compras.some(c=>c.paquete === filtroActual)) filtroActual = "Todos";
