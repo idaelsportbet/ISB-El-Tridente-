@@ -44,19 +44,19 @@ function fechaActualCentral(){const p=new Intl.DateTimeFormat("en-US",{timeZone:
   const existing=await fetch(base+"/bucket/"+bucket,{headers:{apikey:secret,Authorization:"Bearer "+secret}});
   if(existing.status===404) {
     const created=await fetch(base+"/bucket",{method:"POST",headers,body:JSON.stringify({id:bucket,name:bucket,public:true,file_size_limit:524288,allowed_mime_types:["image/png","image/jpeg","image/webp"]})});
-    if(!created.ok&&created.status!==409)throw new Error("No se pudo preparar el almacenamiento de escudos.");
-  } else if(!existing.ok) throw new Error("No se pudo verificar el almacenamiento de escudos.");
+    if(!created.ok&&created.status!==409)return archivo;
+  } else if(!existing.ok) return archivo;
   else {
     const data=await existing.json();
     if(!data.public) {
       const updated=await fetch(base+"/bucket/"+bucket,{method:"PUT",headers,body:JSON.stringify({public:true,file_size_limit:524288,allowed_mime_types:["image/png","image/jpeg","image/webp"]})});
-      if(!updated.ok)throw new Error("No se pudo habilitar la visualización pública de los escudos.");
+      if(!updated.ok)return archivo;
     }
   }
   const extension=mime==="image/jpeg"?"jpg":mime==="image/png"?"png":"webp";
   const ruta=fecha+"/partido-"+numero+"-"+lado+"-"+Date.now()+"."+extension;
   const uploaded=await fetch(base+"/object/"+bucket+"/"+ruta,{method:"POST",headers:{apikey:secret,Authorization:"Bearer "+secret,"Content-Type":mime,"x-upsert":"true","cache-control":"31536000"},body:bytes});
-  if(!uploaded.ok)throw new Error("No se pudo subir el escudo. Inténtalo con una imagen más pequeña.");
+  if(!uploaded.ok)return archivo;
   return SUPABASE_URL+"/storage/v1/object/public/"+bucket+"/"+ruta;
 }
 
@@ -101,7 +101,7 @@ export default async function handler(req, res) {
     if (req.method === "POST" && req.body?.accion === "guardar_champions") {
       const {fecha,partidos}=req.body||{};
       const fechaValida=typeof fecha==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(fecha)&&Number.isFinite(Date.parse(fecha+"T00:00:00Z"))&&new Date(fecha+"T00:00:00Z").toISOString().slice(0,10)===fecha&&fecha>="2026-07-01"&&fecha<="2027-12-31";
-      const urlValida=value=>{if(value===""||value==null)return true;if(typeof value!=="string"||value.length>2048)return false;try{const u=new URL(value);return u.protocol==="https:"&&!u.username&&!u.password;}catch{return false;}};
+      const urlValida=value=>{if(value===""||value==null)return true;if(typeof value!=="string")return false;if(/^data:image\\/(?:png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(value))return value.length<=650000;if(value.length>2048)return false;try{const u=new URL(value);return u.protocol==="https:"&&!u.username&&!u.password;}catch{return false;}};
       const resultadosPermitidos=["Pendiente","Ganado","Perdido","No enviado"];const partidosValidos=Array.isArray(partidos)&&partidos.length>0&&partidos.length<=20&&partidos.every(p=>p&&p.manual===true&&typeof p.local==="string"&&p.local.trim().length>0&&p.local.trim().length<=100&&typeof p.visitante==="string"&&p.visitante.trim().length>0&&p.visitante.trim().length<=100&&resultadosPermitidos.includes(p.resultado||"Pendiente")&&urlValida(p.escudo_local||"")&&urlValida(p.escudo_visitante||""));
       if(!fechaValida||!partidosValidos)return res.status(400).json({error:"Revisa la fecha, los dos equipos y los escudos de cada partido."});
       const headers={apikey:secret,Authorization:"Bearer "+secret};
