@@ -15,3 +15,30 @@
 .pick-preview{background:linear-gradient(#031009bf,#031009d4),url("hero.jpeg") center/cover}.pick-description{font-weight:700;color:#fff;text-shadow:0 1px 4px #000}@media(max-width:600px){.pick-description{font-weight:800}}
 .package-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.package-option{color:#efc766;border-color:#a68135;border-radius:10px;padding:18px 10px;font-size:15px;background:linear-gradient(#07502e,#031c12)}@media(max-width:360px){.package-options{grid-template-columns:1fr}}
 .toplinks{display:flex;align-items:center;justify-content:flex-end;gap:16px;flex-wrap:wrap}.toplinks .toplink{padding:7px 0;text-decoration:none}.toplinks .toplink:hover{color:#fff}@media(max-width:560px){.topbar{padding:14px 12px;gap:10px;flex-wrap:wrap}.toplinks{width:100%;justify-content:space-between;gap:8px}.toplinks .toplink{font-size:12px}}
+
+.champions-calendar-wrap{margin-top:22px;padding:20px;border:1px solid #a68135;border-radius:12px;background:linear-gradient(145deg,#030906f5,#06100bfa);text-align:left}
+.champions-calendar-title,.champions-fixtures h3,.champions-tutorial h3{margin:0 0 14px;color:#f0cc59;font-family:Georgia,serif;letter-spacing:.08em}
+.champions-monthbar{display:flex;justify-content:center;align-items:center;gap:20px;margin:10px 0 16px;color:#fff0b0}
+.champions-monthbar button{width:38px;height:38px;border:1px solid #a68135;border-radius:50%;background:#07120c;color:#f2cf60;font-size:25px;cursor:pointer}
+.champions-weekdays,.champions-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.champions-weekdays span{text-align:center;padding:8px 2px;color:#c7b375;font-size:11px;font-weight:800}
+.champions-day,.champions-empty-day{min-height:52px}
+.champions-day{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:1px solid #ffffff18;border-radius:7px;background:#060b08;color:#eef0e9;font-size:14px;cursor:pointer}
+.champions-day.has-games{border-color:#a68135;background:linear-gradient(145deg,#064b2d,#03170e);color:#ffe275}
+.champions-day.selected{outline:2px solid #f2cf60;outline-offset:1px}
+.champions-day small{font-size:9px;color:#58e59a}
+.champions-fixtures{margin-top:20px;padding-top:16px;border-top:1px solid #8a7138}
+.champions-fixtures h3{display:inline-block;margin-bottom:4px}
+.champions-selected-date{margin:0 0 12px;color:#d0d4cf;text-transform:capitalize}
+.champions-fixture{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px;margin:8px 0;border:1px solid #65532b;border-radius:9px;background:#020705}
+.champions-team{display:flex;align-items:center;gap:9px;min-width:0;color:#fff;font-weight:650}
+.champions-team img,.champions-crest-placeholder{width:30px;height:30px;object-fit:contain;flex:none}
+.champions-crest-placeholder{display:grid;place-items:center;font-size:22px}
+.champions-team span:last-child{overflow-wrap:anywhere}
+.champions-vs{color:#c6a748;font-size:11px;font-weight:800}
+.champions-odds{color:#f0cc59;white-space:nowrap}
+.champions-no-games{color:#b9c4bd;padding:8px 0}
+.champions-tutorial{margin-top:22px;padding-top:18px;border-top:1px solid #8a7138}
+.champions-video{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:1px solid #766331;border-radius:10px;background:#000}
+.champions-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+@media(max-width:600px){.champions-calendar-wrap{padding:14px 10px}.champions-day{min-height:42px;font-size:12px}.champions-weekdays span{font-size:9px}.champions-fixture{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:6px;padding:9px}.champions-odds{grid-column:1/-1;text-align:center}.champions-team{font-size:12px;gap:5px}.champions-team img,.champions-crest-placeholder{width:24px;height:24px}}
