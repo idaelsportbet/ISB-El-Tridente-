@@ -22,8 +22,8 @@
 .champions-monthbar button{width:38px;height:38px;border:1px solid #a68135;border-radius:50%;background:#07120c;color:#f2cf60;font-size:25px;cursor:pointer}
 .champions-weekdays,.champions-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
 .champions-weekdays span{text-align:center;padding:8px 2px;color:#c7b375;font-size:11px;font-weight:800}
-.champions-day,.champions-empty-day{min-height:52px}
-.champions-day{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:1px solid #ffffff18;border-radius:7px;background:#060b08;color:#eef0e9;font-size:14px;cursor:pointer}
+.champions-day,.champions-empty-day{min-height:68px}
+.champions-day{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:5px 2px;border:1px solid #ffffff18;border-radius:8px;background:#060b08;color:#eef0e9;font-size:15px;font-weight:700;cursor:pointer;transition:background .18s,border-color .18s,transform .18s}.champions-day:hover{transform:translateY(-1px)}.champions-day em{font-style:normal;font-size:8px;line-height:1.1;font-weight:900;letter-spacing:.04em;text-align:center}.champions-day.has-games.resultado-ganado{border-color:#35ff9b;background:linear-gradient(145deg,#08723f,#043b25);color:#fff}.champions-day.has-games.resultado-perdido{border-color:#ff7777;background:linear-gradient(145deg,#521d1d,#230e0e);color:#fff}.champions-day.has-games.resultado-noenviado{border-color:#aab5ad;background:linear-gradient(145deg,#29332d,#111713);color:#fff}.champions-day.has-games.resultado-mixto{border-color:#e6c356;background:linear-gradient(145deg,#594716,#211a0b);color:#fff}
 .champions-day.has-games{border-color:#a68135;background:linear-gradient(145deg,#064b2d,#03170e);color:#ffe275}
 .champions-day.selected{outline:2px solid #f2cf60;outline-offset:1px}
 .champions-day small{font-size:9px;color:#58e59a}
@@ -37,10 +37,10 @@
 .champions-team span:last-child{overflow-wrap:anywhere}
 .champions-vs{color:#c6a748;font-size:11px;font-weight:800}
 .champions-odds{color:#f0cc59;white-space:nowrap}
-.champions-result{grid-column:1/-1;text-align:center;font-size:12px;letter-spacing:.08em;font-weight:800}
+.champions-result{grid-column:1/-1;justify-self:center;text-align:center;font-size:14px;letter-spacing:.08em;font-weight:900;padding:7px 14px;border-radius:999px;background:#ffffff0d}.champions-result.resultado-ganado{background:#08723f66;border:1px solid #35ff9b66}.champions-result.resultado-perdido{background:#521d1d66;border:1px solid #ff777766}
 .champions-result.resultado-ganado{color:#39e98e}
 .champions-result.resultado-perdido{color:#ff7777}
 .champions-result.resultado-noenviado{color:#b9c4bd}
 .champions-result.resultado-pendiente{color:#d6bc69}
 .champions-no-games{color:#b9c4bd;padding:8px 0}
-@media(max-width:600px){.champions-calendar-wrap{padding:14px 10px}.champions-day{min-height:42px;font-size:12px}.champions-weekdays span{font-size:9px}.champions-fixture{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:6px;padding:9px}.champions-odds,.champions-result{grid-column:1/-1;text-align:center}.champions-team{font-size:12px;gap:5px}.champions-team img,.champions-crest-placeholder{width:24px;height:24px}}
+@media(max-width:600px){.champions-calendar-wrap{padding:14px 10px}.champions-day,.champions-empty-day{min-height:58px}.champions-day{font-size:13px}.champions-day em{font-size:7px}.champions-weekdays span{font-size:9px}.champions-fixture{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:6px;padding:9px}.champions-odds,.champions-result{grid-column:1/-1;text-align:center}.champions-team{font-size:12px;gap:5px}.champions-team img,.champions-crest-placeholder{width:24px;height:24px}}
