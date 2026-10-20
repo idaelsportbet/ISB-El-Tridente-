@@ -121,12 +121,6 @@
   <p id="estado" role="status" aria-live="polite">Comprobando tu acceso…</p><a id="adminLoginButton" class="admin-login-button" href="/index.html?login=admin" hidden>INICIAR SESIÓN</a>
   <section id="clientes" hidden>
     <h2>Clientes y compras</h2>
-    <section id="ownerGrantPanel" class="editor-section" hidden>
-      <h2>ACCESO DE CORTESÍA</h2>
-      <p>Concede acceso permanente y sin cobro a Champions League Completa y Reto de 10 días para $10K a la cuenta propietaria de cliente.</p>
-      <button type="button" id="ownerGrantButton" class="refund-action">ACTIVAR CHAMPIONS + RETO 10 DÍAS</button>
-      <p id="ownerGrantStatus" role="status" aria-live="polite"></p>
-    </section>
     <button type="button" id="actualizarCompras">ACTUALIZAR COMPRAS</button>
     <p id="comprasEstado" role="status" aria-live="polite"></p>
     <div class="tabla-scroll"><table><thead><tr><th>Usuario</th><th>Nombre</th><th>Correo</th><th>Paquete</th><th>Pagado (USD)</th><th>Compra</th><th>Vencimiento</th><th>Acceso</th></tr></thead><tbody id="comprasFilas"></tbody></table></div>
@@ -243,24 +237,6 @@ async function request(method, body, query="") {
   if (!response.ok) throw new Error(data.error || "No se pudo conectar con el panel.");
   return data;
 }
-const ownerGrantPanel=document.getElementById("ownerGrantPanel");
-const ownerGrantButton=document.getElementById("ownerGrantButton");
-const ownerGrantStatus=document.getElementById("ownerGrantStatus");
-client.auth.getUser().then(({data,error})=>{
-  ownerGrantPanel.hidden=Boolean(error)||data.user?.email?.toLowerCase()!=="idaelvargasbusiness@gmail.com";
-}).catch(()=>{ownerGrantPanel.hidden=true;});
-ownerGrantButton.addEventListener("click",async()=>{
-  if(!window.confirm("¿Confirmas conceder, sin cobro y sin vencimiento, solo Champions League Completa y Reto de 10 días para $10K a floresidael2000@gmail.com?"))return;
-  ownerGrantButton.disabled=true;ownerGrantStatus.textContent="Activando los dos paquetes…";
-  try{
-    const data=await request("POST",{accion:"activar_accesos_flores",correo:"floresidael2000@gmail.com",paquetes:["Champions League Completa","Reto de 10 días para $10K"]});
-    ownerGrantStatus.textContent=data.activados.length
-      ? "Acceso activo hasta el 31 dic 2099, sin cobro: "+data.activados.join(" y ")+(data.yaIndefinidos.length?"; ya estaba activo: "+data.yaIndefinidos.join(" y "):".")
-      : "Los dos paquetes ya estaban activos sin vencimiento.";
-    await cargarCompras(0);
-  }catch(error){ownerGrantStatus.textContent=error.message;}
-  finally{ownerGrantButton.disabled=false;}
-});
 let accesoAutorizado=false, solicitudInstalacion;
 const instalar=document.getElementById("instalar");
 window.addEventListener("beforeinstallprompt",event=>{
