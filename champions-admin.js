@@ -25,11 +25,50 @@
   }
   async function cargarCalendarioGuardado(){try{const d=await call("GET",null,"?vista=champions");diasGuardados=d.dias||[];dibujarCalendario();}catch(e){status.textContent=e.message;}}
   const equipoClave=v=>{let s=String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();if(s.startsWith("paris")||s==="psg")s="paris saint germain";return s;};const clave=m=>[equipoClave(m.local),equipoClave(m.visitante)].sort().join("|");
+  function previewEscudo(root,url) {
+    const valor=String(url||"").trim();
+    if(!valor){root.innerHTML='<span class="champions-crest-preview-empty">Vista previa del escudo</span>';return;}
+    root.innerHTML='<img src="'+escapeHtml(valor)+'" alt="Vista previa del escudo">';
+    const img=root.querySelector("img");
+    img.addEventListener("error",()=>{root.innerHTML='<span class="champions-crest-preview-error">Este enlace no abre una imagen. Sube el archivo del escudo.</span>';},{once:true});
+  }
+  async function convertirImagen(file) {
+    if(!file||!/^image\/(png|jpeg|webp)$/.test(file.type))throw new Error("Selecciona un escudo PNG, JPG o WebP.");
+    if(!("createImageBitmap" in window)) {
+      const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error("No se pudo leer el archivo."));reader.readAsDataURL(file);});
+      if(String(data).length>650000)throw new Error("La imagen es muy grande. Usa una imagen más pequeña.");
+      return data;
+    }
+    const bitmap=await createImageBitmap(file),scale=Math.min(1,480/Math.max(bitmap.width,bitmap.height)),canvas=document.createElement("canvas");
+    canvas.width=Math.max(1,Math.round(bitmap.width*scale));canvas.height=Math.max(1,Math.round(bitmap.height*scale));
+    canvas.getContext("2d").drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close?.();
+    let data=canvas.toDataURL("image/webp",.78);
+    if(data.length>650000){canvas.width=Math.round(canvas.width*.75);canvas.height=Math.round(canvas.height*.75);data=canvas.toDataURL("image/webp",.68);}
+    if(data.length>650000)throw new Error("La imagen es muy grande. Usa una imagen más pequeña.");
+    return data;
+  }
   function addMatch(match={}) {
     const card=document.createElement("fieldset");
     card.className="champions-admin-match";
     const resultado=estados.includes(match.resultado)?match.resultado:"Pendiente",numero=rows.children.length+1;
-    card.innerHTML='<legend>PARTIDO '+numero+'</legend><input type="hidden" data-local value="'+escapeHtml(match.local||"")+'"><input type="hidden" data-visitante value="'+escapeHtml(match.visitante||"")+'"><div class="champions-admin-match-grid"><label>Escudo local · pega el enlace HTTPS<input data-local-logo type="url" maxlength="2048" placeholder="https://…/escudo.png" value="'+escapeHtml(match.escudo_local||"")+'"></label><label>Escudo visitante · pega el enlace HTTPS<input data-visitante-logo type="url" maxlength="2048" placeholder="https://…/escudo.png" value="'+escapeHtml(match.escudo_visitante||"")+'"></label><label>Cuota (opcional)<input data-cuota inputmode="text" maxlength="20" placeholder="+110" value="'+escapeHtml(match.cuota||"")+'"></label><label>Resultado<select data-resultado>'+estados.map(x=>'<option'+(x===resultado?' selected':'')+'>'+x+'</option>').join("")+'</select></label></div>';
+    card.innerHTML='<legend>PARTIDO '+numero+'</legend><input type="hidden" data-local value="'+escapeHtml(match.local||"")+'"><input type="hidden" data-visitante value="'+escapeHtml(match.visitante||"")+'"><div class="champions-admin-match-grid"><label>Enlace directo del escudo local (opcional)<input data-local-logo type="url" maxlength="2048" placeholder="https://…/escudo.png" value="'+escapeHtml(match.escudo_local||"")+'"></label><label>Enlace directo del escudo visitante (opcional)<input data-visitante-logo type="url" maxlength="2048" placeholder="https://…/escudo.png" value="'+escapeHtml(match.escudo_visitante||"")+'"></label><label>Subir escudo local desde el dispositivo<input data-local-file type="file" accept="image/png,image/jpeg,image/webp"></label><label>Subir escudo visitante desde el dispositivo<input data-visitante-file type="file" accept="image/png,image/jpeg,image/webp"></label><div class="champions-crest-preview" data-local-preview></div><div class="champions-crest-preview" data-visitante-preview></div><label>Cuota (opcional)<input data-cuota inputmode="text" maxlength="20" placeholder="+110" value="'+escapeHtml(match.cuota||"")+'"></label><label>Resultado<select data-resultado>'+estados.map(x=>'<option'+(x===resultado?' selected':'')+'>'+x+'</option>').join("")+'</select></label></div>';
+    const previewLocal=card.querySelector("[data-local-preview]"),previewVisitante=card.querySelector("[data-visitante-preview]");
+    previewEscudo(previewLocal,match.escudo_local);previewEscudo(previewVisitante,match.escudo_visitante);
+    for(const [lado,selector,preview] of [["local","[data-local-file]",previewLocal],["visitante","[data-visitante-file]",previewVisitante]]) {
+      const fileInput=card.querySelector(selector),urlInput=card.querySelector(lado==="local"?"[data-local-logo]":"[data-visitante-logo]");
+      urlInput.addEventListener("input",()=>previewEscudo(preview,urlInput.value));
+      fileInput.addEventListener("change",async()=>{
+        const file=fileInput.files?.[0];if(!file)return;
+        fileInput.disabled=true;status.textContent="Preparando el escudo…";
+        try {
+          const archivo=await convertirImagen(file);
+          const out=await call("POST",{accion:"subir_champions_escudo",fecha:date.value,partido:numero,lado,archivo});
+          urlInput.value=out.url;previewEscudo(preview,out.url);
+          status.textContent="Escudo subido. Pulsa GUARDAR PARTIDOS DE ESTA FECHA para mostrarlo a los clientes.";
+        } catch(error){status.textContent=error.message||"No se pudo subir el escudo.";}
+        finally{fileInput.disabled=false;fileInput.value="";}
+      });
+    }
     rows.append(card);
   }
   async function call(method,body,query="") {
@@ -84,6 +123,7 @@
   form.addEventListener("submit",async e=>{
     e.preventDefault();
     const partidos=[...rows.children].map(row=>({local:row.querySelector("[data-local]").value.trim(),escudo_local:row.querySelector("[data-local-logo]").value.trim(),visitante:row.querySelector("[data-visitante]").value.trim(),escudo_visitante:row.querySelector("[data-visitante-logo]").value.trim(),cuota:row.querySelector("[data-cuota]").value.trim(),resultado:row.querySelector("[data-resultado]").value}));
+    if(partidos.some(p=>[p.escudo_local,p.escudo_visitante].some(u=>{try{return ["share.google","photos.app.goo.gl"].includes(new URL(u).hostname);}catch{return false;}}))){status.textContent="Los enlaces de Google compartido no son archivos de imagen. Sube esos escudos desde tu dispositivo y vuelve a guardar.";return;}
     const save=form.querySelector('[type="submit"]');
     save.disabled=true;status.textContent="Guardando partidos, escudos y resultados…";
     try{const d=await call("POST",{accion:"guardar_champions",fecha:date.value,partidos});guardarEnCache(d.fecha,partidos);status.textContent="Se guardaron "+d.partidos+" partido(s) para "+d.fecha+".";}
