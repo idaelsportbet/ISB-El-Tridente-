@@ -9,7 +9,7 @@
   if(!panel||!tab)return;
   const escapeHtml=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
   const estados=["Pendiente","Ganado","Perdido","No enviado"];
-  const clave=m=>(String(m.local||"").trim().toLocaleLowerCase("es")+"|"+String(m.visitante||"").trim().toLocaleLowerCase("es"));
+  const equipoClave=v=>{let s=String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();if(s.startsWith("paris")||s==="psg")s="paris saint germain";return s;};const clave=m=>[equipoClave(m.local),equipoClave(m.visitante)].sort().join("|");
   function addMatch(match={}) {
     const card=document.createElement("fieldset");
     card.className="champions-admin-match";
