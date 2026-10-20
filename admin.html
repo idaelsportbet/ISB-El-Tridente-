@@ -108,6 +108,7 @@
   <div class="admin-stage">
     <header class="topbar"><a class="admin-brand-mini" href="/admin" aria-label="ISB El Tridente, administrador">♆ ISB <span>EL TRIDENTE</span></a><div class="topbar-label">PANEL DE ADMINISTRACIÓN</div><nav id="secciones" class="top-nav" aria-label="Secciones del administrador" hidden>
       <button type="button" class="nav-item" id="tabPick" aria-pressed="true"><span class="nav-icon">⌂</span><span>Publicar Pick</span></button>
+      <button type="button" class="nav-item" id="tabChampions" aria-pressed="false"><span class="nav-icon">⚽</span><span>Champions</span></button>
       <button type="button" class="nav-item" id="tabPublicados" aria-pressed="false"><span class="nav-icon">▤</span><span>Mis Picks</span></button>
       <button type="button" class="nav-item" id="tabResultados" aria-pressed="false"><span class="nav-icon">▥</span><span>Estadísticas</span></button>
       <button type="button" class="nav-item" id="tabClientes" aria-pressed="false"><span class="nav-icon">♧</span><span>Comunidad</span></button>
@@ -115,7 +116,7 @@
       <button type="button" class="nav-item" id="tabDescuento" aria-pressed="false"><span class="nav-icon">%</span><span>Descuentos</span></button>
       <button type="button" class="nav-item" id="tabRefund" aria-pressed="false"><span class="nav-icon">↩</span><span>Reembolsos</span></button>
       <button type="button" class="nav-item" id="tabReto" aria-pressed="false"><span class="nav-icon">♧</span><span>Reto 10 días</span></button>
-    </nav><button id="instalar" type="button" hidden>INSTALAR ISB ADMIN</button><button id="adminMenuToggle" class="admin-profile" type="button" aria-expanded="false" aria-controls="adminMenu"><span class="profile-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 21c.5-4.1 2.7-6.2 6.5-6.2s6 2.1 6.5 6.2"/></svg></span><span><strong>ADMIN</strong><small>ISB EL TRIDENTE</small></span><span class="profile-chevron" aria-hidden="true">⌄</span></button><div id="adminMenu" class="admin-menu" hidden><p class="admin-menu-title">PANELES DE ADMINISTRACIÓN</p><button type="button" class="nav-item" data-panel="tabPick">⌂ &nbsp; Publicar Pick</button><button type="button" class="nav-item" data-panel="tabPublicados">▤ &nbsp; Mis Picks</button><button type="button" class="nav-item" data-panel="tabResultados">▥ &nbsp; Estadísticas</button><button type="button" class="nav-item" data-panel="tabClientes">♧ &nbsp; Comunidad</button><button type="button" class="nav-item" data-panel="tabSoporte">✉ &nbsp; Soporte</button><button type="button" class="nav-item" data-panel="tabDescuento">% &nbsp; Descuentos</button><button type="button" class="nav-item" data-panel="tabRefund">↩ &nbsp; Reembolsos</button><button type="button" class="nav-item" data-panel="tabReto">♧ &nbsp; Reto 10 días</button></div></header>
+    </nav><button id="instalar" type="button" hidden>INSTALAR ISB ADMIN</button><button id="adminMenuToggle" class="admin-profile" type="button" aria-expanded="false" aria-controls="adminMenu"><span class="profile-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 21c.5-4.1 2.7-6.2 6.5-6.2s6 2.1 6.5 6.2"/></svg></span><span><strong>ADMIN</strong><small>ISB EL TRIDENTE</small></span><span class="profile-chevron" aria-hidden="true">⌄</span></button><div id="adminMenu" class="admin-menu" hidden><p class="admin-menu-title">PANELES DE ADMINISTRACIÓN</p><button type="button" class="nav-item" data-panel="tabPick">⌂ &nbsp; Publicar Pick</button><button type="button" class="nav-item" data-panel="tabChampions">⚽ &nbsp; Champions</button><button type="button" class="nav-item" data-panel="tabPublicados">▤ &nbsp; Mis Picks</button><button type="button" class="nav-item" data-panel="tabResultados">▥ &nbsp; Estadísticas</button><button type="button" class="nav-item" data-panel="tabClientes">♧ &nbsp; Comunidad</button><button type="button" class="nav-item" data-panel="tabSoporte">✉ &nbsp; Soporte</button><button type="button" class="nav-item" data-panel="tabDescuento">% &nbsp; Descuentos</button><button type="button" class="nav-item" data-panel="tabRefund">↩ &nbsp; Reembolsos</button><button type="button" class="nav-item" data-panel="tabReto">♧ &nbsp; Reto 10 días</button></div></header>
     <main>
   <p id="estado" role="status" aria-live="polite">Comprobando tu acceso…</p><a id="adminLoginButton" class="admin-login-button" href="/index.html?login=admin" hidden>INICIAR SESIÓN</a>
   <section id="clientes" hidden>
@@ -143,7 +144,24 @@
     <p>Al activarla, la promoción será del 30% en todos los paquetes, excepto el paquete Económica.</p>
     <div class="discount-status-card"><span id="descuentoEstado" role="status" aria-live="polite">Consultando promoción…</span><button id="alternarDescuento" type="button" disabled>ACTIVAR DESCUENTO DEL 30%</button></div>
   </section>
-  <section id="editorLayout" class="editor-layout" hidden>
+  <section id="championsAdminPanel" class="editor-layout" hidden>
+  <style>
+    .champions-admin-match{margin:10px 0;padding:12px;border:1px solid #715c2b;border-radius:10px;background:rgba(2,7,5,.9)}
+    .champions-admin-match-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .champions-admin-match-grid label{display:grid;gap:5px;color:#e9c565;font-size:12px}
+    .champions-admin-match-grid input{min-width:0;padding:10px;background:#080b09;color:#fff;border:1px solid #715c2b;border-radius:7px}
+    @media(max-width:600px){.champions-admin-match-grid{grid-template-columns:1fr}}
+  </style>
+  <header class="editor-heading"><div><h1>CALENDARIO CHAMPIONS</h1><p>PUBLICA LOS PARTIDOS POR FECHA PARA CHAMPIONS LEAGUE COMPLETA</p></div></header>
+  <form id="championsAdminForm" class="editor-fields">
+    <section class="editor-section"><h2>FECHA DE LA JORNADA</h2><label for="championsAdminDate">Día de los partidos</label><input id="championsAdminDate" type="date" min="2026-07-01" max="2027-12-31" required><small>Selecciona un día y agrega todos los partidos de Champions de esa fecha.</small></section>
+    <section class="editor-section"><h2>PARTIDOS Y CUOTAS</h2><div id="championsAdminMatches"></div><button class="add-entry" id="championsAdminAddMatch" type="button">+ AGREGAR PARTIDO</button></section>
+    <button class="publish-button" type="submit">GUARDAR PARTIDOS DE ESTA FECHA</button>
+    <button class="add-entry" id="championsAdminDeleteDate" type="button">QUITAR ESTA FECHA</button>
+    <p id="championsAdminStatus" role="status" aria-live="polite"></p>
+  </form>
+</section>
+<section id="editorLayout" class="editor-layout" hidden>
     <header class="editor-heading"><div><h1>PUBLICAR PICK</h1><p>COMPARTE TU ANÁLISIS Y POTENCIA A LA COMUNIDAD</p><p id="instrucciones" hidden>Escribe el pick y selecciona todos los paquetes que deben recibirlo.</p></div></header>
   <form id="publicar" hidden>
     <div class="editor-fields">
@@ -502,7 +520,8 @@ form.addEventListener("submit", async event => {
     };
   } catch(error) {estado.textContent=error.message;button.disabled=false;}
 });
-</script></body></html>
+</script><script src="/champions-admin.js?v=20261020a"></script>
+</body></html>
 
 
 
