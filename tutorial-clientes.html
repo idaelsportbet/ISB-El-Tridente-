@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050806">
+  <title>Tutorial para clientes | ISB El Tridente</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tema-isb.css?v=20261015-oro-mas-amarillo">
+  <style>
+    body{background:#050806;color:#f5f0df}
+    .tutorial-page{width:min(1040px,calc(100% - 32px));margin:48px auto 72px}
+    .tutorial-heading{text-align:center;margin:0 auto 24px}
+    .tutorial-heading .eyebrow{color:#e6c353;letter-spacing:.22em;text-transform:uppercase}
+    .tutorial-heading h1{color:#f0cf65;font-family:Georgia,serif;font-size:clamp(30px,5vw,48px);margin:8px 0}
+    .tutorial-player{position:relative;overflow:hidden;aspect-ratio:16/9;border:1px solid #a98239;border-radius:16px;background:#030504;box-shadow:0 12px 40px #0009}
+    .tutorial-player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+    .tutorial-actions{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:18px}
+    .tutorial-actions a{display:inline-flex;align-items:center;justify-content:center;padding:12px 20px;border:1px solid #c49a3c;border-radius:10px;color:#f4d269;text-decoration:none}
+    .tutorial-actions a:hover{background:#0b291a}
+    .tutorial-note{margin:16px auto 0;max-width:720px;text-align:center;color:#c9c6bc;font-size:14px;line-height:1.6}
+    @media(max-width:600px){.tutorial-page{margin:28px auto 48px}.tutorial-player{border-radius:10px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="ISB Inicio"><span class="trident">♆</span><span><b>ISB</b><small>EL TRIDENTE</small></span></a>
+    <button class="menu-btn" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    <nav class="nav" aria-label="Navegación principal">
+      <a href="index.html">Inicio</a>
+      <a href="paquetes.html">Paquetes</a>
+      <a href="cuenta.html">Mi cuenta</a>
+      <a href="soporte.html">Soporte</a>
+      <a href="resultados.html">Resultados</a>
+      <a class="active" href="tutorial-clientes.html">Tutorial</a>
+    </nav>
+    <div class="header-actions"><a class="btn btn-ghost" href="cuenta.html">Mi cuenta</a></div>
+  </header>
+  <main class="tutorial-page">
+    <div class="tutorial-heading">
+      <p class="eyebrow">ISB · EL TRIDENTE</p>
+      <h1>Tutorial para clientes</h1>
+      <p>Aprende cómo usar tu cuenta y encontrar tus paquetes y picks.</p>
+    </div>
+    <div class="tutorial-player">
+      <iframe src="https://www.youtube-nocookie.com/embed/D_d53Gz2MCQ?rel=0" title="Tutorial para clientes de ISB El Tridente" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <p class="tutorial-note">El video se reproduce aquí mismo. Si YouTube impide la reproducción por la restricción de edad del video, usa el botón para verlo directamente en YouTube.</p>
+    <div class="tutorial-actions">
+      <a href="https://www.youtube.com/watch?v=D_d53Gz2MCQ" target="_blank" rel="noopener noreferrer">Abrir en YouTube si hace falta</a>
+      <a href="index.html#tutorial">Volver al inicio</a>
+    </div>
+  </main>
+  <script src="script.js?v=20261014-adminlogin"></script>
+</body>
+</html>
