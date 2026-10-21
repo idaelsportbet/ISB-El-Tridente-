@@ -96,27 +96,29 @@ export default async function handler(req, res) {
       const response = await fetch(SUPABASE_URL+"/rest/v1/picks?"+query,{headers:{apikey:secret,Authorization:"Bearer "+secret}});
       if (!response.ok) return res.status(502).json({error:"No se pudo cargar el calendario de Champions."});
       const rows = await response.json();
-      return res.status(200).json({dias:rows.map(row=>{try{const desc=JSON.parse(row.descripcion),legacy=(Array.isArray(desc.partidos)?desc.partidos:[]).map(p=>p&&p.resultado).filter(r=>["Ganado","Perdido","No enviado"].includes(r)),resultado=["Ganado","Perdido","No enviado"].includes(desc.resultado)?desc.resultado:(legacy.length&&legacy.every(r=>r===legacy[0])?legacy[0]:"");return {id:row.id,fecha:row.fecha_pick,resultado};}catch{return null;}}).filter(Boolean)});
+      return res.status(200).json({dias:rows.map(row=>{try{const desc=JSON.parse(row.descripcion),legacy=(Array.isArray(desc.partidos)?desc.partidos:[]).map(p=>p&&p.resultado).filter(r=>["Ganado","Perdido","No enviado"].includes(r)),legacyOdds=[...new Set((Array.isArray(desc.partidos)?desc.partidos:[]).map(p=>String(p&&p.cuota||"").trim()).filter(Boolean))],resultado=["Ganado","Perdido","No enviado"].includes(desc.resultado)?desc.resultado:(legacy.length&&legacy.every(r=>r===legacy[0])?legacy[0]:""),cuota=typeof desc.cuota==="string"?desc.cuota:(legacyOdds.length===1?legacyOdds[0]:"");return {id:row.id,fecha:row.fecha_pick,resultado,cuota};}catch{return null;}}).filter(Boolean)});
     }
     if (req.method === "POST" && req.body?.accion === "guardar_champions") {
-      const {fecha,resultado}=req.body||{};
+      const {fecha,resultado,cuota}=req.body||{};
       const fechaValida=typeof fecha==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(fecha)&&Number.isFinite(Date.parse(fecha+"T00:00:00Z"))&&new Date(fecha+"T00:00:00Z").toISOString().slice(0,10)===fecha&&fecha>="2026-07-01"&&fecha<="2027-12-31";
       const resultadosPermitidos=["","Ganado","Perdido","No enviado"];
-      if(!fechaValida||typeof resultado!=="string"||!resultadosPermitidos.includes(resultado))return res.status(400).json({error:"Selecciona una fecha y un resultado válido."});
+      const cuotaValida=cuota===undefined||typeof cuota==="string"&&cuota.trim().length<=40;
+      if(!fechaValida||typeof resultado!=="string"||!resultadosPermitidos.includes(resultado)||!cuotaValida)return res.status(400).json({error:"Escribe una cuota válida y selecciona un resultado."});
+      const cuotaLimpia=String(cuota||"").trim();
       const headers={apikey:secret,Authorization:"Bearer "+secret};
       const query=new URLSearchParams({select:"id",paquete:"eq.Champions League Completa",fecha_pick:"eq."+fecha,titulo:"eq.CHAMPIONS_CALENDAR_V1"});
       const oldResponse=await fetch(SUPABASE_URL+"/rest/v1/picks?"+query,{headers});
       if(!oldResponse.ok)return res.status(502).json({error:"No se pudo comprobar el resultado guardado."});
       const oldRows=await oldResponse.json();
-      if(!resultado){
+      if(!resultado&&!cuotaLimpia){
         if(oldRows.length){const del=new URLSearchParams({id:"in.("+oldRows.map(x=>x.id).join(",")+")",paquete:"eq.Champions League Completa"});const removed=await fetch(SUPABASE_URL+"/rest/v1/picks?"+del,{method:"DELETE",headers:{...headers,Prefer:"return=minimal"}});if(!removed.ok)return res.status(502).json({error:"No se pudo quitar el resultado de esa fecha."});}
-        return res.status(200).json({fecha,resultado:""});
+        return res.status(200).json({fecha,resultado:"",cuota:""});
       }
-      const row={titulo:"CHAMPIONS_CALENDAR_V1",descripcion:JSON.stringify({version:2,resultado}),fecha_pick:fecha,imagen_url:null,paquete:"Champions League Completa",activo:true};
+      const row={titulo:"CHAMPIONS_CALENDAR_V1",descripcion:JSON.stringify({version:2,resultado,cuota:cuotaLimpia}),fecha_pick:fecha,imagen_url:null,paquete:"Champions League Completa",activo:true};
       const inserted=await fetch(SUPABASE_URL+"/rest/v1/picks",{method:"POST",headers:{...headers,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify([row])});
       if(!inserted.ok)return res.status(502).json({error:"No se pudo guardar el resultado del día."});
       if(oldRows.length){const del=new URLSearchParams({id:"in.("+oldRows.map(x=>x.id).join(",")+")",paquete:"eq.Champions League Completa"});const removed=await fetch(SUPABASE_URL+"/rest/v1/picks?"+del,{method:"DELETE",headers:{...headers,Prefer:"return=minimal"}});if(!removed.ok)return res.status(502).json({error:"El resultado se guardó, pero no se pudo reemplazar una versión anterior de esa fecha."});}
-      return res.status(201).json({fecha,resultado});
+      return res.status(201).json({fecha,resultado,cuota:cuotaLimpia});
     }
     if (req.method === "POST" && req.body?.accion === "borrar_champions_fecha") {
       const fecha=req.body.fecha;
