@@ -102,14 +102,14 @@ export default async function handler(req, res) {
       const {fecha,partidos}=req.body||{};
       const fechaValida=typeof fecha==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(fecha)&&Number.isFinite(Date.parse(fecha+"T00:00:00Z"))&&new Date(fecha+"T00:00:00Z").toISOString().slice(0,10)===fecha&&fecha>="2026-07-01"&&fecha<="2027-12-31";
       const urlValida=value=>{if(value===""||value==null)return true;if(typeof value!=="string")return false;if(new RegExp("^data:image/(?:png|jpeg|webp);base64,[A-Za-z0-9+/=]+$").test(value))return value.length<=650000;if(value.length>2048)return false;try{const u=new URL(value);return u.protocol==="https:"&&!u.username&&!u.password;}catch{return false;}};
-      const resultadosPermitidos=["Pendiente","Ganado","Perdido","No enviado"];const partidosValidos=Array.isArray(partidos)&&partidos.length>0&&partidos.length<=20&&partidos.every(p=>p&&p.manual===true&&typeof p.local==="string"&&p.local.trim().length>0&&p.local.trim().length<=100&&typeof p.visitante==="string"&&p.visitante.trim().length>0&&p.visitante.trim().length<=100&&resultadosPermitidos.includes(p.resultado||"Pendiente")&&urlValida(p.escudo_local||"")&&urlValida(p.escudo_visitante||""));
+      const resultadosPermitidos=["Pendiente","Ganado","Perdido","No enviado"];const partidosValidos=Array.isArray(partidos)&&partidos.length>0&&partidos.length<=20&&partidos.every(p=>p&&p.manual===true&&typeof p.local==="string"&&p.local.trim().length>0&&p.local.trim().length<=100&&typeof p.visitante==="string"&&p.visitante.trim().length>0&&p.visitante.trim().length<=100&&resultadosPermitidos.includes(p.resultado||"Pendiente")&&(p.cuota===undefined||typeof p.cuota==="string"&&p.cuota.trim().length<=40)&&urlValida(p.escudo_local||"")&&urlValida(p.escudo_visitante||""));
       if(!fechaValida||!partidosValidos)return res.status(400).json({error:"Revisa la fecha, los dos equipos y los escudos de cada partido."});
       const headers={apikey:secret,Authorization:"Bearer "+secret};
       const query=new URLSearchParams({select:"id",paquete:"eq.Champions League Completa",fecha_pick:"eq."+fecha,titulo:"eq.CHAMPIONS_CALENDAR_V1"});
       const oldResponse=await fetch(SUPABASE_URL+"/rest/v1/picks?"+query,{headers});
       if(!oldResponse.ok)return res.status(502).json({error:"No se pudo comprobar la jornada guardada."});
       const oldRows=await oldResponse.json();
-      const cleanMatches=partidos.map(p=>({manual:true,local:p.local.trim(),visitante:p.visitante.trim(),escudo_local:(p.escudo_local||"").trim(),escudo_visitante:(p.escudo_visitante||"").trim(),resultado:p.resultado||"Pendiente"}));
+      const cleanMatches=partidos.map(p=>({manual:true,local:p.local.trim(),visitante:p.visitante.trim(),escudo_local:(p.escudo_local||"").trim(),escudo_visitante:(p.escudo_visitante||"").trim(),cuota:(p.cuota||"").trim(),resultado:p.resultado||"Pendiente"}));
       const row={titulo:"CHAMPIONS_CALENDAR_V1",descripcion:JSON.stringify({version:1,partidos:cleanMatches}),fecha_pick:fecha,imagen_url:null,paquete:"Champions League Completa",activo:true};
       const inserted=await fetch(SUPABASE_URL+"/rest/v1/picks",{method:"POST",headers:{...headers,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify([row])});
       if(!inserted.ok)return res.status(502).json({error:"No se pudieron guardar los partidos de Champions."});
