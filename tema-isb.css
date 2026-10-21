@@ -24,3 +24,45 @@ body:has(.sports-strip)>main:not(.shell):not(.contenedor){background:#030706!imp
 .packages-section .package-card{background:radial-gradient(ellipse at 86% 12%,#0b56352c,transparent 70%),linear-gradient(145deg,#0a100c,#070d09 62%,#040705)!important;box-shadow:0 0 12px #000a,inset 0 0 18px #25ee7308}
 .sports-strip div{box-shadow:0 0 12px #000a,inset 0 0 18px #25ee7308}
 .resultados-vista .resultados-tabla{background:#070c09!important}.resultados-vista .resultados-tabla thead th{background:linear-gradient(145deg,#0a100c,#070d09)!important}.resultados-vista .resultados-tabla tbody th,.resultados-vista .resultados-tabla tbody td{background:#080d09!important}
+
+
+/* Animaciones sutiles ISB */
+@keyframes isb-enter {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes isb-glow {
+  0%, 100% { box-shadow: 0 0 0 rgba(242,201,76,0); }
+  50% { box-shadow: 0 0 22px rgba(242,201,76,.12); }
+}
+.hero-content, .editor-layout, main > .section, main > section, .client-content, .results-view {
+  animation: isb-enter .7s cubic-bezier(.2,.7,.2,1) both;
+}
+.package-card, .sports-strip div, .step, .contact-card, .result-card, .editor-section, .entry-card, .panel, .info-card, .faq {
+  animation: isb-enter .55s cubic-bezier(.2,.7,.2,1) both;
+}
+.package-card:nth-child(2), .sports-strip div:nth-child(2), .step:nth-child(2), .contact-card:nth-child(2), .entry-card:nth-child(2) { animation-delay: .08s; }
+.package-card:nth-child(3), .sports-strip div:nth-child(3), .step:nth-child(3), .contact-card:nth-child(3), .entry-card:nth-child(3) { animation-delay: .16s; }
+.package-card:nth-child(4), .sports-strip div:nth-child(4), .step:nth-child(4), .entry-card:nth-child(4) { animation-delay: .24s; }
+.package-card, .sports-strip div, .step, .contact-card, .result-card, .card, .panel, .buy-btn, .comprar, .button, .boton, .btn, button {
+  transition: transform .22s ease, box-shadow .22s ease, filter .22s ease;
+}
+.package-card:hover, .sports-strip div:hover, .step:hover, .contact-card:hover, .result-card:hover, .card:hover, .panel:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0,0,0,.28), 0 0 18px rgba(242,201,76,.1);
+}
+.buy-btn:hover, .comprar:hover, .button:hover, .boton:hover, .btn:hover, button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+.buy-btn:active, .comprar:active, .button:active, .boton:active, .btn:active, button:active:not(:disabled) {
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
