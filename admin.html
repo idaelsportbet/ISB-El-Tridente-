@@ -174,13 +174,13 @@
     .champions-admin-day.admin-resultado-noenviado{border-color:#b9c2bd;background:linear-gradient(145deg,#3a4540,#161d19);color:#fff}
     .champions-admin-result-box{max-width:760px;padding:16px;border:1px solid #80672f;border-radius:10px;background:#030906}
     .champions-admin-result-box label{display:grid;gap:8px;color:#e9c565;font-weight:800}
-    .champions-admin-result-box select{padding:12px;background:#080b09;color:#fff;border:1px solid #715c2b;border-radius:7px;font-size:16px}
+    .champions-admin-result-box select,.champions-admin-result-box input{padding:12px;background:#080b09;color:#fff;border:1px solid #715c2b;border-radius:7px;font-size:16px}.champions-admin-day.has-odds{border-color:#987c3d;background:#090e0b;color:#ffe275}
     @media(max-width:600px){.champions-admin-day,.champions-admin-empty{min-height:54px}.champions-admin-weekdays span{font-size:8px}}
   </style>
-  <header class="editor-heading"><div><h1>CALENDARIO CHAMPIONS</h1><p>MARCA EL RESULTADO DE CADA DÍA</p></div></header>
+  <header class="editor-heading"><div><h1>CALENDARIO CHAMPIONS</h1><p>ESCRIBE LA CUOTA Y MARCA EL RESULTADO DEL DÍA</p></div></header>
   <form id="championsAdminForm" class="editor-fields">
     <section class="editor-section"><h2>ALMANAQUE</h2><input id="championsAdminDate" type="hidden"><div id="championsAdminCalendar" class="champions-admin-calendar" aria-label="Almanaque mensual Champions"></div></section>
-    <section class="editor-section champions-admin-result-box"><h2>RESULTADO DEL DÍA</h2><p id="championsAdminSelectedDate"></p><label>Selecciona el resultado<select id="championsAdminResult"><option value="">Sin resultado</option><option value="Ganado">Ganado</option><option value="Perdido">Perdido</option><option value="No enviado">No enviado</option></select></label></section>
+    <section class="editor-section champions-admin-result-box"><h2>CUOTA Y RESULTADO DEL DÍA</h2><p id="championsAdminSelectedDate"></p><label>Cuota<input id="championsAdminOdds" type="text" maxlength="40" placeholder="+110" inputmode="text" autocomplete="off"></label><label>Resultado<select id="championsAdminResult"><option value="">Sin resultado</option><option value="Ganado">Ganado</option><option value="Perdido">Perdido</option><option value="No enviado">No enviado</option></select></label></section>
     <button class="publish-button" type="submit">GUARDAR RESULTADO</button>
     <p id="championsAdminStatus" role="status" aria-live="polite"></p>
   </form>
@@ -544,7 +544,7 @@ form.addEventListener("submit", async event => {
     };
   } catch(error) {estado.textContent=error.message;button.disabled=false;}
 });
-</script><script src="/champions-admin.js?v=20261020-calendar-day-status"></script><script src="/admin-access.js?v=20261020-courtesy-access"></script>
+</script><script src="/champions-admin.js?v=20261020-calendar-quota"></script><script src="/admin-access.js?v=20261020-courtesy-access"></script>
 </body></html>
 
 
