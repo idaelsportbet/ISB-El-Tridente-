@@ -9,6 +9,7 @@
   const status=document.getElementById("championsAdminStatus");
   const calendarRoot=document.getElementById("championsAdminCalendar");
   if(!panel||!tab||!form||!date||!result||!cuota||!calendarRoot)return;
+  const escapeHtml=v=>String(v??"").replace(/[&<>"\']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","\'":"&#39;"}[c]));
   const allowed=["Ganado","Perdido","No enviado"];
   let diasGuardados=[],mesActivo=null;
   function registro(fecha){return diasGuardados.find(d=>d.fecha===fecha)||{};}
