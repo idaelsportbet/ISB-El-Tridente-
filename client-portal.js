@@ -93,7 +93,7 @@ function iniciarActualizacionChampions(root){
 }
 function renderChampionsCalendar(root,dias,error=false,picks=[]){
   const allowed=["Ganado","Perdido","No enviado"];
-  const porFecha=new Map((dias||[]).map(d=>[String(d.fecha||"").slice(0,10),allowed.includes(d.resultado)?d.resultado:""]).filter(([fecha])=>/^\d{4}-\d{2}-\d{2}$/.test(fecha)));
+  const porFecha=new Map((dias||[]).map(d=>[String(d.fecha||"").slice(0,10),{resultado:allowed.includes(d.resultado)?d.resultado:"",cuota:String(d.cuota||"")}]).filter(([fecha])=>/^\d{4}-\d{2}-\d{2}$/.test(fecha)));
   const hoy=fechaCentral(),inicio=new Date(2026,6,1),fin=new Date(2027,11,1);let mes=new Date(Number(hoy.slice(0,4)),Number(hoy.slice(5,7))-1,1);
   if(mes<inicio)mes=new Date(inicio);if(mes>fin)mes=new Date(fin);
   let seleccionado=hoy;
@@ -101,7 +101,7 @@ function renderChampionsCalendar(root,dias,error=false,picks=[]){
   function dibujar(){
     const year=mes.getFullYear(),month=mes.getMonth(),nombreMes=new Intl.DateTimeFormat("es-US",{month:"long",year:"numeric"}).format(mes).toUpperCase();
     const primer=(new Date(year,month,1).getDay()+6)%7,diasMes=new Date(year,month+1,0).getDate();let celdas=Array(primer).fill('<span class="champions-empty-day"></span>');
-    for(let d=1;d<=diasMes;d++){const key=llave(year,month,d),r=porFecha.get(key)||"",slug=r.toLowerCase().replace(/[^a-z]/g,"");celdas.push('<button type="button" class="champions-day'+(r?" has-games resultado-"+slug:"")+(key===seleccionado?" selected":"")+'" data-champions-date="'+key+'"><span>'+d+'</span>'+(r?'<em>'+escapar(r.toUpperCase())+'</em>':"")+'</button>');}
+    for(let d=1;d<=diasMes;d++){const key=llave(year,month,d),item=porFecha.get(key)||{},r=item.resultado||"",odds=item.cuota||"",slug=r.toLowerCase().replace(/[^a-z]/g,"");celdas.push('<button type="button" class="champions-day'+(r?" has-games resultado-"+slug:"")+(odds?" has-odds":"")+(key===seleccionado?" selected":"")+'" data-champions-date="'+key+'"><span>'+d+'</span>'+(odds?'<em>🔥 '+escapar(odds)+'</em>':"")+(r?'<em>'+escapar(r.toUpperCase())+'</em>':"")+'</button>');}
     root.innerHTML='<section class="champions-calendar-section"><h2 class="champions-calendar-title">CALENDARIO DE PARTIDOS</h2><div class="champions-monthbar"><button type="button" data-month="-1" aria-label="Mes anterior">‹</button><strong>'+nombreMes+'</strong><button type="button" data-month="1" aria-label="Mes siguiente">›</button></div><div class="champions-weekdays"><span>LUN</span><span>MAR</span><span>MIÉ</span><span>JUE</span><span>VIE</span><span>SÁB</span><span>DOM</span></div><div class="champions-calendar-grid">'+celdas.join("")+'</div></section>'+(error?'<p class="champions-no-games">No se pudo cargar el calendario. Actualiza la página para volver a intentarlo.</p>':'');
     root.querySelectorAll("[data-month]").forEach(button=>button.addEventListener("click",()=>{const next=new Date(year,month+Number(button.dataset.month),1);if(next>=inicio&&next<=fin){mes=next;dibujar();}}));
     root.querySelectorAll("[data-champions-date]").forEach(button=>button.addEventListener("click",()=>{seleccionado=button.dataset.championsDate;dibujar();}));
