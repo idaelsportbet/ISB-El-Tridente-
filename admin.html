@@ -160,46 +160,28 @@
   </section>
   <section id="championsAdminPanel" class="editor-layout" hidden>
   <style>
-    .champions-crest-preview{min-height:64px;display:flex;align-items:center;justify-content:center;border:1px dashed #8d713c;border-radius:8px;background:rgba(0,0,0,.35);padding:5px}
-    .champions-crest-preview img{width:54px;height:54px;object-fit:contain}
-    .champions-crest-preview-empty,.champions-crest-preview-error{color:#aaa18c;font-size:11px;text-align:center}
-    .champions-crest-preview-error{color:#ffd27a}
-    .champions-admin-match-grid input[type=file]{font-size:11px;min-height:42px}
-    .champions-admin-match{margin:10px 0;padding:12px;border:1px solid #715c2b;border-radius:10px;background:rgba(2,7,5,.9)}
-    .champions-admin-match-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-    .champions-admin-match-grid label{display:grid;gap:5px;color:#e9c565;font-size:12px}
-    .champions-admin-match-grid input{min-width:0;padding:10px;background:#080b09;color:#fff;border:1px solid #715c2b;border-radius:7px}
-    .champions-admin-match-grid select{min-width:0;padding:10px;background:#080b09;color:#fff;border:1px solid #715c2b;border-radius:7px}
-    .champions-admin-match-grid [data-resultado] option{background:#080b09;color:#fff}.champions-remove-match{margin-top:8px!important;padding:8px 12px!important;font-size:12px!important}.champions-admin-match-grid [data-local],.champions-admin-match-grid [data-visitante]{font-size:16px}
     .champions-admin-calendar{max-width:760px;margin:14px 0;padding:12px;border:1px solid #80672f;border-radius:12px;background:#030906}
     .champions-admin-monthbar{display:flex;justify-content:center;align-items:center;gap:16px;margin-bottom:10px;color:#f2d171}
     .champions-admin-monthbar button{width:38px;height:38px;border:1px solid #9d813f;border-radius:50%;background:#07120c;color:#f2cf60;font-size:24px;cursor:pointer}
     .champions-admin-weekdays,.champions-admin-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
     .champions-admin-weekdays span{text-align:center;padding:7px 1px;color:#c7b375;font-size:10px;font-weight:800}
     .champions-admin-empty{min-height:62px}
-    .champions-admin-day{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;min-height:80px;padding:4px 2px;border:1px solid #ffffff18;border-radius:8px;background:#070c09;color:#f1f0e9;font-size:15px;font-weight:800;cursor:pointer}
-    .champions-admin-day.has-games{border-color:#987c3d;background:linear-gradient(145deg,#063d26,#03170e);color:#ffe27b}
+    .champions-admin-day{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;min-height:62px;padding:5px 2px;border:1px solid #ffffff18;border-radius:8px;background:#070c09;color:#f1f0e9;font-size:15px;font-weight:800;cursor:pointer}
     .champions-admin-day.selected{outline:2px solid #f2cf60;outline-offset:1px}
-    .champions-admin-day small{font-size:9px;color:#70e9a7}
-    .champions-admin-day em{font-style:normal;font-size:8px;line-height:1.1;font-weight:900}
-    .champions-admin-day-entry{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:2px 3px;border-radius:4px;font-size:8px;line-height:1.1}
-    .champions-admin-day-entry.admin-entry-ganado{color:#bdffdb;background:#008b47;box-shadow:0 0 7px #00ff8655}
-    .champions-admin-day-entry.admin-entry-perdido{color:#ffe1e1;background:#a92727}
-    .champions-admin-day-entry.admin-entry-noenviado{color:#f0f2f0;background:#555d59}
+    .champions-admin-day em{font-style:normal;font-size:8px;line-height:1.1;font-weight:900;letter-spacing:.04em}
     .champions-admin-day.admin-resultado-ganado{border-color:#48ff9d;box-shadow:0 0 10px #00ff7a66;background:linear-gradient(145deg,#00a94f,#00612e);color:#fff}
     .champions-admin-day.admin-resultado-perdido{border-color:#ff7777;background:linear-gradient(145deg,#8c2727,#3a1111);color:#fff}
-    .champions-admin-day.admin-resultado-mixto{border-color:#e6c356;background:linear-gradient(145deg,#594716,#211a0b);color:#fff}
     .champions-admin-day.admin-resultado-noenviado{border-color:#b9c2bd;background:linear-gradient(145deg,#3a4540,#161d19);color:#fff}
-    .champions-admin-day em span:first-child{color:#6affad}.champions-admin-day em span+span{color:#ff8989}
-    .champions-admin-crest-preview{width:40px;height:40px;object-fit:contain;display:block}
-    @media(max-width:600px){.champions-admin-match-grid{grid-template-columns:1fr}.champions-admin-day,.champions-admin-empty{min-height:66px}.champions-admin-weekdays span{font-size:8px}.champions-admin-day em{font-size:7px}}
+    .champions-admin-result-box{max-width:760px;padding:16px;border:1px solid #80672f;border-radius:10px;background:#030906}
+    .champions-admin-result-box label{display:grid;gap:8px;color:#e9c565;font-weight:800}
+    .champions-admin-result-box select{padding:12px;background:#080b09;color:#fff;border:1px solid #715c2b;border-radius:7px;font-size:16px}
+    @media(max-width:600px){.champions-admin-day,.champions-admin-empty{min-height:54px}.champions-admin-weekdays span{font-size:8px}}
   </style>
-  <header class="editor-heading"><div><h1>CALENDARIO CHAMPIONS</h1><p>PUBLICA LOS PARTIDOS POR FECHA PARA CHAMPIONS LEAGUE COMPLETA</p></div></header>
+  <header class="editor-heading"><div><h1>CALENDARIO CHAMPIONS</h1><p>MARCA EL RESULTADO DE CADA DÍA</p></div></header>
   <form id="championsAdminForm" class="editor-fields">
-    <section class="editor-section"><h2>FECHA DE LA JORNADA</h2><input id="championsAdminDate" type="hidden"><div id="championsAdminCalendar" class="champions-admin-calendar" aria-label="Calendario mensual de partidos de Champions"></div><small>Selecciona una fecha, agrega manualmente los partidos que quieras y guarda. El cliente verá solo los enfrentamientos que publiques.</small></section>
-    <section class="editor-section"><h2>ESCUDOS Y RESULTADOS</h2><small>Añade cada partido que quieras publicar con sus equipos y escudos. No se muestran partidos precargados ni cuotas.</small><div id="championsAdminMatches"></div><button class="add-entry champions-calendar-control" id="championsAdminAddMatch" type="button">+ AÑADIR PARTIDO</button></section>
-    <button class="publish-button" type="submit">GUARDAR PARTIDOS DE ESTA FECHA</button>
-    <button class="add-entry" id="championsAdminDeleteDate" type="button">QUITAR ESTA FECHA</button>
+    <section class="editor-section"><h2>ALMANAQUE</h2><input id="championsAdminDate" type="hidden"><div id="championsAdminCalendar" class="champions-admin-calendar" aria-label="Almanaque mensual Champions"></div></section>
+    <section class="editor-section champions-admin-result-box"><h2>RESULTADO DEL DÍA</h2><p id="championsAdminSelectedDate"></p><label>Selecciona el resultado<select id="championsAdminResult"><option value="">Sin resultado</option><option value="Ganado">Ganado</option><option value="Perdido">Perdido</option><option value="No enviado">No enviado</option></select></label></section>
+    <button class="publish-button" type="submit">GUARDAR RESULTADO</button>
     <p id="championsAdminStatus" role="status" aria-live="polite"></p>
   </form>
 </section>
@@ -562,7 +544,7 @@ form.addEventListener("submit", async event => {
     };
   } catch(error) {estado.textContent=error.message;button.disabled=false;}
 });
-</script><script src="/champions-admin.js?v=20261020-crest-fix"></script><script src="/admin-access.js?v=20261020-courtesy-access"></script>
+</script><script src="/champions-admin.js?v=20261020-calendar-day-status"></script><script src="/admin-access.js?v=20261020-courtesy-access"></script>
 </body></html>
 
 
