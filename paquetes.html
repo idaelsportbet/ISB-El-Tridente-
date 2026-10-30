@@ -3268,7 +3268,9 @@ async function protegerPagina(){
     return;
   }
 
-  await mostrarPaquetesActivos(data.session.user.id);\r\n  await aplicarVisibilidadFinDeSemana();\r\n}
+  await mostrarPaquetesActivos(data.session.user.id);
+  await aplicarVisibilidadFinDeSemana();
+}
 
 async function mostrarPaquetesActivos(userId){
   try {
@@ -3283,7 +3285,8 @@ async function mostrarPaquetesActivos(userId){
     const activos = new Set((compras || []).map(compra => compra.paquete));
     document.querySelectorAll(".package-card[data-paquete]").forEach(card => {
       const nombre = card.dataset.paquete;
-      if(!activos.has(nombre)) return;\r\n      card.dataset.comprado = "true";
+      if(!activos.has(nombre)) return;
+      card.dataset.comprado = "true";
 
       card.querySelector(".price-row")?.remove();
       card.querySelector(".buy-btn")?.remove();
@@ -3302,7 +3305,8 @@ const descuentoBase = {
   "Exclusiva Diaria": 5000,
   "Exclusiva Semanal": 29900,
   "Pack Mensual": 15000,
-  "Champions League Completa": 20000,\r\n  "Paquete Fin de Semana": 25000,
+  "Champions League Completa": 20000,
+  "Paquete Fin de Semana": 25000,
   "Reto de 10 días para $10K": 5000
 };
 let descuentoActivo = false;
