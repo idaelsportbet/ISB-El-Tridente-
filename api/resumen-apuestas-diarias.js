@@ -1,7 +1,7 @@
 const SUPABASE_URL="https://nfvkmxnprchvkufwvhpr.supabase.co";
 const PAQUETES=["Premium","Exclusiva","Económica","Champions League Completa"];
 const ESTADOS=["ganado","perdido","pendiente","no_enviado"];
-const fechaValida=v=>typeof v==="string"&&/^\\d{4}-\\d{2}-\\d{2}$/.test(v)&&Number.isFinite(Date.parse(v))&&new Date(v).toISOString().slice(0,10)===v;
+const fechaValida=v=>typeof v==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(v)&&Number.isFinite(Date.parse(v))&&new Date(v).toISOString().slice(0,10)===v;
 function calcular(f){
   const estado=f.estado;
   if(estado==="no_enviado")return {cuota:"",monto_apostado:0,ganancia_neta:0,retorno_total:0};
@@ -10,7 +10,7 @@ function calcular(f){
   const raw=String(f.cuota||"").trim().replace(/[−–]/g,"-");
   let cuota=0;
   if(estado==="ganado"||estado==="perdido"||estado==="pendiente"){
-    if(!/^[+-]?\\d{2,5}$/.test(raw))throw new Error("Escribe una cuota americana, por ejemplo +110 o -110.");
+    if(!/^[+-]?\d{2,5}$/.test(raw))throw new Error("Escribe una cuota americana, por ejemplo +110 o -110.");
     cuota=Number(raw);
     if(!cuota||Math.abs(cuota)<100)throw new Error("La cuota debe ser +100 o superior, o -100 o inferior.");
   }
@@ -24,7 +24,7 @@ export default async function handler(req,res){
   if(!["GET","POST"].includes(req.method))return res.status(405).json({error:"Método no permitido."});
   const secret=process.env.SUPABASE_SECRET_KEY;
   if(!secret)return res.status(503).json({error:"Falta configurar la conexión de resultados."});
-  if(!/^Bearer \\S+$/.test(req.headers.authorization||""))return res.status(401).json({error:"Inicia sesión para ver el resumen."});
+  if(!/^Bearer \S+$/.test(req.headers.authorization||""))return res.status(401).json({error:"Inicia sesión para ver el resumen."});
   try{
     const auth=await fetch(SUPABASE_URL+"/auth/v1/user",{headers:{apikey:secret,Authorization:req.headers.authorization},signal:AbortSignal.timeout(8000)});
     if(!auth.ok)return res.status(401).json({error:"Tu sesión venció. Inicia sesión de nuevo."});
