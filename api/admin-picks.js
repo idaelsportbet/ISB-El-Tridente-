@@ -1,5 +1,5 @@
 const SUPABASE_URL = "https://nfvkmxnprchvkufwvhpr.supabase.co";
-const PAQUETES = ["Premium Diario", "Premium Semanal", "Exclusiva Diaria", "Exclusiva Semanal", "Pack Mensual", "Económica", "Champions League Completa", "Reto de 10 días para $10K"];
+const PAQUETES = ["Premium Diario", "Premium Semanal", "Exclusiva Diaria", "Exclusiva Semanal", "Pack Mensual", "Económica", "Champions League Completa", "Reto de 10 días para $10K", "Paquete Fin de Semana"];
 
 async function notificarPicks(filas, secret) {
   const key=process.env.RESEND_API_KEY, remitente=process.env.PICK_EMAIL_FROM;
@@ -212,7 +212,7 @@ export default async function handler(req, res) {
       if (!resultado.ok) return res.status(502).json({ error: "No se pudo activar el paquete de prueba." });
       return res.status(201).json({ paquetes: faltantes, prueba: true, duracion: accesoFijo ? "sin vencimiento" : "1 hora" });
     }
-    const { titulo, descripcion, partidos, jugadas, cuota, instagram = "", analisis = "", fecha_pick, imagen_url = "", juego_url = "", paquetes } = req.body || {};
+    const { titulo, descripcion, partidos, jugadas, cuota, instagram = "", analisis = "", fecha_pick, imagen_url = "", juego_url = "", paquetes, weekend_tiers } = req.body || {};
     const estructurado = Array.isArray(partidos) || Array.isArray(jugadas) || cuota !== undefined;
     const deportes = { "Fútbol":"⚽", MLB:"⚾", NBA:"🏀", NHL:"🏒", NFL:"🏈", NCAAF:"🏈", UFC:"🥊" };
     const partidosValidos = Array.isArray(partidos) && partidos.length > 0 && partidos.length <= 12 && partidos.every(p => p && typeof p.deporte === "string" && Object.hasOwn(deportes, p.deporte) && typeof p.enfrentamiento === "string" && p.enfrentamiento.trim().length > 2 && p.enfrentamiento.trim().length <= 240);
@@ -225,8 +225,22 @@ export default async function handler(req, res) {
         typeof fecha_pick !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(fecha_pick) ||
         !Number.isFinite(Date.parse(`${fecha_pick}T00:00:00Z`)) ||
         new Date(`${fecha_pick}T00:00:00Z`).toISOString().slice(0,10) !== fecha_pick ||
-        !Array.isArray(paquetes) || !paquetes.length || paquetes.some(p => !PAQUETES.includes(p) && p !== "Exclusiva Diaria y Semanal")) {
+        !Array.isArray(paquetes) || !paquetes.length || paquetes.some(p => !PAQUETES.includes(p) && p !== "Exclusiva Diaria y Semanal") || (weekend_tiers !== undefined && (!Array.isArray(weekend_tiers) || weekend_tiers.some(t => !["Premium","Exclusiva"].includes(t))))) {
       return res.status(400).json({ error: "Revisa el título, contenido, fecha y paquetes." });
+    }
+    const weekendTiers = [...new Set(Array.isArray(weekend_tiers) ? weekend_tiers : [])];
+    const includesWeekend = paquetes.includes("Paquete Fin de Semana");
+    if ((includesWeekend && weekendTiers.length === 0) || (!includesWeekend && weekendTiers.length > 0)) {
+      return res.status(400).json({ error: "Elige Premium, Exclusiva o ambas para el paquete de fin de semana." });
+    }
+    if (includesWeekend) {
+      const settingQuery = new URLSearchParams({ select: "value", key: "eq.paquete_fin_de_semana", limit: "1" });
+      const settingResponse = await fetch(`${SUPABASE_URL}/rest/v1/isb_site_settings?${settingQuery}`, {
+        headers: { apikey: secret, Authorization: `Bearer ${secret}` }
+      });
+      if (!settingResponse.ok) return res.status(502).json({ error: "No se pudo comprobar si el paquete de fin de semana está activo." });
+      const settings = await settingResponse.json();
+      if (settings[0]?.value?.active !== true) return res.status(409).json({ error: "Activa primero el paquete de fin de semana en el panel." });
     }
     let imagenValida = typeof imagen_url === "string" && imagen_url.length <= 2048;
     if (imagenValida && imagen_url) {
@@ -254,7 +268,7 @@ export default async function handler(req, res) {
     // Keep the structured pick in the existing text column; no database migration is required.
     const contenido = descripcionPick + (juego_url ? `\n\nVer juego: ${new URL(juego_url).href}` : "");
     if (contenido.length > 10000) return res.status(400).json({error:"Acorta el análisis para incluir el enlace del juego."});
-    const paquetesUnicos = [...new Set(paquetes.flatMap(paquete => paquete === "Exclusiva Diaria y Semanal" ? ["Exclusiva Diaria", "Exclusiva Semanal"] : [paquete]))];
+    const paquetesUnicos = [...new Set(paquetes.flatMap(paquete => paquete === "Exclusiva Diaria y Semanal" ? ["Exclusiva Diaria", "Exclusiva Semanal"] : paquete === "Paquete Fin de Semana" ? [paquete, ...weekendTiers.map(tipo => tipo === "Premium" ? "Premium Semanal" : "Exclusiva Semanal")] : [paquete]))];
     const existentesQuery = new URLSearchParams({
       select: "paquete,titulo",
       paquete: `in.(${paquetesUnicos.join(",")})`,
