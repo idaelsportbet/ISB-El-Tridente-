@@ -23,7 +23,10 @@ export default async function handler(req, res) {
   "Económica": "price_1UDCuyDLF0zUmGGzmkJlRLw8"
 };
 
-    const paqueteChampions = paquete === "Champions League Completa";\r\n    const paqueteReto = paquete === "Reto de 10 días para $10K";\r\n    const paqueteFinSemana = paquete === "Paquete Fin de Semana";\r\n    const montoManualCentavos = paqueteChampions ? 20000 : paqueteReto ? 5000 : paqueteFinSemana ? 25000 : null;
+    const paqueteChampions = paquete === "Champions League Completa";
+    const paqueteReto = paquete === "Reto de 10 días para $10K";
+    const paqueteFinSemana = paquete === "Paquete Fin de Semana";
+    const montoManualCentavos = paqueteChampions ? 20000 : paqueteReto ? 5000 : paqueteFinSemana ? 25000 : null;
     const priceId = precios[paquete];
 
     if (!priceId && montoManualCentavos === null) {
