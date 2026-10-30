@@ -3347,7 +3347,7 @@ async function cargarDescuento(){
 async function aplicarVisibilidadFinDeSemana(){
   const weekendCard=document.querySelector('.package-card[data-paquete="Paquete Fin de Semana"]');
   let activo=false;
-  try{const response=await fetch("/api/weekend-package",{cache:"no-store"});if(response.ok)activo=(await response.json()).active===true;}catch{}
+  try{const response=await fetch("/api/package-discount?feature=weekend",{cache:"no-store"});if(response.ok)activo=(await response.json()).active===true;}catch{}
   document.querySelectorAll(".package-card[data-paquete]").forEach(card=>{
     if(activo)card.hidden=card!==weekendCard;
     else if(card===weekendCard)card.hidden=true;
