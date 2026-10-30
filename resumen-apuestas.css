@@ -18,7 +18,9 @@
 .resumen-estado-ganado{color:#42e493!important}.resumen-estado-perdido{color:#ff7777!important}.resumen-estado-no_enviado{color:#aeb8b1!important}
 .resumen-guardar{margin-top:14px}
 .resumen-estado{min-height:1.5em;color:#d5c27d;font-size:13px}
-.resumen-tabla-cliente td,.resumen-tabla-cliente th{padding:9px 8px}\n.resumen-tabla-cliente tbody td{font-size:12px}\n.resumen-tabla-cliente .resumen-estado-chip{padding:5px 7px;font-size:10px}
+.resumen-tabla-cliente td,.resumen-tabla-cliente th{padding:9px 8px}
+.resumen-tabla-cliente tbody td{font-size:12px}
+.resumen-tabla-cliente .resumen-estado-chip{padding:5px 7px;font-size:10px}
 .resumen-tabla-cliente .resumen-estado-chip{display:inline-block;padding:6px 10px;border-radius:16px;font-size:11px;font-weight:800;letter-spacing:.7px;background:#1a201c;color:#b9c1bb}
 .resumen-tabla-cliente .resumen-estado-chip.ganado{background:#0d3c28;color:#42e493;border:1px solid #29bc77}
 .resumen-tabla-cliente .resumen-estado-chip.perdido{background:#481b1b;color:#ff8585;border:1px solid #a64242}
