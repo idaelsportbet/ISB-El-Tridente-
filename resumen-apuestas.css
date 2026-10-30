@@ -1,0 +1,27 @@
+.resumen-diario-admin,.resumen-diario-cliente{margin:18px 0;padding:18px;border:1px solid #8c703388;border-radius:14px;background:linear-gradient(145deg,#070d09,#030605);color:#f2f0e8}
+.resumen-diario-admin h3,.resumen-diario-cliente h3{margin:0 0 8px;color:#f0ce63;letter-spacing:1px}
+.resumen-dia-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:16px}
+.resumen-dia-head p{margin:0;color:#aeb8b1;font-size:13px}
+.resumen-dia-head label{display:grid;gap:5px;color:#e9c565;font-size:12px;font-weight:700}
+.resumen-dia-head input{min-width:170px;padding:9px!important}
+.resumen-totales{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+.resumen-total-card{padding:14px;border:1px solid #8b7035;border-radius:12px;background:#0a1710}
+.resumen-total-card span{display:block;color:#aeb8b1;font-size:11px;font-weight:800;letter-spacing:1px}
+.resumen-total-card strong{display:block;margin-top:8px;color:#ffedac;font-size:26px}
+.resumen-total-card.net strong{color:#42e493}
+.resumen-tabla-wrap{overflow-x:auto;border:1px solid #333f36;border-radius:10px}
+.resumen-tabla{width:100%;min-width:820px;border-collapse:collapse}
+.resumen-tabla th,.resumen-tabla td{padding:9px 10px;border-bottom:1px solid #27342b;text-align:left}
+.resumen-tabla thead th{color:#c8b46f;font-size:11px;letter-spacing:.8px}
+.resumen-tabla tbody th{min-width:210px;color:#f0d477;font-size:13px}
+.resumen-tabla input,.resumen-tabla select{width:100%;min-width:94px;padding:9px!important;background:#080d0a!important;border:1px solid #6f5e33!important;color:#fff!important;font-size:14px!important}
+.resumen-estado-ganado{color:#42e493!important}.resumen-estado-perdido{color:#ff7777!important}.resumen-estado-no_enviado{color:#aeb8b1!important}
+.resumen-guardar{margin-top:14px}
+.resumen-estado{min-height:1.5em;color:#d5c27d;font-size:13px}
+.resumen-tabla-cliente td,.resumen-tabla-cliente th{padding:14px 12px}
+.resumen-tabla-cliente .resumen-estado-chip{display:inline-block;padding:6px 10px;border-radius:16px;font-size:11px;font-weight:800;letter-spacing:.7px;background:#1a201c;color:#b9c1bb}
+.resumen-tabla-cliente .resumen-estado-chip.ganado{background:#0d3c28;color:#42e493;border:1px solid #29bc77}
+.resumen-tabla-cliente .resumen-estado-chip.perdido{background:#481b1b;color:#ff8585;border:1px solid #a64242}
+.resumen-tabla-cliente .resumen-estado-chip.pendiente{background:#3b2c10;color:#f3d36b;border:1px solid #997a32}
+@media(max-width:700px){.resumen-diario-admin,.resumen-diario-cliente{padding:12px}.resumen-dia-head{align-items:stretch;flex-direction:column}.resumen-totales{gap:7px}.resumen-total-card{padding:10px}.resumen-total-card span{font-size:9px}.resumen-total-card strong{font-size:20px}.resumen-tabla-wrap{margin-right:-2px}}
+@media(prefers-reduced-motion:reduce){.resumen-diario-admin *,.resumen-diario-cliente *{scroll-behavior:auto!important;transition:none!important}}
