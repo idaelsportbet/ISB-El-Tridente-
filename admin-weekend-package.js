@@ -5,7 +5,7 @@
  async function request(method,active){
   const {data:{session}}=await client.auth.getSession();
   if(!session)throw new Error("Inicia sesión con la cuenta de administrador.");
-  const response=await fetch("/api/weekend-package?vista=admin",{method,headers:{Authorization:"Bearer "+session.access_token,"Content-Type":"application/json"},...(method==="POST"?{body:JSON.stringify({active})}:{})});
+  const response=await fetch("/api/package-discount?feature=weekend",{method,headers:{Authorization:"Bearer "+session.access_token,"Content-Type":"application/json"},...(method==="POST"?{body:JSON.stringify({active})}:{})});
   const data=await response.json();if(!response.ok)throw new Error(data.error||"No se pudo actualizar el paquete.");return data;
  }
  function pintar(active){button.textContent=active?"DESACTIVAR PAQUETE DE FIN DE SEMANA":"ACTIVAR PAQUETE DE FIN DE SEMANA";button.setAttribute("aria-pressed",String(active));button.classList.toggle("is-active",active);status.textContent=active?"Activo: aparece como la única opción de compra en la página.":"Inactivo: no aparece a los clientes.";}
