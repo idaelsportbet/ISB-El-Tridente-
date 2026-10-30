@@ -23,15 +23,31 @@ export default async function handler(req, res) {
   "Económica": "price_1UDCuyDLF0zUmGGzmkJlRLw8"
 };
 
-    const paqueteChampions = paquete === "Champions League Completa";
-    const paqueteReto = paquete === "Reto de 10 días para $10K";
-    const montoManualCentavos = paqueteChampions ? 20000 : paqueteReto ? 5000 : null;
+    const paqueteChampions = paquete === "Champions League Completa";\r\n    const paqueteReto = paquete === "Reto de 10 días para $10K";\r\n    const paqueteFinSemana = paquete === "Paquete Fin de Semana";\r\n    const montoManualCentavos = paqueteChampions ? 20000 : paqueteReto ? 5000 : paqueteFinSemana ? 25000 : null;
     const priceId = precios[paquete];
 
     if (!priceId && montoManualCentavos === null) {
       return res.status(400).json({
         error: `Paquete no reconocido: ${paquete}`
       });
+    }
+
+    if (paqueteFinSemana) {
+      const secret = process.env.SUPABASE_SECRET_KEY;
+      if (!secret) return res.status(503).json({ error: "No se pudo comprobar si el paquete está abierto. Inténtalo más tarde." });
+      try {
+        const query = new URLSearchParams({ select: "value", key: "eq.paquete_fin_de_semana", limit: "1" });
+        const statusResponse = await fetch(
+          `https://nfvkmxnprchvkufwvhpr.supabase.co/rest/v1/isb_site_settings?${query}`,
+          { headers: { apikey: secret, Authorization: `Bearer ${secret}` }, signal: AbortSignal.timeout(4000) }
+        );
+        if (!statusResponse.ok) throw new Error("No se pudo consultar el estado del paquete.");
+        const rows = await statusResponse.json();
+        if (rows[0]?.value?.active !== true) return res.status(410).json({ error: "El paquete de fin de semana no está disponible para compra." });
+      } catch (error) {
+        console.error("No se pudo verificar el paquete de fin de semana.", error);
+        return res.status(503).json({ error: "No se pudo comprobar si el paquete está abierto. Inténtalo más tarde." });
+      }
     }
 
     if (paqueteReto) {
