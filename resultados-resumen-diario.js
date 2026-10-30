@@ -5,7 +5,7 @@
  const oldView=document.createElement("div");oldView.id="resultadosPeriodoContenido";
  const rest=Array.from(panel.children).filter(el=>el!==filters);
  panel.insertBefore(oldView,filters.nextSibling);rest.forEach(el=>oldView.append(el));
- const btn=document.createElement("button");btn.type="button";btn.className="filter";btn.dataset.resumenDiarioCliente="";btn.textContent="RESUMEN DIARIO";btn.setAttribute("aria-pressed","false");filters.append(btn);
+ const btn=document.createElement("button");btn.type="button";btn.className="filter";btn.dataset.resumenDiarioCliente="";btn.textContent="RESUMEN DIARIO";btn.setAttribute("aria-pressed","false");filters.prepend(btn);
  const daily=document.createElement("section");daily.className="resumen-diario-cliente";daily.hidden=true;
  daily.innerHTML='<div class="resumen-dia-head"><div><h3>RESUMEN DIARIO</h3><p>Ganancias y pérdidas registradas por paquete.</p></div><label for="resumenClienteFecha">Fecha<input id="resumenClienteFecha" type="date"></label></div><div class="resumen-totales"><div class="resumen-total-card"><span>TOTAL APOSTADO</span><strong data-total="apostado">$0.00</strong></div><div class="resumen-total-card net"><span>GANANCIA / PÉRDIDA</span><strong data-total="neto">$0.00</strong></div><div class="resumen-total-card"><span>RETORNO TOTAL</span><strong data-total="retorno">$0.00</strong></div></div><div class="resumen-tabla-wrap"><table class="resumen-tabla resumen-tabla-cliente"><thead><tr><th>PAQUETE</th><th>CUOTA</th><th>RESULTADO</th><th>APOSTADO</th><th>NETO</th><th>RETORNO</th></tr></thead><tbody></tbody></table></div><p class="resumen-estado" role="status" aria-live="polite"></p>';
  panel.append(daily);
