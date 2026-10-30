@@ -8,6 +8,28 @@ function calcularVencimiento(paquete) {
     return new Date("2027-06-06T05:00:00.000Z").toISOString();
   }
 
+  if (paquete === "Paquete Fin de Semana") {
+    const fechaCentral = new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/Chicago", year: "numeric", month: "2-digit", day: "2-digit"
+    }).formatToParts(ahora).reduce((out, parte) => {
+      if (parte.type !== "literal") out[parte.type] = Number(parte.value);
+      return out;
+    }, {});
+    const weekday = new Date(Date.UTC(fechaCentral.year, fechaCentral.month - 1, fechaCentral.day)).getUTCDay();
+    const diasAlDomingo = (7 - weekday) % 7;
+    const finDeSemana = new Date(Date.UTC(fechaCentral.year, fechaCentral.month - 1, fechaCentral.day + diasAlDomingo, 23, 59, 59));
+    const partesCentral = new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/Chicago", year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23"
+    }).formatToParts(finDeSemana).reduce((out, parte) => {
+      if (parte.type !== "literal") out[parte.type] = Number(parte.value);
+      return out;
+    }, {});
+    const centralComoUtc = Date.UTC(partesCentral.year, partesCentral.month - 1, partesCentral.day, partesCentral.hour, partesCentral.minute, partesCentral.second);
+    const offset = centralComoUtc - finDeSemana.getTime();
+    return new Date(finDeSemana.getTime() - offset + 999).toISOString();
+  }
+
   if (paquete === "Reto de 10 días para $10K") {
     // A one-time purchase keeps access until the administrator closes this challenge cycle.
     return new Date("2099-12-31T23:59:59.999Z").toISOString();
