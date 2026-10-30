@@ -101,6 +101,48 @@ function calcularVencimiento(paquete) {
   return vence.toISOString();
 }
 
+async function notificarCompraAdmin({nombre, correo, paquete, cantidadPagada, fechaCompra}) {
+  const key = process.env.RESEND_API_KEY;
+  const remitente = process.env.PICK_EMAIL_FROM;
+  if (!key || !remitente) return "sin_configurar";
+
+  const fechaLocal = new Intl.DateTimeFormat("es-US", {
+    timeZone: "America/Chicago",
+    dateStyle: "medium",
+    timeStyle: "short"
+  }).format(new Date(fechaCompra));
+  const monto = new Intl.NumberFormat("es-US", {
+    style: "currency",
+    currency: "USD"
+  }).format(cantidadPagada);
+
+  try {
+    const respuesta = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${key}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        from: remitente,
+        to: ["idaelvargasbusiness@gmail.com"],
+        reply_to: "idaelvargasbusiness@gmail.com",
+        subject: `Nueva compra en ISB: ${paquete}`,
+        text: `Se confirmó una compra en ISB EL TRIDENTE.\n\nCliente: ${nombre}\nCorreo: ${correo}\nPaquete: ${paquete}\nTotal pagado: ${monto}\nFecha: ${fechaLocal} (hora Central)\n\nLa compra quedó registrada en el panel de administración.`
+      }),
+      signal: AbortSignal.timeout(8000)
+    });
+    if (!respuesta.ok) {
+      console.error("No se pudo enviar el aviso de nueva compra al administrador.");
+      return "error";
+    }
+    return "enviado";
+  } catch {
+    console.error("Falló el aviso de nueva compra al administrador.");
+    return "error";
+  }
+}
+
 function obtenerBody(req) {
   if (!req.body) return null;
 
@@ -230,11 +272,13 @@ const userId =
     }
 
     const compra = await respuestaSupabase.json();
+    const avisoCompra = await notificarCompraAdmin({nombre, correo, paquete, cantidadPagada, fechaCompra});
 
     return res.status(200).json({
       received: true,
       live: true,
-      compra
+      compra,
+      aviso_compra: avisoCompra
     });
 
   } catch (error) {
