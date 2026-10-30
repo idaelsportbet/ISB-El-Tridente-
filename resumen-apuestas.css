@@ -11,17 +11,17 @@
 .resumen-total-card.net strong{color:#42e493}
 .resumen-tabla-wrap{overflow-x:auto;border:1px solid #333f36;border-radius:10px}
 .resumen-tabla{width:100%;min-width:820px;border-collapse:collapse}
-.resumen-tabla th,.resumen-tabla td{padding:9px 10px;border-bottom:1px solid #27342b;text-align:left}
+.resumen-tabla th,.resumen-tabla td{padding:7px 8px;border-bottom:1px solid #27342b;text-align:left}
 .resumen-tabla thead th{color:#c8b46f;font-size:11px;letter-spacing:.8px}
-.resumen-tabla tbody th{min-width:210px;color:#f0d477;font-size:13px}
-.resumen-tabla input,.resumen-tabla select{width:100%;min-width:94px;padding:9px!important;background:#080d0a!important;border:1px solid #6f5e33!important;color:#fff!important;font-size:14px!important}
+.resumen-tabla tbody th{min-width:190px;color:#f0d477;font-size:12px}
+.resumen-tabla input,.resumen-tabla select{width:100%;min-width:80px;padding:7px!important;background:#080d0a!important;border:1px solid #6f5e33!important;color:#fff!important;font-size:12px!important}
 .resumen-estado-ganado{color:#42e493!important}.resumen-estado-perdido{color:#ff7777!important}.resumen-estado-no_enviado{color:#aeb8b1!important}
 .resumen-guardar{margin-top:14px}
 .resumen-estado{min-height:1.5em;color:#d5c27d;font-size:13px}
-.resumen-tabla-cliente td,.resumen-tabla-cliente th{padding:14px 12px}
+.resumen-tabla-cliente td,.resumen-tabla-cliente th{padding:9px 8px}\n.resumen-tabla-cliente tbody td{font-size:12px}\n.resumen-tabla-cliente .resumen-estado-chip{padding:5px 7px;font-size:10px}
 .resumen-tabla-cliente .resumen-estado-chip{display:inline-block;padding:6px 10px;border-radius:16px;font-size:11px;font-weight:800;letter-spacing:.7px;background:#1a201c;color:#b9c1bb}
 .resumen-tabla-cliente .resumen-estado-chip.ganado{background:#0d3c28;color:#42e493;border:1px solid #29bc77}
 .resumen-tabla-cliente .resumen-estado-chip.perdido{background:#481b1b;color:#ff8585;border:1px solid #a64242}
 .resumen-tabla-cliente .resumen-estado-chip.pendiente{background:#3b2c10;color:#f3d36b;border:1px solid #997a32}
-@media(max-width:700px){.resumen-diario-admin,.resumen-diario-cliente{padding:12px}.resumen-dia-head{align-items:stretch;flex-direction:column}.resumen-totales{gap:7px}.resumen-total-card{padding:10px}.resumen-total-card span{font-size:9px}.resumen-total-card strong{font-size:20px}.resumen-tabla-wrap{margin-right:-2px}}
+@media(max-width:700px){.resumen-diario-admin,.resumen-diario-cliente{padding:10px}.resumen-dia-head{align-items:stretch;flex-direction:row;gap:8px}.resumen-dia-head p{font-size:11px}.resumen-dia-head label{min-width:118px}.resumen-dia-head input{min-width:0!important;width:100%;font-size:12px!important;padding:7px!important}.resumen-totales{gap:5px;margin:9px 0}.resumen-total-card{padding:8px 6px}.resumen-total-card span{font-size:8px;letter-spacing:.4px}.resumen-total-card strong{font-size:16px}.resumen-tabla-wrap{overflow-x:hidden;margin-right:0}.resumen-tabla{min-width:0;table-layout:fixed}.resumen-tabla th,.resumen-tabla td{padding:5px 3px;font-size:10px;white-space:normal;overflow-wrap:anywhere}.resumen-tabla tbody th{min-width:0;font-size:10px}.resumen-tabla input,.resumen-tabla select{min-width:0!important;padding:5px 2px!important;font-size:10px!important}.resumen-tabla-cliente td,.resumen-tabla-cliente th{padding:6px 3px}.resumen-tabla-cliente tbody td{font-size:10px}.resumen-tabla-cliente .resumen-estado-chip{padding:4px 3px;font-size:8px;letter-spacing:.2px}.resumen-guardar{margin-top:7px;padding:11px;font-size:13px}}
 @media(prefers-reduced-motion:reduce){.resumen-diario-admin *,.resumen-diario-cliente *{scroll-behavior:auto!important;transition:none!important}}
