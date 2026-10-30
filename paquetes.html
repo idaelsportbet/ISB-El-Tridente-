@@ -2737,6 +2737,14 @@ COMPRAR AHORA
   <button class="buy-btn" onclick="abrirCompra('Champions League Completa', '$200', 'TEMPORADA')">COMPRAR AHORA</button>
 </article>
 
+<!-- PAQUETE FIN DE SEMANA -->
+<article class="package-card" data-paquete="Paquete Fin de Semana" hidden>
+  <div class="card-top"><div class="card-icon" aria-hidden="true">🏆</div><div><h2 class="card-title">FIN DE SEMANA</h2><div class="card-type">PREMIUM + EXCLUSIVA · VIERNES A DOMINGO</div></div></div>
+  <ul class="card-features"><li><span class="check">✓</span><span>Acceso durante 3 días: viernes, sábado y domingo</span></li><li><span class="check">✓</span><span>Jugadas Premium y Exclusivas del fin de semana</span></li></ul>
+  <div class="price-row"><span class="price">$250</span><span class="period">/ 3 DÍAS</span></div>
+  <button class="buy-btn" onclick="abrirCompra('Paquete Fin de Semana', '$250', '3 DÍAS')">COMPRAR AHORA</button>
+</article>
+
 <!-- RETO DE 10 DÍAS PARA $10K -->
 <article class="package-card" data-paquete="Reto de 10 días para $10K">
   <div class="card-top">
@@ -3260,8 +3268,7 @@ async function protegerPagina(){
     return;
   }
 
-  await mostrarPaquetesActivos(data.session.user.id);
-}
+  await mostrarPaquetesActivos(data.session.user.id);\r\n  await aplicarVisibilidadFinDeSemana();\r\n}
 
 async function mostrarPaquetesActivos(userId){
   try {
@@ -3276,7 +3283,7 @@ async function mostrarPaquetesActivos(userId){
     const activos = new Set((compras || []).map(compra => compra.paquete));
     document.querySelectorAll(".package-card[data-paquete]").forEach(card => {
       const nombre = card.dataset.paquete;
-      if(!activos.has(nombre)) return;
+      if(!activos.has(nombre)) return;\r\n      card.dataset.comprado = "true";
 
       card.querySelector(".price-row")?.remove();
       card.querySelector(".buy-btn")?.remove();
@@ -3295,7 +3302,7 @@ const descuentoBase = {
   "Exclusiva Diaria": 5000,
   "Exclusiva Semanal": 29900,
   "Pack Mensual": 15000,
-  "Champions League Completa": 20000,
+  "Champions League Completa": 20000,\r\n  "Paquete Fin de Semana": 25000,
   "Reto de 10 días para $10K": 5000
 };
 let descuentoActivo = false;
@@ -3331,6 +3338,16 @@ async function cargarDescuento(){
   return descuentoActivo;
 }
 
+
+async function aplicarVisibilidadFinDeSemana(){
+  const weekendCard=document.querySelector('.package-card[data-paquete="Paquete Fin de Semana"]');
+  let activo=false;
+  try{const response=await fetch("/api/weekend-package",{cache:"no-store"});if(response.ok)activo=(await response.json()).active===true;}catch{}
+  document.querySelectorAll(".package-card[data-paquete]").forEach(card=>{
+    if(activo)card.hidden=card!==weekendCard;
+    else if(card===weekendCard)card.hidden=true;
+  });
+}
 
 async function cerrarSesion(){
 
