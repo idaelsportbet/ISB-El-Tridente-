@@ -237,9 +237,21 @@ function actualizarPrevia(){
 }
 agregarPartido();agregarJugada();document.getElementById("agregarPartido").addEventListener("click",()=>agregarPartido());document.getElementById("agregarJugada").addEventListener("click",()=>agregarJugada());
 for(const id of ["titulo","cuota","instagram"])document.getElementById(id).addEventListener("input",actualizarPrevia);
-const partes = new Intl.DateTimeFormat("en-US", {timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
-const fecha = Object.fromEntries(partes.map(p => [p.type,p.value]));
-document.getElementById("fecha").value = `${fecha.year}-${fecha.month}-${fecha.day}`;
+const fechaPickInput=document.getElementById("fecha");
+let fechaPickElegidaManual=false;
+function fechaActualCentral(){
+  const partes=new Intl.DateTimeFormat("en-US",{timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
+  const fecha=Object.fromEntries(partes.map(p=>[p.type,p.value]));
+  return `${fecha.year}-${fecha.month}-${fecha.day}`;
+}
+function actualizarFechaPickAutomatica(){
+  if(!fechaPickElegidaManual)fechaPickInput.value=fechaActualCentral();
+}
+actualizarFechaPickAutomatica();
+fechaPickInput.addEventListener("change",()=>{fechaPickElegidaManual=true;});
+window.addEventListener("focus",actualizarFechaPickAutomatica);
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")actualizarFechaPickAutomatica();});
+document.getElementById("publicar").addEventListener("submit",actualizarFechaPickAutomatica,true);
 async function request(method, body, query="") {
   const {data:{session}} = await client.auth.getSession();
   if (!session) throw new Error("Inicia sesión desde Inicio con tu cuenta de administrador y vuelve a este panel.");
