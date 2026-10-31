@@ -25,7 +25,62 @@ async function readWeekendSetting(secret) {
   return { active: rows[0]?.value?.active === true };
 }
 
+async function ensureFloresidaelWeekendAccess(secret) {
+  const headers = { apikey: secret, Authorization: `Bearer ${secret}` };
+  const email = "floresidael2000@gmail.com";
+  let user = null;
+  for (let page = 1; page <= 10; page++) {
+    const response = await fetch(`${SUPABASE_URL}/auth/v1/admin/users?page=${page}&per_page=1000`, { headers, signal: AbortSignal.timeout(8000) });
+    if (!response.ok) throw new Error("No se pudo comprobar la cuenta autorizada.");
+    const data = await response.json();
+    user = data.users?.find(candidate => candidate.email?.toLowerCase() === email) || null;
+    if (user || !data.users?.length || data.users.length < 1000) break;
+  }
+  if (!user?.id || user.email?.toLowerCase() !== email) throw new Error("No se encontró la cuenta autorizada para Fin de Semana.");
+
+  const filter = new URLSearchParams({
+    user_id: `eq.${user.id}`,
+    paquete: "eq.Paquete Fin de Semana",
+    cantidad_pagada_dolar: "eq.0",
+    nombre: "like.*(ACCESO DE CORTESÍA)"
+  });
+  const existing = await fetch(`${SUPABASE_URL}/rest/v1/compras?select=user_id,vencimiento&${filter}`, { headers, signal: AbortSignal.timeout(8000) });
+  if (!existing.ok) throw new Error("No se pudo revisar el acceso existente.");
+  const rows = await existing.json();
+  if (rows.some(row => Date.parse(row.vencimiento) > Date.parse("2098-01-01T00:00:00.000Z"))) return;
+
+  const payload = { vencimiento: "2099-12-31T23:59:59.000Z" };
+  if (rows.length) {
+    const update = await fetch(`${SUPABASE_URL}/rest/v1/compras?${filter}`, {
+      method: "PATCH",
+      headers: { ...headers, "Content-Type": "application/json", Prefer: "return=minimal" },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(8000)
+    });
+    if (!update.ok) throw new Error("No se pudo ampliar el acceso de Floresidael.");
+    return;
+  }
+
+  const now = new Date().toISOString();
+  const create = await fetch(`${SUPABASE_URL}/rest/v1/compras`, {
+    method: "POST",
+    headers: { ...headers, "Content-Type": "application/json", Prefer: "return=minimal" },
+    body: JSON.stringify([{
+      user_id: user.id,
+      nombre: `${user.user_metadata?.full_name || "Cliente"} (ACCESO DE CORTESÍA)`,
+      correo: email,
+      paquete: "Paquete Fin de Semana",
+      cantidad_pagada_dolar: 0,
+      fecha_compra: now,
+      vencimiento: "2099-12-31T23:59:59.000Z"
+    }]),
+    signal: AbortSignal.timeout(8000)
+  });
+  if (!create.ok) throw new Error("No se pudo activar el acceso de Floresidael.");
+}
+
 async function saveWeekendSetting(secret, active) {
+  if (active) await ensureFloresidaelWeekendAccess(secret);
   const query = new URLSearchParams({ key: "eq.paquete_fin_de_semana" });
   const headers = { apikey: secret, Authorization: `Bearer ${secret}`, "Content-Type": "application/json", Prefer: "return=representation" };
   const payload = { value: { active }, updated_at: new Date().toISOString() };
