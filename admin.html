@@ -437,6 +437,10 @@ async function cargarSoporteAdmin(){
 }
 document.getElementById("tabSoporte").addEventListener("click",()=>{form.hidden=true;document.getElementById("refundAdmin").hidden=true;document.getElementById("editorLayout").hidden=true;document.getElementById("instrucciones").hidden=true;document.getElementById("clientes").hidden=true;historial.hidden=true;document.getElementById("editorResultados").hidden=true;document.getElementById("supportAdmin").hidden=false;document.querySelectorAll("#secciones button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="tabSoporte")));cargarSoporteAdmin();});
 const descuentoPanel=document.getElementById("descuentoPanel"), descuentoEstado=document.getElementById("descuentoEstado"), alternarDescuento=document.getElementById("alternarDescuento");
+document.getElementById("secciones").addEventListener("click",event=>{
+  if(event.target.closest("#tabDescuento"))return;
+  descuentoPanel.hidden=true;
+});
 let descuentoHabilitado=false;
 async function peticionDescuento(method,body){
   const {data:{session}}=await client.auth.getSession();
