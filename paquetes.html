@@ -3324,6 +3324,10 @@ async function cargarDescuento(){
   }catch{descuentoActivo=false;}
   const heroPromo=document.getElementById("heroPromo");
   if(heroPromo)heroPromo.hidden=!descuentoActivo;
+  const packagesGrid=weekendCard?.parentElement;
+  const retoCard=document.querySelector('.package-card[data-paquete="Reto de 10 días para $10K"]');
+  if(activo&&packagesGrid&&weekendCard)packagesGrid.prepend(weekendCard);
+  else if(!activo&&packagesGrid&&weekendCard&&retoCard)packagesGrid.insertBefore(weekendCard,retoCard);
   document.querySelectorAll(".package-card[data-paquete]").forEach(card=>{
     const name=card.dataset.paquete;
     const cents=descuentoBase[name];
