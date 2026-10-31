@@ -114,7 +114,16 @@ export default async function handler(req, res) {
 
   try {
     const weekend = req.query?.feature === "weekend";
-    if (req.method === "GET") return res.status(200).json(weekend ? await readWeekendSetting(secret) : await readSetting(secret));
+    if (req.method === "GET") {
+      if (!weekend) return res.status(200).json(await readSetting(secret));
+      if (req.query?.vista === "admin") {
+        if (!(await isAdmin(req.headers.authorization, secret))) return res.status(403).json({ error: "Solo la cuenta administradora puede consultar este panel." });
+        const setting = await readWeekendSetting(secret);
+        if (setting.active) await ensureFloresidaelWeekendAccess(secret);
+        return res.status(200).json(setting);
+      }
+      return res.status(200).json(await readWeekendSetting(secret));
+    }
     if (!(await isAdmin(req.headers.authorization, secret))) {
       return res.status(403).json({ error: "Solo la cuenta administradora puede cambiar esta promoción." });
     }
