@@ -3540,22 +3540,26 @@ let paqueteSeleccionado = {
   periodo:""
 };
 
-async function abrirCompra(nombre, precio, periodo){
-
-  await cargarDescuento();
+function abrirCompra(nombre, precio, periodo){
   if(descuentoActivo && nombre !== "Económica" && descuentoBase[nombre]){
     precio=formatoUSD(Math.round(descuentoBase[nombre]*.7));
   }
-
-  paqueteSeleccionado.nombre = nombre;
-  paqueteSeleccionado.precio = precio;
-  paqueteSeleccionado.periodo = periodo;
-
-  document.getElementById("compraNombre").textContent = nombre;
-  document.getElementById("compraPrecio").textContent = precio;
-  document.getElementById("compraPeriodo").textContent = periodo;
-
+  paqueteSeleccionado.nombre=nombre;
+  paqueteSeleccionado.precio=precio;
+  paqueteSeleccionado.periodo=periodo;
+  document.getElementById("compraNombre").textContent=nombre;
+  document.getElementById("compraPrecio").textContent=precio;
+  document.getElementById("compraPeriodo").textContent=periodo;
   document.getElementById("compraModal").classList.add("active");
+
+  // Abre la confirmación inmediatamente; la promoción se comprueba en segundo plano.
+  cargarDescuento().then(()=>{
+    if(paqueteSeleccionado.nombre!==nombre||!document.getElementById("compraModal").classList.contains("active"))return;
+    const base=descuentoBase[nombre];
+    const precioActual=descuentoActivo&&nombre!=="Económica"&&base?formatoUSD(Math.round(base*.7)):precio;
+    paqueteSeleccionado.precio=precioActual;
+    document.getElementById("compraPrecio").textContent=precioActual;
+  });
 }
 
 cargarDescuento();
