@@ -3350,7 +3350,7 @@ async function aplicarVisibilidadFinDeSemana(){
   try{const response=await fetch("/api/package-discount?feature=weekend",{cache:"no-store"});if(response.ok)activo=(await response.json()).active===true;}catch{}
   const visiblesConFinDeSemana=new Set(["Paquete Fin de Semana","Champions League Completa","Reto de 10 días para $10K","Económica","Pack Mensual"]);
   document.querySelectorAll(".package-card[data-paquete]").forEach(card=>{
-    if(activo)card.hidden=!(visiblesConFinDeSemana.has(card.dataset.paquete)||card.dataset.comprado==="true");
+    if(activo)card.hidden=!visiblesConFinDeSemana.has(card.dataset.paquete);
     else card.hidden=card===weekendCard;
   });
 }
